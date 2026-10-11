@@ -69,15 +69,16 @@
 .ocean-tracking .tracking-classic .tracking-neo-hint {
     margin: 20px 0 0; padding: 13px 16px; min-height: 48px;
     border: 2px solid var(--classic-outline); border-radius: 9px;
-    background: var(--classic-paper); color: #36534c; font-size: 13px; font-weight: 600; line-height: 1.4;
+    background: var(--classic-paper); color: #36534c; font-size: 12px; font-weight: 600; line-height: 1.4;
 }
+.ocean-tracking .tracking-classic .tracking-hint-stars { display: block; width: 30px; height: 30px; flex: 0 0 30px; color: var(--classic-outline); }
 .ocean-tracking .tracking-classic .tracking-neo-error { margin: 18px 0 0; }
 @media (min-width: 768px) {
     .ocean-tracking .tracking-neo-page.tracking-classic { padding-top: 48px; padding-bottom: 130px; }
     .ocean-tracking .tracking-classic .tracking-neo-search-card { padding: 28px; }
     .ocean-tracking .tracking-classic .tracking-neo-input-wrap,
     .ocean-tracking .tracking-classic .tracking-neo-form button { min-height: 64px; }
-    .ocean-tracking .tracking-classic .tracking-neo-hint { font-size: 16px; }
+    .ocean-tracking .tracking-classic .tracking-neo-hint { font-size: 14px; }
 }
 html[data-customer-theme="dark"] .ocean-tracking .tracking-classic {
     --classic-ink: #e6f2e6; --classic-outline: #9dc5a4; --classic-paper: #284338; --classic-pink: #6a4050; --classic-matcha: #54784b;
@@ -108,6 +109,12 @@ html[data-customer-theme="dark"] .ocean-tracking .tracking-classic .tracking-neo
             </form>
 
             <div id="tracking-query-hint" class="tracking-neo-hint">
+                <!-- Star 8 shape from https://www.neobrutalism.dev/stars -->
+                <svg class="tracking-hint-stars" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="30" height="30" aria-hidden="true" focusable="false" fill="#ffe5a8" stroke="currentColor" stroke-width="10" stroke-linejoin="round">
+                    <svg x="14" y="9" width="25" height="25" viewBox="0 0 200 200"><path d="M100 5s5.088 49.035 25.527 69.473C145.965 94.912 195 100 195 100s-49.035 5.088-69.473 25.527C105.088 145.965 100 195 100 195s-5.088-49.035-25.527-69.473C54.035 105.088 5 100 5 100s49.035-5.088 69.473-25.527C94.912 54.035 100 5 100 5" /></svg>
+                    <svg x="1" y="1" width="13" height="13" viewBox="0 0 200 200"><path d="M100 5s5.088 49.035 25.527 69.473C145.965 94.912 195 100 195 100s-49.035 5.088-69.473 25.527C105.088 145.965 100 195 100 195s-5.088-49.035-25.527-69.473C54.035 105.088 5 100 5 100s49.035-5.088 69.473-25.527C94.912 54.035 100 5 100 5" /></svg>
+                    <svg x="2" y="26" width="11" height="11" viewBox="0 0 200 200"><path d="M100 5s5.088 49.035 25.527 69.473C145.965 94.912 195 100 195 100s-49.035 5.088-69.473 25.527C105.088 145.965 100 195 100 195s-5.088-49.035-25.527-69.473C54.035 105.088 5 100 5 100s49.035-5.088 69.473-25.527C94.912 54.035 100 5 100 5" /></svg>
+                </svg>
                 <span>Data mengikuti pembaruan terakhir dari admin.</span>
             </div>
 
