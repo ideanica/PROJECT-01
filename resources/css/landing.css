@@ -5897,7 +5897,8 @@
 .op-body .public-icon-rounded-bold { color: #355a45; flex-shrink: 0; }
 .op-page .op-search > .public-icon { width: 24px; height: 24px; color: #355a45; }
 .op-page .op-search > .public-icon > circle { fill: #ffe5a8; }
-.op-page .op-mobile-tracking > .public-icon:first-child { width: 28px; height: 28px; }
+.op-page .op-mobile-tracking > .public-icon:first-child { width: 28px; height: 28px; color: inherit; }
+.op-page .op-mobile-tracking > .public-icon > circle { fill: none; }
 .op-mobile-tracking-wrap {
   display: none;
 }
