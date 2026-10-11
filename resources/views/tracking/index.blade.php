@@ -126,7 +126,6 @@
             <a class="op-mobile-tracking" href="{{ route('tracking.index') }}">
                 <x-public-icon name="search" variant="rounded-bold" :size="24" />
                 <span><strong>Still looking for your order?</strong><small>Track it here!</small></span>
-                <x-public-icon name="arrow-forward" variant="rounded-bold" :size="18" />
             </a>
         </div>
     </main>
