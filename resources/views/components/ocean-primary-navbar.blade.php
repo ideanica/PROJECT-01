@@ -8,7 +8,6 @@
     $homeUrl = $homeHref ?: route('home');
     $profileUrl = auth()->check() ? route('profile.show') : route('login');
     $hostClass = 'ocean-primary-navbar-host'.($mode === 'landing' ? ' is-landing' : '');
-    $iconVariant = $mode === 'landing' ? 'rounded-bold' : 'outline';
 @endphp
 
 <div class="{{ $hostClass }}">
@@ -24,15 +23,15 @@
 
             <nav class="ocean-primary-navbar__mobile-panel" aria-label="Navigasi utama mobile">
                 <a class="ocean-primary-navbar__mobile-link {{ $active === 'home' ? 'is-active' : '' }}" href="{{ $homeUrl }}" @if($active === 'home') aria-current="page" @endif>
-                    <x-public-icon name="home" :variant="$iconVariant" :size="18" />
+                    <x-public-icon name="home" variant="rounded-bold" :size="18" />
                     <span>Home</span>
                 </a>
                 <a class="ocean-primary-navbar__mobile-link {{ $active === 'tracking' ? 'is-active' : '' }}" href="{{ route('tracking.index') }}" @if($active === 'tracking') aria-current="page" @endif>
-                    <x-public-icon name="truck" :variant="$iconVariant" :size="18" />
+                    <x-public-icon name="truck" variant="rounded-bold" :size="18" />
                     <span>Tracking</span>
                 </a>
                 <a class="ocean-primary-navbar__mobile-link {{ $active === 'profile' ? 'is-active' : '' }}" href="{{ $profileUrl }}" @if($active === 'profile') aria-current="page" @endif>
-                    <x-public-icon name="user" :variant="$iconVariant" :size="18" />
+                    <x-public-icon name="user" variant="rounded-bold" :size="18" />
                     <span>Profile</span>
                 </a>
             </nav>
