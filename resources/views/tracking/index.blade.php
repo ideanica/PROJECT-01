@@ -1,12 +1,3 @@
-<style>
-    /* Match the photo window to the square artwork so the parcel stays visible. */
-    .op-page .op-about-card .op-polaroid-front { height: auto; }
-    .op-page .op-about-card .op-polaroids { height: 300px; }
-    .op-page .op-about-card { min-height: 380px; }
-    @media (max-width: 1023px) {
-        .op-page .op-about-card .op-about-content { padding-top: 340px; }
-    }
-</style>
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
@@ -16,6 +7,15 @@
     <meta name="description" content="Ocean Paws — bringing your NCT WISH favorites closer.">
     <title>Ocean Paws — Bringing Your Favorites Closer</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+<style>
+    /* Match the photo window to the square artwork so the parcel stays visible. */
+    .op-page .op-about-card .op-polaroid-front { height: auto; }
+    .op-page .op-about-card .op-polaroids { height: 300px; }
+    .op-page .op-about-card { min-height: 380px; }
+    @media (max-width: 1023px) {
+        .op-page .op-about-card .op-about-content { padding-top: 340px; }
+    }
+</style>
 </head>
 <body class="op-body">
 @php
