@@ -16,13 +16,9 @@
 
         <details class="ocean-primary-navbar__mobile-menu">
             <summary class="ocean-primary-navbar__mobile-toggle" aria-label="Buka menu navigasi">
-                @if($mode === 'landing')
-                    <x-public-icon name="menu" variant="rounded-bold" :size="26" />
-                @else
                 <span class="ocean-primary-navbar__mobile-toggle-lines" aria-hidden="true">
                     <i></i><i></i><i></i>
                 </span>
-                @endif
                 <span class="sr-only">Menu</span>
             </summary>
 
