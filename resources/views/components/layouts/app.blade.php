@@ -15,6 +15,9 @@
         </script>
         @fonts
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @if(request()->routeIs('tracking.*'))
+            @vite('resources/css/tracking.css')
+        @endif
         @if(request()->routeIs('profile.*'))
             @vite('resources/css/profile.css')
         @endif

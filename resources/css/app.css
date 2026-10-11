@@ -8233,6 +8233,7 @@ body.ocean-tracking {
 
 .ocean-tracking .tracking-landing-footer .op-footer-reference-shell {
     position: absolute;
+    z-index: 4;
     top: 39px;
     left: 50%;
     display: grid;
@@ -9350,4 +9351,240 @@ html[data-customer-theme="dark"] .ocean-primary-navbar__mobile-link.is-active {
     background: #4d303a;
     box-shadow: var(--customer-shadow-control) #081810;
     color: #f2a0b6;
+}
+
+
+/* Tracking footer parity with the current landing footer. */
+.ocean-tracking .tracking-landing-footer.op-footer-reference {
+    position: relative;
+    isolation: isolate;
+    display: block;
+    height: 183px;
+    min-height: 183px;
+    overflow: hidden;
+    border: 0;
+    background: #f7f3e9 url('/assets/oceanpaws-footer-reference-bg-v1.png') center 40% / 100% 136% no-repeat;
+}
+
+.ocean-tracking .tracking-landing-footer.op-footer-reference::before {
+    content: none;
+}
+
+.ocean-tracking .tracking-landing-footer .op-footer-reference-shell {
+    position: absolute;
+    top: 39px;
+    left: 50%;
+    display: grid;
+    width: min(calc(100% - 136px), 1216px);
+    height: 78px;
+    grid-template-columns: 202px 288px 200px minmax(0, 1fr);
+    align-items: center;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    transform: translateX(-50%);
+}
+
+.ocean-tracking .tracking-landing-footer .op-footer-brand-block img {
+    width: 180px;
+    margin: 0 0 0 -7px;
+}
+
+.ocean-tracking .tracking-landing-footer .op-footer-message {
+    display: flex;
+    height: 72px;
+    grid-column: 4;
+    align-items: center;
+    justify-self: end;
+    gap: 15px;
+    padding: 0;
+}
+
+.ocean-tracking .tracking-landing-footer .op-footer-message strong {
+    font: 400 11px/1.35 ui-monospace, "Courier New", monospace;
+    letter-spacing: 0;
+}
+
+.ocean-tracking .tracking-landing-footer .op-footer-message strong span {
+    display: block;
+}
+
+.ocean-tracking .tracking-landing-footer .op-footer-shell-icon {
+    display: block;
+    width: 65px;
+    height: 65px;
+    object-fit: contain;
+    transform: rotate(-4deg);
+    filter: none;
+}
+
+.ocean-tracking .tracking-landing-footer .op-footer-bottomline {
+    z-index: 4;
+    right: auto;
+    bottom: 14px;
+    left: 0;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    text-align: center;
+    font: 400 10px/1.2 ui-monospace, "Courier New", monospace;
+    letter-spacing: 0;
+    text-shadow: none;
+}
+
+@media (max-width: 1160px) {
+    .ocean-tracking .tracking-landing-footer.op-footer-reference {
+        height: 265px;
+        min-height: 265px;
+        background-size: 100% 115%;
+    }
+
+    .ocean-tracking .tracking-landing-footer .op-footer-reference-shell {
+        top: 39px;
+        width: calc(100% - 64px);
+        height: auto;
+        grid-template-columns: 1fr auto;
+        grid-template-rows: 72px 38px;
+        row-gap: 7px;
+    }
+
+    .ocean-tracking .tracking-landing-footer .op-footer-brand-block {
+        grid-column: 1;
+        grid-row: 1;
+    }
+
+    .ocean-tracking .tracking-landing-footer .op-footer-message {
+        grid-column: 2;
+        grid-row: 1;
+        padding-left: 0;
+    }
+
+    .ocean-tracking .tracking-landing-footer .op-footer-bottomline {
+        left: 0;
+        width: 100%;
+    }
+}
+
+@media (max-width: 1023px) {
+    .ocean-tracking .tracking-landing-footer.op-footer-reference {
+        height: 292px;
+        min-height: 292px;
+        margin-top: -2px;
+        background-size: auto 100%;
+        background-position: center bottom;
+    }
+
+    .ocean-tracking .tracking-landing-footer.op-footer-reference::after {
+        content: "";
+        position: absolute;
+        z-index: 2;
+        top: 0;
+        right: 0;
+        left: 0;
+        height: 72%;
+        pointer-events: none;
+        background-image:
+            linear-gradient(rgba(211, 190, 151, .075) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(211, 190, 151, .075) 1px, transparent 1px);
+        background-size: 38px 38px;
+        background-position: 0 0;
+    }
+
+    .ocean-tracking .tracking-landing-footer .op-footer-reference-shell {
+        top: 93px;
+        left: 18px;
+        display: grid;
+        width: calc(100% - 36px);
+        height: auto;
+        grid-template-columns: minmax(0, 1fr) auto;
+        grid-template-rows: none;
+        align-items: center;
+        gap: 12px;
+        padding: 0;
+        transform: none;
+    }
+
+    .ocean-tracking .tracking-landing-footer .op-footer-brand-block {
+        display: flex;
+        min-width: 0;
+        grid-column: 1;
+        grid-row: auto;
+        justify-content: flex-start;
+    }
+
+    .ocean-tracking .tracking-landing-footer .op-footer-brand-block img {
+        width: clamp(118px, 36vw, 148px);
+        margin: 0;
+    }
+
+    .ocean-tracking .tracking-landing-footer .op-footer-center,
+    .ocean-tracking .tracking-landing-footer .op-footer-links,
+    .ocean-tracking .tracking-landing-footer .op-footer-mobile-links,
+    .ocean-tracking .tracking-landing-footer .op-footer-socials {
+        display: none;
+    }
+
+    .ocean-tracking .tracking-landing-footer .op-footer-message {
+        position: static;
+        display: flex;
+        width: auto;
+        height: auto;
+        grid-column: 2;
+        grid-row: auto;
+        align-items: center;
+        justify-self: end;
+        gap: 7px;
+        padding: 0;
+        transform: none;
+        text-align: left;
+        white-space: nowrap;
+    }
+
+    .ocean-tracking .tracking-landing-footer .op-footer-message strong {
+        display: grid;
+        gap: 1px;
+        font-size: clamp(7px, 2.15vw, 9px);
+        line-height: 1.25;
+        text-align: left;
+    }
+
+    .ocean-tracking .tracking-landing-footer .op-footer-shell-icon {
+        display: block;
+        width: clamp(32px, 9vw, 40px);
+        height: clamp(32px, 9vw, 40px);
+    }
+
+    .ocean-tracking .tracking-landing-footer .op-footer-bottomline {
+        right: 0;
+        bottom: 12px;
+        left: 0;
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+        color: #f8fff8;
+        font-size: 8px;
+        text-align: center;
+    }
+}
+
+@media (max-width: 380px) {
+    .ocean-tracking .tracking-landing-footer .op-footer-reference-shell {
+        left: 14px;
+        width: calc(100% - 28px);
+        gap: 8px;
+    }
+
+    .ocean-tracking .tracking-landing-footer .op-footer-brand-block img {
+        width: 112px;
+    }
+
+    .ocean-tracking .tracking-landing-footer .op-footer-message {
+        gap: 5px;
+    }
+
+    .ocean-tracking .tracking-landing-footer .op-footer-shell-icon {
+        width: 30px;
+        height: 30px;
+    }
 }

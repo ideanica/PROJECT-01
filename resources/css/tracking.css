@@ -1,0 +1,83 @@
+/*
+ * Tracking canvas ownership.
+ *
+ * Keep the decorative page grid on one root only. The older tracking styles in
+ * app.css contain several historical background declarations with higher
+ * specificity; these selectors deliberately neutralize those layers so the
+ * grid does not stop or restart between the navbar, search content, and footer.
+ */
+html body.ocean-tracking {
+    background-color: #fefaf1 !important;
+    background-image:
+        linear-gradient(rgba(211, 190, 151, .075) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(211, 190, 151, .075) 1px, transparent 1px) !important;
+    background-size: 38px 38px !important;
+    background-position: 0 0 !important;
+    background-repeat: repeat !important;
+}
+
+html body.ocean-tracking .customer-public-shell,
+html body.ocean-tracking .customer-public-shell > .tracking-site-header,
+html body.ocean-tracking .customer-public-shell > main.public-landing-main,
+html body.ocean-tracking .customer-public-shell > main.public-landing-main > .tracking-search-page.ocean-home.ocean-editorial,
+html body.ocean-tracking .tracking-search-page .tracking-search-shell,
+html body.ocean-tracking .tracking-search-page .tracking-neo-page,
+html body.ocean-tracking .tracking-search-page .tracking-result-section {
+    background-color: transparent !important;
+    background-image: none !important;
+}
+
+/*
+ * The footer itself stays identical to Home. Do not recolor, mask, clip, or
+ * redraw its reference artwork here. Only remove the old negative overlap that
+ * made the hand-off look like a broken seam on narrow screens.
+ */
+@media (max-width: 1023px) {
+    html body.ocean-tracking .tracking-landing-footer.op-footer-reference {
+        margin-top: 0 !important;
+    }
+}
+
+/*
+ * Dark mode must override the light canvas above. tracking.css is loaded after
+ * app.css, so the light !important canvas previously won over the older dark
+ * rules and produced the half-light/half-dark state seen on mobile.
+ */
+html[data-customer-theme="dark"] body.ocean-tracking {
+    --tracking-ink: #edf6ef;
+    --tracking-outline: #78977f;
+    --tracking-pink: #4d303a;
+    --tracking-pink-strong: #f08aa5;
+    --tracking-mint: #263c30;
+    --tracking-matcha: #4f7f59;
+    --tracking-paper: #1b3027;
+    --tracking-muted: #aec0b4;
+    color-scheme: dark;
+    background-color: #20382e !important;
+    background-image:
+        linear-gradient(rgba(189, 221, 194, .07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(189, 221, 194, .07) 1px, transparent 1px) !important;
+    background-size: 42px 42px !important;
+    background-position: 0 0 !important;
+    background-repeat: repeat !important;
+    color: var(--tracking-ink);
+}
+
+html[data-customer-theme="dark"] body.ocean-tracking .tracking-neo-heading h1 {
+    color: var(--tracking-ink) !important;
+}
+
+html[data-customer-theme="dark"] body.ocean-tracking .tracking-neo-heading p {
+    color: var(--tracking-muted) !important;
+}
+
+html[data-customer-theme="dark"] body.ocean-tracking .tracking-neo-eyebrow {
+    border-color: #8aa194;
+    background: #4d303a;
+    box-shadow: 2px 2px 0 #081810;
+    color: #f2a0b6;
+}
+
+html[data-customer-theme="dark"] body.ocean-tracking .tracking-neo-input-wrap input::placeholder {
+    color: #9eb4a5;
+}

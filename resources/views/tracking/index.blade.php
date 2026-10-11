@@ -612,6 +612,25 @@
             }
         }
 
+        /* Continue the sand grid through the footer until the shoreline begins. */
+        @media(max-width:1023px){
+            .op-footer-reference::after{
+                content:"";
+                position:absolute;
+                z-index:2;
+                top:0;
+                right:0;
+                left:0;
+                height:72%;
+                pointer-events:none;
+                background-image:
+                    linear-gradient(rgba(211,190,151,.075) 1px,transparent 1px),
+                    linear-gradient(90deg,rgba(211,190,151,.075) 1px,transparent 1px);
+                background-size:38px 38px;
+                background-position:0 0;
+            }
+        }
+
         @media(max-width:380px){
             .op-footer-reference .op-footer-reference-shell{
                 left:14px;

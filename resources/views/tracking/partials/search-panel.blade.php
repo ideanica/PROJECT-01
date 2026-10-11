@@ -20,7 +20,7 @@
                 <label for="tracking-query" class="sr-only">Kode pesanan atau username</label>
                 <div class="tracking-neo-input-wrap">
                     <span class="tracking-neo-input-icon"><x-public-icon name="search" :size="19" /></span>
-                    <input id="tracking-query" type="search" name="query" value="{{ old('query', $searchQuery ?? '') }}" autocomplete="off" autocapitalize="none" spellcheck="false" maxlength="255" placeholder="Contoh: ORD-001 atau @username" aria-describedby="tracking-query-hint{{ $errors->has('query') ? ' tracking-query-error' : '' }}" @if($errors->has('query')) aria-invalid="true" autofocus @endif required>
+                    <input id="tracking-query" type="search" name="query" value="{{ old('query', $searchQuery ?? '') }}" autocomplete="off" autocapitalize="none" spellcheck="false" maxlength="255" placeholder="masukkan kode pesanan" aria-describedby="tracking-query-hint{{ $errors->has('query') ? ' tracking-query-error' : '' }}" @if($errors->has('query')) aria-invalid="true" autofocus @endif required>
                 </div>
                 <button type="submit">
                     <span>Lacak pesanan</span>

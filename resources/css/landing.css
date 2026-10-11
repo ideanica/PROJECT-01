@@ -5503,8 +5503,8 @@
     letter-spacing:-.045em;
   }
   .op-page .op-copy-inner h1 br{display:none}
-  .op-page .op-heading-star-pink{top:-12px;right:5px}
-  .op-page .op-heading-star-green{top:19px;right:0}
+  .op-page .op-heading-star-pink{top:-12px;right:2px;width:21px;height:21px}
+  .op-page .op-heading-star-green{top:19px;right:-3px;width:16px;height:16px}
   .op-page .op-copy-main>p{
     margin:14px 0 0;
     font:500 clamp(14px,3.6vw,18px)/1.4 "Trebuchet MS",sans-serif;
@@ -5583,7 +5583,14 @@
 
   .op-page .op-ticker{display:flex}
 
-  .op-page .op-main{padding:20px 16px 28px;background:#fbfaf4}
+  .op-page .op-main{
+    padding:20px 16px 28px;
+    background-color:#fdf9ed;
+    background-image:
+      linear-gradient(rgba(211,190,151,.075) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(211,190,151,.075) 1px,transparent 1px);
+    background-size:38px 38px;
+  }
   .op-page .op-about-card{min-height:0}
   .op-page .op-about-card .op-polaroids{top:40px;left:50%;width:300px;height:220px;max-width:100%;transform:translateX(-50%)}
   .op-page .op-about-content{min-height:0;padding:258px 17px 20px}
@@ -5771,6 +5778,11 @@
   .op-page .op-main {
     box-shadow: inset 0 5px 0 #79a486;
   }
+
+  /* Blend the sand field into the footer so no section seam is visible. */
+  .op-page .op-footer-reference {
+    margin-top: -2px;
+  }
 }
 
 
@@ -5835,7 +5847,7 @@
   .op-page .op-copy-window {
     top: 96px;
     left: 24px;
-    width: calc(100% - 48px);
+    width: calc(100% - 36px);
     border-radius: 13px;
     box-shadow: -4px 5px 0 #79a486;
   }
@@ -5858,7 +5870,7 @@
   .op-page .op-copy-window {
     top: 92px;
     left: 24px;
-    width: calc(100% - 48px);
+    width: calc(100% - 36px);
   }
 
   .op-page .op-copy-window-back {
@@ -5907,3 +5919,42 @@
     padding: 22px 0 0;
   }
 }
+
+/* Hero CTA hit-area fix.
+   Decorative foreground assets intentionally sit above the hero card visually.
+   Their transparent image boxes must never intercept taps/clicks. */
+.op-page .op-hero-wave,
+.op-page .op-hero-cliff,
+.op-page .op-hero-mascot,
+.op-page .op-hero-sand,
+.op-page .op-palm,
+.op-page .op-sign,
+.op-page .op-sign-grass,
+.op-page .op-hero-grass,
+.op-page .op-starfish,
+.op-page .op-copy-hearts,
+.op-page .op-heading-star {
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Keep the actual CTA hit targets stable and above non-interactive artwork. */
+.op-page .op-actions {
+  position: relative;
+  z-index: 20;
+}
+
+.op-page .op-actions .op-line,
+.op-page .op-actions .op-search {
+  position: relative;
+  z-index: 1;
+  pointer-events: auto;
+  touch-action: manipulation;
+}
+
+/* Do not animate the interactive card itself: moving a touch target while a
+   finger is down makes edge taps feel inconsistent. The rear tab may still hop. */
+.op-page .op-copy-window {
+  animation: none !important;
+}
+
