@@ -48,7 +48,7 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         // Keep register failures readable when the runtime truncates long traces.
-        $exceptions->report(function (\Throwable $exception): void {
+        $exceptions->report(function (\Throwable $exception) {
             if (app()->runningInConsole() || ! request()->is('register')) {
                 return;
             }
@@ -68,6 +68,10 @@ return Application::configure(basePath: dirname(__DIR__))
                 'file' => str_replace(base_path().DIRECTORY_SEPARATOR, '', $cause->getFile()),
                 'line' => $cause->getLine(),
             ], JSON_UNESCAPED_SLASHES | JSON_INVALID_UTF8_SUBSTITUTE));
+
+            // The serverless runtime retains only the tail of oversized logs.
+            // This failure is already reported above; keep its concise cause.
+            return false;
         });
         $exceptions->shouldRenderJsonWhen(
             fn (Request $request) => $request->is('api/*'),
