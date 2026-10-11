@@ -124,7 +124,7 @@
 
         <div class="op-mobile-tracking-wrap">
             <a class="op-mobile-tracking" href="{{ route('tracking.index') }}">
-                <x-public-icon name="search" variant="rounded-bold" :size="24" />
+                <svg xmlns="http://www.w3.org/2000/svg" class="op-tracking-search-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#9f345c" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" style="display:block;width:28px;height:28px;flex:0 0 28px;color:#9f345c;stroke:#9f345c;"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg>
                 <span><strong>Still looking for your order?</strong><small>Track it here!</small></span>
             </a>
         </div>
