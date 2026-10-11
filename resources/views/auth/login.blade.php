@@ -35,7 +35,7 @@
                 border: 2.5px solid #355a45;
                 border-radius: 17px;
                 padding: clamp(20px, 5vw, 28px);
-                background: #fbd7e3;
+                background: #ffe5a8;
                 box-shadow: var(--customer-shadow-card, -6px 6px 0) #8aaf91;
             }
             .ocean-auth:has(.auth-form-login) .auth-kicker {
@@ -67,7 +67,7 @@
             }
             html[data-customer-theme="dark"] .ocean-auth:has(.auth-form-login) .auth-card {
                 border-color: #78977f;
-                background: #563642;
+                background: #4b4027;
                 box-shadow: var(--customer-shadow-card, -6px 6px 0) #081810;
             }
             html[data-customer-theme="dark"] .ocean-auth:has(.auth-form-login) .auth-kicker,
