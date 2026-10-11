@@ -11,4 +11,3 @@ Source: https://github.com/FortAwesome/Font-Awesome/tree/v4.7.0
 - Attribution is no longer required as of Font Awesome 3.0, but much appreciated:
   - `Font Awesome by Dave Gandy - http://fontawesome.io`
 - Full details: http://fontawesome.io/license/
-

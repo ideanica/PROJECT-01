@@ -1,7 +1,23 @@
-/* Plain authentication cards share the profile and tracking portal palette. */
+/* Match Profile / Tracking browser cards and their shared navbar. */
+body.ocean-auth {
+    --pv2-ink: #496d54;
+    --pv2-ink-deep: #355a45;
+    --pv2-text: #617369;
+    --pv2-paper: #fffdfa;
+    --pv2-cream: #fffaf1;
+    --pv2-pink: #fbd7e3;
+    --pv2-pink-strong: #e64675;
+    --pv2-mint: #d7ebdb;
+    --pv2-heading: "Nunito Sans", sans-serif;
+    --pv2-body: "Nunito Sans", sans-serif;
+    --auth-shadow-pink: #eba4bc;
+    --auth-shadow-mint: #91bd9b;
+}
+
 html:has(body.ocean-auth) { background: var(--pv2-cream); }
 body.ocean-auth {
-    background: var(--pv2-cream);
+    background: linear-gradient(rgba(91,135,102,.055) 1px, transparent 1px), linear-gradient(90deg, rgba(91,135,102,.055) 1px, transparent 1px), var(--pv2-cream);
+    background-size: 42px 42px;
     color: var(--pv2-ink-deep);
     font-family: "Nunito Sans", var(--pv2-body);
     color-scheme: light;
@@ -63,3 +79,18 @@ html[data-customer-theme="dark"] body.ocean-auth { background: var(--pv2-cream);
     .auth-card { border-radius: 12px; box-shadow: -4px 4px 0 #eba4bc; }
 }
 @media (prefers-reduced-motion: reduce) { .auth-submit { transition: none; } }
+
+.auth-browserbar { display: flex; min-height: 36px; align-items: center; justify-content: space-between; gap: 12px; border-bottom: var(--pv2-border); background: var(--pv2-pink); padding: 8px 16px; color: var(--pv2-ink-deep); font-size: 10px; letter-spacing: .08em; }
+.auth-window-dots { display: flex; gap: 6px; }
+.auth-window-dots i { width: 9px; height: 9px; border: 1px solid var(--pv2-ink); border-radius: 50%; background: var(--pv2-paper); }
+.auth-window-dots i:nth-child(2) { background: var(--pv2-mint); }
+.auth-window-dots i:nth-child(3) { background: var(--pv2-pink-strong); }
+html[data-customer-theme="dark"] body.ocean-auth {
+    --pv2-ink: #78977f; --pv2-ink-deep: #edf6ef; --pv2-text: #aec0b4;
+    --pv2-paper: #1b3027; --pv2-cream: #12251e; --pv2-pink: #563642;
+    --pv2-pink-strong: #ef86a3; --pv2-mint: #31483a;
+    --auth-shadow-pink: #402c35; --auth-shadow-mint: #081810;
+    color-scheme: dark;
+    background: linear-gradient(rgba(151,181,159,.055) 1px, transparent 1px), linear-gradient(90deg, rgba(151,181,159,.055) 1px, transparent 1px), var(--pv2-cream);
+    background-size: 42px 42px;
+}

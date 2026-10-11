@@ -143,7 +143,9 @@
             </div>
         @else
             <div class="min-h-screen customer-public-shell">
-                @if($isOceanTracking)
+                @if($isAuthPage)
+                    <x-ocean-primary-navbar active="profile" />
+                @elseif($isOceanTracking)
                     @include('tracking.partials.site-header')
                 @elseif($isOceanProfile)
                     @include('profile.partials.site-header')
