@@ -82,7 +82,7 @@
                     <div class="op-polaroid op-polaroid-back"></div><div class="op-polaroid op-polaroid-mid"></div>
                     <div class="op-polaroid op-polaroid-front">
                         <header class="op-photo-titlebar"><strong>OCEAN PAWS.JPG</strong><span class="op-window-dots"><i></i><i></i><i></i></span></header>
-                        <figure class="op-photo-screen"><img src="{{ asset('assets/oceanpaws-pastel-beach-parcel-v8.webp') }}" alt="Maskot Ocean Paws memegang paket di pantai" width="1448" height="1086" style="object-fit:cover;object-position:center 55%;transform:scale(1.06);transform-origin:center 55%;"></figure>
+                        <figure class="op-photo-screen"><img src="{{ asset('assets/oceanpaws-pastel-beach-parcel-v8.webp') }}" alt="Maskot Ocean Paws memegang paket di pantai" width="1448" height="1086" style="object-fit:cover;object-position:center 45%;transform:scale(1.22);transform-origin:center 45%;"></figure>
                         <footer class="op-photo-status"><span>Good Music · Brighter Days<br>with OCEANPAWS ♡</span><b>01 / 03</b></footer>
                     </div>
                 </div>
