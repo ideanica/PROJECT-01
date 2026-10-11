@@ -1,4 +1,20 @@
 import $ from 'jquery';
+import './password-monitor';
+import './profile-photo';
+
+document.querySelectorAll('[data-profile-edit-form]').forEach((form) => {
+    const button = form.querySelector('[data-profile-save]');
+    form.addEventListener('submit', () => {
+        button.disabled = true;
+        button.textContent = 'Menyimpan...';
+        form.setAttribute('aria-busy', 'true');
+    });
+    window.addEventListener('pageshow', () => {
+        button.disabled = false;
+        button.textContent = 'Simpan profil';
+        form.removeAttribute('aria-busy');
+    });
+});
 
 window.$ = window.jQuery = $;
 

@@ -26,7 +26,7 @@ class CustomerAuthTest extends TestCase
     {
         return array_replace([
             'name' => 'Customer Baru', 'username' => 'buyer.baru', 'email' => 'buyer@example.test',
-            'customer_group_id' => $this->group()->id, 'password' => 'test-password', 'password_confirmation' => 'test-password',
+            'customer_group_id' => $this->group()->id, 'password' => 'Test-password1!', 'password_confirmation' => 'Test-password1!',
         ], $overrides);
     }
 
@@ -38,11 +38,11 @@ class CustomerAuthTest extends TestCase
         $user = User::where('username', 'buyer.baru')->sole();
         $this->assertSame('customer', $user->role);
         $this->assertNotNull($user->password_set_at);
-        $this->assertTrue(Hash::check('test-password', $user->password));
+        $this->assertTrue(Hash::check('Test-password1!', $user->password));
         $this->assertSame('buyer.baru', $user->member->username);
         $this->assertNull($user->line_user_id);
         $this->assertTrue($user->member->isEligibleForNewOrder());
-        $this->post('/login', ['username' => ' BUYER.BARU ', 'password' => 'test-password'])->assertRedirect(route('profile.show'));
+        $this->post('/login', ['username' => ' BUYER.BARU ', 'password' => 'Test-password1!'])->assertRedirect(route('profile.show'));
         $this->assertAuthenticatedAs($user);
         $this->get('/admin')->assertForbidden();
         $this->get('/admin/customer-groups')->assertForbidden();
@@ -85,6 +85,53 @@ class CustomerAuthTest extends TestCase
         $this->post('/register', $this->registration(['role' => 'admin']))->assertSessionHasErrors('role');
         $this->assertDatabaseCount('members', 1);
         $this->assertDatabaseCount('users', 0);
+    }
+
+    public function test_registration_rejects_existing_account_username_after_normalization(): void
+    {
+        User::factory()->create(['username' => 'existing.buyer']);
+
+        $this->post('/register', $this->registration(['username' => ' Existing.Buyer ']))
+            ->assertSessionHasErrors(['username' => 'Username LINE sudah digunakan. Silakan pilih username LINE lain.']);
+
+        $this->assertDatabaseCount('users', 1);
+        $this->assertDatabaseCount('members', 0);
+    }
+
+    public function test_registration_rejects_existing_member_username_after_normalization(): void
+    {
+        Member::factory()->create(['username' => 'existing.buyer']);
+
+        $this->post('/register', $this->registration(['username' => ' Existing.Buyer ']))
+            ->assertSessionHasErrors(['username' => 'Username LINE sudah digunakan. Silakan pilih username LINE lain.']);
+
+        $this->assertDatabaseCount('users', 0);
+        $this->assertDatabaseCount('members', 1);
+    }
+
+    public function test_registration_requires_every_password_strength_category(): void
+    {
+        foreach (['Aa1!abc', 'weak-password1!', 'WEAK-PASSWORD1!', 'Weak-password!', 'Weakpassword1'] as $password) {
+            $this->post('/register', $this->registration([
+                'password' => $password,
+                'password_confirmation' => $password,
+            ]))->assertSessionHasErrors('password');
+        }
+
+        $this->assertDatabaseCount('users', 0);
+        $this->assertDatabaseCount('members', 0);
+    }
+
+    public function test_registration_form_explains_password_requirements(): void
+    {
+        $this->get('/register')->assertOk()
+            ->assertSee('Username LINE harus unik.')
+            ->assertSee('Belum diisi: 0 dari 6 syarat terpenuhi')
+            ->assertSee('data-password-rule="uppercase"', false)
+            ->assertSee('data-password-rule="symbol"', false)
+            ->assertSee('data-password-rule="confirmation"', false)
+            ->assertSeeInOrder(['name="password_confirmation"', 'data-password-monitor'], false)
+            ->assertSee('aria-describedby="password-requirements"', false);
     }
 
     public function test_wrong_password_and_inactive_customer_cannot_login_and_existing_session_is_revoked(): void
@@ -159,5 +206,32 @@ class CustomerAuthTest extends TestCase
         $this->get('/auth/line/callback?code=fake')->assertRedirect('/login');
         $this->post('/admin/login', ['email' => $admin->email, 'password' => 'password'])->assertRedirect(route('admin.dashboard'));
         $this->assertAuthenticatedAs($admin);
+    }
+
+    public function test_shared_login_accepts_admin_username_and_email_and_redirects_by_role(): void
+    {
+        $admin = User::factory()->create(['username' => 'shared.admin']);
+        $this->get('/admin/login')->assertRedirect('/login');
+        $this->get('/login')->assertOk()->assertSee('Username LINE atau email')->assertDontSee('Login admin');
+
+        foreach ([$admin->username, $admin->email] as $identifier) {
+            $this->withSession(['url.intended' => route('profile.show')])
+                ->post('/login', ['username' => ' '.strtoupper($identifier).' ', 'password' => 'password'])
+                ->assertRedirect(route('admin.dashboard'));
+            $this->assertAuthenticatedAs($admin);
+            $this->post('/logout')->assertRedirect('/login');
+        }
+    }
+
+    public function test_shared_login_accepts_customer_email_and_does_not_redirect_to_admin(): void
+    {
+        $this->post('/register', $this->registration())->assertRedirect(route('login'));
+        $user = User::where('username', 'buyer.baru')->sole();
+        $this->withSession(['url.intended' => route('admin.dashboard')])
+            ->post('/login', ['username' => ' BUYER@EXAMPLE.TEST ', 'password' => 'Test-password1!'])
+            ->assertRedirect(route('profile.show'));
+        $this->assertAuthenticatedAs($user);
+        $this->get(route('admin.dashboard'))->assertForbidden();
+        $this->post('/logout')->assertRedirect('/login');
     }
 }

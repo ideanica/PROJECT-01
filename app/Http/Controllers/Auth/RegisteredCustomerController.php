@@ -52,6 +52,6 @@ class RegisteredCustomerController extends Controller
 
         return redirect()->route('login')->with('status', $data['customer_group_id'] === null
             ? 'Permintaan registrasi diterima. Tunggu persetujuan admin untuk menentukan group. Kamu belum bisa login sampai akun disetujui.'
-            : 'Akun berhasil dibuat. Silakan login menggunakan username dan password.');
+            : 'Akun berhasil dibuat. Silakan login menggunakan username LINE dan password.');
     }
 }

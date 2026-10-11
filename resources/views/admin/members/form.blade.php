@@ -22,7 +22,7 @@
                 <x-admin-form-section title="Identitas Pelanggan">
                     <div class="grid gap-4 {{ $member->exists ? 'sm:grid-cols-2' : 'lg:grid-cols-3' }}">
                         <x-text-input label="Nama pelanggan" name="display_name" :value="$member->display_name" placeholder="Nama lengkap atau nama penerima" required />
-                        <x-text-input label="Username" name="username" :value="$member->username" placeholder="username_customer" required />
+                        <x-text-input label="Username LINE" name="username" :value="$member->username" placeholder="username_line" required />
                         <x-text-input label="Nomor telepon" name="phone" type="tel" :value="$member->phone" placeholder="08xxxxxxxxxx" />
                         @if ($member->exists)
                             <label class="block">
@@ -86,4 +86,3 @@
         </form>
     </x-admin-form-shell>
 </x-layouts.app>
-

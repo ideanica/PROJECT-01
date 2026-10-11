@@ -16,7 +16,7 @@ class CustomerApprovalTest extends TestCase
     {
         $this->post('/register', [
             'name' => 'Pending Buyer', 'username' => 'pending.buyer', 'email' => 'pending@example.test',
-            'customer_group_id' => '', 'password' => 'test-password', 'password_confirmation' => 'test-password',
+            'customer_group_id' => '', 'password' => 'Test-password1!', 'password_confirmation' => 'Test-password1!',
         ])->assertRedirect(route('login'))->assertSessionHas('status', fn ($message) => str_contains($message, 'Tunggu persetujuan admin'));
 
         return User::where('username', 'pending.buyer')->sole();
@@ -31,7 +31,7 @@ class CustomerApprovalTest extends TestCase
         $this->assertFalse($user->member->is_active);
         $this->assertFalse($user->member->isEligibleForNewOrder());
         $this->assertFalse(Member::eligibleForNewOrder()->whereKey($user->member_id)->exists());
-        $this->post('/login', ['username' => $user->username, 'password' => 'test-password'])->assertSessionHasErrors('username');
+        $this->post('/login', ['username' => $user->username, 'password' => 'Test-password1!'])->assertSessionHasErrors('username');
         $this->assertGuest();
         $this->actingAs($user)->get('/profile')->assertRedirect(route('login'));
         $this->assertGuest();
@@ -54,7 +54,7 @@ class CustomerApprovalTest extends TestCase
         $this->get(route('admin.customer-groups.index'))->assertOk()->assertSee('Jumlah anggota')->assertSee('Accepted Group');
         $this->get(route('admin.members.index', ['registration' => 'pending']))->assertOk()->assertDontSee('Pending Buyer');
         $this->post('/logout');
-        $this->post('/login', ['username' => $user->username, 'password' => 'test-password'])->assertRedirect(route('profile.show'));
+        $this->post('/login', ['username' => $user->username, 'password' => 'Test-password1!'])->assertRedirect(route('profile.show'));
         $this->assertAuthenticatedAs($user);
         $this->post(route('admin.members.approve', $memberId), ['customer_group_id' => $group->id])->assertForbidden();
     }

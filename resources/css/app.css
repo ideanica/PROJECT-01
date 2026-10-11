@@ -5,6 +5,7 @@
 @import './landing.css';
 @import './portal-neo-brutalism.css';
 @import './auth.css';
+@import './customer-shadows.css';
 
 @source '../views/**/*.blade.php';
 @source '../js/**/*.js';
@@ -4917,10 +4918,11 @@ details[open] > summary .ocean-chevron {
     .admin-navigation > a > span:last-of-type {
         max-width: 100%;
         overflow: hidden;
-        font-size: .5rem !important;
+        font-size: .6rem !important;
         line-height: 1.15;
         text-overflow: ellipsis;
-        white-space: nowrap;
+        white-space: normal;
+        overflow-wrap: anywhere;
     }
 
     .admin-topbar {
@@ -4934,6 +4936,10 @@ details[open] > summary .ocean-chevron {
 }
 
 @media (max-width: 820px) {
+    .admin-shell input:not([type="checkbox"]):not([type="radio"]),
+    .admin-shell select,
+    .admin-shell textarea { min-width: 0; font-size: 16px; }
+
     .admin-page {
         min-width: 0;
         padding: 1.15rem .75rem 1.5rem !important;
@@ -6097,7 +6103,7 @@ body.customer-theme,
     margin: 0;
     transform: translateX(-50%);
     background: #fffefa;
-    box-shadow: -6px 6px 0 #9bc8a4;
+    box-shadow: var(--customer-shadow-card) #9bc8a4;
 }
 .tracking-site-header .op-browserbar { height: 22px; }
 .tracking-site-header .op-navrow {
@@ -6177,7 +6183,7 @@ body.customer-theme,
     border: 2px solid var(--track-outline);
     border-radius: 16px;
     background: #ffe0e9;
-    box-shadow: -8px 8px 0 #6eab80;
+    box-shadow: var(--customer-shadow-card) #6eab80;
 }
 .tracking-lookup-frame > .op-browserbar {
     height: 30px;
@@ -6225,7 +6231,7 @@ body.customer-theme,
     border: 2px solid #557861 !important;
     border-radius: 14px;
     background: #fff !important;
-    box-shadow: -4px 4px 0 #d0a0af;
+    box-shadow: var(--customer-shadow-card) #d0a0af;
 }
 .ocean-tracking .tracking-lookup-form:focus-within { outline: 3px solid #f3a7be; outline-offset: 3px; }
 .ocean-tracking .tracking-lookup-search-icon { color: var(--track-green); }
@@ -6237,7 +6243,7 @@ body.customer-theme,
     border-radius: 10px;
     background: linear-gradient(#69aa6e, #438951) !important;
     color: #fff !important;
-    box-shadow: -3px 3px 0 #355d40 !important;
+    box-shadow: var(--customer-shadow-control) #355d40 !important;
     font: 800 13px/1 "Nunito Sans", sans-serif;
 }
 .ocean-tracking .tracking-lookup-form button:hover { background: #3e814b !important; transform: translate(1px, -1px); }
@@ -6255,7 +6261,7 @@ body.customer-theme,
     border: 2px solid var(--track-outline) !important;
     border-radius: 17px;
     background: #ffe0e9 !important;
-    box-shadow: -7px 7px 0 #87b999 !important;
+    box-shadow: var(--customer-shadow-card) #87b999 !important;
 }
 .tracking-result-titlebar { display: flex; height: 35px; align-items: center; justify-content: space-between; border-bottom: 1.5px solid var(--track-outline); padding: 0 18px; color: #8d3e5b; font: 700 10px/1 monospace; }
 .tracking-history-card .tracking-result-titlebar { background: #d6eadb; color: #38694a; }
@@ -6268,18 +6274,18 @@ body.customer-theme,
 .ocean-tracking .tracking-result-item, .ocean-tracking .tracking-history-list details, .ocean-tracking .tracking-order-summary > div { border-color: #dce9dd; }
 .ocean-tracking .tracking-result-item-icon, .ocean-tracking .tracking-history-icon { border: 1px solid #ca7894; background: #ffe1ea; color: var(--track-pink); }
 .ocean-tracking .tracking-result-item strong, .ocean-tracking .tracking-history-list summary strong, .ocean-tracking .tracking-result-heading h3 { color: var(--track-ink); }
-.ocean-tracking .tracking-search-page .tracking-result-action { border: 1.5px solid #386744; background: #4d9158; color: #fff; box-shadow: -3px 3px 0 #355d40; }
+.ocean-tracking .tracking-search-page .tracking-result-action { border: 1.5px solid #386744; background: #4d9158; color: #fff; box-shadow: var(--customer-shadow-control) #355d40; }
 .ocean-tracking .tracking-search-page .tracking-result-action:hover { background: #3b7848; color: #fff; }
 
 .ocean-tracking :is(.customer-detail-page, .order-detail-page) { background: #fffaf1 !important; color: var(--track-ink); }
 .ocean-tracking :is(.detail-topbar, .order-detail-topbar) { color: var(--track-green); }
 .ocean-tracking :is(.customer-detail-heading, .order-detail-hero-copy) h1 { color: var(--track-pink) !important; }
-.ocean-tracking :is(.detail-record-card, .order-table-card, .order-detail-panel, .order-detail-stats article) { border: 2px solid #815767 !important; border-radius: 16px; background: #fffefa !important; box-shadow: -6px 6px 0 #e6a5b9 !important; }
+.ocean-tracking :is(.detail-record-card, .order-table-card, .order-detail-panel, .order-detail-stats article) { border: 2px solid #815767 !important; border-radius: 16px; background: #fffefa !important; box-shadow: var(--customer-shadow-card) #e6a5b9 !important; }
 .ocean-tracking .detail-record-hero { background: #ffe1e9; }
 .ocean-tracking .detail-record-card > footer { background: #4b8756 !important; }
 .ocean-tracking .detail-record-summary .detail-record-field { border: 1px solid #83ad8b !important; background: #e7f3e8 !important; }
-.ocean-tracking .order-detail-hero { border: 2px solid #815767 !important; border-radius: 16px; background: linear-gradient(110deg, #ffe0e9, #e2f1e4) !important; box-shadow: -6px 6px 0 #87b999; }
-.ocean-tracking .order-detail-stats article:nth-child(even) { box-shadow: -6px 6px 0 #87b999 !important; }
+.ocean-tracking .order-detail-hero { border: 2px solid #815767 !important; border-radius: 16px; background: linear-gradient(110deg, #ffe0e9, #e2f1e4) !important; box-shadow: var(--customer-shadow-card) #87b999; }
+.ocean-tracking .order-detail-stats article:nth-child(even) { box-shadow: var(--customer-shadow-card) #87b999 !important; }
 .ocean-tracking .order-detail-item { border-color: #d8e9db !important; background: #f0f8f0 !important; }
 .ocean-tracking :is(.order-table-action, .order-detail-topbar > a) { border-radius: 9px; }
 
@@ -6297,7 +6303,7 @@ body.customer-theme,
 }
 @media (max-width: 700px) {
     .ocean-tracking .tracking-search-page .tracking-lookup-hero { min-height: 0; padding: 30px 18px 58px; }
-    .tracking-lookup-frame { border-radius: 14px; box-shadow: -5px 5px 0 #6eab80; }
+    .tracking-lookup-frame { border-radius: 14px; box-shadow: var(--customer-shadow-card) #6eab80; }
     .ocean-tracking .tracking-lookup-hero-inner { display: flex; flex-direction: column; gap: 0; min-height: 0; align-items: stretch; margin: 7px; padding: 24px 17px 4px; }
     .ocean-tracking .tracking-lookup-hero h1 { font-size: clamp(28px, 8vw, 50px); }
     .ocean-tracking .tracking-lookup-copy > p { font-size: 14px; }
@@ -6320,7 +6326,7 @@ body.customer-theme,
 /* One compact browser navbar across the landing, tracking, and profile pages. */
 @media (max-width: 760px) {
     :is(.op-page, .tracking-site-header, .profile-site-header) {
-        --op-mobile-card-shadow: -2px 3px 0 #79a486;
+        --op-mobile-card-shadow: var(--customer-shadow-control) #79a486;
     }
     .op-page .op-header.op-mobile-navbar,
     .profile-site-header .op-header.op-mobile-navbar {
@@ -6897,7 +6903,7 @@ body.ocean-tracking {
     border-radius: 18px;
     transform: translateX(-50%);
     background: #fffefa;
-    box-shadow: -7px 7px 0 #95bd9d;
+    box-shadow: var(--customer-shadow-card) #95bd9d;
 }
 
 .ocean-tracking .tracking-site-header .op-browserbar {
@@ -7031,7 +7037,7 @@ body.ocean-tracking {
     border: 2px solid #815767;
     border-radius: 22px;
     background: #f8d3df;
-    box-shadow: -9px 9px 0 #6fab80;
+    box-shadow: var(--customer-shadow-card) #6fab80;
 }
 
 .ocean-tracking .tracking-reference-hero .tracking-lookup-titlebar {
@@ -7461,7 +7467,7 @@ body.ocean-tracking {
         height: 86px;
         transform: none;
         border-radius: 14px;
-        box-shadow: -4px 4px 0 #95bd9d;
+        box-shadow: var(--customer-shadow-card) #95bd9d;
     }
 
     .ocean-tracking .tracking-site-header .op-browserbar {
@@ -7516,7 +7522,7 @@ body.ocean-tracking {
 
     .ocean-tracking .tracking-reference-hero .tracking-lookup-frame {
         border-radius: 16px;
-        box-shadow: -5px 5px 0 #6fab80;
+        box-shadow: var(--customer-shadow-card) #6fab80;
     }
 
     .ocean-tracking .tracking-reference-hero .tracking-lookup-titlebar {
@@ -7861,7 +7867,7 @@ body.ocean-tracking {
     border-radius: 18px;
     transform: translateX(-50%);
     background: var(--tracking-paper);
-    box-shadow: -6px 6px 0 #91bd9b;
+    box-shadow: var(--customer-shadow-card) #91bd9b;
 }
 
 .ocean-tracking .tracking-site-header .op-browserbar {
@@ -7952,7 +7958,7 @@ body.ocean-tracking {
     border-radius: 8px;
     padding: 0 10px;
     background: #fff4f8;
-    box-shadow: 2px 2px 0 #dd9eb3;
+    box-shadow: var(--customer-shadow-control) #dd9eb3;
     color: #ad2f59;
     font-size: 10px;
     font-weight: 900;
@@ -7980,7 +7986,7 @@ body.ocean-tracking {
     border: 2px solid var(--tracking-outline);
     border-radius: 18px;
     background: var(--tracking-paper);
-    box-shadow: -6px 6px 0 #eba4bc;
+    box-shadow: var(--customer-shadow-card) #eba4bc;
 }
 
 .ocean-tracking .tracking-neo-card-head {
@@ -8002,7 +8008,7 @@ body.ocean-tracking {
     border: 2px solid var(--tracking-outline);
     border-radius: 11px;
     background: #fffefa;
-    box-shadow: 3px 3px 0 #90ba9b;
+    box-shadow: var(--customer-shadow-control) #90ba9b;
     color: var(--tracking-ink);
 }
 
@@ -8043,7 +8049,7 @@ body.ocean-tracking {
     border-radius: 12px;
     padding: 0 16px;
     background: #fffefa;
-    box-shadow: 3px 3px 0 #a9cbae;
+    box-shadow: var(--customer-shadow-control) #a9cbae;
 }
 
 .ocean-tracking .tracking-neo-input-icon {
@@ -8077,15 +8083,15 @@ body.ocean-tracking {
     border-radius: 12px;
     padding: 0 20px;
     background: var(--tracking-matcha);
-    box-shadow: 4px 4px 0 #4d8156;
+    box-shadow: var(--customer-shadow-control) #4d8156;
     color: #fff;
     font: 900 13px/1 "Nunito Sans", sans-serif;
     transition: transform .15s ease, box-shadow .15s ease;
 }
 
 .ocean-tracking .tracking-neo-form button:hover {
-    transform: translate(2px,2px);
-    box-shadow: 2px 2px 0 #4d8156;
+    transform: translate(-2px,2px);
+    box-shadow: var(--customer-shadow-control) #4d8156;
 }
 
 .ocean-tracking .tracking-neo-hint,
@@ -8126,7 +8132,7 @@ body.ocean-tracking {
     border: 2px solid var(--tracking-outline) !important;
     border-radius: 18px;
     background: var(--tracking-paper) !important;
-    box-shadow: -6px 6px 0 #91bd9b !important;
+    box-shadow: var(--customer-shadow-card) #91bd9b !important;
 }
 
 .ocean-tracking .tracking-result-titlebar {
@@ -8207,7 +8213,7 @@ body.ocean-tracking {
     border: 2px solid var(--tracking-outline) !important;
     border-radius: 10px;
     background: var(--tracking-matcha) !important;
-    box-shadow: 3px 3px 0 #4d8156 !important;
+    box-shadow: var(--customer-shadow-control) #4d8156 !important;
     color: #fff !important;
     font-weight: 900;
 }
@@ -8572,7 +8578,7 @@ html[data-customer-theme="dark"] .ocean-tracking .tracking-neo-search-card,
 html[data-customer-theme="dark"] .ocean-tracking .tracking-result-card {
     background: #1b3027 !important;
     color: #edf6ef;
-    box-shadow: -6px 6px 0 #081810 !important;
+    box-shadow: var(--customer-shadow-card) #081810 !important;
 }
 
 html[data-customer-theme="dark"] .ocean-tracking .tracking-neo-card-head,
@@ -8585,7 +8591,7 @@ html[data-customer-theme="dark"] .ocean-tracking .tracking-neo-input-wrap {
     border-color: #78977f;
     background: #20382e;
     color: #edf6ef;
-    box-shadow: 3px 3px 0 #081810;
+    box-shadow: var(--customer-shadow-control) #081810;
 }
 
 html[data-customer-theme="dark"] .ocean-tracking .tracking-neo-input-wrap input {
@@ -8615,7 +8621,7 @@ html[data-customer-theme="dark"] .ocean-tracking .tracking-result-side {
 .ocean-tracking .tracking-site-header .op-header {
     background: rgba(255,253,249,.96);
     border-color: #8d4760;
-    box-shadow: -5px 5px 0 #8aaf91;
+    box-shadow: var(--customer-shadow-card) #8aaf91;
 }
 
 .ocean-tracking .tracking-site-header .op-header .op-browserbar {
@@ -8759,7 +8765,7 @@ html[data-customer-theme="dark"] .ocean-tracking .tracking-result-side {
         border: 2px solid #815767;
         border-radius: 15px;
         background: #fffefa;
-        box-shadow: -2px 3px 0 #79a486;
+        box-shadow: var(--customer-shadow-control) #79a486;
     }
 
     .ocean-tracking .tracking-site-header .op-header.op-mobile-navbar > .op-browserbar {
@@ -8850,7 +8856,7 @@ html[data-customer-theme="dark"] .ocean-tracking .tracking-result-side {
     border-radius: 17px;
     padding: 0 34px;
     background: #fffdf9;
-    box-shadow: -8px 9px 0 #8aaf91;
+    box-shadow: var(--customer-shadow-card) #8aaf91;
     color: #355a45;
     font-family: "Nunito Sans", "Trebuchet MS", sans-serif;
 }
@@ -8946,13 +8952,13 @@ html[data-customer-theme="dark"] .ocean-tracking .tracking-result-side {
     --nav-icon-fill: #ef4f7d;
     border-color: #355a45;
     background: #fbd7e3;
-    box-shadow: 5px 6px 0 #7fa889;
+    box-shadow: var(--customer-shadow-control) #7fa889;
     color: #b72f5e;
 }
 
 .ocean-primary-navbar__link.is-active:hover {
-    transform: translate(2px, 2px);
-    box-shadow: 3px 4px 0 #7fa889;
+    transform: translate(-2px, 2px);
+    box-shadow: var(--customer-shadow-control) #7fa889;
 }
 
 .ocean-primary-navbar__icon {
@@ -9010,7 +9016,7 @@ html[data-customer-theme="dark"] .ocean-tracking .tracking-result-side {
         border-width: 2px;
         border-radius: 13px;
         padding: 0 12px;
-        box-shadow: -5px 6px 0 #79a486;
+        box-shadow: var(--customer-shadow-card) #79a486;
     }
 
     .ocean-primary-navbar__brand img {
@@ -9031,7 +9037,7 @@ html[data-customer-theme="dark"] .ocean-tracking .tracking-result-side {
     }
 
     .ocean-primary-navbar__link.is-active {
-        box-shadow: 3px 3px 0 #79a486;
+        box-shadow: var(--customer-shadow-control) #79a486;
     }
 
     .ocean-primary-navbar__icon {
@@ -9074,7 +9080,7 @@ html[data-customer-theme="dark"] .ocean-tracking .tracking-result-side {
 html[data-customer-theme="dark"] .ocean-primary-navbar {
     border-color: #8aa194;
     background: #1b3027;
-    box-shadow: -9px 10px 0 #081810;
+    box-shadow: var(--customer-shadow-card) #081810;
     color: #edf6ef;
 }
 
@@ -9087,7 +9093,7 @@ html[data-customer-theme="dark"] .ocean-primary-navbar__link.is-active {
     --nav-icon-fill: #f08aa5;
     border-color: #8aa194;
     background: #4d303a;
-    box-shadow: 6px 7px 0 #081810;
+    box-shadow: var(--customer-shadow-control) #081810;
     color: #f2a0b6;
 }
 
@@ -9211,7 +9217,7 @@ body.ocean-tracking .tracking-search-page .tracking-result-section {
         border: 2px solid #355a45;
         border-radius: 11px;
         background: #fffdf9;
-        box-shadow: 3px 3px 0 #79a486;
+        box-shadow: var(--customer-shadow-control) #79a486;
         cursor: pointer;
         list-style: none;
         user-select: none;
@@ -9267,7 +9273,7 @@ body.ocean-tracking .tracking-search-page .tracking-result-section {
         border-radius: 13px;
         padding: 10px;
         background: #fffdf9;
-        box-shadow: -5px 6px 0 #79a486;
+        box-shadow: var(--customer-shadow-control) #79a486;
     }
 
     .ocean-primary-navbar__mobile-link {
@@ -9293,7 +9299,7 @@ body.ocean-tracking .tracking-search-page .tracking-result-section {
     .ocean-primary-navbar__mobile-link.is-active {
         border-color: #355a45;
         background: #fbd7e3;
-        box-shadow: 3px 3px 0 #79a486;
+        box-shadow: var(--customer-shadow-control) #79a486;
         color: #b72f5e;
     }
 }
@@ -9324,11 +9330,11 @@ html[data-customer-theme="dark"] .ocean-primary-navbar__mobile-toggle,
 html[data-customer-theme="dark"] .ocean-primary-navbar__mobile-panel {
     border-color: #8aa194;
     background: #1b3027;
-    box-shadow: -4px 5px 0 #081810;
+    box-shadow: var(--customer-shadow-control) #081810;
 }
 
 html[data-customer-theme="dark"] .ocean-primary-navbar__mobile-toggle {
-    box-shadow: 3px 3px 0 #081810;
+    box-shadow: var(--customer-shadow-control) #081810;
 }
 
 html[data-customer-theme="dark"] .ocean-primary-navbar__mobile-toggle-lines i {
@@ -9342,7 +9348,6 @@ html[data-customer-theme="dark"] .ocean-primary-navbar__mobile-link {
 html[data-customer-theme="dark"] .ocean-primary-navbar__mobile-link.is-active {
     border-color: #8aa194;
     background: #4d303a;
-    box-shadow: 3px 3px 0 #081810;
+    box-shadow: var(--customer-shadow-control) #081810;
     color: #f2a0b6;
 }
-

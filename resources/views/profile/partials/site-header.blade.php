@@ -26,7 +26,7 @@
     html[data-customer-theme="dark"] .profile-site-header .op-browser {
         border-color: #78977f;
         background: #1b3027;
-        box-shadow: 0 3px 0 #081810;
+        box-shadow: var(--customer-shadow-control) #081810;
     }
 
     html[data-customer-theme="dark"] .profile-site-header .op-browserbar {
@@ -61,7 +61,7 @@
         border-color: #78977f !important;
         background: #1b3027 !important;
         color: #edf6ef !important;
-        box-shadow: -6px 6px 0 #081810 !important;
+        box-shadow: var(--customer-shadow-card) #081810 !important;
     }
 
     html[data-customer-theme="dark"] .ocean-profile .profile-top {
@@ -83,20 +83,20 @@
         border-color: #78977f !important;
         background: #20382e !important;
         color: #edf6ef !important;
-        box-shadow: 3px 3px 0 #081810 !important;
+        box-shadow: var(--customer-shadow-control) #081810 !important;
     }
 
     html[data-customer-theme="dark"] .ocean-profile .member-pill {
         border-color: #ad6078;
         background: #3f2b33;
         color: #f2a0b6 !important;
-        box-shadow: 2px 2px 0 #081810;
+        box-shadow: var(--customer-shadow-control) #081810;
     }
 
     html[data-customer-theme="dark"] .ocean-profile .profile-settings-panel {
         border-color: #78977f;
         background: #182d24;
-        box-shadow: -5px 5px 0 #081810;
+        box-shadow: var(--customer-shadow-card) #081810;
     }
 
     html[data-customer-theme="dark"] .ocean-profile .profile-settings-panel > header strong,
@@ -129,12 +129,12 @@
     html[data-customer-theme="dark"] .ocean-profile .profile-order-hub .order-link {
         border-color: #78977f;
         background: #3f2b33;
-        box-shadow: 3px 3px 0 #081810;
+        box-shadow: var(--customer-shadow-control) #081810;
     }
 
     html[data-customer-theme="dark"] .ocean-profile .profile-order-hub .order-link:nth-child(2) {
         background: #263c30;
-        box-shadow: 3px 3px 0 #081810;
+        box-shadow: var(--customer-shadow-control) #081810;
     }
 
     html[data-customer-theme="dark"] .ocean-profile .order-link small {
@@ -155,12 +155,12 @@
     html[data-customer-theme="dark"] .ocean-profile .metric-card {
         border-color: #668a70 !important;
         background: #34282d !important;
-        box-shadow: 3px 3px 0 #081810;
+        box-shadow: var(--customer-shadow-control) #081810;
     }
 
     html[data-customer-theme="dark"] .ocean-profile .metric-card:nth-child(even) {
         background: #24382c !important;
-        box-shadow: 3px 3px 0 #081810;
+        box-shadow: var(--customer-shadow-control) #081810;
     }
 
     html[data-customer-theme="dark"] .ocean-profile .chart-profile-total,

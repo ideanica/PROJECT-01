@@ -42,6 +42,14 @@ Ganti seluruh kredensial demo sebelum digunakan di production.
 - Admin mengelola **Customer / Buyer** (identitas, akun login, detail dan riwayat pesanan) serta **Group** (label, daftar customer, aktif/nonaktif).
 - **Kelola Status** memiliki tiga tab: Status Tracking, Status Pembayaran, dan Label Group. Scope lama tetap tersimpan untuk menjaga relasi batch, pesanan, item, dan histori; status tracking baru dapat dipakai lintas perjalanan pesanan. Group disimpan terpisah dari status pesanan.
 
+### Reset password
+
+- Customer dan admin memakai **Lupa password?** pada `/login`, lalu memasukkan email akun.
+- Tautan email berlaku 60 menit dan sekali pakai. Password baru mengikuti validasi password kuat; reset tidak mengubah role, group, atau persetujuan registrasi.
+- Setelah reset, login kembali dengan password baru. Sesi lama dan token "ingat sesi" tidak lagi berlaku.
+- Pengiriman menggunakan mailer Laravel tanpa worker antrean. Atur `APP_URL` ke URL aplikasi yang benar, `MAIL_MAILER=smtp`, serta `MAIL_HOST`, `MAIL_PORT`, `MAIL_USERNAME`, `MAIL_PASSWORD`, `MAIL_SCHEME`, dan `MAIL_FROM_ADDRESS` sesuai layanan email. Simpan kredensial hanya di environment.
+- Dengan `MAIL_MAILER=log`, email hanya masuk ke log lokal dan tidak dikirim ke inbox. Jangan gunakan mailer ini untuk reset password di production.
+
 ### Memperbarui instalasi existing
 
 ```bash

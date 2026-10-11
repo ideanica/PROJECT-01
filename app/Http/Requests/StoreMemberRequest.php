@@ -26,6 +26,11 @@ class StoreMemberRequest extends FormRequest
         return $this->user()?->can('access-admin') === true;
     }
 
+    public function messages(): array
+    {
+        return ['username.unique' => 'Username LINE sudah digunakan. Silakan pilih username LINE lain.'];
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *

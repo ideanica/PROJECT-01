@@ -33,10 +33,10 @@
                 <div><h3>Biodata Pelanggan</h3><p>Identitas, kontak, dan informasi pendukung pelanggan.</p></div>
             </div>
             <div class="member-biodata-grid">
-                <div class="member-biodata-item"><span>Username</span><p>{{ $member->username ?: 'Belum diisi' }}</p></div>
+                <div class="member-biodata-item"><span>Username LINE</span><p>{{ $member->username ?: 'Belum diisi' }}</p></div>
                 <div class="member-biodata-item"><span>Email</span><p>{{ $member->email ?: 'Belum diisi' }}</p></div>
                 <div class="member-biodata-item"><span>Group</span><p>@if($member->customerGroup)<a href="{{ route('admin.customer-groups.show', $member->customerGroup) }}" class="underline">{{ $member->customerGroup->name }}</a>@else Belum ada group @endif</p></div>
-                <div class="member-biodata-item"><span>Akun login</span><p>{{ $member->user?->registration_pending ? 'Menunggu persetujuan admin' : ($member->user?->password_set_at ? 'Siap login dengan username dan password' : 'Belum siap — isi email dan password melalui Edit Pelanggan') }}</p></div>
+                <div class="member-biodata-item"><span>Akun login</span><p>{{ $member->user?->registration_pending ? 'Menunggu persetujuan admin' : ($member->user?->password_set_at ? 'Siap login dengan username LINE dan password' : 'Belum siap — isi email dan password melalui Edit Pelanggan') }}</p></div>
                 <div class="member-biodata-item"><span>Nomor telepon</span><p>{{ $member->phone ?: 'Belum diisi' }}</p></div>
                 <div class="member-biodata-item"><span>Terdaftar sejak</span><p>{{ $member->created_at->format('d M Y') }}</p></div>
                 <div class="member-biodata-item"><span>Alamat</span><p class="whitespace-pre-line">{{ $member->address ?: 'Belum ada alamat.' }}</p></div>
@@ -71,4 +71,3 @@
         </section>
     </article>
 </x-layouts.app>
-

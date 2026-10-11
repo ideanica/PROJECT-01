@@ -39,7 +39,7 @@
 
     html[data-customer-theme="dark"] .public-desktop-nav a:hover,
     html[data-customer-theme="dark"] .public-desktop-nav a.active {
-        background: #718653;
+        background: var(--pv2-pink);
         color: #fffdf7;
     }
 
@@ -48,7 +48,7 @@
         border-color: #78977f !important;
         background: #1b3027 !important;
         color: #edf6ef !important;
-        box-shadow: 3px 3px 0 #081810 !important;
+        box-shadow: var(--customer-shadow-control) #081810 !important;
     }
 
     html[data-customer-theme="dark"] .public-account-chip strong,
@@ -63,7 +63,7 @@
         border-color: #78977f !important;
         background: #563642 !important;
         color: #f6dce4 !important;
-        box-shadow: 1px 1px 0 #081810 !important;
+        box-shadow: var(--customer-shadow-pressed) #081810 !important;
     }
 
     html[data-customer-theme="dark"] .public-line-login {
@@ -73,27 +73,28 @@
     }
 
     html[data-customer-theme="dark"] .portal-v2 {
-        --pv2-ink: #78977f;
+        --pv2-ink: #edf6ef;
+        --pv2-outline: #78977f;
         --pv2-ink-deep: #eef6f0;
-        --pv2-text: #c1d0c6;
-        --pv2-muted: #8ea497;
+        --pv2-text: #c6dacb;
+        --pv2-muted: #aec0b4;
         --pv2-paper: #1b3027;
         --pv2-cream: #12251e;
-        --pv2-pink: #563642;
+        --pv2-pink: #4d303a;
         --pv2-pink-strong: #ef86a3;
         --pv2-mint: #31483a;
-        --pv2-mint-strong: #718653;
+        --pv2-mint-strong: #79a486;
         --pv2-yellow: #5b502c;
         --pv2-blue: #294149;
         --pv2-border: 2px solid #78977f;
-        --pv2-shadow: 6px 6px 0 #081810;
-        --pv2-shadow-small: 3px 3px 0 #081810;
+        --pv2-shadow: var(--customer-shadow-card) #081810;
+        --pv2-shadow-small: var(--customer-shadow-control) #081810;
         color: var(--pv2-ink-deep);
         background:
             linear-gradient(rgba(151, 181, 159, .055) 1px, transparent 1px),
             linear-gradient(90deg, rgba(151, 181, 159, .055) 1px, transparent 1px),
             var(--pv2-cream);
-        background-size: 38px 38px;
+        background-size: 42px 42px;
     }
 
     html[data-customer-theme="dark"] .portal-v2-back,
@@ -109,17 +110,24 @@
         box-shadow: var(--pv2-shadow-small);
     }
 
+    html[data-customer-theme="dark"] .portal-v2-filter-panel,
+    html[data-customer-theme="dark"] .portal-v2-order-card,
+    html[data-customer-theme="dark"] .portal-v2-empty,
+    html[data-customer-theme="dark"] .portal-v2-hero-stat {
+        box-shadow: var(--customer-shadow-card) #081810;
+    }
+
     html[data-customer-theme="dark"] .portal-v2-hero {
         border-color: #78977f;
-        box-shadow: 9px 9px 0 #081810;
+        box-shadow: var(--customer-shadow-card) #081810;
     }
 
     html[data-customer-theme="dark"] .portal-v2-hero-orders {
-        background: linear-gradient(135deg, #4d303a 0 58%, #39262e 58%);
+        background: var(--pv2-pink);
     }
 
     html[data-customer-theme="dark"] .portal-v2-hero-billing {
-        background: linear-gradient(135deg, #31483a 0 58%, #25382d 58%);
+        background: var(--pv2-mint);
     }
 
     html[data-customer-theme="dark"] .portal-v2-hero-copy h1,
@@ -146,23 +154,23 @@
     html[data-customer-theme="dark"] .portal-v2-empty-icon,
     html[data-customer-theme="dark"] .portal-v2-thumb {
         border-color: #78977f;
-        box-shadow: 3px 3px 0 #081810;
+        box-shadow: var(--customer-shadow-control) #081810;
     }
 
     html[data-customer-theme="dark"] .portal-v2-filters a {
         border-color: #78977f;
         background: #20382e;
         color: #dce9df;
-        box-shadow: 3px 3px 0 #081810;
+        box-shadow: var(--customer-shadow-control) #081810;
     }
 
     html[data-customer-theme="dark"] .portal-v2-filters a:hover {
-        box-shadow: 5px 5px 0 #081810;
+        box-shadow: var(--customer-shadow-control) #081810;
     }
 
     html[data-customer-theme="dark"] .portal-v2-filters a.active {
-        background: #718653;
-        color: #fff;
+        background: var(--pv2-filter-accent, var(--pv2-pink));
+        color: var(--pv2-accent-text, #fff);
     }
 
     html[data-customer-theme="dark"] .portal-v2-filter-head,
@@ -174,14 +182,14 @@
     html[data-customer-theme="dark"] .portal-billing-v2 .portal-v2-section-head {
         border-color: #78977f !important;
         background: linear-gradient(120deg, #1b3027 0 72%, #39442c 72%) !important;
-        box-shadow: 4px 4px 0 #081810 !important;
+        box-shadow: var(--customer-shadow-card) #081810 !important;
     }
 
     html[data-customer-theme="dark"] .portal-v2-card-action {
         border-color: #78977f;
-        background: #718653;
+        background: var(--pv2-pink);
         color: #fff;
-        box-shadow: 3px 3px 0 #081810;
+        box-shadow: var(--customer-shadow-control) #081810;
     }
 
     html[data-customer-theme="dark"] .portal-v2-card-action.is-secondary {
@@ -217,11 +225,11 @@
     <header aria-label="Akun customer" style="position:absolute;z-index:60;top:clamp(22px,2.5vw,34px);left:0;right:0;pointer-events:none;">
         <div style="width:min(calc(100% - clamp(28px,3.2vw,44px)),1180px);margin:0 auto;display:flex;justify-content:flex-end;align-items:center;">
             @if($member)
-                <a href="{{ route('profile.show') }}" class="public-account-chip portal-v2-account-chip" style="pointer-events:auto;display:inline-flex;min-height:42px;align-items:center;gap:9px;border:2px solid #355a45;border-radius:12px;padding:5px 12px 5px 6px;background:#fffdf8;color:#355a45;box-shadow:3px 3px 0 #355a45;text-decoration:none;">
+                <a href="{{ route('profile.show') }}" class="public-account-chip portal-v2-account-chip" style="pointer-events:auto;display:inline-flex;min-height:42px;align-items:center;gap:9px;border:2px solid #355a45;border-radius:12px;padding:5px 12px 5px 6px;background:#fffdf8;color:#355a45;box-shadow:var(--customer-shadow-control) #355a45;text-decoration:none;">
                     @if($member->avatar_url)
-                        <img src="{{ $member->avatar_url }}" alt="Foto profil {{ $member->display_name }}" style="width:28px;height:28px;flex:0 0 28px;border:2px solid #355a45;border-radius:9px;background:#f8d5df;object-fit:cover;box-shadow:1px 1px 0 #355a45;">
+                        <img src="{{ $member->avatar_url }}" alt="Foto profil {{ $member->display_name }}" style="width:28px;height:28px;flex:0 0 28px;border:2px solid #355a45;border-radius:9px;background:#f8d5df;object-fit:cover;box-shadow:var(--customer-shadow-pressed) #355a45;">
                     @else
-                        <span style="display:grid;width:28px;height:28px;flex:0 0 28px;place-items:center;border:2px solid #355a45;border-radius:9px;background:#f8d5df;color:#355a45;font-size:10px;font-weight:900;box-shadow:1px 1px 0 #355a45;">{{ mb_strtoupper(mb_substr($member->display_name, 0, 1)) }}</span>
+                        <span style="display:grid;width:28px;height:28px;flex:0 0 28px;place-items:center;border:2px solid #355a45;border-radius:9px;background:#f8d5df;color:#355a45;font-size:10px;font-weight:900;box-shadow:var(--customer-shadow-pressed) #355a45;">{{ mb_strtoupper(mb_substr($member->display_name, 0, 1)) }}</span>
                     @endif
                     <strong style="color:#355a45;font-family:'Trebuchet MS',Arial,system-ui,sans-serif;font-size:10px;font-weight:900;line-height:1;">{{ $member->display_name }}</strong>
                 </a>

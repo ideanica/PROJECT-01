@@ -12,44 +12,45 @@ class AuthenticatedSessionController extends Controller
 {
     public function create()
     {
-        return view('auth.login', ['adminLogin' => request()->routeIs('admin.login')]);
+        return view('auth.login');
     }
 
     public function store(Request $request)
     {
-        $adminLogin = $request->routeIs('admin.login.store');
-        $field = $adminLogin ? 'email' : 'username';
-        $request->merge([$field => mb_strtolower(trim((string) $request->input($field)))]);
-        $credentials = $request->validate([
-            $field => ['required', 'string', 'max:255', ...($adminLogin ? ['email'] : [])],
+        $request->merge(['username' => mb_strtolower(trim((string) $request->input('username', $request->input('email'))))]);
+        $data = $request->validate([
+            'username' => ['required', 'string', 'max:255'],
             'password' => ['required', 'string'],
         ]);
+        $field = str_contains($data['username'], '@') ? 'email' : 'username';
+        $credentials = [$field => $data['username'], 'password' => $data['password']];
 
         if (! Auth::attemptWhen(
-            $adminLogin ? $credentials + ['role' => 'admin'] : $credentials,
+            $credentials,
             fn ($user) => $user->isAdmin() || ($user->role === 'customer' && ! $user->registration_pending && $user->password_set_at !== null && $user->member?->is_active),
             $request->boolean('remember')
         )) {
             throw ValidationException::withMessages([
-                $field => 'Username/email atau password tidak sesuai, atau akun belum aktif. Jika belum memilih group saat registrasi, tunggu persetujuan admin.',
+                'username' => 'Username LINE/email atau password tidak sesuai, atau akun belum aktif. Jika belum memilih group saat registrasi, tunggu persetujuan admin.',
             ]);
         }
 
         $request->session()->regenerate();
         $request->session()->put('login_at', now()->timestamp);
+        $request->session()->put('auth_identity', Auth::user()->sessionIdentity());
 
-        return redirect()->intended(Auth::user()->isAdmin() ? route('admin.dashboard') : route('profile.show'));
+        $request->session()->forget('url.intended');
+
+        return redirect()->route(Auth::user()->isAdmin() ? 'admin.dashboard' : 'profile.show');
     }
 
     public function destroy(Request $request)
     {
-        $redirectTo = $request->user()?->isAdmin() ? '/admin/login' : '/login';
-
         Auth::logout();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return new RedirectResponse($redirectTo, 303);
+        return new RedirectResponse(route('login', [], false), 303);
     }
 }

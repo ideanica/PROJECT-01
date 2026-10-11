@@ -15,6 +15,10 @@ use Illuminate\Notifications\Notifiable;
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
+    public const ROLE_CUSTOMER = 'customer';
+
+    public const ROLE_ADMIN = 'admin';
+
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
@@ -35,7 +39,12 @@ class User extends Authenticatable
 
     public function isAdmin(): bool
     {
-        return $this->role === 'admin';
+        return $this->role === self::ROLE_ADMIN;
+    }
+
+    public function sessionIdentity(): string
+    {
+        return hash('sha256', $this->getAuthIdentifier().'|'.$this->created_at?->format('Y-m-d H:i:s.u').'|'.$this->getAuthPassword());
     }
 
     public function member(): BelongsTo

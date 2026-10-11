@@ -1,13 +1,60 @@
-@props(['name' => 'grid', 'size' => 20])
+@props(['name' => 'grid', 'size' => 20, 'variant' => 'outline'])
 
-<svg {{ $attributes->merge(['class' => 'public-icon']) }} width="{{ $size }}" height="{{ $size }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+@php
+    $roundedBold = $variant === 'rounded-bold';
+    $roundedPaths = [
+        'login' => '<rect x="12" y="3" width="9" height="18" rx="3"/><path d="M3 12h12m-4-4 4 4-4 4"/>',
+        'search' => '<circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/>',
+        'home' => '<path d="m4.4 10.2 6.3-5.6a2 2 0 0 1 2.6 0l6.3 5.6a2 2 0 0 1 .7 1.5V18a3 3 0 0 1-3 3H6.7a3 3 0 0 1-3-3v-6.3a2 2 0 0 1 .7-1.5Z"/><path d="M9 21v-6a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v6"/>',
+        'user' => '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="9" r="3" fill="var(--portal-icon-fill-pink, #ffc4d9)"/><path d="M5.5 18a7 7 0 0 1 13 0"/>',
+        'menu' => '<rect x="3" y="3" width="18" height="18" rx="5"/><path d="M7 8h10M7 12h10M7 16h6"/>',
+        'arrow-forward' => '<path d="M4 10h9V6l7 6-7 6v-4H4a2 2 0 0 1 0-4Z"/>',
+        'bag' => '<path d="M7 8h10a2 2 0 0 1 2 2l-.7 8a3 3 0 0 1-3 3H8.7a3 3 0 0 1-3-3L5 10a2 2 0 0 1 2-2Z"/><path d="M9 9V6a3 3 0 0 1 6 0v3"/>',
+        'card' => '<rect x="3" y="5" width="18" height="14" rx="3"/><path d="M3 10h18M7 15h3"/>',
+        'grid' => '<rect x="3" y="3" width="7" height="7" rx="2.2"/><rect x="14" y="3" width="7" height="7" rx="2.2"/><rect x="3" y="14" width="7" height="7" rx="2.2"/><rect x="14" y="14" width="7" height="7" rx="2.2"/>',
+        'wallet' => '<rect x="3" y="6" width="18" height="15" rx="3"/><path d="M4 7V6a3 3 0 0 1 3-3h10M21 11h-5a2 2 0 0 0 0 5h5"/><circle cx="16.5" cy="13.5" r=".65" fill="currentColor" stroke="none"/>',
+        'truck' => '<path d="M5 17H3V7a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v10H9M15 9h2.6a2 2 0 0 1 1.6.8l2.4 3.2a2 2 0 0 1 .4 1.2V17h-2M15 17h1"/><circle cx="7" cy="18" r="2"/><circle cx="18" cy="18" r="2"/>',
+        'box' => '<path d="m11 3.6-7 3.8a2 2 0 0 0-1 1.8v5.6a2 2 0 0 0 1 1.8l7 3.8a2 2 0 0 0 2 0l7-3.8a2 2 0 0 0 1-1.8V9.2a2 2 0 0 0-1-1.8l-7-3.8a2 2 0 0 0-2 0Z"/><path d="m3.5 8 8.5 4.7L20.5 8M12 13v7M8 5.2l8 4.5"/>',
+        'document' => '<path d="M13 3H7a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V10a3 3 0 0 0-.9-2.1l-4-4A3 3 0 0 0 13 3Z"/><path d="M13 3v5a2 2 0 0 0 2 2h5M8 14h8M8 17h5"/>',
+        'sparkle' => '<path d="M12 3c1.2 5.2 2.8 6.8 8 8-5.2 1.2-6.8 2.8-8 8-1.2-5.2-2.8-6.8-8-8 5.2-1.2 6.8-2.8 8-8ZM20 18v4M18 20h4"/>',
+        'history' => '<circle cx="12" cy="12" r="9" stroke="none" fill="var(--portal-icon-fill-mint, #bce3cf)"/><path d="M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5M12 7v5l3 2"/>',
+        'check-circle' => '<circle cx="12" cy="12" r="9" fill="var(--portal-icon-fill-mint, #bce3cf)"/><path d="m8 12 2.5 2.5L16 9"/>',
+    ];
+    $iconFills = [
+        'bag' => 'pink', 'card' => 'pink', 'wallet' => 'mint',
+        'box' => 'cream', 'document' => 'cream', 'sparkle' => 'cream',
+        'login' => 'pink', 'search' => 'mint', 'home' => 'pink',
+        'user' => 'mint', 'menu' => 'pink', 'arrow-forward' => 'cream',
+    ];
+    $fillFallbacks = ['pink' => '#ffc4d9', 'mint' => '#bce3cf', 'cream' => '#ffe5a8'];
+    if ($roundedBold && isset($iconFills[$name])) {
+        $fill = $iconFills[$name];
+        $roundedPaths[$name] = preg_replace('/<(path|rect) /', '<$1 fill="var(--portal-icon-fill-'.$fill.', '.$fillFallbacks[$fill].')" ', $roundedPaths[$name], 1);
+    }
+    if ($roundedBold && $name === 'grid') {
+        $roundedPaths[$name] = str_replace('<rect ', '<rect fill="var(--portal-icon-fill-pink, #ffc4d9)" ', $roundedPaths[$name]);
+    }
+@endphp
+
+<svg {{ $attributes->merge(['class' => 'public-icon'.($roundedBold ? ' public-icon-rounded-bold' : '')]) }} width="{{ $size }}" height="{{ $size }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="{{ $roundedBold ? '2.6' : '1.8' }}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    @if($roundedBold && isset($roundedPaths[$name]))
+        @if($name === 'truck')
+            <path d="M3 17V7a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v10Z" fill="var(--portal-icon-fill-mint, #bce3cf)" stroke="none"/>
+            <path d="M15 9h2.6a2 2 0 0 1 1.6.8l2.4 3.2a2 2 0 0 1 .4 1.2V17h-7Z" fill="var(--portal-icon-fill-cream, #ffe5a8)" stroke="none"/>
+        @endif
+        {!! $roundedPaths[$name] !!}
+    @else
     @switch($name)
+        @case('login')<path d="M14 4h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-4"/><path d="M3 12h12m-4-4 4 4-4 4"/>@break
         @case('home')<path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10.5V20h13v-9.5"/>@break
         @case('bag')<path d="M6 8h12l-1 12H7L6 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/>@break
         @case('heart')<path d="M12 21s-8.5-5.1-8.5-11.2A4.8 4.8 0 0 1 12 6.7a4.8 4.8 0 0 1 8.5 3.1C20.5 15.9 12 21 12 21Z" fill="currentColor" stroke="none"/>@break
         @case('card')<rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18"/>@break
         @case('grid')<rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/>@break
         @case('user')<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>@break
+        @case('mail')<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 6 9 7 9-7"/>@break
+        @case('phone')<path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.8 2.1Z"/>@break
+        @case('map-pin')<path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="3"/>@break
         @case('arrow-left')<path d="m15 18-6-6 6-6"/>@break
         @case('arrow-right')<path d="m9 18 6-6-6-6"/>@break
         @case('chevron-right')<path d="m9 18 6-6-6-6"/>@break
@@ -33,4 +80,5 @@
         @case('send')<path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/>@break
         @default<rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/>
     @endswitch
+    @endif
 </svg>

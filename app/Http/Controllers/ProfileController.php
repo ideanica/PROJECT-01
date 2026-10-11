@@ -13,7 +13,7 @@ class ProfileController extends Controller
     public function __invoke(Request $request)
     {
         $user = $request->user();
-        $member = $user?->member;
+        $member = $user?->role === 'customer' ? $user->member : null;
         $orders = collect();
 
         if ($member) {

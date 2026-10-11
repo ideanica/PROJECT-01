@@ -2,7 +2,7 @@
     <div class="portal-v2 portal-orders-v2">
         <div class="portal-v2-shell">
             <a class="portal-v2-back" href="{{ route('profile.show') }}" aria-label="Kembali ke profil">
-                <x-public-icon name="arrow-left" :size="18" />
+                <x-public-icon variant="rounded-bold" name="arrow-left" :size="18" />
                 <span>Kembali</span>
             </a>
 
@@ -13,7 +13,7 @@
                     <p>{{ $description }}</p>
                 </div>
                 <div class="portal-v2-hero-stat">
-                    <span class="portal-v2-stat-icon"><x-public-icon :name="$icon" :size="26" /></span>
+                    <span class="portal-v2-stat-icon"><x-public-icon variant="rounded-bold" :name="$icon" :size="26" /></span>
                     <small>TOTAL DATA</small>
                     <strong>{{ $orders->count() }}</strong>
                     <p>pesanan</p>
@@ -22,9 +22,9 @@
 
             <section class="portal-v2-content is-full">
                 @if($user && !$member)
-                    <div class="portal-v2-empty"><span class="portal-v2-empty-icon"><x-public-icon name="grid" :size="32" /></span><small>AKUN ADMIN</small><h2>Data pesanan pribadi tidak tersedia.</h2><p>Gunakan akun customer customer untuk membuka data pesanan pribadi.</p><a href="{{ route('admin.dashboard') }}">Buka dashboard</a></div>
+                    <div class="portal-v2-empty"><span class="portal-v2-empty-icon"><x-public-icon variant="rounded-bold" name="grid" :size="32" /></span><small>AKUN ADMIN</small><h2>Data pesanan pribadi tidak tersedia.</h2><p>Gunakan akun customer customer untuk membuka data pesanan pribadi.</p><a href="{{ route('admin.dashboard') }}">Buka dashboard</a></div>
                 @elseif(!$member)
-                    <div class="portal-v2-empty"><span class="portal-v2-empty-icon"><x-public-icon :name="$icon" :size="32" /></span><small>PESANAN PRIBADI</small><h2>Login untuk melihat data pesananmu.</h2><p>Halaman ini hanya menampilkan pesanan yang terhubung dengan akun customer milikmu.</p><a href="{{ route('login') }}">Login</a></div>
+                    <div class="portal-v2-empty"><span class="portal-v2-empty-icon"><x-public-icon variant="rounded-bold" :name="$icon" :size="32" /></span><small>PESANAN PRIBADI</small><h2>Login untuk melihat data pesananmu.</h2><p>Halaman ini hanya menampilkan pesanan yang terhubung dengan akun customer milikmu.</p><a href="{{ route('login') }}">Login</a></div>
                 @else
                     <div class="portal-v2-section-head">
                         <div><span>DAFTAR PESANAN</span><h2>{{ $title }}</h2></div>
@@ -42,7 +42,7 @@
                             @endphp
                             <article class="portal-v2-order-card">
                                 <div class="portal-v2-card-top">
-                                    <span class="portal-v2-thumb">@if($order->batch->catalog_image_path)<img src="{{ $order->batch->catalog_image_url }}" alt="">@else<x-public-icon name="box" :size="24" />@endif</span>
+                                    <span class="portal-v2-thumb">@if($order->batch->catalog_image_path)<img src="{{ $order->batch->catalog_image_url }}" alt="">@else<x-public-icon variant="rounded-bold" name="box" :size="24" />@endif</span>
                                     <div class="portal-v2-card-title"><small>{{ $order->order_code }}</small><h3>{{ $order->batch->batch_name ?: $order->batch->batch_number }}</h3><p>{{ $order->created_at->translatedFormat('d M Y') }}</p></div>
                                     @if($trackingStatus)<x-status-badge :status="$trackingStatus" />@endif
                                 </div>
@@ -64,12 +64,12 @@
                                 </div>
 
                                 <div class="portal-v2-card-actions">
-                                    <a class="portal-v2-card-action" href="{{ $order->portal_tracking_url }}">{{ $scope === 'shipping' ? 'Lihat tracking' : 'Lihat rincian' }} <x-public-icon name="arrow-right" :size="14" /></a>
+                                    <a class="portal-v2-card-action" href="{{ $order->portal_tracking_url }}">{{ $scope === 'shipping' ? 'Lihat tracking' : 'Lihat rincian' }} <x-public-icon variant="rounded-bold" name="arrow-right" :size="14" /></a>
                                     @if($scope === 'unpaid')<a class="portal-v2-card-action is-secondary" href="{{ route('billing.orders') }}">Buka tagihan</a>@endif
                                 </div>
                             </article>
                         @empty
-                            <div class="portal-v2-empty portal-v2-empty-inline"><span class="portal-v2-empty-icon"><x-public-icon :name="$icon" :size="32" /></span><small>KOSONG</small><h2>{{ $emptyTitle }}</h2><p>{{ $emptyDescription }}</p><a href="{{ route('orders.history') }}">Lihat semua pesanan</a></div>
+                            <div class="portal-v2-empty portal-v2-empty-inline"><span class="portal-v2-empty-icon"><x-public-icon variant="rounded-bold" :name="$icon" :size="32" /></span><small>KOSONG</small><h2>{{ $emptyTitle }}</h2><p>{{ $emptyDescription }}</p><a href="{{ route('orders.history') }}">Lihat semua pesanan</a></div>
                         @endforelse
                     </div>
                 @endif

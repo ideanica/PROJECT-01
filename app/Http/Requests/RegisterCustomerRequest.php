@@ -29,12 +29,25 @@ class RegisterCustomerRequest extends FormRequest
             'username' => ['required', 'string', 'min:3', 'max:50', 'regex:/^[a-z0-9][a-z0-9._-]*$/', 'unique:users,username', 'unique:members,username'],
             'email' => ['required', 'email', 'max:255', 'unique:users,email', 'unique:members,email'],
             'customer_group_id' => ['nullable', Rule::exists('customer_groups', 'id')->where('is_active', true)],
-            'password' => ['required', 'confirmed', Password::min(8)],
+            'password' => ['required', 'confirmed', Password::min(8)->mixedCase()->numbers()->symbols()],
             'role' => ['prohibited'],
             'member_id' => ['prohibited'],
             'line_user_id' => ['prohibited'],
             'is_active' => ['prohibited'],
             'registration_pending' => ['prohibited'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'username.unique' => 'Username LINE sudah digunakan. Silakan pilih username LINE lain.',
+            'password.required' => 'Password wajib diisi.',
+            'password.confirmed' => 'Konfirmasi password tidak cocok.',
+            'password.min' => 'Password harus memiliki minimal 8 karakter.',
+            'password.mixed' => 'Password harus mengandung huruf besar dan huruf kecil.',
+            'password.numbers' => 'Password harus mengandung angka.',
+            'password.symbols' => 'Password harus mengandung simbol.',
         ];
     }
 }

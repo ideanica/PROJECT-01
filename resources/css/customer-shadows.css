@@ -1,0 +1,6 @@
+/* Shared depth across customer pages; each component keeps its shadow color. */
+:root {
+  --customer-shadow-card: -6px 6px 0;
+  --customer-shadow-control: -3px 3px 0;
+  --customer-shadow-pressed: -1px 1px 0;
+}

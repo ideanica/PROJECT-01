@@ -9,9 +9,12 @@ use App\Http\Controllers\Admin\MemberOrderController;
 use App\Http\Controllers\Admin\OrderStatusController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\StatusHistoryController;
+use App\Http\Controllers\AdminProfileController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredCustomerController;
+use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\CustomerPortalController;
+use App\Http\Controllers\CustomerProfileController;
 use App\Http\Controllers\MemberTrackingController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -34,6 +37,11 @@ Route::post('/history', [MemberTrackingController::class, 'historyLookup'])->mid
 Route::get('/history/{memberCode}', [MemberTrackingController::class, 'member'])->middleware(['signed', 'throttle:30,1'])->name('tracking.member');
 Route::get('/history/{memberCode}/orders/{memberOrder}', [MemberTrackingController::class, 'order'])->middleware(['signed', 'throttle:30,1'])->name('tracking.order');
 Route::get('/profile', ProfileController::class)->name('profile.show');
+Route::get('/profile/detail', [CustomerProfileController::class, 'detail'])->middleware('auth')->name('profile.detail');
+Route::get('/profile/edit', [CustomerProfileController::class, 'edit'])->middleware('auth')->name('profile.edit');
+Route::put('/profile', [CustomerProfileController::class, 'update'])->middleware('auth')->name('profile.update');
+Route::put('/profile/admin', [AdminProfileController::class, 'update'])->middleware(['auth', 'can:access-admin'])->name('profile.admin.update');
+Route::get('/profile/photo/{member}', [CustomerProfileController::class, 'photo'])->middleware('auth')->name('profile.photo');
 Route::get('/profile/orders/{memberOrder}/payment-proof', [ProfileController::class, 'paymentProof'])
     ->middleware('auth')
     ->name('profile.orders.payment-proof');
@@ -41,11 +49,15 @@ Route::redirect('/auth/line', '/login');
 Route::redirect('/auth/line/callback', '/login');
 
 Route::middleware('guest')->group(function () {
+    Route::get('/forgot-password', [PasswordResetController::class, 'request'])->name('password.request');
+    Route::post('/forgot-password', [PasswordResetController::class, 'email'])->middleware('throttle:5,1,password-email')->name('password.email');
+    Route::get('/reset-password/{token}', [PasswordResetController::class, 'edit'])->name('password.reset');
+    Route::post('/reset-password', [PasswordResetController::class, 'update'])->middleware('throttle:5,1,password-reset')->name('password.update');
     Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
     Route::post('/login', [AuthenticatedSessionController::class, 'store'])->middleware('throttle:5,1');
     Route::get('/register', [RegisteredCustomerController::class, 'create'])->name('register');
     Route::post('/register', [RegisteredCustomerController::class, 'store'])->middleware('throttle:5,1');
-    Route::get('/admin/login', [AuthenticatedSessionController::class, 'create'])->name('admin.login');
+    Route::redirect('/admin/login', '/login')->name('admin.login');
     Route::post('/admin/login', [AuthenticatedSessionController::class, 'store'])->middleware('throttle:5,1')->name('admin.login.store');
 });
 

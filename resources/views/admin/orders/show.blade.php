@@ -41,6 +41,9 @@
             @if($order->notes)
                 <div class="detail-record-note"><span>Catatan pesanan</span><p>{{ $order->notes }}</p></div>
             @endif
+            <div class="detail-record-note"><span>Alamat pengiriman</span><p class="whitespace-pre-line">{{ ($order->shipping_address ?? $order->member->address) ?: 'Belum diisi. Konfirmasikan alamat kepada customer sebelum pengiriman.' }}</p>
+                @if($order->shipping_address !== null)<small>Alamat dipertahankan saat customer mengubah profil selama pengiriman.</small>@endif
+            </div>
             <x-order-ems-bill :order="$order" show-empty />
         </section>
 
@@ -193,4 +196,3 @@
     </div>
     @endunless
 </x-layouts.app>
-

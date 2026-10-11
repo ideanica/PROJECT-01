@@ -12,7 +12,7 @@
     <div class="order-table-card">
         <form class="order-table-toolbar">
             @if(request('registration') === 'pending')<input type="hidden" name="registration" value="pending">@endif
-            <input class="min-w-0 flex-1" name="q" value="{{ request('q') }}" placeholder="Cari nama, username, telepon, atau kode...">
+            <input class="min-w-0 flex-1" name="q" value="{{ request('q') }}" placeholder="Cari nama, username LINE, telepon, atau kode...">
             <select name="customer_group_id"><option value="">Semua group</option>@foreach($groups as $group)<option value="{{ $group->id }}" @selected((string) request('customer_group_id') === (string) $group->id)>{{ $group->name }}</option>@endforeach</select>
             <button class="order-table-toolbar-button" type="submit">
                 <svg viewBox="0 0 20 20" class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="9" r="5.5"/><path d="m13 13 4 4"/></svg>

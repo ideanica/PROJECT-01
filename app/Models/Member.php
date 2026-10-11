@@ -20,6 +20,7 @@ class Member extends Model
         'customer_group_id',
         'display_name',
         'username',
+        'line_username',
         'line_user_id',
         'avatar_url',
         'email',

@@ -21,7 +21,7 @@
     </head>
     @php
         $isAdmin = auth()->check() && request()->routeIs('admin.*');
-        $isAuthPage = request()->routeIs(['login', 'register', 'admin.login']);
+        $isAuthPage = request()->routeIs(['login', 'register', 'admin.login', 'password.*']);
         $isOceanTracking = request()->routeIs('tracking.*');
         $isOceanProfile = request()->routeIs('profile.*');
         $isTrackingLanding = request()->routeIs(['home', 'tracking.*', 'profile.*', 'billing.*', 'services.*', 'testimonials.*', 'orders.*']);
@@ -147,21 +147,25 @@
                     @include('tracking.partials.site-header')
                 @elseif($isOceanProfile)
                     @include('profile.partials.site-header')
+                @elseif($isAuthPage)
+                    <x-ocean-primary-navbar active="profile" />
                 @elseif($hasPublicDock)
                     <x-public-navbar />
                 @endif
-                @unless($isTrackingLanding)
+                @unless($isTrackingLanding || $isAuthPage)
                 <header class="sticky top-0 z-50 border-b border-zinc-200/70 bg-white/80 backdrop-blur-xl">
                     <div class="mx-auto flex min-h-16 max-w-7xl items-center justify-between gap-3 px-4 sm:px-6 lg:px-8">
                         <a href="/" class="group flex items-center gap-2.5 font-bold tracking-tight text-[#123c5a]">
-                            <img src="{{ asset('img/Picsart_26-08-23_02-05-04-834.png') }}" alt="Logo Ocean Paws" class="h-11 w-11 object-contain drop-shadow-sm transition-transform group-hover:-rotate-3 group-hover:scale-105">
+                            @unless($isAuthPage)
+                                <img src="{{ asset('img/Picsart_26-08-23_02-05-04-834.png') }}" alt="Logo Ocean Paws" class="h-11 w-11 object-contain drop-shadow-sm transition-transform group-hover:-rotate-3 group-hover:scale-105">
+                            @endunless
                             <span>Ocean Paws</span>
                         </a>
                         <nav class="flex items-center gap-1 text-sm font-medium">
                             @auth
                                 <a class="rounded-full bg-zinc-950 px-4 py-2 text-white" href="{{ auth()->user()->isAdmin() ? route('admin.dashboard') : route('profile.show') }}">{{ auth()->user()->isAdmin() ? 'Dashboard' : 'Profile' }}</a>
                             @else
-                                <a class="rounded-full border border-zinc-200 bg-white px-4 py-2 shadow-sm" href="{{ route('admin.login') }}">Admin</a>
+                                <a class="rounded-full border border-zinc-200 bg-white px-4 py-2 shadow-sm" href="{{ route('login') }}">Login</a>
                             @endauth
                         </nav>
                     </div>
@@ -183,4 +187,3 @@
         @endif
     </body>
 </html>
-

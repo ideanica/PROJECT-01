@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Batch;
+use App\Models\CustomerGroup;
 use App\Models\Member;
 use App\Models\MemberOrder;
 use App\Models\OrderItem;
@@ -14,6 +15,20 @@ use Tests\TestCase;
 class MemberProfileTest extends TestCase
 {
     use RefreshDatabase;
+
+    public function test_profile_group_label_uses_the_assigned_group_and_handles_missing_group(): void
+    {
+        $group = CustomerGroup::create(['name' => 'Group Profil']);
+        $member = Member::factory()->create(['customer_group_id' => $group->id]);
+        $user = User::factory()->create(['role' => 'customer', 'member_id' => $member->id]);
+
+        $this->actingAs($user)->get(route('profile.show'))->assertOk()
+            ->assertSee('profile-group-pill', false)->assertSee('Group Profil');
+
+        $member->update(['customer_group_id' => null]);
+        $user->unsetRelation('member');
+        $this->get(route('profile.show'))->assertOk()->assertSee('Belum ada group')->assertDontSee('Group Profil');
+    }
 
     public function test_guest_profile_keeps_the_customer_layout_with_an_empty_avatar_and_login_label(): void
     {

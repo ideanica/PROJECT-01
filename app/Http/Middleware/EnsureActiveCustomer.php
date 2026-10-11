@@ -11,6 +11,15 @@ class EnsureActiveCustomer
     public function handle(Request $request, Closure $next)
     {
         $user = $request->user();
+        // Old sessions may refer to a reused user ID after a database restore.
+        if ($user && $request->session()->has(Auth::guard()->getName())
+            && ! hash_equals($user->sessionIdentity(), (string) $request->session()->get('auth_identity', ''))) {
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            return redirect()->route('login')->with('status', 'Sesi akun perlu diperbarui. Silakan login kembali.');
+        }
         if ($user && ! $user->isAdmin() && $user->role !== 'customer') {
             abort(403);
         }
