@@ -82,7 +82,7 @@
                     <div class="op-polaroid op-polaroid-back"></div><div class="op-polaroid op-polaroid-mid"></div>
                     <div class="op-polaroid op-polaroid-front">
                         <header class="op-photo-titlebar"><strong>OCEAN PAWS.JPG</strong><span class="op-window-dots"><i></i><i></i><i></i></span></header>
-                        <figure class="op-photo-screen"><img src="{{ asset('assets/oceanpaws-parcel-mascot-v2.webp') }}" alt=""></figure>
+                        <figure class="op-photo-screen"><img src="{{ asset('assets/oceanpaws-parcel-mascot-beach-v3.webp') }}" alt=""></figure>
                         <footer class="op-photo-status"><span>Good Music · Brighter Days<br>with OCEANPAWS ♡</span><b>01 / 03</b></footer>
                     </div>
                 </div>
