@@ -16,9 +16,9 @@
 
         <details class="ocean-primary-navbar__mobile-menu">
             <summary class="ocean-primary-navbar__mobile-toggle" aria-label="Buka menu navigasi">
-                <span class="ocean-primary-navbar__mobile-toggle-lines" aria-hidden="true">
-                    <i></i><i></i><i></i>
-                </span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="ocean-primary-navbar__hamburger" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#355a45" stroke-width="2.5" stroke-linecap="round" aria-hidden="true" focusable="false" style="display:block;width:22px;height:22px;">
+                    <path d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
                 <span class="sr-only">Menu</span>
             </summary>
 
