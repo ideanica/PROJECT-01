@@ -10,7 +10,7 @@
                 <p class="auth-hint">Username LINE harus unik. Gunakan huruf, angka, titik, garis bawah, atau tanda hubung. Username LINE disimpan dalam huruf kecil.</p>
                 <x-text-input label="Email" name="email" type="email" autocomplete="email" maxlength="255" required />
                 <label class="auth-group"><span class="text-sm font-semibold">Group</span>
-                    <select name="customer_group_id" class="auth-select">
+                    <select name="customer_group_id" class="auth-select" data-auth-select2>
                         <option value="">Belum memilih</option>
                         @foreach($groups as $group)
                             <option value="{{ $group->id }}" @selected((string) old('customer_group_id') === (string) $group->id)>{{ $group->name }}</option>
@@ -27,6 +27,20 @@
         <p class="auth-switch">Sudah punya akun? <a class="auth-link" href="{{ route('login') }}">Login</a></p>
     </x-auth-shell>
     <style>
+        .auth-form-register .select2-container { display: block; width: 100% !important; margin-top: 6px; }
+        .auth-form-register .select2-container .select2-selection--single {
+            min-height: 44px; height: auto; border: 2px solid #355a45; border-radius: 8px;
+            background: #fffdf9; box-shadow: -3px 3px 0 #b5cfb8;
+        }
+        .auth-form-register .select2-container .select2-selection__rendered {
+            padding: 9px 32px 9px 11px; color: #355a45; font-size: 16px; line-height: 22px;
+        }
+        .auth-form-register .select2-container .select2-selection__arrow { height: 42px; right: 8px; }
+        .auth-select2-dropdown { border: 2px solid #355a45; border-radius: 8px; background: #fffdf9; color: #355a45; font-family: "Nunito Sans", sans-serif; }
+        .auth-select2-dropdown .select2-search__field { min-height: 40px; border: 1.5px solid #355a45; border-radius: 6px; padding: 8px; font-size: 16px; }
+        .auth-select2-dropdown .select2-results__option { padding: 10px 12px; }
+        .auth-select2-dropdown .select2-results__option--highlighted[aria-selected] { background: #79a486; color: #fff; }
+        .auth-select2-dropdown .select2-results__option[aria-selected="true"] { background: #ffe5a8; color: #355a45; }
         @media (max-width: 1023px) {
             .ocean-auth:has(.auth-form-register) .customer-public-shell {
                 background: transparent;
