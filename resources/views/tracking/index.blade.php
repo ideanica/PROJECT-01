@@ -132,6 +132,10 @@
 
     <style>
         @media (max-width: 1023px) {
+            .op-page .op-cta-copy .op-line {
+                width: calc(100% - 20px) !important;
+                align-self: center;
+            }
             .op-page .op-cta-copy h2 {
                 margin-bottom: calc(clamp(5px, .9vw, 12px) + 10px) !important;
             }
