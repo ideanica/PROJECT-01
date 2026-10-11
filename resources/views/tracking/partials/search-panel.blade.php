@@ -1,20 +1,93 @@
-<section class="tracking-neo-page" aria-labelledby="order-search-title">
+<style>
+/* Scoped to the search content; shared navigation and footer retain their styles. */
+.ocean-tracking .tracking-neo-page.tracking-classic {
+    --classic-ink: #111b19;
+    --classic-paper: #fffaf1;
+    --classic-pink: #f8b6cc;
+    --classic-matcha: #96c88a;
+    padding: 36px 0 140px;
+    min-height: calc(100svh - 260px);
+    font-family: "Nunito Sans", "Trebuchet MS", sans-serif;
+}
+.ocean-tracking .tracking-classic .tracking-neo-shell {
+    width: min(calc(100% - 32px), 1040px);
+    margin: 0 auto;
+}
+.ocean-tracking .tracking-classic .tracking-neo-heading { max-width: none; margin: 0 0 28px; }
+.ocean-tracking .tracking-classic .tracking-neo-eyebrow {
+    min-height: 36px; padding: 8px 15px; border: 2px solid var(--classic-ink);
+    border-radius: 11px; background: var(--classic-pink); color: var(--classic-ink);
+    box-shadow: -2px 4px 0 var(--classic-ink); font-size: 12px; font-weight: 1000; letter-spacing: .13em;
+}
+.ocean-tracking .tracking-classic .tracking-neo-heading h1 {
+    margin: 22px 0 0; font-family: "Nunito Sans", "Trebuchet MS", sans-serif;
+    font-size: clamp(48px, 12.2vw, 94px); font-weight: 1000; line-height: .98;
+    letter-spacing: -.055em; color: var(--classic-pink) !important;
+}
+.ocean-tracking .tracking-classic .tracking-neo-heading h1 span {
+    display: block; width: fit-content;
+    -webkit-text-stroke: 2px var(--classic-ink);
+    paint-order: stroke fill; text-shadow: -2px 4px 0 var(--classic-ink);
+}
+.ocean-tracking .tracking-classic .tracking-neo-heading h1 span:last-child { color: var(--classic-matcha); }
+.ocean-tracking .tracking-classic .tracking-neo-heading p {
+    max-width: 760px; margin: 24px 0 0; color: var(--classic-ink) !important;
+    font-size: clamp(16px, 4.25vw, 23px); font-weight: 500; line-height: 1.3;
+}
+.ocean-tracking .tracking-classic .tracking-neo-search-card {
+    max-width: 760px; overflow: visible; padding: 24px 18px 20px;
+    border: 2px solid var(--classic-ink); border-radius: 16px;
+    background: var(--classic-pink); box-shadow: 3px 5px 0 var(--classic-ink), -4px 8px 0 #f3c3d1;
+}
+.ocean-tracking .tracking-classic .tracking-neo-form {
+    display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; padding: 0; margin: 0;
+}
+.ocean-tracking .tracking-classic .tracking-neo-input-wrap {
+    min-height: 50px; gap: 14px; padding: 0 16px; border: 2px solid var(--classic-ink);
+    border-radius: 12px; background: var(--classic-paper); box-shadow: 0 4px 0 var(--classic-ink);
+}
+.ocean-tracking .tracking-classic .tracking-neo-input-icon { color: var(--classic-ink); }
+.ocean-tracking .tracking-classic .tracking-neo-input-icon svg { width: 24px; height: 24px; }
+.ocean-tracking .tracking-classic .tracking-neo-input-wrap input {
+    min-height: 46px; font-size: 16px; font-weight: 500; color: var(--classic-ink);
+}
+.ocean-tracking .tracking-classic .tracking-neo-input-wrap input::placeholder { color: #858880; opacity: 1; }
+.ocean-tracking .tracking-classic .tracking-neo-input-wrap:focus-within { outline: 3px solid #487553; outline-offset: 4px; }
+.ocean-tracking .tracking-classic .tracking-neo-form button {
+    width: 100%; min-width: 0; min-height: 52px; gap: 16px; padding: 12px 18px;
+    border: 2px solid var(--classic-ink); border-radius: 12px;
+    background: var(--classic-matcha); color: var(--classic-ink);
+    box-shadow: 0 5px 0 var(--classic-ink); font-size: 18px; font-weight: 1000;
+}
+.ocean-tracking .tracking-classic .tracking-neo-form button:hover { transform: translateY(2px); box-shadow: 0 3px 0 var(--classic-ink); }
+.ocean-tracking .tracking-classic .tracking-neo-form button:focus-visible { outline: 3px solid #487553; outline-offset: 5px; }
+.ocean-tracking .tracking-classic .tracking-neo-hint {
+    margin: 20px 0 0; padding: 13px 16px; min-height: 48px;
+    border: 2px solid var(--classic-ink); border-radius: 9px;
+    background: var(--classic-paper); color: #36534c; font-size: 13px; font-weight: 500; line-height: 1.4;
+}
+.ocean-tracking .tracking-classic .tracking-neo-error { margin: 18px 0 0; }
+@media (min-width: 768px) {
+    .ocean-tracking .tracking-neo-page.tracking-classic { padding-top: 48px; padding-bottom: 130px; }
+    .ocean-tracking .tracking-classic .tracking-neo-search-card { padding: 28px; }
+    .ocean-tracking .tracking-classic .tracking-neo-input-wrap,
+    .ocean-tracking .tracking-classic .tracking-neo-form button { min-height: 64px; }
+    .ocean-tracking .tracking-classic .tracking-neo-hint { font-size: 16px; }
+}
+html[data-customer-theme="dark"] .ocean-tracking .tracking-classic {
+    --classic-ink: #e7efe7; --classic-paper: #20382e; --classic-pink: #6a4050; --classic-matcha: #54784b;
+}
+html[data-customer-theme="dark"] .ocean-tracking .tracking-classic .tracking-neo-hint { color: #e7efe7; }
+</style>
+<section class="tracking-neo-page tracking-classic" aria-labelledby="order-search-title">
     <div class="tracking-neo-shell">
         <header class="tracking-neo-heading">
             <span class="tracking-neo-eyebrow">TRACKING PESANAN</span>
-            <h1 id="order-search-title">Cari pesananmu.</h1>
+            <h1 id="order-search-title"><span>Cari</span><span>pesananmu.</span></h1>
             <p>Masukkan kode pesanan atau username untuk melihat status dan riwayat pesanan.</p>
         </header>
 
         <section class="tracking-neo-search-card" aria-label="Form pencarian pesanan">
-            <div class="tracking-neo-card-head">
-                <span class="tracking-neo-card-icon"><x-public-icon name="search" :size="22" /></span>
-                <div>
-                    <span>CARI PESANAN</span>
-                    <strong>Lacak status terbaru</strong>
-                </div>
-            </div>
-
             <form method="POST" action="{{ route('tracking.search') }}" class="tracking-neo-form" role="search" aria-label="Cari tracking dan riwayat pesanan">
                 @csrf
                 <label for="tracking-query" class="sr-only">Kode pesanan atau username</label>
@@ -24,12 +97,11 @@
                 </div>
                 <button type="submit">
                     <span>Lacak pesanan</span>
-                    <x-public-icon name="arrow-right" :size="16" />
+                    <x-public-icon name="chevron-right" :size="20" />
                 </button>
             </form>
 
             <div id="tracking-query-hint" class="tracking-neo-hint">
-                <x-public-icon name="sparkle" :size="14" />
                 <span>Data mengikuti pembaruan terakhir dari admin.</span>
             </div>
 
