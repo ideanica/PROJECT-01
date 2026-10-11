@@ -41,68 +41,6 @@
         .auth-select2-dropdown .select2-results__option { padding: 10px 12px; }
         .auth-select2-dropdown .select2-results__option--highlighted[aria-selected] { background: #79a486; color: #fff; }
         .auth-select2-dropdown .select2-results__option[aria-selected="true"] { background: #ffe5a8; color: #355a45; }
-        @media (max-width: 1023px) {
-            .ocean-auth:has(.auth-form-register) .customer-public-shell {
-                background: transparent;
-            }
-            .ocean-auth:has(.auth-form-register) .customer-public-shell > main {
-                width: 90.43%;
-                max-width: 1180px;
-                padding: 8px 0 40px;
-            }
-            .ocean-auth:has(.auth-form-register) .auth-shell {
-                width: 100%;
-                max-width: none;
-                padding: 0;
-            }
-            .ocean-auth:has(.auth-form-register) .auth-card {
-                border: 2.5px solid #355a45;
-                border-radius: 17px;
-                padding: clamp(20px, 5vw, 28px);
-                background: #ffe5a8;
-                box-shadow: var(--customer-shadow-card, -6px 6px 0) #8aaf91;
-            }
-            .ocean-auth:has(.auth-form-register) .auth-kicker {
-                border: 1.5px solid #355a45;
-                background: #fffaf1;
-                color: #9f345c;
-            }
-            .ocean-auth:has(.auth-form-register) .auth-title {
-                color: #9f345c;
-                font-size: 28px;
-            }
-            .ocean-auth:has(.auth-form-register) .auth-card :is(input:not([type="checkbox"]), select) {
-                border: 2px solid #355a45;
-                background: #fffdf9;
-                box-shadow: var(--customer-shadow-control, -3px 3px 0) #b5cfb8;
-            }
-            .ocean-auth:has(.auth-form-register) .auth-submit {
-                border: 2px solid #355a45;
-                background: linear-gradient(180deg, #8aaf91, #79a486);
-                color: #fff;
-                box-shadow: var(--customer-shadow-control, -3px 3px 0) #355a45;
-            }
-            .ocean-auth:has(.auth-form-register) .auth-submit:active {
-                transform: translate(-2px, 2px);
-                box-shadow: -1px 1px 0 #355a45;
-            }
-            .ocean-auth:has(.auth-form-register) .auth-switch {
-                border-top: 1px solid #c4d4c5;
-            }
-            html[data-customer-theme="dark"] .ocean-auth:has(.auth-form-register) .auth-card {
-                border-color: #78977f;
-                background: #4b4027;
-                box-shadow: var(--customer-shadow-card, -6px 6px 0) #081810;
-            }
-            html[data-customer-theme="dark"] .ocean-auth:has(.auth-form-register) .auth-kicker,
-            html[data-customer-theme="dark"] .ocean-auth:has(.auth-form-register) .auth-card :is(input:not([type="checkbox"]), select) {
-                border-color: #78977f;
-                background: #1b3027;
-                color: #edf6ef;
-            }
-            html[data-customer-theme="dark"] .ocean-auth:has(.auth-form-register) .auth-title {
-                color: #ef86a3;
-            }
-        }
     </style>
+    @include('auth.partials.card-styles')
 </x-layouts.app>
