@@ -131,6 +131,14 @@
     </main>
 
     <style>
+        @media (max-width: 1023px) {
+            .op-page .op-cta-copy h2 {
+                margin-bottom: calc(clamp(5px, .9vw, 12px) + 10px) !important;
+            }
+            .op-page .op-cta-mascot {
+                left: calc(-6% - 20px) !important;
+            }
+        }
         .op-footer-reference{
             position:relative;
             isolation:isolate;
