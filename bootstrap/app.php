@@ -47,6 +47,28 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->web(append: [EnsureActiveCustomer::class]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
+        // Keep register failures readable when the runtime truncates long traces.
+        $exceptions->report(function (\Throwable $exception): void {
+            if (app()->runningInConsole() || ! request()->is('register')) {
+                return;
+            }
+
+            $cause = $exception;
+            for ($depth = 0; $depth < 8 && $cause->getPrevious(); $depth++) {
+                $cause = $cause->getPrevious();
+            }
+
+            $message = preg_replace('/\\s+/', ' ', $cause->getMessage());
+            $message = preg_replace('/(password|passwd|pwd|token|secret)\\s*[=:]\\s*[^\\s;,]+/i', '$1=[redacted]', $message);
+            $message = preg_replace('#(://[^:/\\s]+:)[^@\\s]+@#', '$1[redacted]@', $message);
+
+            error_log('REGISTER_FAILURE '.json_encode([
+                'exception' => get_class($cause),
+                'message' => mb_substr($message, 0, 600),
+                'file' => str_replace(base_path().DIRECTORY_SEPARATOR, '', $cause->getFile()),
+                'line' => $cause->getLine(),
+            ], JSON_UNESCAPED_SLASHES | JSON_INVALID_UTF8_SUBSTITUTE));
+        });
         $exceptions->shouldRenderJsonWhen(
             fn (Request $request) => $request->is('api/*'),
         );
