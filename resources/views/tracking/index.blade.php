@@ -7,15 +7,6 @@
     <meta name="description" content="Ocean Paws — bringing your NCT WISH favorites closer.">
     <title>Ocean Paws — Bringing Your Favorites Closer</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-<style>
-    /* Match the photo window to the square artwork so the parcel stays visible. */
-    .op-page .op-about-card .op-polaroid-front { height: auto; }
-    .op-page .op-about-card .op-polaroids { height: 300px; }
-    .op-page .op-about-card { min-height: 380px; }
-    @media (max-width: 1023px) {
-        .op-page .op-about-card .op-about-content { padding-top: 340px; }
-    }
-</style>
 </head>
 <body class="op-body">
 @php
@@ -91,7 +82,7 @@
                     <div class="op-polaroid op-polaroid-back"></div><div class="op-polaroid op-polaroid-mid"></div>
                     <div class="op-polaroid op-polaroid-front">
                         <header class="op-photo-titlebar"><strong>OCEAN PAWS.JPG</strong><span class="op-window-dots"><i></i><i></i><i></i></span></header>
-                        <figure class="op-photo-screen" style="height:auto;aspect-ratio:1 / 1;"><img src="{{ asset('assets/oceanpaws-parcel-mascot-beach-v3.webp') }}" alt="Maskot Ocean Paws memegang paket di pantai" width="1254" height="1254" style="display:block;width:100%;height:100%;object-fit:contain;object-position:center;"></figure>
+                        <figure class="op-photo-screen"><img src="{{ asset('assets/oceanpaws-parcel-mascot-beach-wide-v4.webp') }}" alt="Maskot Ocean Paws memegang paket di pantai" width="1536" height="1024" style="object-fit:cover;object-position:center;"></figure>
                         <footer class="op-photo-status"><span>Good Music · Brighter Days<br>with OCEANPAWS ♡</span><b>01 / 03</b></footer>
                     </div>
                 </div>
