@@ -21,7 +21,7 @@
 }
 .ocean-tracking .tracking-classic .tracking-neo-heading h1 {
     margin: 22px 0 0; font-family: "Nunito Sans", "Trebuchet MS", sans-serif;
-    font-size: clamp(48px, 12.2vw, 94px); font-weight: 1000; line-height: .98;
+    font-size: calc(clamp(48px, 12.2vw, 94px) + 1rem); font-weight: 1000; line-height: .98;
     letter-spacing: -.055em; color: var(--classic-pink) !important;
 }
 .ocean-tracking .tracking-classic .tracking-neo-heading h1 span {
