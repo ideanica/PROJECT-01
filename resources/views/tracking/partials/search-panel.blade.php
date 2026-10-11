@@ -15,9 +15,9 @@
 }
 .ocean-tracking .tracking-classic .tracking-neo-heading { max-width: none; margin: 0 0 28px; }
 .ocean-tracking .tracking-classic .tracking-neo-eyebrow {
-    min-height: 36px; padding: 8px 15px; border: 2px solid var(--classic-ink);
+    min-height: 28px; padding: 5px 10px; border: 2px solid var(--classic-ink);
     border-radius: 11px; background: var(--classic-pink); color: var(--classic-ink);
-    box-shadow: -2px 4px 0 var(--classic-ink); font-size: 12px; font-weight: 1000; letter-spacing: .13em;
+    box-shadow: -2px 4px 0 var(--classic-ink); font-size: 10px; font-weight: 1000; letter-spacing: .1em;
 }
 .ocean-tracking .tracking-classic .tracking-neo-heading h1 {
     margin: 22px 0 0; font-family: "Nunito Sans", "Trebuchet MS", sans-serif;
