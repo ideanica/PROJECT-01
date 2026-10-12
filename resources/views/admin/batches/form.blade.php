@@ -20,6 +20,7 @@
         eyebrow="Batch Pembelian"
         description="Buat wadah progress untuk sekumpulan pesanan. Pelanggan dan item ditambahkan dari detail batch."
         max-width="max-w-4xl"
+        class="mx-auto [&_.admin-form-eyebrow]:text-[#2f6b46]! [&_.admin-form-intro]:border-[#c3d9ca]! [&_.admin-form-intro]:bg-[#eef4ef]! [&_.admin-form-intro]:bg-none! [&_.admin-form-intro-icon]:text-[#2f6b46]! [&_.admin-form-intro_h2]:text-[#275a3a]! [&_.admin-form-secondary:hover]:border-[#c3d9ca]! [&_.admin-form-secondary:hover]:text-[#275a3a]! [&_input:focus]:border-[#2f6b46]! [&_select:focus]:border-[#2f6b46]! [&_textarea:focus]:border-[#2f6b46]! [&_input:focus]:shadow-[0_0_0_3px_rgba(47,107,70,0.12)]! [&_select:focus]:shadow-[0_0_0_3px_rgba(47,107,70,0.12)]! [&_textarea:focus]:shadow-[0_0_0_3px_rgba(47,107,70,0.12)]!"
     >
         <form method="POST" enctype="multipart/form-data" action="{{ $batch->exists ? route('admin.batches.update', $batch, false) : route('admin.batches.store', [], false) }}">
             @csrf
@@ -43,41 +44,39 @@
                 </x-admin-form-section>
 
                 <x-admin-form-section title="Katalog Landing Page">
-                    <div class="admin-catalog-media-grid">
-                        <div
-                            class="admin-photo-uploader"
-                            data-admin-photo-uploader
-                            data-has-existing="{{ $batch->catalog_image_path ? '1' : '0' }}"
-                        >
-                            <div class="admin-photo-uploader-head">
-                                <div><strong>Foto katalog batch</strong><small>Foto utama yang tampil pada kartu dan detail katalog.</small></div>
-                                <span data-photo-state>{{ $batch->catalog_image_path ? 'Tersimpan' : 'Belum ada foto' }}</span>
-                            </div>
-
-                            <div class="admin-photo-preview" data-photo-preview>
-                                @if($batch->catalog_image_path)
-                                    <img src="{{ $batch->catalog_image_url }}" alt="Gambar katalog {{ $batch->batch_name }}" data-photo-image>
-                                @else
-                                    <img src="" alt="Preview foto batch" data-photo-image hidden>
-                                @endif
-                                <div class="admin-photo-placeholder" data-photo-placeholder @if($batch->catalog_image_path) hidden @endif>
-                                    <i class="bi bi-images" aria-hidden="true"></i>
-                                    <strong>Pilih foto batch</strong>
-                                    <small>Preview akan muncul sebelum batch disimpan</small>
-                                </div>
-                                <button type="button" class="admin-photo-remove" data-photo-remove @if(!$batch->catalog_image_path) hidden @endif aria-label="Batalkan atau hapus foto" title="Batalkan atau hapus foto">&times;</button>
-                            </div>
-
-                            <div class="admin-photo-actions">
-                                <label for="catalog-image-input" class="admin-photo-choose"><i class="bi bi-upload" aria-hidden="true"></i><span data-photo-button-label>{{ $batch->catalog_image_path ? 'Ganti foto' : 'Pilih foto' }}</span></label>
-                                <span data-photo-file-name>{{ $batch->catalog_image_path ? basename($batch->catalog_image_path) : 'Belum ada file dipilih' }}</span>
-                            </div>
-                            <input id="catalog-image-input" class="admin-photo-native-input" type="file" name="catalog_image" accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp" data-photo-input>
-                            <input type="hidden" name="remove_catalog_image" value="0" data-photo-remove-input>
-                            <p class="admin-photo-error" data-photo-error hidden></p>
-                            <small class="admin-form-help">JPG/JPEG, PNG, atau WEBP. Maksimal 4 MB. Foto lama tetap aman sampai perubahan disimpan.</small>
-                            @error('catalog_image')<p class="admin-photo-server-error">{{ $message }}</p>@enderror
+                    <div
+                        class="admin-photo-uploader"
+                        data-admin-photo-uploader
+                        data-has-existing="{{ $batch->catalog_image_path ? '1' : '0' }}"
+                    >
+                        <div class="admin-photo-uploader-head">
+                            <div><strong>Foto katalog batch</strong><small>Foto utama yang tampil pada kartu dan detail katalog.</small></div>
+                            <span data-photo-state>{{ $batch->catalog_image_path ? 'Tersimpan' : 'Belum ada foto' }}</span>
                         </div>
+
+                        <div class="admin-photo-preview" data-photo-preview>
+                            @if($batch->catalog_image_path)
+                                <img src="{{ $batch->catalog_image_url }}" alt="Gambar katalog {{ $batch->batch_name }}" data-photo-image>
+                            @else
+                                <img src="" alt="Preview foto batch" data-photo-image hidden>
+                            @endif
+                            <div class="admin-photo-placeholder" data-photo-placeholder @if($batch->catalog_image_path) hidden @endif>
+                                <i class="bi bi-images" aria-hidden="true"></i>
+                                <strong>Pilih foto batch</strong>
+                                <small>Preview akan muncul sebelum batch disimpan</small>
+                            </div>
+                            <button type="button" class="admin-photo-remove" data-photo-remove @if(!$batch->catalog_image_path) hidden @endif aria-label="Batalkan atau hapus foto" title="Batalkan atau hapus foto">&times;</button>
+                        </div>
+
+                        <div class="admin-photo-actions">
+                            <label for="catalog-image-input" class="admin-photo-choose inline-flex! w-auto!"><i class="bi bi-upload" aria-hidden="true"></i><span data-photo-button-label>{{ $batch->catalog_image_path ? ' Ganti foto' : ' Pilih foto' }}</span></label>
+                            <span data-photo-file-name>{{ $batch->catalog_image_path ? basename($batch->catalog_image_path) : 'Belum ada file dipilih' }}</span>
+                        </div>
+                        <input id="catalog-image-input" class="admin-photo-native-input" type="file" name="catalog_image" accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp" data-photo-input>
+                        <input type="hidden" name="remove_catalog_image" value="0" data-photo-remove-input>
+                        <p class="admin-photo-error" data-photo-error hidden></p>
+                        <small class="admin-form-help">JPG/JPEG, PNG, atau WEBP. Maksimal 4 MB. Foto lama tetap aman sampai perubahan disimpan.</small>
+                        @error('catalog_image')<p class="admin-photo-server-error">{{ $message }}</p>@enderror
                     </div>
 
                     <div class="mt-4 grid items-start gap-4 sm:grid-cols-2">
@@ -116,7 +115,7 @@
                             @endif
                             <small class="admin-form-help">
                                 Pembayaran untuk batch ini akan menggunakan payment method aktif.
-                                <a href="{{ route('admin.batches.settings') }}" class="text-violet-600 hover:underline">[Kelola]</a>
+                                <a href="{{ route('admin.batches.settings') }}" class="text-[#2f6b46]! hover:underline">[Kelola]</a>
                             </small>
                         </div>
                     @else
@@ -124,7 +123,7 @@
                             <i class="bi bi-exclamation-triangle" aria-hidden="true"></i>
                             <div>
                                 <strong>Belum ada metode pembayaran aktif.</strong>
-                                <p>Atur QRIS terlebih dahulu di <a href="{{ route('admin.batches.settings') }}" class="text-violet-600 hover:underline">Pengaturan Batch</a>.</p>
+                                <p>Atur QRIS terlebih dahulu di <a href="{{ route('admin.batches.settings') }}" class="text-[#2f6b46]! hover:underline">Pengaturan Batch</a>.</p>
                             </div>
                         </div>
                     @endif
@@ -149,7 +148,7 @@
                                     <label><span>Nama variasi</span><input name="variants[{{ $index }}][name]" value="{{ $variant['name'] ?? '' }}" placeholder="Contoh: ALT Ver." required></label>
                                     <label><span>Harga DP</span><input type="number" min="0" step="1" name="variants[{{ $index }}][dp_price]" value="{{ $variant['dp_price'] ?? '' }}" placeholder="154500" required></label>
                                     <label><span>Harga lunas</span><input type="number" min="0" step="1" name="variants[{{ $index }}][full_price]" value="{{ $variant['full_price'] ?? '' }}" placeholder="257400" required></label>
-                                    <label class="admin-variant-available">
+                                    <label class="admin-variant-available flex! w-auto!">
                                         <input type="hidden" name="variants[{{ $index }}][is_available]" value="0">
                                         <input type="checkbox" name="variants[{{ $index }}][is_available]" value="1" @checked((bool) ($variant['is_available'] ?? true))>
                                         <span>Tersedia</span>
@@ -169,7 +168,7 @@
                                 <label><span>Nama variasi</span><input name="variants[__INDEX__][name]" placeholder="Contoh: ALT Ver." required></label>
                                 <label><span>Harga DP</span><input type="number" min="0" step="1" name="variants[__INDEX__][dp_price]" placeholder="154500" required></label>
                                 <label><span>Harga lunas</span><input type="number" min="0" step="1" name="variants[__INDEX__][full_price]" placeholder="257400" required></label>
-                                <label class="admin-variant-available">
+                                <label class="admin-variant-available flex! w-auto!">
                                     <input type="hidden" name="variants[__INDEX__][is_available]" value="0">
                                     <input type="checkbox" name="variants[__INDEX__][is_available]" value="1" checked>
                                     <span>Tersedia</span>
@@ -181,7 +180,7 @@
                 </x-admin-form-section>
 
                 <x-admin-form-section title="Progress dan Periode">
-                    <div class="grid items-start gap-4 sm:grid-cols-2">
+                    <div class="grid gap-4">
                         @if($progressIsLocked)
                             <div class="admin-form-readonly">
                                 <span>Status batch</span>
@@ -200,8 +199,10 @@
                                 </select>
                             </label>
                         @endif
-                        <x-text-input label="Tanggal mulai" name="started_at" type="datetime-local" :value="$batch->started_at?->format('Y-m-d\TH:i')" />
-                        <x-text-input label="Tanggal selesai" name="completed_at" type="datetime-local" :value="$batch->completed_at?->format('Y-m-d\TH:i')" />
+                        <div class="grid items-start gap-4 sm:grid-cols-2">
+                            <x-text-input label="Tanggal mulai" name="started_at" type="datetime-local" :value="$batch->started_at?->format('Y-m-d\TH:i')" />
+                            <x-text-input label="Tanggal selesai" name="completed_at" type="datetime-local" :value="$batch->completed_at?->format('Y-m-d\TH:i')" />
+                        </div>
                     </div>
                     @if($batch->exists && !$progressIsLocked)
                         <label class="mt-4 block">

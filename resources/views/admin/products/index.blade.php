@@ -1,7 +1,10 @@
 <x-layouts.app title="Produk">
-    <x-page-heading title="Produk" description="Master K-pop merch untuk mempercepat input item pesanan.">
-        <x-slot:action><a class="admin-primary-action" href="{{ route('admin.products.create', [], false) }}">+ Tambah produk</a></x-slot:action>
-    </x-page-heading>
+    <div class="[&_h1]:text-black!">
+        <x-page-heading title="Produk" description="Master K-pop merch untuk mempercepat input item pesanan.">
+            <x-slot:action><a class="admin-primary-action" href="{{ route('admin.products.create', [], false) }}">+ Tambah produk</a></x-slot:action>
+        </x-page-heading>
+    </div>
+
     <div class="order-table-card">
         <form class="order-table-toolbar">
             <input class="min-w-0 flex-1" name="q" value="{{ request('q') }}" placeholder="Cari nama atau varian produk...">

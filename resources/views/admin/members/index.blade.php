@@ -1,7 +1,9 @@
 <x-layouts.app title="Pelanggan">
-    <x-page-heading title="Pelanggan" description="Kelola data kontak pembeli yang tersedia pada form pesanan.">
-        <x-slot:action><a class="admin-primary-action" href="{{ route('admin.members.create', [], false) }}">+ Tambah pelanggan</a></x-slot:action>
-    </x-page-heading>
+    <div class="[&_h1]:text-black!">
+        <x-page-heading title="Pelanggan" description="Kelola data kontak pembeli yang tersedia pada form pesanan.">
+            <x-slot:action><a class="admin-primary-action" href="{{ route('admin.members.create', [], false) }}">+ Tambah pelanggan</a></x-slot:action>
+        </x-page-heading>
+    </div>
 
     <div class="order-table-card">
         <form class="order-table-toolbar">

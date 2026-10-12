@@ -11,6 +11,7 @@
         eyebrow="Pesanan dalam Batch"
         description="Pilih member yang sudah LINE-connected dan aktif. Member baru harus login via LINE terlebih dahulu."
         max-width="max-w-6xl"
+        class="mx-auto [&_.admin-form-eyebrow]:text-[#2f6b46]! [&_.admin-form-intro]:border-[#c3d9ca]! [&_.admin-form-intro]:bg-[#eef4ef]! [&_.admin-form-intro]:bg-none! [&_.admin-form-intro-icon]:text-[#2f6b46]! [&_.admin-form-intro_h2]:text-[#275a3a]! [&_.admin-form-secondary:hover]:border-[#c3d9ca]! [&_.admin-form-secondary:hover]:text-[#275a3a]! [&_input:focus]:border-[#2f6b46]! [&_select:focus]:border-[#2f6b46]! [&_textarea:focus]:border-[#2f6b46]! [&_input:focus]:shadow-[0_0_0_3px_rgba(47,107,70,0.12)]! [&_select:focus]:shadow-[0_0_0_3px_rgba(47,107,70,0.12)]! [&_textarea:focus]:shadow-[0_0_0_3px_rgba(47,107,70,0.12)]!"
     >
         <form method="POST" action="{{ $order->exists ? route('admin.member-orders.update', $order, false) : route('admin.member-orders.store', [], false) }}">
             @csrf
@@ -32,7 +33,7 @@
                         <div>
                             <label class="block">
                                 <span>Pilih Member <span class="text-red-500" aria-hidden="true">*</span></span>
-                                <select name="member_id" required class="w-full rounded border border-zinc-300 bg-white px-3 py-2 text-zinc-900 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20">
+                                <select name="member_id" required>
                                     <option value="">Pilih member...</option>
                                     @foreach($eligibleMembers as $member)
                                         <option value="{{ $member->id }}" @selected($selectedMemberId == $member->id)>

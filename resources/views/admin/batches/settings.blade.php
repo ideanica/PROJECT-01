@@ -1,14 +1,12 @@
 <x-layouts.app title="Pengaturan Batch">
-    <x-page-heading title="Pengaturan Batch" description="Pengaturan reusable terkait operasional Batch.">
-        <x-slot:action>
-            <a class="admin-form-secondary" href="{{ route('admin.batches.index', [], false) }}">Kembali ke Daftar Batch</a>
-        </x-slot:action>
-    </x-page-heading>
+    <div class="[&_h1]:text-black!">
+        <x-page-heading title="Pengaturan Batch" description="Pengaturan reusable terkait operasional Batch."></x-page-heading>
+    </div>
 
-    <article class="detail-record-card">
+    <article class="detail-record-card before:bg-none! [&_.detail-record-hero]:bg-[linear-gradient(135deg,#ffffff,#f6faf6_58%,#eef6ef)]!">
         <header class="detail-record-hero">
             <div class="min-w-0">
-                <p class="detail-record-kicker">Pengaturan Batch</p>
+                <p class="detail-record-kicker text-[#275a3a]!">Pengaturan Batch</p>
                 <h2 class="detail-record-title">Pembayaran</h2>
                 <p class="detail-record-description">Kelola QRIS dan metode pembayaran yang digunakan oleh seluruh Batch.</p>
             </div>
