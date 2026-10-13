@@ -8971,6 +8971,10 @@ html[data-customer-theme="dark"] .ocean-tracking .tracking-result-side {
     overflow: visible;
 }
 
+.ocean-primary-navbar__icon.public-icon-rounded-bold {
+    color: #355a45;
+}
+
 @media (max-width: 1050px) {
     .ocean-primary-navbar {
         width: min(92%, 980px);

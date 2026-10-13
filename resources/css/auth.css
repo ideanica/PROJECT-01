@@ -49,6 +49,18 @@ html[data-customer-theme="dark"] body.ocean-auth { background: var(--pv2-cream);
 .auth-password-monitor.is-complete .auth-password-progress { accent-color: #216347; }
 .auth-password-monitor.is-complete .auth-password-progress::-webkit-progress-value { background: #216347; }
 .auth-password-monitor.is-complete .auth-password-progress::-moz-progress-bar { background: #216347; }
+.auth-form-register .auth-password-monitor-interactive { padding: 10px 12px; color: var(--auth-card-ink, var(--pv2-ink-deep)); }
+.auth-password-heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+.auth-password-heading strong { font-size: 11px; font-weight: 700; }
+.auth-password-count { font-size: 10px; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--auth-card-muted, var(--pv2-text)); }
+.auth-password-monitor-interactive .auth-password-progress { height: 4px; margin: 0 0 8px; accent-color: #8aaf91; }
+.auth-password-monitor-interactive .auth-password-progress::-webkit-progress-value { background: #8aaf91; transition: width .2s ease; }
+.auth-password-monitor-interactive .auth-password-progress::-moz-progress-bar { background: #8aaf91; }
+.auth-password-monitor-interactive .auth-password-checklist { display: flex; flex-wrap: wrap; gap: 4px 10px; }
+.auth-password-monitor-interactive .auth-password-checklist li { align-items: center; gap: 4px; font-size: 10px; line-height: 1.6; }
+.auth-password-monitor-interactive [data-password-icon] { flex: 0 0 12px; font-size: 11px; }
+.auth-password-monitor-interactive .auth-password-checklist .is-met { color: var(--auth-card-ink, var(--pv2-ink-deep)); font-weight: 800; }
+@media (prefers-reduced-motion: reduce) { .auth-password-monitor-interactive .auth-password-progress::-webkit-progress-value { transition: none; } }
 .auth-remember { display: flex; align-items: center; gap: 10px; color: var(--pv2-ink-deep); font-size: 12px; }
 .auth-remember input { width: 18px; height: 18px; accent-color: var(--pv2-ink); }
 .auth-submit { display: flex; min-height: 44px; width: 100%; align-items: center; justify-content: center; border: var(--pv2-border); border-radius: 8px; background: var(--pv2-pink); padding: 10px 14px; color: var(--pv2-ink-deep); font-size: 13px; font-weight: 900; box-shadow: -4px 4px 0 var(--pv2-ink); cursor: pointer; transition: transform .15s, box-shadow .15s; }

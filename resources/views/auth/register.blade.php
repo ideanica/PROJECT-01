@@ -11,17 +11,17 @@
                 <x-text-input label="Email" name="email" type="email" autocomplete="email" maxlength="255" required />
                 <label class="auth-group"><span class="text-sm font-semibold">Group</span>
                     <select name="customer_group_id" class="auth-select" data-auth-select2>
-                        <option value="">Belum memilih</option>
+                        <option value="">Belum punya</option>
                         @foreach($groups as $group)
                             <option value="{{ $group->id }}" @selected((string) old('customer_group_id') === (string) $group->id)>{{ $group->name }}</option>
                         @endforeach
                     </select>
                     @error('customer_group_id')<small class="auth-field-error">{{ $message }}</small>@enderror
                 </label>
-                <p class="auth-hint">Pilih “Belum memilih” jika belum tahu groupmu. Admin akan menentukan group dan menyetujui akun sebelum kamu bisa login.</p>
+                <p class="auth-hint">Pilih “Belum punya” jika belum tergabung dalam group. Admin akan menentukan group dan menyetujui akun sebelum kamu bisa login.</p>
                 <x-text-input label="Password" name="password" type="password" autocomplete="new-password" minlength="8" aria-describedby="password-requirements" required />
                 <x-text-input label="Konfirmasi password" name="password_confirmation" type="password" autocomplete="new-password" minlength="8" aria-describedby="password-requirements" required />
-                <x-password-requirements />
+                <x-password-requirements interactive />
                 <button type="submit" class="auth-submit">Daftar akun</button>
             </form>
         <p class="auth-switch">Sudah punya akun? <a class="auth-link" href="{{ route('login') }}">Login</a></p>
@@ -33,11 +33,11 @@
             background: #fffdf9; box-shadow: -3px 3px 0 #b5cfb8;
         }
         .auth-form-register .select2-container .select2-selection__rendered {
-            padding: 9px 32px 9px 11px; color: #355a45; font-size: 16px; line-height: 22px;
+            padding: 9px 32px 9px 11px; color: #355a45; font-size: 14px !important; line-height: 22px;
         }
         .auth-form-register .select2-container .select2-selection__arrow { height: 42px; right: 8px; }
         .auth-select2-dropdown { border: 2px solid #355a45; border-radius: 8px; background: #fffdf9; color: #355a45; font-family: "Nunito Sans", sans-serif; }
-        .auth-select2-dropdown .select2-search__field { min-height: 40px; border: 1.5px solid #355a45; border-radius: 6px; padding: 8px; font-size: 16px; }
+        .auth-select2-dropdown .select2-search__field { min-height: 40px; border: 1.5px solid #355a45; border-radius: 6px; padding: 8px; font-size: 14px !important; }
         .auth-select2-dropdown .select2-results__option { padding: 10px 12px; }
         .auth-select2-dropdown .select2-results__option--highlighted[aria-selected] { background: #79a486; color: #fff; }
         .auth-select2-dropdown .select2-results__option[aria-selected="true"] { background: #ffe5a8; color: #355a45; }
@@ -46,7 +46,7 @@
 .ocean-auth:has(:is(.auth-form-login, .auth-form-register)) {
     --auth-card-outline: #496d54;
     --auth-card-paper: #fffdfa;
-    --auth-card-pink: #f8b6cc;
+    --auth-card-pink: #fbd7e3;
     --auth-card-matcha: #96c88a;
     --auth-card-ink: #355a45;
     --auth-card-muted: #617369;
@@ -80,7 +80,7 @@
     border: 2px solid var(--auth-card-outline); border-radius: 12px;
     background: var(--auth-card-paper); color: var(--auth-card-ink);
     box-shadow: var(--customer-shadow-control, -3px 3px 0) var(--auth-control-shadow);
-    font-family: "Nunito Sans", sans-serif; font-size: 16px;
+    font-family: "Nunito Sans", sans-serif; font-size: 14px !important;
 }
 .ocean-auth .auth-shell:has(:is(.auth-form-login, .auth-form-register)) .auth-submit {
     min-height: 50px; border: 2px solid var(--auth-card-outline); border-radius: 12px;
@@ -96,7 +96,9 @@
 .ocean-auth .auth-shell:has(:is(.auth-form-login, .auth-form-register)) .auth-password-monitor {
     border: 1.5px solid var(--auth-card-outline); background: var(--auth-card-paper); border-radius: 10px;
 }
-.ocean-auth .auth-form-register .select2-selection__rendered { color: var(--auth-card-ink); }
+.ocean-auth .auth-form-register .select2-selection__rendered { color: var(--auth-card-ink); font-weight: 400; }
+.ocean-auth .auth-form-register .auth-select,
+.auth-select2-dropdown .select2-results__option { font-weight: 400; }
 @media (max-width: 1023px) {
     .ocean-auth:has(:is(.auth-form-login, .auth-form-register)) .customer-public-shell { background: transparent; }
     .ocean-auth:has(:is(.auth-form-login, .auth-form-register)) .customer-public-shell > main {

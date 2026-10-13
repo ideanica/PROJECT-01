@@ -1,7 +1,6 @@
 const landingPage = document.querySelector('.op-page');
 
 if (landingPage) {
-    const responsiveOnly = window.matchMedia('(max-width: 1023px)');
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
     const revealTargets = [
@@ -14,7 +13,7 @@ if (landingPage) {
         { element: landingPage.querySelector('.op-mobile-tracking-wrap'), delay: 0 },
     ].filter(({ element }) => element);
 
-    if (responsiveOnly.matches && !reducedMotion.matches && 'IntersectionObserver' in window) {
+    if (!reducedMotion.matches && 'IntersectionObserver' in window) {
         revealTargets.forEach(({ element }) => {
             element.style.opacity = '0';
             element.style.transform = 'translate3d(0, 34px, 0)';

@@ -30,6 +30,20 @@ document.querySelectorAll('[data-password-monitor]').forEach((monitor) => {
         monitor.querySelector('[data-password-progress]').value = fulfilled;
         const status = !password ? 'Belum diisi' : complete ? 'Password sudah sesuai' : 'Password belum sesuai';
         monitor.querySelector('[data-password-summary]').textContent = `${status}: ${fulfilled} dari ${total} syarat terpenuhi`;
+        const count = monitor.querySelector('[data-password-count]');
+        if (count) count.textContent = `${fulfilled}/${total}`;
+        const feedback = monitor.querySelector('[data-password-feedback]');
+        if (feedback) {
+            feedback.textContent = !password
+                ? 'Mulai ketik password, lalu konfirmasi untuk memastikan keduanya sama.'
+                : complete
+                    ? 'Semua syarat terpenuhi. Password kamu siap digunakan!'
+                    : confirmation?.value && confirmation.value !== password
+                        ? 'Konfirmasi belum sama. Periksa kembali kedua password.'
+                        : fulfilled === total - 1 && !rules.confirmation(password)
+                            ? 'Password sudah kuat. Sekarang isi konfirmasi password yang sama.'
+                            : 'Sedikit lagi! Lengkapi syarat yang belum ditandai hijau.';
+        }
     };
 
     input.addEventListener('input', update);

@@ -5945,8 +5945,15 @@
   touch-action: manipulation;
 }
 
-/* Do not animate the interactive card itself: moving a touch target while a
-   finger is down makes edge taps feel inconsistent. The rear tab may still hop. */
+/* Both hero tabs hop in sequence across viewport sizes. */
 .op-page .op-copy-window {
   animation: none !important;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .op-page .op-copy-window { animation: op-front-tab-hop 3.6s ease-in-out infinite !important; }
+}
+
+@media (min-width: 640px) and (prefers-reduced-motion: no-preference) {
+  .op-page .op-cta::after { display: block; }
 }

@@ -20,7 +20,7 @@
 .ocean-auth:has(:is(.auth-form-login, .auth-form-register)) {
     --auth-card-outline: #496d54;
     --auth-card-paper: #fffdfa;
-    --auth-card-pink: #f8b6cc;
+    --auth-card-pink: #fbd7e3;
     --auth-card-matcha: #96c88a;
     --auth-card-ink: #355a45;
     --auth-card-muted: #617369;
@@ -54,7 +54,7 @@
     border: 2px solid var(--auth-card-outline); border-radius: 12px;
     background: var(--auth-card-paper); color: var(--auth-card-ink);
     box-shadow: var(--customer-shadow-control, -3px 3px 0) var(--auth-control-shadow);
-    font-family: "Nunito Sans", sans-serif; font-size: 16px;
+    font-family: "Nunito Sans", sans-serif; font-size: 14px !important;
 }
 .ocean-auth .auth-shell:has(:is(.auth-form-login, .auth-form-register)) .auth-submit {
     min-height: 50px; border: 2px solid var(--auth-card-outline); border-radius: 12px;
