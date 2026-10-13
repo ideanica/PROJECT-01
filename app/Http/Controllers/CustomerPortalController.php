@@ -21,10 +21,8 @@ class CustomerPortalController extends Controller
             return redirect()->route('admin.dashboard');
         }
 
-        $orders = $member->orders()->with(['batch', 'paymentStatus'])->latest()->get();
-        $unpaidCount = $orders
-            ->filter(fn ($order) => in_array($order->paymentStatus?->code, ['menunggu-dp', 'menunggu-pelunasan'], true))
-            ->count();
+        $orders = $member->orders()->with($this->orderRelations())->latest()->get();
+        $unpaidCount = $orders->filter(fn ($order) => $this->isOrderUnpaid($order))->count();
         $refundCount = $orders->filter(fn ($order) => $order->is_refunded)->count();
 
         return view('portal.overview', [
@@ -54,12 +52,10 @@ class CustomerPortalController extends Controller
     {
         $member = $request->user()?->member;
         $orders = $member
-            ? $member->orders()->with(['batch', 'paymentStatus'])->latest()->get()
+            ? $member->orders()->with($this->orderRelations())->latest()->get()
             : collect();
 
-        $unpaidCount = $orders
-            ->filter(fn ($order) => in_array($order->paymentStatus?->code, ['menunggu-dp', 'menunggu-pelunasan'], true))
-            ->count();
+        $unpaidCount = $orders->filter(fn ($order) => $this->isOrderUnpaid($order))->count();
         $emsCount = $orders->where('ems_tax_status', 'unpaid')->count();
 
         return view('portal.overview', [
@@ -143,12 +139,7 @@ class CustomerPortalController extends Controller
 
         if ($member) {
             $orders = $member->orders()
-                ->with([
-                    'batch.currentStatus',
-                    'overrideStatus',
-                    'paymentStatus',
-                    'items.overrideStatus',
-                ])
+                ->with($this->orderRelations())
                 ->latest()
                 ->get();
 
@@ -187,12 +178,7 @@ class CustomerPortalController extends Controller
 
         if ($member) {
             $orders = $member->orders()
-                ->with([
-                    'batch.currentStatus',
-                    'overrideStatus',
-                    'paymentStatus',
-                    'items.overrideStatus',
-                ])
+                ->with($this->orderRelations())
                 ->latest()
                 ->get()
                 ->filter(fn ($order) => in_array($scope, $this->orderGroups($order), true))
@@ -248,7 +234,7 @@ class CustomerPortalController extends Controller
         $trackingStatus = $order->tracking_status;
 
         return array_values(array_filter([
-            in_array($order->paymentStatus?->code, ['menunggu-dp', 'menunggu-pelunasan'], true) ? 'unpaid' : null,
+            $this->isOrderUnpaid($order) ? 'unpaid' : null,
             ! $trackingStatus?->is_final && ! $order->is_refunded ? 'active' : null,
             $trackingStatus?->code === 'selesai' ? 'history' : null,
             $trackingStatus?->code === 'dikirim-ke-customer' ? 'shipping' : null,
@@ -264,12 +250,7 @@ class CustomerPortalController extends Controller
 
         if ($member) {
             $orders = $member->orders()
-                ->with([
-                    'batch.currentStatus',
-                    'overrideStatus',
-                    'paymentStatus',
-                    'items',
-                ])
+                ->with($this->orderRelations())
                 ->latest()
                 ->get();
 
@@ -293,10 +274,10 @@ class CustomerPortalController extends Controller
             $description = 'Rincian ongkir internasional dan pajak impor untuk setiap pesananmu.';
         } else {
             $unpaidOrders = $orders
-                ->filter(fn ($order) => ! $order->is_refunded && in_array($order->paymentStatus?->code, ['menunggu-dp', 'menunggu-pelunasan'], true))
+                ->filter(fn ($order) => $this->isOrderUnpaid($order))
                 ->values();
             $paidOrders = $orders
-                ->filter(fn ($order) => ! $order->is_refunded && ($order->paymentStatus?->code === 'lunas' || $order->payment_submitted_at !== null))
+                ->filter(fn ($order) => ! $order->is_refunded && (float) $order->total_amount > 0 && $order->remaining_amount <= 0)
                 ->values();
             $refundOrders = $orders->filter(fn ($order) => $order->is_refunded)->values();
             $title = 'Tagihan';
@@ -321,5 +302,24 @@ class CustomerPortalController extends Controller
             'paidCount' => $paidOrders->count(),
             'refundCount' => $refundOrders->count(),
         ]);
+    }
+
+    private function isOrderUnpaid(MemberOrder $order): bool
+    {
+        return ! $order->is_refunded
+            && (float) $order->total_amount > 0
+            && $order->remaining_amount > 0;
+    }
+
+    private function orderRelations(): array
+    {
+        return [
+            'batch.currentStatus',
+            'overrideStatus',
+            'paymentStatus',
+            'payments',
+            'items.overrideStatus',
+            'items.shipmentGroup.currentStatus',
+        ];
     }
 }

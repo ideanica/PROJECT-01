@@ -35,22 +35,10 @@ class MemberTrackingController extends Controller
         $rawQuery = trim($validated['query']);
         $orderCode = mb_strtoupper($rawQuery);
 
-        // Coba sebagai kode tracking terlebih dahulu. Ini menghindari tebakan format
-        // karena kode tracking dan username sama-sama berupa teks.
         $order = MemberOrder::query()
             ->where('order_code', $orderCode)
             ->whereHas('member', fn ($member) => $member->where('is_active', true))
-            ->with([
-                'member',
-                'batch.currentStatus',
-                'batch.statusHistories.oldStatus',
-                'batch.statusHistories.newStatus',
-                'overrideStatus',
-                'paymentStatus',
-                'items.overrideStatus',
-                'statusHistories.oldStatus',
-                'statusHistories.newStatus',
-            ])
+            ->with($this->trackingRelations(true))
             ->first();
 
         if ($order) {
@@ -72,6 +60,7 @@ class MemberTrackingController extends Controller
                 'orders.overrideStatus',
                 'orders.paymentStatus',
                 'orders.items.overrideStatus',
+                'orders.items.shipmentGroup.currentStatus',
             ])
             ->first();
 
@@ -113,17 +102,7 @@ class MemberTrackingController extends Controller
         $order = MemberOrder::query()
             ->where('order_code', $orderCode)
             ->whereHas('member', fn ($query) => $query->where('is_active', true))
-            ->with([
-                'member',
-                'batch.currentStatus',
-                'batch.statusHistories.oldStatus',
-                'batch.statusHistories.newStatus',
-                'overrideStatus',
-                'paymentStatus',
-                'items.overrideStatus',
-                'statusHistories.oldStatus',
-                'statusHistories.newStatus',
-            ])
+            ->with($this->trackingRelations(true))
             ->firstOrFail();
 
         return view('tracking.progress', [
@@ -156,7 +135,14 @@ class MemberTrackingController extends Controller
     {
         $member = Member::where('member_code', $memberCode)
             ->where('is_active', true)
-            ->with(['orders' => fn ($query) => $query->latest(), 'orders.batch.currentStatus', 'orders.overrideStatus', 'orders.paymentStatus', 'orders.items'])
+            ->with([
+                'orders' => fn ($query) => $query->latest(),
+                'orders.batch.currentStatus',
+                'orders.overrideStatus',
+                'orders.paymentStatus',
+                'orders.items',
+                'orders.items.shipmentGroup.currentStatus',
+            ])
             ->firstOrFail();
 
         return view('tracking.member', compact('member'));
@@ -168,17 +154,7 @@ class MemberTrackingController extends Controller
 
         abort_unless($memberOrder->member_id === $member->id, 403);
 
-        $memberOrder->load([
-            'member',
-            'batch.currentStatus',
-            'batch.statusHistories.oldStatus',
-            'batch.statusHistories.newStatus',
-            'overrideStatus',
-            'paymentStatus',
-            'items.overrideStatus',
-            'statusHistories.oldStatus',
-            'statusHistories.newStatus',
-        ]);
+        $memberOrder->load($this->trackingRelations(true));
 
         return view('tracking.order', [
             'member' => $member,
@@ -209,5 +185,28 @@ class MemberTrackingController extends Controller
         }
 
         return $timeline;
+    }
+
+    private function trackingRelations(bool $withTimeline = false): array
+    {
+        $relations = [
+            'member',
+            'batch.currentStatus',
+            'overrideStatus',
+            'paymentStatus',
+            'items.overrideStatus',
+            'items.shipmentGroup.currentStatus',
+        ];
+
+        if ($withTimeline) {
+            $relations = array_merge($relations, [
+                'batch.statusHistories.oldStatus',
+                'batch.statusHistories.newStatus',
+                'statusHistories.oldStatus',
+                'statusHistories.newStatus',
+            ]);
+        }
+
+        return $relations;
     }
 }

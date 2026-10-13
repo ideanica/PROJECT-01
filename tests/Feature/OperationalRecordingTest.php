@@ -74,26 +74,9 @@ class OperationalRecordingTest extends TestCase
     {
         $order = MemberOrder::factory()->create(['total_amount' => 550000]);
 
-        OrderPayment::create([
-            'member_order_id' => $order->id,
-            'type' => 'dp',
-            'amount' => 200000,
-            'status' => 'verified',
-            'paid_at' => now(),
-        ]);
-        OrderPayment::create([
-            'member_order_id' => $order->id,
-            'type' => 'installment',
-            'amount' => 150000,
-            'status' => 'verified',
-            'paid_at' => now(),
-        ]);
-        OrderPayment::create([
-            'member_order_id' => $order->id,
-            'type' => 'settlement',
-            'amount' => 200000,
-            'status' => 'pending',
-        ]);
+        OrderPayment::create(['member_order_id' => $order->id, 'type' => 'dp', 'amount' => 200000, 'status' => 'verified', 'paid_at' => now()]);
+        OrderPayment::create(['member_order_id' => $order->id, 'type' => 'installment', 'amount' => 150000, 'status' => 'verified', 'paid_at' => now()]);
+        OrderPayment::create(['member_order_id' => $order->id, 'type' => 'settlement', 'amount' => 200000, 'status' => 'pending']);
 
         $order->refresh();
         $this->assertSame(350000.0, $order->paid_amount);
@@ -105,19 +88,51 @@ class OperationalRecordingTest extends TestCase
     {
         $batch = Batch::factory()->create();
         $order = MemberOrder::factory()->create(['batch_id' => $batch->id]);
-        $shipment = ShipmentGroup::create([
-            'batch_id' => $batch->id,
-            'name' => 'EMS Batch 2',
-            'method' => 'ems',
-            'tracking_number' => '773405009988015',
-        ]);
+        $shipment = ShipmentGroup::create(['batch_id' => $batch->id, 'name' => 'EMS Batch 2', 'method' => 'ems', 'tracking_number' => '773405009988015']);
 
-        $item = OrderItem::factory()->create([
-            'member_order_id' => $order->id,
-            'shipment_group_id' => $shipment->id,
-        ]);
+        $item = OrderItem::factory()->create(['member_order_id' => $order->id, 'shipment_group_id' => $shipment->id]);
 
         $this->assertSame($shipment->id, $item->shipmentGroup->id);
         $this->assertSame($batch->id, $shipment->batch->id);
+    }
+
+    public function test_customer_billing_uses_verified_ledger_for_paid_and_remaining_amounts(): void
+    {
+        $user = User::factory()->create(['role' => User::ROLE_CUSTOMER]);
+        $member = Member::factory()->create(['is_active' => true]);
+        $user->update(['member_id' => $member->id]);
+        $batch = Batch::factory()->create();
+        $order = MemberOrder::factory()->create([
+            'member_id' => $member->id,
+            'batch_id' => $batch->id,
+            'total_amount' => 500000,
+            'payment_amount' => 500000,
+        ]);
+        OrderPayment::create(['member_order_id' => $order->id, 'type' => 'dp', 'amount' => 200000, 'status' => 'verified', 'paid_at' => now()]);
+        OrderPayment::create(['member_order_id' => $order->id, 'type' => 'settlement', 'amount' => 300000, 'status' => 'pending']);
+
+        $response = $this->actingAs($user)->get(route('billing.orders'));
+
+        $response->assertOk();
+        $response->assertSee('Rp 300.000');
+        $response->assertSee('Rp 200.000');
+        $response->assertDontSee('Rp 500.000</strong></div><div><span>Sudah dibayar', false);
+    }
+
+    public function test_tracking_progress_shows_shipment_group_and_resi(): void
+    {
+        $member = Member::factory()->create(['is_active' => true]);
+        $batch = Batch::factory()->create();
+        $order = MemberOrder::factory()->create(['member_id' => $member->id, 'batch_id' => $batch->id, 'go_number' => '7']);
+        $shipment = ShipmentGroup::create(['batch_id' => $batch->id, 'name' => 'Handcarry Seoul', 'method' => 'handcarry', 'tracking_number' => 'HC-9981']);
+        OrderItem::factory()->create(['member_order_id' => $order->id, 'shipment_group_id' => $shipment->id]);
+
+        $url = \Illuminate\Support\Facades\URL::temporarySignedRoute('tracking.progress', now()->addMinutes(10), ['orderCode' => $order->order_code]);
+        $response = $this->get($url);
+
+        $response->assertOk();
+        $response->assertSee('GO 7');
+        $response->assertSee('Handcarry Seoul');
+        $response->assertSee('HC-9981');
     }
 }
