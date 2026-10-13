@@ -8,6 +8,7 @@ use App\Models\Batch;
 use App\Models\Member;
 use App\Models\MemberOrder;
 use App\Models\OrderStatus;
+use App\Models\ShipmentGroup;
 use App\Services\StatusTransitionService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -18,9 +19,6 @@ use Illuminate\Validation\ValidationException;
 
 class MemberOrderController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(Request $request)
     {
         $filters = $request->validate([
@@ -34,6 +32,7 @@ class MemberOrderController extends Controller
             ->withCount('items')
             ->when($filters['q'] ?? null, function ($query, $q) {
                 $query->where(fn ($query) => $query->where('order_code', 'like', "%{$q}%")
+                    ->orWhere('go_number', 'like', "%{$q}%")
                     ->orWhereHas('member', fn ($query) => $query->where('display_name', 'like', "%{$q}%")->orWhere('username', 'like', "%{$q}%"))
                     ->orWhereHas('batch', fn ($query) => $query->where('batch_number', 'like', "%{$q}%")));
             })
@@ -49,21 +48,14 @@ class MemberOrderController extends Controller
         return view('admin.orders.index', compact('orders'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return view('admin.orders.form', $this->formData(new MemberOrder));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreMemberOrderRequest $request, StatusTransitionService $statuses)
     {
         $order = DB::transaction(function () use ($request, $statuses) {
-            // member_id sudah divalidasi oleh StoreMemberOrderRequest (required, exists, eligible)
             $member = Member::findOrFail($request->integer('member_id'));
 
             $order = MemberOrder::create($request->safe()->except([
@@ -84,12 +76,14 @@ class MemberOrderController extends Controller
         return new RedirectResponse('/admin/member-orders/'.$order->id, 303);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(MemberOrder $memberOrder)
     {
-        $memberOrder->load(['member', 'batch.currentStatus', 'overrideStatus', 'paymentStatus', 'items.product', 'items.overrideStatus', 'statusHistories.oldStatus', 'statusHistories.newStatus', 'statusHistories.changedBy']);
+        $memberOrder->load([
+            'member', 'batch.currentStatus', 'overrideStatus', 'paymentStatus',
+            'items.product', 'items.overrideStatus', 'items.shipmentGroup.currentStatus',
+            'payments.creator',
+            'statusHistories.oldStatus', 'statusHistories.newStatus', 'statusHistories.changedBy',
+        ]);
         $orderStatuses = OrderStatus::query()
             ->whereIn('scope', ['member_order', 'all'])
             ->where('code', '!=', 'refunded')
@@ -100,15 +94,9 @@ class MemberOrderController extends Controller
             ->orderBy('name')
             ->get();
 
-        return view('admin.orders.show', [
-            'order' => $memberOrder,
-            'orderStatuses' => $orderStatuses,
-        ]);
+        return view('admin.orders.show', ['order' => $memberOrder, 'orderStatuses' => $orderStatuses]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(MemberOrder $memberOrder)
     {
         $memberOrder->load(['items', 'batch.currentStatus', 'overrideStatus']);
@@ -116,16 +104,11 @@ class MemberOrderController extends Controller
         return view('admin.orders.form', $this->formData($memberOrder));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(StoreMemberOrderRequest $request, MemberOrder $memberOrder, StatusTransitionService $statuses)
     {
         DB::transaction(function () use ($request, $memberOrder, $statuses) {
             $memberOrder->loadMissing(['batch.currentStatus', 'overrideStatus', 'paymentStatus']);
             $itemsAreLocked = $memberOrder->batch->orders_locked || $memberOrder->is_refunded;
-
-            // member_id sudah divalidasi - untuk update tetap memerlukan member_id yang valid
             $member = Member::findOrFail($request->integer('member_id'));
 
             $memberOrder->update($request->safe()->except([
@@ -154,12 +137,7 @@ class MemberOrderController extends Controller
                     ]);
                 }
 
-                $statuses->transition(
-                    $memberOrder,
-                    $refundedStatus,
-                    $request->user(),
-                    'Progress pesanan dihentikan otomatis karena pembayaran diubah menjadi refund.'
-                );
+                $statuses->transition($memberOrder, $refundedStatus, $request->user(), 'Progress pesanan dihentikan otomatis karena pembayaran diubah menjadi refund.');
             }
         });
 
@@ -168,14 +146,9 @@ class MemberOrderController extends Controller
         return new RedirectResponse('/admin/member-orders/'.$memberOrder->id, 303);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(MemberOrder $memberOrder)
     {
         $memberOrder->delete();
-
-        session()->flash('status', 'Pesanan dihapus.');
 
         return new RedirectResponse('/admin/member-orders', 303);
     }
@@ -183,12 +156,10 @@ class MemberOrderController extends Controller
     public function transition(Request $request, MemberOrder $memberOrder, StatusTransitionService $statuses)
     {
         abort_unless($request->user()?->can('access-admin'), 403);
-
         $memberOrder->loadMissing(['overrideStatus', 'paymentStatus']);
+
         if ($memberOrder->is_refunded) {
-            return back()->withErrors([
-                'status_id' => 'Pesanan refund sudah selesai dan tidak dapat diberi status khusus maupun status lainnya.',
-            ]);
+            return back()->withErrors(['status_id' => 'Pesanan refund sudah selesai dan tidak dapat diberi status khusus maupun status lainnya.']);
         }
 
         $data = $request->validate([
@@ -197,13 +168,7 @@ class MemberOrderController extends Controller
         ]);
 
         if (filled($data['status_id'] ?? null)) {
-            $statuses->transition(
-                $memberOrder,
-                OrderStatus::findOrFail($data['status_id']),
-                $request->user(),
-                $data['note'] ?? 'Status khusus pesanan diperbarui.'
-            );
-
+            $statuses->transition($memberOrder, OrderStatus::findOrFail($data['status_id']), $request->user(), $data['note'] ?? 'Status khusus pesanan diperbarui.');
             return back()->with('status', 'Status khusus pesanan diperbarui.');
         }
 
@@ -217,7 +182,6 @@ class MemberOrderController extends Controller
     public function paymentProof(MemberOrder $memberOrder)
     {
         abort_unless($memberOrder->payment_proof_path && Storage::disk('local')->exists($memberOrder->payment_proof_path), 404);
-
         return Storage::disk('local')->response($memberOrder->payment_proof_path);
     }
 
@@ -225,9 +189,7 @@ class MemberOrderController extends Controller
     {
         $order->loadMissing(['member', 'items', 'batch.currentStatus', 'overrideStatus', 'paymentStatus']);
 
-        // Ambil member yang eligible untuk NEW order (akun customer siap + aktif)
-        // Untuk edit, include member yang sedang dipakai meskipun legacy
-        $eligibleMembers = Member::eligibleForNewOrder()->with('user')->get();
+        $eligibleMembers = Member::availableForOrder()->with('user')->orderBy('display_name')->get();
         if ($order->exists && $order->member_id) {
             $currentMember = Member::find($order->member_id);
             if ($currentMember && ! $eligibleMembers->contains('id', $currentMember->id)) {
@@ -247,6 +209,7 @@ class MemberOrderController extends Controller
             'order' => $order,
             'batches' => $batches,
             'eligibleMembers' => $eligibleMembers,
+            'shipmentGroups' => ShipmentGroup::query()->with('batch')->orderBy('batch_id')->orderBy('name')->get(),
             'itemStatuses' => OrderStatus::activeFor('order_item')->get(),
             'paymentStatuses' => OrderStatus::query()
                 ->where('scope', 'payment')
@@ -254,29 +217,21 @@ class MemberOrderController extends Controller
                 ->where(fn ($query) => $query
                     ->where('is_active', true)
                     ->when($order->payment_status_id, fn ($query, $statusId) => $query->orWhere('id', $statusId)))
-                ->orderBy('sequence')
-                ->orderBy('name')
-                ->get(),
+                ->orderBy('sequence')->orderBy('name')->get(),
         ];
     }
 
     private function syncItems(MemberOrder $order, array $items, StatusTransitionService $statuses, $user): void
     {
         $keptIds = [];
-
         foreach ($items as $itemData) {
             $statusId = $itemData['override_status_id'] ?? null;
             unset($itemData['override_status_id']);
-
             $itemData['subtotal'] = isset($itemData['unit_price'])
                 ? ((int) $itemData['quantity']) * (float) $itemData['unit_price']
                 : null;
 
-            $item = $order->items()->updateOrCreate(
-                ['id' => $itemData['id'] ?? null],
-                $itemData
-            );
-
+            $item = $order->items()->updateOrCreate(['id' => $itemData['id'] ?? null], $itemData);
             $keptIds[] = $item->id;
 
             if ($statusId && (int) $statusId !== $item->override_status_id) {
