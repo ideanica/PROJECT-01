@@ -58,8 +58,9 @@
             </section>
 
             <footer class="detail-record-section bg-zinc-950 text-center text-sm text-white">
-                Punya pesanan lain? <a class="font-semibold underline decoration-white/40 underline-offset-4 hover:decoration-white" href="{{ route('tracking.index') }}">Cari seluruh riwayat dengan username LINE</a>
+                Punya pesanan lain? <a class="font-semibold underline decoration-white/40 underline-offset-4 hover:decoration-white" href="{{ route('tracking.index') }}">Cari seluruh riwayat dengan username</a>
             </footer>
         </article>
     </div></main>
 </x-layouts.app>
+

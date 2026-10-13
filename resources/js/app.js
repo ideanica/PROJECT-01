@@ -1,4 +1,20 @@
 import $ from 'jquery';
+import './password-monitor';
+import './profile-photo';
+
+document.querySelectorAll('[data-profile-edit-form]').forEach((form) => {
+    const button = form.querySelector('[data-profile-save]');
+    form.addEventListener('submit', () => {
+        button.disabled = true;
+        button.textContent = 'Menyimpan...';
+        form.setAttribute('aria-busy', 'true');
+    });
+    window.addEventListener('pageshow', () => {
+        button.disabled = false;
+        button.textContent = 'Simpan profil';
+        form.removeAttribute('aria-busy');
+    });
+});
 
 window.$ = window.jQuery = $;
 
@@ -113,20 +129,23 @@ const initializeAdminSelects = async () => {
     if (typeof $.fn.select2 !== 'function') attachSelect2(window, $);
 
     const enhanceSelects = (root = document) => {
-        const selector = '.admin-shell select:not([data-native-select]):not(.select2-hidden-accessible)';
+        const selector = '.admin-shell select:not([data-native-select]):not(.select2-hidden-accessible), select[data-auth-select2]:not(.select2-hidden-accessible)';
         const candidates = $(root).is(selector) ? $(root) : $(root).find(selector);
 
         candidates
             .each(function () {
                 const select = $(this);
                 const modal = select.closest('.status-modal');
+                const isAuthSelect = select.is('[data-auth-select2]');
                 select.select2({
                     width: '100%',
                     dropdownParent: modal.length ? modal : $(document.body),
-                    dropdownCssClass: select.closest('.admin-form-shell').length
-                        ? 'admin-form-select2-dropdown'
-                        : '',
-                    minimumResultsForSearch: select.find('option').length > 6 ? 0 : Infinity,
+                    dropdownCssClass: isAuthSelect
+                        ? 'auth-select2-dropdown'
+                        : select.closest('.admin-form-shell').length
+                            ? 'admin-form-select2-dropdown'
+                            : '',
+                    minimumResultsForSearch: isAuthSelect || select.find('option').length > 6 ? 0 : Infinity,
                 });
             });
     };

@@ -5,7 +5,7 @@ Sistem pengelolaan pesanan Kpop merchandise berdasarkan customer, batch pembelia
 ## Alur utama
 
 - Customer dapat mengecek satu pesanan tanpa login melalui kode pesanan.
-- Customer dapat mencari username LINE yang didaftarkan admin untuk melihat seluruh riwayat pembeliannya tanpa login.
+- Customer dapat mencari username yang didaftarkan admin untuk melihat seluruh riwayat pembeliannya tanpa login.
 - Status pesanan mengikuti status batch secara default. Admin dapat memberi override pada satu pesanan atau satu item jika kondisinya berbeda.
 - Admin mengelola nama, email, telepon, alamat customer, katalog produk, batch, pesanan, status, dan log perubahan status.
 - Produk aktif muncul pada dropdown form pesanan dan otomatis mengisi nama, varian, serta harga awal.
@@ -34,19 +34,37 @@ Konfigurasi bawaan menggunakan SQLite. Pastikan ekstensi `pdo_sqlite` dan `sqlit
 
 Ganti seluruh kredensial demo sebelum digunakan di production.
 
-## LINE Login untuk member
+## Login dan registrasi customer
 
-1. Buat LINE Login channel dengan tipe aplikasi Web app di LINE Developers Console.
-2. Daftarkan callback URL yang sama persis dengan URL aplikasi, misalnya `https://domain-kamu.com/auth/line/callback`.
-3. Isi konfigurasi berikut di `.env` lokal dan Environment Variables hosting:
+- `/login`: username dan password untuk customer; tautan **Daftar terlebih dahulu** membuka `/register`.
+- Registrasi memerlukan nama, username unik, email unik, pilihan group aktif atau “Belum memilih”, password minimal 8 karakter, dan konfirmasi password. Registrasi tidak menggabungkan data buyer lama otomatis.
+- `/admin/login`: email dan password admin tetap dapat digunakan. Akun admin juga dapat login menggunakan username di `/login`.
+- Admin mengelola **Customer / Buyer** (identitas, akun login, detail dan riwayat pesanan) serta **Group** (label, daftar customer, aktif/nonaktif).
+- **Kelola Status** memiliki tiga tab: Status Tracking, Status Pembayaran, dan Label Group. Scope lama tetap tersimpan untuk menjaga relasi batch, pesanan, item, dan histori; status tracking baru dapat dipakai lintas perjalanan pesanan. Group disimpan terpisah dari status pesanan.
 
-```text
-LINE_CHANNEL_ID=1234567890
-LINE_CHANNEL_SECRET=channel-secret-dari-line
-LINE_REDIRECT_URI=https://domain-kamu.com/auth/line/callback
+### Reset password
+
+- Customer dan admin memakai **Lupa password?** pada `/login`, lalu memasukkan email akun.
+- Tautan email berlaku 60 menit dan sekali pakai. Password baru mengikuti validasi password kuat; reset tidak mengubah role, group, atau persetujuan registrasi.
+- Setelah reset, login kembali dengan password baru. Sesi lama dan token "ingat sesi" tidak lagi berlaku.
+- Pengiriman menggunakan mailer Laravel tanpa worker antrean. Atur `APP_URL` ke URL aplikasi yang benar, `MAIL_MAILER=smtp`, serta `MAIL_HOST`, `MAIL_PORT`, `MAIL_USERNAME`, `MAIL_PASSWORD`, `MAIL_SCHEME`, dan `MAIL_FROM_ADDRESS` sesuai layanan email. Simpan kredensial hanya di environment.
+- Dengan `MAIL_MAILER=log`, email hanya masuk ke log lokal dan tidak dikirim ke inbox. Jangan gunakan mailer ini untuk reset password di production.
+
+### Memperbarui instalasi existing
+
+```bash
+git switch backend
+git pull origin backend
+composer install
+php artisan migrate
+php artisan optimize:clear
+npm ci
+npm run build
 ```
 
-Setelah mengubah konfigurasi pada server yang memakai cache, jalankan `php artisan config:clear`. Login member tersedia melalui menu **Profil** pada navigasi publik; `/login` tetap khusus admin.
+Setelah migrasi, admin perlu membuat minimal satu group aktif agar registrasi tersedia. Akun LINE lama tetap memiliki buyer dan riwayat yang sama, tetapi login LINE dinonaktifkan. Buka **Customer / Buyer → Edit Pelanggan**, periksa username/email, isi password baru dan konfirmasinya, lalu simpan. Jangan membuat buyer baru untuk akun lama. Akun admin existing tetap bisa login dengan email; username fallback yang dibuat migrasi adalah `admin-ID` jika tidak memiliki username buyer yang tersedia.
+
+Group nonaktif tidak dapat dipilih pada registrasi; membership customer lama dipertahankan. Buyer nonaktif tidak dapat login atau melanjutkan sesi yang sudah ada. Tidak ada penghapusan histori atau reset database dalam migrasi ini.
 
 ## Pengujian
 
@@ -154,3 +172,10 @@ Setelah environment variables tersimpan, jalankan deploy. Setiap push berikutnya
 - Session menggunakan cookie terenkripsi sehingga login admin tidak bergantung pada filesystem function.
 - Upload file permanen harus memakai object storage seperti S3; `/tmp` tidak persisten.
 - Migrasi tidak dijalankan otomatis saat build untuk menghindari perubahan database dari Preview Deployment.
+
+
+### Persetujuan registrasi tanpa group
+
+Registrasi “Belum memilih” tersimpan sebagai permintaan tertunda. Akun belum dapat login atau dipilih untuk pesanan baru. Admin membuka **Customer dan Group → Permintaan registrasi → Detail**, memilih label group aktif, lalu menekan **Tentukan group & setujui akun**. Edit customer biasa tidak menyetujui permintaan. Registrasi dengan group aktif langsung diterima.
+
+Jumlah anggota pada tab Customer dan Label Group menghitung seluruh record customer/buyer yang tergabung, termasuk yang nonaktif. Permintaan tanpa group tidak dihitung dalam group mana pun. Kelola Status hanya memuat tracking dan pembayaran; label dibuat melalui **Customer dan Group → Label Group**. Jalankan `php artisan migrate` setelah memperbarui kode.

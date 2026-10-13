@@ -1,7 +1,7 @@
 @php
-    $isMember = (bool) $member;
-    $isAdminUser = (bool) ($user && !$member);
-    $loginUrl = route('line-auth.redirect');
+    $isMember = (bool) ($user?->role === 'customer' && $member);
+    $isAdminUser = $user?->isAdmin() === true;
+    $loginUrl = route('login');
     $profileName = $member?->display_name ?: ($isAdminUser ? $user->name : 'Login');
     $profileActionUrl = $isMember ? route('orders.history') : ($isAdminUser ? route('admin.dashboard') : $loginUrl);
     $months = collect(range(5, 0))->map(fn ($offset) => now()->subMonths($offset));
@@ -21,6 +21,17 @@
 @endphp
 
 <x-layouts.app title="Profil Member — Ocean Paws">
+    <style>
+        .ocean-profile .profile-page {
+            padding-top: 24px;
+        }
+
+        @media (max-width: 720px) {
+            .ocean-profile .profile-page {
+                padding-top: 20px;
+            }
+        }
+    </style>
     <div class="page profile-page">
         <div class="profile-shell profile-stack">
             <h1 class="sr-only">Profil Ocean Paws</h1>
@@ -37,7 +48,13 @@
                             <div class="profile-photo">
                                 @if($member->avatar_url)<img src="{{ $member->avatar_url }}" alt="Foto profil {{ $member->display_name }}">@else<span>{{ mb_strtolower(mb_substr($member->display_name, 0, 1)) }}</span>@endif
                             </div>
-                            <div><strong class="block text-[14px]">{{ $profileName }}</strong><span class="member-pill">MEMBER <x-public-icon name="chevron-right" :size="10" /></span></div>
+                            <div>
+                                <strong class="block text-[14px]">{{ $profileName }}</strong>
+                                <div class="profile-member-labels">
+                                    <span class="member-pill">MEMBER <x-public-icon name="chevron-right" :size="10" /></span>
+                                    <span class="member-pill profile-group-pill">{{ $member->customerGroup?->name ?? 'Belum ada group' }}</span>
+                                </div>
+                            </div>
                         @elseif($isAdminUser)
                             <a href="{{ route('admin.dashboard') }}" class="profile-person">
                                 <div class="profile-photo"><span>{{ mb_strtolower(mb_substr($profileName, 0, 1)) }}</span></div>
@@ -46,24 +63,36 @@
                         @else
                             <a href="{{ $loginUrl }}" class="profile-person">
                                 <div class="profile-photo is-empty"><span aria-hidden="true"><x-public-icon name="user" :size="23" /></span></div>
-                                <div><strong class="block text-[14px]" data-i18n-id="Login" data-i18n-en="Login">Login</strong><span class="profile-login-label"><span data-i18n-id="MASUK DENGAN LINE" data-i18n-en="LOGIN WITH LINE">MASUK DENGAN LINE</span> <x-public-icon name="chevron-right" :size="10" /></span></div>
+                                <div><strong class="block text-[14px]" data-i18n-id="Login" data-i18n-en="Login">Login</strong><span class="profile-login-label"><span data-i18n-id="MASUK KE AKUN" data-i18n-en="LOGIN TO ACCOUNT">MASUK KE AKUN</span> <x-public-icon name="chevron-right" :size="10" /></span></div>
                             </a>
                         @endif
                     </div>
 
-                    @if($isMember)
+                    @if($isMember || $isAdminUser)
                         <button type="button" class="settings-btn" aria-label="Buka pengaturan" aria-expanded="false" aria-controls="profile-settings-panel" data-profile-settings-button><x-public-icon name="settings" :size="18" /></button>
-                    @elseif($isAdminUser)
-                        <a href="{{ route('admin.dashboard') }}" class="settings-btn" aria-label="Dashboard admin"><x-public-icon name="grid" :size="18" /></a>
                     @endif
                 </div>
 
-                @if($isMember)
+                @if($isMember || $isAdminUser)
                     <section id="profile-settings-panel" class="profile-settings-panel" data-profile-settings-panel hidden>
                         <header>
                             <div><span class="micro" data-i18n-id="PREFERENSI" data-i18n-en="PREFERENCES">PREFERENSI</span><strong data-i18n-id="Pengaturan akun" data-i18n-en="Account settings">Pengaturan akun</strong></div>
                             <button type="button" aria-label="Tutup pengaturan" data-profile-settings-close><x-public-icon name="close" :size="15" /></button>
                         </header>
+
+                        <a href="{{ route('profile.detail') }}" class="profile-preference-card">
+                            <span class="profile-preference-icon"><x-public-icon name="user" :size="17" /></span>
+                            <span class="profile-preference-copy"><strong>Edit profil</strong><small>{{ $isAdminUser ? 'Nama, email, dan password' : 'Identitas, kontak, dan alamat' }}</small></span>
+                            <x-public-icon name="chevron-right" :size="15" />
+                        </a>
+
+                        @if($isAdminUser)
+                            <a href="{{ route('admin.dashboard') }}" class="profile-preference-card">
+                                <span class="profile-preference-icon"><x-public-icon name="grid" :size="17" /></span>
+                                <span class="profile-preference-copy"><strong>Halaman admin</strong><small>Kelola customer dan pesanan</small></span>
+                                <x-public-icon name="chevron-right" :size="15" />
+                            </a>
+                        @endif
 
                         <label class="profile-preference-card">
                             <span class="profile-preference-icon"><x-public-icon name="radio" :size="17" /></span>
@@ -99,12 +128,12 @@
                 </section>
             </section>
 
-            @if(!$user && !$lineConfigured)
-                <p class="profile-line-config"><x-public-icon name="link" :size="14" /> LINE Login belum dikonfigurasi oleh admin.</p>
+            @if(!$user)
+                <p class="profile-line-config">Belum punya akun? <a href="{{ route('register') }}" class="font-semibold underline">Daftar terlebih dahulu</a></p>
             @endif
 
             <section class="section-card activity-card">
-                <div class="activity-head"><span class="icon-chip"><x-public-icon name="sparkle" :size="20" /></span><div><strong class="block text-[12px]" data-i18n-id="Rekap aktivitas kamu" data-i18n-en="Your activity recap">Rekap aktivitas kamu</strong><span class="block text-[10px] text-[#5a7fa4]" data-i18n-id="{{ $isMember ? 'Semua aktivitas akun LINE kamu.' : 'Login untuk melihat aktivitasmu.' }}" data-i18n-en="{{ $isMember ? 'All activity from your LINE account.' : 'Login to view your activity.' }}">{{ $isMember ? 'Semua aktivitas akun LINE kamu.' : 'Login untuk melihat aktivitasmu.' }}</span></div></div>
+                <div class="activity-head"><span class="icon-chip"><x-public-icon name="sparkle" :size="20" /></span><div><strong class="block text-[12px]" data-i18n-id="Rekap aktivitas kamu" data-i18n-en="Your activity recap">Rekap aktivitas kamu</strong><span class="block text-[10px] text-[#5a7fa4]" data-i18n-id="{{ $isMember ? 'Semua aktivitas akun customer kamu.' : 'Login untuk melihat aktivitasmu.' }}" data-i18n-en="{{ $isMember ? 'All activity from your customer account.' : 'Login to view your activity.' }}">{{ $isMember ? 'Semua aktivitas akun customer kamu.' : 'Login untuk melihat aktivitasmu.' }}</span></div></div>
                 <div class="activity-summary">
                     <div class="metric-card"><span class="tiny-icon"><x-public-icon name="history" :size="16" /></span><div class="metric-copy"><strong>{{ $summary['orders'] }}</strong><span data-i18n-id="Total pesanan" data-i18n-en="Total orders">Total pesanan</span></div></div>
                     <div class="metric-card"><span class="tiny-icon"><x-public-icon name="box" :size="16" /></span><div class="metric-copy"><strong>{{ $summary['items'] }}</strong><span data-i18n-id="Jajanan tercatat" data-i18n-en="Recorded items">Jajanan tercatat</span></div></div>

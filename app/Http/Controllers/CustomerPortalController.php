@@ -14,7 +14,7 @@ class CustomerPortalController extends Controller
         $member = $user?->member;
 
         if (! $user) {
-            return redirect()->route('line-auth.redirect');
+            return redirect()->route('login');
         }
 
         if (! $member) {
@@ -105,7 +105,7 @@ class CustomerPortalController extends Controller
                 [
                     'icon' => 'search',
                     'title' => 'Lacak Pesanan',
-                    'description' => 'Cari status terkini menggunakan kode pesanan atau username LINE.',
+                    'description' => 'Cari status terkini menggunakan kode pesanan atau username.',
                     'note' => 'Data real-time',
                     'url' => route('tracking.index'),
                 ],

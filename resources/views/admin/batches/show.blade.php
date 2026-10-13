@@ -1,21 +1,19 @@
 <x-layouts.app title="Batch {{ $batch->batch_number }}">
-    <div class="[&_h1]:text-black!">
-        <x-page-heading title="Detail Batch" description="Seluruh informasi batch, progres, dan pesanan terkait dalam satu tampilan.">
-            <x-slot:action>
-                <div class="flex flex-wrap gap-2">
-                    @unless($batch->is_archived)
-                        <a class="admin-form-primary" href="{{ route('admin.member-orders.create', ['batch_id' => $batch->id], false) }}">+ Tambah Pesanan</a>
-                        <a class="admin-form-secondary" href="{{ route('admin.batches.edit', $batch, false) }}">Edit Batch</a>
-                    @endunless
-                </div>
-            </x-slot:action>
-        </x-page-heading>
-    </div>
+    <x-page-heading title="Detail Batch" description="Seluruh informasi batch, progres, dan pesanan terkait dalam satu tampilan.">
+        <x-slot:action>
+            <div class="flex flex-wrap gap-2">
+                @unless($batch->is_archived)
+                    <a class="admin-form-primary" href="{{ route('admin.member-orders.create', ['batch_id' => $batch->id], false) }}">+ Tambah Pesanan</a>
+                    <a class="admin-form-secondary" href="{{ route('admin.batches.edit', $batch, false) }}">Edit Batch</a>
+                @endunless
+            </div>
+        </x-slot:action>
+    </x-page-heading>
 
-    <article class="detail-record-card before:bg-none! [&_.detail-record-hero]:bg-[linear-gradient(135deg,#ffffff,#f6faf6_58%,#eef6ef)]!">
+    <article class="detail-record-card">
         <header class="detail-record-hero">
             <div class="min-w-0">
-                <p class="detail-record-kicker text-[#275a3a]!">Batch Pembelian</p>
+                <p class="detail-record-kicker">Batch Pembelian</p>
                 <div class="mt-2 flex flex-wrap items-center gap-3">
                     <h2 class="detail-record-title">{{ $batch->batch_number }}</h2>
                     <x-status-badge :status="$batch->currentStatus" />
@@ -175,7 +173,7 @@
                         @forelse($batch->orders as $order)
                             <tr>
                                 <td data-label="Pesanan"><div class="order-table-primary text-violet-700">{{ $order->order_code }}</div></td>
-                                <td data-label="Pelanggan"><div class="order-table-primary">{{ $order->member->display_name }}</div><div class="order-table-secondary">LINE: {{ $order->member->username }}</div></td>
+                                <td data-label="Pelanggan"><div class="order-table-primary">{{ $order->member->display_name }}</div><div class="order-table-secondary">Username: {{ $order->member->username }}</div></td>
                                 <td data-label="Item" class="font-semibold text-zinc-700">{{ $order->items->sum('quantity') }}</td>
                                 <td data-label="Pembayaran"><div class="order-table-primary">{{ $order->payment_type_label }}</div><div class="order-table-secondary">{{ $order->payment_amount ? 'Rp '.number_format($order->payment_amount, 0, ',', '.') : 'Belum ada pembayaran' }}</div></td>
                                 <td data-label="Status efektif"><x-status-badge :status="$order->effective_status" /></td>

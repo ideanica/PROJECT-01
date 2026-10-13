@@ -10,16 +10,8 @@
 </head>
 <body class="op-body">
 @php
-    $lineDestination = auth()->user()?->member ? route('orders.index') : route('line-auth.redirect');
+    $loginDestination = auth()->user()?->member ? route('orders.index') : route('login');
     $tickerItems = ['ALBUM', 'LIGHTSTICK', 'KEYCHAIN', 'PHOTOCARD', 'POSTER', 'POB', 'PLUSHIE', 'TRADING CARD', 'FAN KIT', "SEASON'S GREETINGS"];
-    $mobileCategories = [
-        ['name' => 'Album', 'icon' => 'album'],
-        ['name' => 'Lightstick', 'icon' => 'lightstick'],
-        ['name' => 'Keychain', 'icon' => 'keychain'],
-        ['name' => 'Photocard', 'icon' => 'photocard'],
-        ['name' => 'Poster', 'icon' => 'poster'],
-        ['name' => 'POB', 'icon' => 'pob'],
-    ];
 @endphp
 
 <div class="op-page">
@@ -27,21 +19,7 @@
         <img class="op-sky-cloud op-sky-cloud-a" src="{{ asset('assets/glossy_pastel_pink_cloud.png') }}" alt="" aria-hidden="true">
         <img class="op-sky-cloud op-sky-cloud-b" src="{{ asset('assets/pastel_pink_cloud_with_soft_highlights.png') }}" alt="" aria-hidden="true">
 
-        <header class="op-browser op-header op-mobile-navbar">
-            <div class="op-browserbar">
-                <span class="op-window-dots" aria-hidden="true"><i></i><i></i><i></i></span>
-            </div>
-            <div class="op-navrow">
-                <a class="op-brand" href="#home" aria-label="Ocean Paws home"><span class="op-brand-logo"><img src="{{ asset('assets/oceanpaws-logo-no-sticker.png') }}" alt="Ocean Paws — Bringing your favorites closer"></span></a>
-                <nav class="op-nav" aria-label="Navigasi utama">
-                    <a class="is-active" href="#home"><i class="bi bi-house-heart-fill"></i><span>Home</span></a>
-                    <a href="{{ route('tracking.index') }}"><i class="bi bi-truck-front-fill"></i><span>Tracking</span></a>
-                    @auth
-                        <a href="{{ route('profile.show') }}"><i class="bi bi-person-circle"></i><span>Profile</span></a>
-                    @endauth
-                </nav>
-            </div>
-        </header>
+        <x-ocean-primary-navbar active="home" home-href="#home" mode="landing" />
 
         <div class="op-hero-scene">
             <img class="op-hero-wave" src="{{ asset('assets/ocean_paws_hero_ripples_wave.png') }}" alt="" aria-hidden="true">
@@ -51,15 +29,14 @@
                 <div class="op-browserbar"><strong>OCEANPAWS.EXE</strong><span class="op-window-dots" aria-hidden="true"><i></i><i></i><i></i></span></div>
                 <div class="op-copy-inner">
                     <div class="op-copy-main">
-                        <small>OCEANPAWS, since 2025</small>
                         <h1>Where every <em>WISH</em> <br>comes a little closer
                             <svg class="op-heading-star op-heading-star-pink" viewBox="0 0 200 200" aria-hidden="true" focusable="false"><path d="M195 100c-87.305 4.275-90.725 7.695-95 95-4.275-87.305-7.695-90.725-95-95 87.305-4.275 90.725-7.695 95-95 4.275 87.305 7.695 90.725 95 95" /></svg>
                             <svg class="op-heading-star op-heading-star-green" viewBox="0 0 200 200" aria-hidden="true" focusable="false"><path d="M195 100c-87.305 4.275-90.725 7.695-95 95-4.275-87.305-7.695-90.725-95-95 87.305-4.275 90.725-7.695 95-95 4.275 87.305 7.695 90.725 95 95" /></svg>
                         </h1>
                         <p>Shop your NCT WISH favorites with us and <br>make every WISH a little more special <svg class="op-inline-heart" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78Z" /></svg></p>
                         <div class="op-actions">
-                            <a class="op-line" href="{{ $lineDestination }}"><b>LINE</b><span>{{ auth()->user()?->member ? 'Buka Pesanan' : 'Login via LINE' }}</span><i class="bi bi-arrow-right"></i></a>
-                            <a class="op-search" href="{{ route('tracking.index') }}"><i class="bi bi-search"></i><span>Lacak Pesanan</span></a>
+                            <a class="op-line" href="{{ $loginDestination }}"><svg xmlns="http://www.w3.org/2000/svg" class="op-login-icon" viewBox="0 0 640 640" width="24" height="24" fill="#355a45" aria-hidden="true" focusable="false" style="display:block;width:24px;height:24px;flex:0 0 24px;"><!--!Font Awesome Free v7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc.--><path d="M409 337C418.4 327.6 418.4 312.4 409 303.1L265 159C258.1 152.1 247.8 150.1 238.8 153.8C229.8 157.5 224 166.3 224 176L224 256L112 256C85.5 256 64 277.5 64 304L64 336C64 362.5 85.5 384 112 384L224 384L224 464C224 473.7 229.8 482.5 238.8 486.2C247.8 489.9 258.1 487.9 265 481L409 337zM416 480C398.3 480 384 494.3 384 512C384 529.7 398.3 544 416 544L480 544C533 544 576 501 576 448L576 192C576 139 533 96 480 96L416 96C398.3 96 384 110.3 384 128C384 145.7 398.3 160 416 160L480 160C497.7 160 512 174.3 512 192L512 448C512 465.7 497.7 480 480 480L416 480z"/></svg><span>{{ auth()->user()?->member ? 'Buka Pesanan' : 'Login Akun' }}</span></a>
+                            <a class="op-search" href="{{ route('tracking.index') }}"><x-public-icon name="search" variant="rounded-bold" :size="24" /><span>Lacak Pesanan</span></a>
                         </div>
                     </div>
                     <div class="op-copy-hearts" aria-hidden="true">
@@ -105,7 +82,7 @@
                     <div class="op-polaroid op-polaroid-back"></div><div class="op-polaroid op-polaroid-mid"></div>
                     <div class="op-polaroid op-polaroid-front">
                         <header class="op-photo-titlebar"><strong>OCEAN PAWS.JPG</strong><span class="op-window-dots"><i></i><i></i><i></i></span></header>
-                        <figure class="op-photo-screen"><img src="{{ asset('assets/kawaii_cat_ocean_paws_parcel.png') }}" alt=""></figure>
+                        <figure class="op-photo-screen"><img src="{{ asset('assets/oceanpaws-pastel-beach-parcel-v8.webp') }}" alt="Maskot Ocean Paws memegang paket di pantai" width="1448" height="1086" style="object-fit:cover;object-position:center 45%;transform:scale(1.22);transform-origin:center 45%;"></figure>
                         <footer class="op-photo-status"><span>Good Music · Brighter Days<br>with OCEANPAWS ♡</span><b>01 / 03</b></footer>
                     </div>
                 </div>
@@ -137,32 +114,38 @@
         <section class="op-cta" aria-labelledby="cta-title">
             <img class="op-cta-wave" src="{{ asset('assets/pastel_mint_ocean_wave_banner.png') }}" alt="" aria-hidden="true">
             <img class="op-cta-mascot" src="{{ asset('assets/oceanpaws-cta-resting-mascot.png') }}" alt="Maskot Ocean Paws di pelampung">
-            <div class="op-cta-copy"><h2 id="cta-title">Let's get closer<br><span>to your <em>WISH!</em></span></h2><a class="op-line" href="{{ $lineDestination }}"><b>LINE</b><span>{{ auth()->user()?->member ? 'Buka Pesanan' : 'Login via LINE' }}</span><i class="bi bi-arrow-right"></i></a></div>
+            <div class="op-cta-copy"><h2 id="cta-title">Let's get closer<br><span>to your <em>WISH!</em></span></h2><a class="op-line" href="{{ $loginDestination }}"><svg xmlns="http://www.w3.org/2000/svg" class="op-login-icon" viewBox="0 0 640 640" width="24" height="24" fill="#355a45" aria-hidden="true" focusable="false" style="display:block;width:24px;height:24px;flex:0 0 24px;"><!--!Font Awesome Free v7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc.--><path d="M409 337C418.4 327.6 418.4 312.4 409 303.1L265 159C258.1 152.1 247.8 150.1 238.8 153.8C229.8 157.5 224 166.3 224 176L224 256L112 256C85.5 256 64 277.5 64 304L64 336C64 362.5 85.5 384 112 384L224 384L224 464C224 473.7 229.8 482.5 238.8 486.2C247.8 489.9 258.1 487.9 265 481L409 337zM416 480C398.3 480 384 494.3 384 512C384 529.7 398.3 544 416 544L480 544C533 544 576 501 576 448L576 192C576 139 533 96 480 96L416 96C398.3 96 384 110.3 384 128C384 145.7 398.3 160 416 160L480 160C497.7 160 512 174.3 512 192L512 448C512 465.7 497.7 480 480 480L416 480z"/></svg><span>{{ auth()->user()?->member ? 'Buka Pesanan' : 'Login Akun' }}</span></a></div>
             <img class="op-cta-palm" src="{{ asset('assets/kawaii_pastel_palm_tree_sticker.png') }}" alt="" aria-hidden="true">
             <div class="op-cta-sign"><img src="{{ asset('assets/oceanpaws-cta-wood-sign-v1.png') }}" alt="" aria-hidden="true"><span>NCT WISH<br><b>A BRIGHTER<br>TOMORROW<br>TOGETHER ♡</b></span></div>
             <img class="op-cta-sand" src="{{ asset('assets/oceanpaws-cta-sand-only-v2.png') }}" alt="" aria-hidden="true">
             <img class="op-cta-starfish" src="{{ asset('assets/oceanpaws-cta-starfish-3d-v1.png') }}" alt="" aria-hidden="true">
         </section>
 
-        <section class="op-mobile-popular" aria-labelledby="op-mobile-popular-title">
-            <h2 id="op-mobile-popular-title"><span aria-hidden="true">✿</span> Popular Categories</h2>
-            <div class="op-mobile-category-grid">
-                @foreach ($mobileCategories as $category)
-                    <article class="op-mobile-category-card">
-                        <span class="op-category-icon is-{{ $category['icon'] }}" aria-hidden="true"></span>
-                        <h3>{{ $category['name'] }}</h3>
-                    </article>
-                @endforeach
-            </div>
+
+        <div class="op-mobile-tracking-wrap">
             <a class="op-mobile-tracking" href="{{ route('tracking.index') }}">
-                <i class="bi bi-search" aria-hidden="true"></i>
+                <svg xmlns="http://www.w3.org/2000/svg" class="op-tracking-search-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#9f345c" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" style="display:block;width:28px;height:28px;flex:0 0 28px;color:#9f345c;stroke:#9f345c;"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg>
                 <span><strong>Still looking for your order?</strong><small>Track it here!</small></span>
-                <i class="bi bi-chevron-right" aria-hidden="true"></i>
             </a>
-        </section>
+        </div>
     </main>
 
     <style>
+        @media (max-width: 1023px) {
+            .op-page .op-cta-copy .op-line {
+                width: calc(100% - 20px) !important;
+                min-width: 0 !important;
+                max-width: calc(100% - 20px) !important;
+                box-sizing: border-box;
+                align-self: center;
+            }
+            .op-page .op-cta-copy h2 {
+                margin-bottom: calc(clamp(5px, .9vw, 12px) + 10px) !important;
+            }
+            .op-page .op-cta-mascot {
+                left: calc(-6% - 20px) !important;
+            }
+        }
         .op-footer-reference{
             position:relative;
             isolation:isolate;
@@ -569,72 +552,114 @@
             }
         }
         .op-footer-mobile-links{display:none}
-        @media(max-width:760px){
+        @media(max-width:1023px){
             .op-footer-reference{
-                height:415px;
-                min-height:415px;
+                height:292px;
+                min-height:292px;
                 background-size:auto 100%;
                 background-position:center bottom;
             }
             .op-footer-reference .op-footer-reference-shell{
-                top:36px;
-                left:20px;
-                display:block;
-                width:calc(100% - 40px);
+                top:93px;
+                left:18px;
+                display:grid;
+                width:calc(100% - 36px);
                 height:auto;
+                grid-template-columns:minmax(0,1fr) auto;
+                align-items:center;
+                gap:12px;
                 padding:0;
                 transform:none;
             }
-            .op-footer-reference .op-footer-brand-block img{width:172px;margin:0}
-            .op-footer-reference .op-footer-center{display:block;width:100%;height:auto;margin-top:13px}
-            .op-footer-reference .op-footer-links{display:none}
-            .op-footer-reference .op-footer-mobile-links{display:grid;width:100%;gap:0}
-            .op-footer-reference .op-footer-mobile-links a{
-                display:grid;
-                min-height:31px;
-                grid-template-columns:22px 1fr 18px;
-                align-items:center;
-                gap:7px;
-                border-bottom:1px solid rgba(80,121,93,.16);
-                color:#345e47;
-                font:600 12px/1.2 "Nunito Sans",sans-serif;
-                text-decoration:none;
-            }
-            .op-footer-reference .op-footer-mobile-links a i:first-child{font-size:14px}
-            .op-footer-reference .op-footer-mobile-links a i:last-child{font-size:11px;text-align:right}
-            .op-footer-reference .op-footer-socials{
+            .op-footer-reference .op-footer-brand-block{
                 display:flex;
-                width:180px;
-                max-width:none;
-                height:28px;
-                justify-content:space-between;
-                margin-top:17px;
-                padding:0;
-                border:0;
-            }
-            .op-footer-reference .op-footer-socials a{font-size:20px}
-            .op-footer-reference .op-footer-message{
-                position:absolute;
-                top:247px;
-                right:0;
-                display:flex;
-                width:43%;
-                height:32px;
+                min-width:0;
                 justify-content:flex-start;
-                padding:0;
+                grid-column:1;
             }
-            .op-footer-reference .op-footer-message strong{font-size:10px;line-height:1.3}
-            .op-footer-reference .op-footer-shell-icon{display:none}
+            .op-footer-reference .op-footer-brand-block img{
+                width:clamp(118px,36vw,148px);
+                margin:0;
+            }
+            .op-footer-reference .op-footer-center,
+            .op-footer-reference .op-footer-links,
+            .op-footer-reference .op-footer-mobile-links,
+            .op-footer-reference .op-footer-socials{
+                display:none;
+            }
+            .op-footer-reference .op-footer-message{
+                position:static;
+                display:flex;
+                width:auto;
+                height:auto;
+                grid-column:2;
+                align-items:center;
+                justify-self:end;
+                gap:7px;
+                padding:0;
+                transform:none;
+                text-align:left;
+                white-space:nowrap;
+            }
+            .op-footer-reference .op-footer-message strong{
+                display:grid;
+                gap:1px;
+                font-size:clamp(7px,2.15vw,9px);
+                line-height:1.25;
+                text-align:left;
+            }
+            .op-footer-reference .op-footer-shell-icon{
+                display:block;
+                width:clamp(32px,9vw,40px);
+                height:clamp(32px,9vw,40px);
+            }
             .op-footer-reference .op-footer-bottomline{
                 right:0;
-                bottom:16px;
+                bottom:12px;
                 left:0;
                 width:100%;
                 align-items:center;
                 justify-content:center;
                 color:#f8fff8;
-                font-size:9px;
+                font-size:8px;
                 text-align:center;
+            }
+        }
+
+        /* Continue the sand grid through the footer until the shoreline begins. */
+        @media(max-width:1023px){
+            .op-footer-reference::after{
+                content:"";
+                position:absolute;
+                z-index:2;
+                top:0;
+                right:0;
+                left:0;
+                height:72%;
+                pointer-events:none;
+                background-image:
+                    linear-gradient(rgba(211,190,151,.075) 1px,transparent 1px),
+                    linear-gradient(90deg,rgba(211,190,151,.075) 1px,transparent 1px);
+                background-size:38px 38px;
+                background-position:0 0;
+            }
+        }
+
+        @media(max-width:380px){
+            .op-footer-reference .op-footer-reference-shell{
+                left:14px;
+                width:calc(100% - 28px);
+                gap:8px;
+            }
+            .op-footer-reference .op-footer-brand-block img{
+                width:112px;
+            }
+            .op-footer-reference .op-footer-message{
+                gap:5px;
+            }
+            .op-footer-reference .op-footer-shell-icon{
+                width:30px;
+                height:30px;
             }
         }
     </style>
@@ -645,27 +670,6 @@
                 <a href="#home" aria-label="Ocean Paws — kembali ke atas">
                     <img src="{{ asset('assets/oceanpaws-logo-no-sticker.png') }}" alt="Ocean Paws">
                 </a>
-            </div>
-
-            <div class="op-footer-center">
-                <nav class="op-footer-links" aria-label="Navigasi footer">
-                    <a href="#home">Home</a>
-                    <a href="#about">Layanan</a>
-                    <a href="{{ route('tracking.index') }}">Tracking</a>
-                    <a href="#about">FAQ</a>
-                </nav>
-                <nav class="op-footer-mobile-links" aria-label="Navigasi footer seluler">
-                    <a href="#home"><i class="bi bi-house-door-fill" aria-hidden="true"></i><span>Home</span><i class="bi bi-arrow-right" aria-hidden="true"></i></a>
-                    <a href="#about"><i class="bi bi-grid-fill" aria-hidden="true"></i><span>Layanan</span><i class="bi bi-arrow-right" aria-hidden="true"></i></a>
-                    <a href="{{ route('tracking.index') }}"><i class="bi bi-truck-front-fill" aria-hidden="true"></i><span>Tracking</span><i class="bi bi-arrow-right" aria-hidden="true"></i></a>
-                    <a href="#about"><i class="bi bi-chat-square-dots-fill" aria-hidden="true"></i><span>FAQ</span><i class="bi bi-arrow-right" aria-hidden="true"></i></a>
-                </nav>
-                <div class="op-footer-socials" aria-label="Media sosial Ocean Paws">
-                    <a href="#" aria-label="Instagram"><i class="bi bi-instagram" aria-hidden="true"></i></a>
-                    <a href="#" aria-label="X"><i class="bi bi-twitter-x" aria-hidden="true"></i></a>
-                    <a href="#" aria-label="TikTok"><i class="bi bi-tiktok" aria-hidden="true"></i></a>
-                    <a href="#" aria-label="YouTube"><i class="bi bi-youtube" aria-hidden="true"></i></a>
-                </div>
             </div>
 
             <div class="op-footer-message">

@@ -63,6 +63,8 @@ class CustomerMemberSeeder extends Seeder
             [
                 'member_id' => $demoMember->id,
                 'name' => $demoMember->display_name,
+                'username' => $demoMember->username,
+                'password_set_at' => now(),
                 'password' => Hash::make('password'),
                 'role' => 'customer',
                 'line_user_id' => $demoMember->line_user_id,

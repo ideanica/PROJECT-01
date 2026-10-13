@@ -1,113 +1,80 @@
 <x-layouts.app :title="$title.' — Ocean Paws'">
-    <div class="page billing-list-page profile-page">
-        <div class="billing-list-shell profile-shell profile-stack">
-            <div class="detail-topbar">
-                <a class="top-back" href="{{ route('profile.show') }}" aria-label="Kembali ke profil">
-                    <span class="back-btn" aria-label="Kembali">
-                        <x-public-icon name="arrow-left" :size="18" />
-                    </span>
-                </a>
-            </div>
+    <div class="portal-v2 portal-orders-v2">
+        <div class="portal-v2-shell">
+            <a class="portal-v2-back" href="{{ route('profile.show') }}" aria-label="Kembali ke profil">
+                <x-public-icon variant="rounded-bold" name="arrow-left" :size="18" />
+                <span>Kembali</span>
+            </a>
 
-            <header class="billing-list-header profile-main">
-                <span>{{ $eyebrow }}</span>
-                <h1>{{ $title }}</h1>
-                <p>{{ $description }}</p>
-            </header>
-
-            <section class="billing-summary section-card" aria-label="Ringkasan {{ strtolower($title) }}">
-                <span class="billing-summary-icon"><x-public-icon :name="$icon" :size="23" /></span>
-                <div>
+            <section class="portal-v2-hero portal-v2-hero-orders">
+                <div class="portal-v2-hero-copy">
+                    <span class="portal-v2-kicker">{{ $eyebrow }}</span>
+                    <h1>{{ $title }}</h1>
+                    <p>{{ $description }}</p>
+                </div>
+                <div class="portal-v2-hero-stat">
+                    <span class="portal-v2-stat-icon"><x-public-icon variant="rounded-bold" :name="$icon" :size="26" /></span>
                     <small>TOTAL DATA</small>
-                    <strong>{{ $orders->count() }} pesanan</strong>
+                    <strong>{{ $orders->count() }}</strong>
+                    <p>pesanan</p>
                 </div>
             </section>
 
-            <section class="billing-order-grid">
+            <section class="portal-v2-content is-full">
                 @if($user && !$member)
-                    <div class="billing-empty profile-snack-empty">
-                        <x-public-icon name="grid" :size="24" />
-                        <strong>Ini adalah akun admin.</strong>
-                        <p>Gunakan akun LINE customer untuk membuka data pesanan pribadi.</p>
-                        <a href="{{ route('admin.dashboard') }}">Buka dashboard</a>
-                    </div>
+                    <div class="portal-v2-empty"><span class="portal-v2-empty-icon"><x-public-icon variant="rounded-bold" name="grid" :size="32" /></span><small>AKUN ADMIN</small><h2>Data pesanan pribadi tidak tersedia.</h2><p>Gunakan akun customer customer untuk membuka data pesanan pribadi.</p><a href="{{ route('admin.dashboard') }}">Buka dashboard</a></div>
                 @elseif(!$member)
-                    <div class="billing-empty profile-snack-empty">
-                        <x-public-icon :name="$icon" :size="24" />
-                        <strong>Login untuk melihat data pesananmu.</strong>
-                        <p>Halaman ini hanya menampilkan pesanan yang terhubung dengan akun LINE milikmu.</p>
-                        <a href="{{ route('line-auth.redirect') }}">Login dengan LINE</a>
-                    </div>
+                    <div class="portal-v2-empty"><span class="portal-v2-empty-icon"><x-public-icon variant="rounded-bold" :name="$icon" :size="32" /></span><small>PESANAN PRIBADI</small><h2>Login untuk melihat data pesananmu.</h2><p>Halaman ini hanya menampilkan pesanan yang terhubung dengan akun customer milikmu.</p><a href="{{ route('login') }}">Login</a></div>
                 @else
-                    @forelse($orders as $order)
-                        @php
-                            $trackingStatus = $order->tracking_status;
-                            $orderTotal = (float) ($order->total_amount ?: $order->items->sum(fn ($item) => (float) ($item->subtotal ?: $item->unit_price * $item->quantity)));
-                            $paidAmount = (float) ($order->payment_amount ?: 0);
-                            $remainingAmount = max($orderTotal - $paidAmount, 0);
-                            $itemCount = (int) $order->items->sum('quantity');
-                        @endphp
+                    <div class="portal-v2-section-head">
+                        <div><span>DAFTAR PESANAN</span><h2>{{ $title }}</h2></div>
+                        <strong>{{ $orders->count() }} data</strong>
+                    </div>
 
-                        <article class="billing-order-card section-card">
-                            <header>
-                                <span class="billing-order-thumb">
-                                    @if($order->batch->catalog_image_path)
-                                        <img src="{{ $order->batch->catalog_image_url }}" alt="">
+                    <div class="portal-v2-order-grid">
+                        @forelse($orders as $order)
+                            @php
+                                $trackingStatus = $order->tracking_status;
+                                $orderTotal = (float) ($order->total_amount ?: $order->items->sum(fn ($item) => (float) ($item->subtotal ?: $item->unit_price * $item->quantity)));
+                                $paidAmount = (float) ($order->payment_amount ?: 0);
+                                $remainingAmount = max($orderTotal - $paidAmount, 0);
+                                $itemCount = (int) $order->items->sum('quantity');
+                            @endphp
+                            <article class="portal-v2-order-card">
+                                <div class="portal-v2-card-top">
+                                    <span class="portal-v2-thumb">@if($order->batch->catalog_image_path)<img src="{{ $order->batch->catalog_image_url }}" alt="">@else<x-public-icon variant="rounded-bold" name="box" :size="24" />@endif</span>
+                                    <div class="portal-v2-card-title"><small>{{ $order->order_code }}</small><h3>{{ $order->batch->batch_name ?: $order->batch->batch_number }}</h3><p>{{ $order->created_at->translatedFormat('d M Y') }}</p></div>
+                                    @if($trackingStatus)<x-status-badge :status="$trackingStatus" />@endif
+                                </div>
+
+                                <div class="portal-v2-price-box">
+                                    <span>{{ $scope === 'unpaid' ? 'Sisa yang perlu dibayar' : 'Total pesanan' }}</span>
+                                    <strong>Rp {{ number_format($scope === 'unpaid' ? $remainingAmount : $orderTotal, 0, ',', '.') }}</strong>
+                                </div>
+
+                                <div class="portal-v2-meta-grid">
+                                    <div><span>Jumlah item</span><strong>{{ $itemCount }} item</strong></div>
+                                    @if($scope === 'shipping')
+                                        <div><span>Status pengiriman</span><strong>{{ $trackingStatus?->name ?: 'Dalam pengiriman' }}</strong></div>
+                                    @elseif($scope === 'refund')
+                                        <div><span>Status</span><strong>Refund</strong></div>
                                     @else
-                                        <x-public-icon name="box" :size="21" />
+                                        <div><span>Pembayaran</span><strong>{{ $order->paymentStatus?->name ?: $order->payment_type_label }}</strong></div>
                                     @endif
-                                </span>
-                                <div class="billing-order-title">
-                                    <small>{{ $order->order_code }}</small>
-                                    <h2>{{ $order->batch->batch_name ?: $order->batch->batch_number }}</h2>
-                                    <p>{{ $order->created_at->translatedFormat('d M Y') }}</p>
                                 </div>
-                                @if($trackingStatus)<x-status-badge :status="$trackingStatus" />@endif
-                            </header>
 
-                            @if($scope === 'unpaid')
-                                <div class="billing-order-amount">
-                                    <span>Sisa yang perlu dibayar</span>
-                                    <strong>Rp {{ number_format($remainingAmount, 0, ',', '.') }}</strong>
+                                <div class="portal-v2-card-actions">
+                                    <a class="portal-v2-card-action" href="{{ $order->portal_tracking_url }}">{{ $scope === 'shipping' ? 'Lihat tracking' : 'Lihat rincian' }} <x-public-icon variant="rounded-bold" name="arrow-right" :size="14" /></a>
+                                    @if($scope === 'unpaid')<a class="portal-v2-card-action is-secondary" href="{{ route('billing.orders') }}">Buka tagihan</a>@endif
                                 </div>
-                            @else
-                                <div class="billing-order-amount">
-                                    <span>Total pesanan</span>
-                                    <strong>Rp {{ number_format($orderTotal, 0, ',', '.') }}</strong>
-                                </div>
-                            @endif
-
-                            <dl class="billing-order-meta">
-                                <div><dt>Jumlah item</dt><dd>{{ $itemCount }} item</dd></div>
-                                @if($scope === 'shipping')
-                                    <div><dt>Status pengiriman</dt><dd>{{ $trackingStatus?->name ?: 'Dalam pengiriman' }}</dd></div>
-                                @elseif($scope === 'refund')
-                                    <div><dt>Status</dt><dd>Refund</dd></div>
-                                @else
-                                    <div><dt>Pembayaran</dt><dd>{{ $order->paymentStatus?->name ?: $order->payment_type_label }}</dd></div>
-                                @endif
-                            </dl>
-
-                            <footer>
-                                <a href="{{ $order->portal_tracking_url }}">
-                                    {{ $scope === 'shipping' ? 'Lihat tracking' : 'Lihat rincian' }}
-                                    <x-public-icon name="arrow-right" :size="13" />
-                                </a>
-                                @if($scope === 'unpaid')
-                                    <a class="billing-proof-link" href="{{ route('billing.orders') }}">Buka tagihan</a>
-                                @endif
-                            </footer>
-                        </article>
-                    @empty
-                        <div class="billing-empty profile-snack-empty">
-                            <x-public-icon :name="$icon" :size="24" />
-                            <strong>{{ $emptyTitle }}</strong>
-                            <p>{{ $emptyDescription }}</p>
-                            <a href="{{ route('orders.history') }}">Lihat semua pesanan</a>
-                        </div>
-                    @endforelse
+                            </article>
+                        @empty
+                            <div class="portal-v2-empty portal-v2-empty-inline"><span class="portal-v2-empty-icon"><x-public-icon variant="rounded-bold" :name="$icon" :size="32" /></span><small>KOSONG</small><h2>{{ $emptyTitle }}</h2><p>{{ $emptyDescription }}</p><a href="{{ route('orders.history') }}">Lihat semua pesanan</a></div>
+                        @endforelse
+                    </div>
                 @endif
             </section>
         </div>
-    </main>
+    </div>
 </x-layouts.app>
+

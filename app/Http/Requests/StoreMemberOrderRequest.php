@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Member;
 use App\Models\Product;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -68,7 +69,7 @@ class StoreMemberOrderRequest extends FormRequest
 
         return [
             'order_code' => ['prohibited'],
-            // member_id wajib untuk NEW order, harus merujuk ke Member yang LINE-connected + active
+            // member_id wajib untuk NEW order, harus merujuk ke Member yang akun customer siap + aktif
             'member_id' => ['required', 'exists:members,id'],
             // customer_name dan customer_username tidak lagi digunakan untuk pembuatan buyer baru
             'customer_name' => ['prohibited'],
@@ -112,11 +113,11 @@ class StoreMemberOrderRequest extends FormRequest
     {
         return [
             function ($validator) {
-                // Validasi tambahan: member harus LINE-connected dan active untuk NEW order
+                // Validasi tambahan: member harus akun customer siap dan aktif untuk NEW order
                 if ($this->filled('member_id') && ! $this->route('member_order')) {
-                    $member = \App\Models\Member::find($this->integer('member_id'));
+                    $member = Member::find($this->integer('member_id'));
                     if ($member && ! $member->isEligibleForNewOrder()) {
-                        $validator->errors()->add('member_id', 'Member tidak eligible untuk order baru. Member harus LINE-connected dan aktif.');
+                        $validator->errors()->add('member_id', 'Member tidak eligible untuk order baru. Member harus memiliki akun customer dengan password dan aktif.');
                     }
                 }
             },

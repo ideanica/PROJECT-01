@@ -1,15 +1,13 @@
 @php($isRefunded = $order->is_refunded)
 <x-layouts.app title="Pesanan {{ $order->order_code }}">
-    <div class="[&_h1]:text-black!">
-        <x-page-heading title="Detail Pesanan" description="Identitas, pembayaran, item, dan riwayat status dalam satu tampilan.">
-            <x-slot:action><a class="admin-form-secondary" href="{{ route('admin.member-orders.edit', $order, false) }}">Edit Pesanan</a></x-slot:action>
-        </x-page-heading>
-    </div>
+    <x-page-heading title="Detail Pesanan" description="Identitas, pembayaran, item, dan riwayat status dalam satu tampilan.">
+        <x-slot:action><a class="admin-form-secondary" href="{{ route('admin.member-orders.edit', $order, false) }}">Edit Pesanan</a></x-slot:action>
+    </x-page-heading>
 
-    <article class="detail-record-card before:bg-none! [&_.detail-record-hero]:bg-[linear-gradient(135deg,#ffffff,#f6faf6_58%,#eef6ef)]!">
+    <article class="detail-record-card">
         <header class="detail-record-hero">
             <div class="min-w-0">
-                <p class="detail-record-kicker text-[#275a3a]!">Pesanan Pelanggan</p>
+                <p class="detail-record-kicker">Pesanan Pelanggan</p>
                 <div class="mt-2 flex flex-wrap items-center gap-3">
                     <h2 class="detail-record-title">{{ $order->order_code }}</h2>
                     <x-status-badge :status="$order->effective_status" />
@@ -24,7 +22,7 @@
                 <div class="detail-record-field detail-record-field-violet">
                     <span>Pelanggan</span>
                     <strong>{{ $order->member->display_name }}</strong>
-                    <small>LINE: {{ $order->member->username }}</small>
+                    <small>Username: {{ $order->member->username }}</small>
                 </div>
                 <a class="detail-record-field detail-record-field-link detail-record-field-blue" href="{{ route('admin.batches.show', $order->batch, false) }}">
                     <span>Batch</span>
@@ -43,6 +41,9 @@
             @if($order->notes)
                 <div class="detail-record-note"><span>Catatan pesanan</span><p>{{ $order->notes }}</p></div>
             @endif
+            <div class="detail-record-note"><span>Alamat pengiriman</span><p class="whitespace-pre-line">{{ ($order->shipping_address ?? $order->member->address) ?: 'Belum diisi. Konfirmasikan alamat kepada customer sebelum pengiriman.' }}</p>
+                @if($order->shipping_address !== null)<small>Alamat dipertahankan saat customer mengubah profil selama pengiriman.</small>@endif
+            </div>
             <x-order-ems-bill :order="$order" show-empty />
         </section>
 

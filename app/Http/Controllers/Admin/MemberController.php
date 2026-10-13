@@ -4,8 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreMemberRequest;
+use App\Models\CustomerGroup;
 use App\Models\Member;
+use App\Models\User;
+use App\Services\CustomerAccountService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class MemberController extends Controller
@@ -16,6 +21,7 @@ class MemberController extends Controller
     public function index()
     {
         $members = Member::query()
+            ->with(['customerGroup', 'user'])
             ->withCount('orders')
             ->when(request('q'), function ($query, $q) {
                 $query->where(function ($query) use ($q) {
@@ -25,11 +31,13 @@ class MemberController extends Controller
                         ->orWhere('phone', 'like', "%{$q}%");
                 });
             })
+            ->when(request('customer_group_id'), fn ($query, $id) => $query->where('customer_group_id', $id))
+            ->when(request('registration') === 'pending', fn ($query) => $query->whereHas('user', fn ($user) => $user->where('registration_pending', true)))
             ->latest()
             ->paginate(15)
             ->withQueryString();
 
-        return view('admin.members.index', compact('members'));
+        return view('admin.members.index', ['members' => $members, 'groups' => CustomerGroup::withCount('members')->orderBy('name')->get(), 'pendingCount' => User::where('registration_pending', true)->count()]);
     }
 
     /**
@@ -37,18 +45,24 @@ class MemberController extends Controller
      */
     public function create()
     {
-        return view('admin.members.form', ['member' => new Member]);
+        return view('admin.members.form', ['member' => new Member, 'groups' => $this->groups()]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreMemberRequest $request)
+    public function store(StoreMemberRequest $request, CustomerAccountService $accounts)
     {
-        Member::create($request->validated() + [
-            'member_code' => $this->generateMemberCode(),
-            'is_active' => true,
-        ]);
+        DB::transaction(function () use ($request, $accounts): void {
+            $member = Member::create(Arr::except($request->validated(), ['password']) + [
+                'member_code' => $this->generateMemberCode(),
+                'is_active' => true,
+            ]);
+            $accounts->sync($member, $request->input('password'));
+            if ($member->user?->registration_pending) {
+                $member->update(['is_active' => false]);
+            }
+        });
 
         session()->flash('status', 'Pelanggan berhasil ditambahkan.');
 
@@ -60,9 +74,9 @@ class MemberController extends Controller
      */
     public function show(Member $member)
     {
-        $member->load(['orders.batch.currentStatus', 'orders.overrideStatus', 'orders.items']);
+        $member->load(['customerGroup', 'user', 'orders.batch.currentStatus', 'orders.overrideStatus', 'orders.paymentStatus', 'orders.items']);
 
-        return view('admin.members.show', compact('member'));
+        return view('admin.members.show', ['member' => $member, 'groups' => CustomerGroup::where('is_active', true)->orderBy('name')->get()]);
     }
 
     /**
@@ -70,15 +84,22 @@ class MemberController extends Controller
      */
     public function edit(Member $member)
     {
-        return view('admin.members.form', compact('member'));
+        return view('admin.members.form', ['member' => $member, 'groups' => $this->groups($member)]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(StoreMemberRequest $request, Member $member)
+    public function update(StoreMemberRequest $request, Member $member, CustomerAccountService $accounts)
     {
-        $member->update($request->validated() + ['is_active' => $request->boolean('is_active')]);
+        DB::transaction(function () use ($request, $member, $accounts): void {
+            $member = Member::whereKey($member->id)->lockForUpdate()->firstOrFail();
+            $member->update(Arr::except($request->validated(), ['password']) + ['is_active' => $request->boolean('is_active')]);
+            $accounts->sync($member, $request->input('password'));
+            if ($member->user?->registration_pending) {
+                $member->update(['is_active' => false]);
+            }
+        });
 
         session()->flash('status', 'Pelanggan berhasil diperbarui.');
 
@@ -102,5 +123,12 @@ class MemberController extends Controller
         } while (Member::where('member_code', $code)->exists());
 
         return $code;
+    }
+
+    private function groups(?Member $member = null)
+    {
+        return CustomerGroup::query()->where(fn ($query) => $query->where('is_active', true)
+            ->when($member?->customer_group_id, fn ($query, $id) => $query->orWhere('id', $id)))
+            ->orderBy('name')->get();
     }
 }

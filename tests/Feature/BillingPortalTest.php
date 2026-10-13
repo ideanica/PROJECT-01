@@ -17,7 +17,7 @@ class BillingPortalTest extends TestCase
     public function test_order_billing_has_only_unpaid_and_payment_history_tabs(): void
     {
         $member = Member::factory()->create();
-        $user = User::factory()->create(['role' => 'member', 'member_id' => $member->id]);
+        $user = User::factory()->create(['role' => 'customer', 'member_id' => $member->id]);
         $batch = Batch::factory()->create(['batch_name' => 'Batch Billing Caca']);
         $unpaidStatus = OrderStatus::factory()->create([
             'name' => 'Menunggu Pelunasan',

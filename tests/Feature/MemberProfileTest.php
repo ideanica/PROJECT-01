@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Batch;
+use App\Models\CustomerGroup;
 use App\Models\Member;
 use App\Models\MemberOrder;
 use App\Models\OrderItem;
@@ -15,16 +16,30 @@ class MemberProfileTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function test_profile_group_label_uses_the_assigned_group_and_handles_missing_group(): void
+    {
+        $group = CustomerGroup::create(['name' => 'Group Profil']);
+        $member = Member::factory()->create(['customer_group_id' => $group->id]);
+        $user = User::factory()->create(['role' => 'customer', 'member_id' => $member->id]);
+
+        $this->actingAs($user)->get(route('profile.show'))->assertOk()
+            ->assertSee('profile-group-pill', false)->assertSee('Group Profil');
+
+        $member->update(['customer_group_id' => null]);
+        $user->unsetRelation('member');
+        $this->get(route('profile.show'))->assertOk()->assertSee('Belum ada group')->assertDontSee('Group Profil');
+    }
+
     public function test_guest_profile_keeps_the_customer_layout_with_an_empty_avatar_and_login_label(): void
     {
         $this->get(route('profile.show'))
             ->assertOk()
             ->assertSee('profile-photo is-empty', false)
             ->assertSee('>Login</strong>', false)
-            ->assertSee('MASUK DENGAN LINE')
+            ->assertSee('MASUK KE AKUN')
             ->assertDontSee('DATA MILIKMU')
             ->assertDontSee('data-profile-settings-button', false)
-            ->assertSee(route('line-auth.redirect'), false);
+            ->assertSee(route('login'), false);
     }
 
     public function test_full_order_history_stays_private_while_profile_shows_this_months_snacks(): void
@@ -32,7 +47,7 @@ class MemberProfileTest extends TestCase
         $member = Member::factory()->create(['display_name' => 'Caca Member']);
         $otherMember = Member::factory()->create(['display_name' => 'Member Lain']);
         $user = User::factory()->create([
-            'role' => 'member',
+            'role' => 'customer',
             'member_id' => $member->id,
             'line_user_id' => 'U-profile-owner',
         ]);
@@ -94,7 +109,7 @@ class MemberProfileTest extends TestCase
     {
         $member = Member::factory()->create();
         $otherMember = Member::factory()->create();
-        $user = User::factory()->create(['role' => 'member', 'member_id' => $member->id]);
+        $user = User::factory()->create(['role' => 'customer', 'member_id' => $member->id]);
         $thisMonth = now()->startOfMonth();
         $lastMonth = $thisMonth->copy()->subMonth();
 
@@ -138,7 +153,7 @@ class MemberProfileTest extends TestCase
 
         $member = Member::factory()->create();
         $otherMember = Member::factory()->create();
-        $user = User::factory()->create(['role' => 'member', 'member_id' => $member->id]);
+        $user = User::factory()->create(['role' => 'customer', 'member_id' => $member->id]);
 
         $ownOrder = MemberOrder::factory()->create([
             'member_id' => $member->id,

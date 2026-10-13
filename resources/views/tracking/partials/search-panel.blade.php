@@ -1,31 +1,130 @@
-<section class="tracking-lookup-hero" aria-labelledby="order-search-title">
-    <div class="tracking-lookup-frame">
-        <div class="op-browserbar"><strong>TRACKING.EXE</strong><span class="op-window-dots" aria-hidden="true"><i></i><i></i><i></i></span></div>
-    <div class="tracking-lookup-hero-inner">
-        <div class="tracking-lookup-copy">
-            <span class="tracking-lookup-kicker">TRACK YOUR ORDER · TANPA LOGIN</span>
-            <h1 id="order-search-title">Pesananmu,<br><span>selalu terlacak.</span></h1>
-            <p>Masukkan kode pesanan untuk melihat satu perjalanan, atau username LINE untuk membuka seluruh riwayatmu.</p>
+<style>
+/* Scoped to the search content; shared navigation and footer retain their styles. */
+.ocean-tracking .tracking-neo-page.tracking-classic {
+    --classic-ink: #355a45;
+    --classic-outline: #496d54;
+    --classic-card-shadow: #eba4bc;
+    --classic-control-shadow: #90ba9b;
+    --classic-button-shadow: #4d8156;
+    --classic-paper: #fffaf1;
+    --classic-pink: #f8b6cc;
+    --classic-matcha: #96c88a;
+    padding: 36px 0 140px;
+    min-height: calc(100svh - 260px);
+    font-family: "Nunito Sans", sans-serif;
+}
+.ocean-tracking .tracking-classic .tracking-neo-shell {
+    width: min(calc(100% - 32px), 1040px);
+    margin: 0 auto;
+}
+.ocean-tracking .tracking-classic .tracking-neo-heading { max-width: none; margin: 0 0 28px; }
+.ocean-tracking .tracking-classic .tracking-neo-eyebrow {
+    min-height: 28px; padding: 5px 10px; border: 2px solid var(--classic-outline);
+    border-radius: 11px; background: var(--classic-pink); color: var(--classic-ink);
+    box-shadow: var(--customer-shadow-control) #dd9eb3; font-size: 10px; font-weight: 900; letter-spacing: .1em;
+}
+.ocean-tracking .tracking-classic .tracking-neo-heading h1 {
+    margin: 22px 0 0; font-family: "Nunito Sans", sans-serif;
+    font-size: calc(clamp(48px, 12.2vw, 94px) + 1rem); font-weight: 900; line-height: .98;
+    letter-spacing: -.055em; color: #e64675 !important;
+}
+.ocean-tracking .tracking-classic .tracking-neo-heading h1 span {
+    display: block; width: fit-content;
+    -webkit-text-stroke: 2px #355a45;
+    paint-order: stroke fill;
+    text-shadow: -3px 3px 0 #244b35;
+}
+.ocean-tracking .tracking-classic .tracking-neo-heading h1 span:last-child { color: var(--classic-matcha); }
+.ocean-tracking .tracking-classic .tracking-neo-heading p {
+    max-width: 760px; margin: 24px 0 0; color: var(--classic-ink) !important;
+    font-size: clamp(16px, 4.25vw, 23px); font-weight: 600; line-height: 1.3;
+}
+.ocean-tracking .tracking-classic .tracking-neo-search-card {
+    max-width: 760px; overflow: visible; padding: 24px 18px 20px;
+    border: 2px solid var(--classic-outline); border-radius: 16px;
+    background: var(--classic-pink); box-shadow: var(--customer-shadow-card) var(--classic-card-shadow);
+}
+.ocean-tracking .tracking-classic .tracking-neo-form {
+    display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; padding: 0; margin: 0;
+}
+.ocean-tracking .tracking-classic .tracking-neo-input-wrap {
+    min-height: 50px; gap: 14px; padding: 0 16px; border: 2px solid var(--classic-outline);
+    border-radius: 12px; background: var(--classic-paper); box-shadow: var(--customer-shadow-control) var(--classic-control-shadow);
+}
+.ocean-tracking .tracking-classic .tracking-neo-input-icon { color: var(--classic-ink); }
+.ocean-tracking .tracking-classic .tracking-neo-input-icon svg { width: 24px; height: 24px; }
+.ocean-tracking .tracking-classic .tracking-neo-input-wrap input {
+    min-height: 46px; font-family: "Nunito Sans", sans-serif; font-size: 16px; font-weight: 600; color: var(--classic-ink);
+}
+.ocean-tracking .tracking-classic .tracking-neo-input-wrap input::placeholder { color: #858880; opacity: 1; }
+.ocean-tracking .tracking-classic .tracking-neo-input-wrap:focus-within { outline: 3px solid #487553; outline-offset: 4px; }
+.ocean-tracking .tracking-classic .tracking-neo-form button {
+    width: 100%; min-width: 0; min-height: 52px; gap: 16px; padding: 12px 18px;
+    border: 2px solid var(--classic-outline); border-radius: 12px;
+    background: var(--classic-matcha); color: var(--classic-ink);
+    box-shadow: var(--customer-shadow-control) var(--classic-button-shadow); font-size: 18px; font-weight: 900;
+}
+.ocean-tracking .tracking-classic .tracking-neo-form button:hover { transform: translate(-2px, 2px); box-shadow: var(--customer-shadow-pressed) var(--classic-button-shadow); }
+.ocean-tracking .tracking-classic .tracking-neo-form button:focus-visible { outline: 3px solid #487553; outline-offset: 5px; }
+.ocean-tracking .tracking-classic .tracking-neo-hint {
+    margin: 20px 0 0; padding: 13px 16px; min-height: 48px;
+    border: 2px solid var(--classic-outline); border-radius: 9px;
+    background: var(--classic-paper); color: #36534c; font-size: 12px; font-weight: 600; line-height: 1.4;
+}
+.ocean-tracking .tracking-classic .tracking-hint-stars { display: block; width: 20px; height: 20px; flex: 0 0 20px; color: var(--classic-outline); }
+.ocean-tracking .tracking-classic .tracking-neo-error { margin: 18px 0 0; }
+@media (min-width: 768px) {
+    .ocean-tracking .tracking-neo-page.tracking-classic { padding-top: 48px; padding-bottom: 130px; }
+    .ocean-tracking .tracking-classic .tracking-neo-search-card { padding: 28px; }
+    .ocean-tracking .tracking-classic .tracking-neo-input-wrap,
+    .ocean-tracking .tracking-classic .tracking-neo-form button { min-height: 64px; }
+    .ocean-tracking .tracking-classic .tracking-neo-hint { font-size: 14px; }
+}
+html[data-customer-theme="dark"] .ocean-tracking .tracking-classic {
+    --classic-ink: #e6f2e6; --classic-outline: #9dc5a4; --classic-paper: #284338; --classic-pink: #6a4050; --classic-matcha: #54784b;
+    --classic-card-shadow: #081810; --classic-control-shadow: #081810; --classic-button-shadow: #081810;
+}
+html[data-customer-theme="dark"] .ocean-tracking .tracking-classic .tracking-neo-hint { color: #e7efe7; }
+</style>
+<section class="tracking-neo-page tracking-classic" aria-labelledby="order-search-title">
+    <div class="tracking-neo-shell">
+        <header class="tracking-neo-heading">
+            <span class="tracking-neo-eyebrow">TRACKING PESANAN</span>
+            <h1 id="order-search-title"><span>Cari</span><span>pesananmu.</span></h1>
+            <p>Masukkan kode pesanan atau username untuk melihat status dan riwayat pesanan.</p>
+        </header>
 
-            <form method="POST" action="{{ route('tracking.search') }}" class="tracking-lookup-form" role="search" aria-label="Cari tracking dan riwayat pesanan">
+        <section class="tracking-neo-search-card" aria-label="Form pencarian pesanan">
+            <form method="POST" action="{{ route('tracking.search') }}" class="tracking-neo-form" role="search" aria-label="Cari tracking dan riwayat pesanan">
                 @csrf
-                <label for="tracking-query" class="sr-only">Kode pesanan atau username LINE</label>
-                <span class="tracking-lookup-search-icon"><x-public-icon name="search" :size="20" /></span>
-                <input id="tracking-query" type="search" name="query" value="{{ old('query', $searchQuery ?? '') }}" autocomplete="off" autocapitalize="none" spellcheck="false" maxlength="255" placeholder="Contoh: ORD-001 atau @username" aria-describedby="tracking-query-hint{{ $errors->has('query') ? ' tracking-query-error' : '' }}" @if($errors->has('query')) aria-invalid="true" autofocus @endif required>
-                <button type="submit" aria-label="Lacak pesanan"><span>Lacak pesanan</span><x-public-icon name="arrow-right" :size="16" /></button>
+                <label for="tracking-query" class="sr-only">Kode pesanan atau username</label>
+                <div class="tracking-neo-input-wrap">
+                    <span class="tracking-neo-input-icon"><x-public-icon name="search" :size="19" /></span>
+                    <input id="tracking-query" type="search" name="query" value="{{ old('query', $searchQuery ?? '') }}" autocomplete="off" autocapitalize="none" spellcheck="false" maxlength="255" placeholder="masukkan kode pesanan" aria-describedby="tracking-query-hint{{ $errors->has('query') ? ' tracking-query-error' : '' }}" @if($errors->has('query')) aria-invalid="true" autofocus @endif required>
+                </div>
+                <button type="submit">
+                    <span>Lacak pesanan</span>
+                    <x-public-icon name="chevron-right" :size="20" />
+                </button>
             </form>
-            <p id="tracking-query-hint" class="tracking-lookup-hint"><x-public-icon name="sparkle" :size="13" /> Data mengikuti pembaruan terakhir dari admin.</p>
+
+            <div id="tracking-query-hint" class="tracking-neo-hint">
+                <!-- Star 8 shape from https://www.neobrutalism.dev/stars -->
+                <svg class="tracking-hint-stars" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="20" height="20" aria-hidden="true" focusable="false" fill="#ffe5a8" stroke="currentColor" stroke-width="10" stroke-linejoin="round">
+                    <svg x="14" y="9" width="25" height="25" viewBox="0 0 200 200"><path d="M100 5s5.088 49.035 25.527 69.473C145.965 94.912 195 100 195 100s-49.035 5.088-69.473 25.527C105.088 145.965 100 195 100 195s-5.088-49.035-25.527-69.473C54.035 105.088 5 100 5 100s49.035-5.088 69.473-25.527C94.912 54.035 100 5 100 5" /></svg>
+                    <svg x="1" y="1" width="13" height="13" viewBox="0 0 200 200"><path d="M100 5s5.088 49.035 25.527 69.473C145.965 94.912 195 100 195 100s-49.035 5.088-69.473 25.527C105.088 145.965 100 195 100 195s-5.088-49.035-25.527-69.473C54.035 105.088 5 100 5 100s49.035-5.088 69.473-25.527C94.912 54.035 100 5 100 5" /></svg>
+                    <svg x="2" y="26" width="11" height="11" viewBox="0 0 200 200"><path d="M100 5s5.088 49.035 25.527 69.473C145.965 94.912 195 100 195 100s-49.035 5.088-69.473 25.527C105.088 145.965 100 195 100 195s-5.088-49.035-25.527-69.473C54.035 105.088 5 100 5 100s49.035-5.088 69.473-25.527C94.912 54.035 100 5 100 5" /></svg>
+                </svg>
+                <span>Data mengikuti pembaruan terakhir dari admin.</span>
+            </div>
 
             @error('query')
-                <div id="tracking-query-error" class="tracking-lookup-error" role="alert"><x-public-icon name="search" :size="18" /><span>{{ $message }}</span></div>
+                <div id="tracking-query-error" class="tracking-neo-error" role="alert">
+                    <x-public-icon name="search" :size="17" />
+                    <span>{{ $message }}</span>
+                </div>
             @enderror
-        </div>
-        <div class="tracking-lookup-art" aria-hidden="true">
-            <span class="tracking-art-note">YOUR WISH<br>IS ON ITS WAY ♡</span>
-            <img src="{{ asset('assets/kawaii_beach_cat_delivery_sticker.png') }}" alt="">
-            <span class="tracking-art-star tracking-art-star-one">✦</span><span class="tracking-art-star tracking-art-star-two">✦</span>
-        </div>
-    </div>
+        </section>
     </div>
 </section>
 
@@ -120,7 +219,7 @@
                             </div>
                         </details>
                     @empty
-                        <p class="tracking-result-empty-copy">Belum ada riwayat pesanan untuk username LINE ini.</p>
+                        <p class="tracking-result-empty-copy">Belum ada riwayat pesanan untuk username ini.</p>
                     @endforelse
                 </div>
             </article>
@@ -130,3 +229,4 @@
     </div>
 </section>
 @endif
+

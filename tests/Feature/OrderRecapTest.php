@@ -186,16 +186,13 @@ class OrderRecapTest extends TestCase
         $this->actingAs($admin)
             ->get(route('admin.order-statuses.index', ['scope' => 'batch']))
             ->assertOk()
-            ->assertSee('data-status-folder-tab="batch"', false)
+            ->assertSee('data-status-folder-tab="tracking"', false)
             ->assertSee('data-status-folder-tab="payment"', false)
-            ->assertSee('Batch Pembelian')
-            ->assertSee('Pesanan Pelanggan')
-            ->assertSee('Item Pesanan')
-            ->assertSee('Pembayaran Pesanan')
-            ->assertSee('Lintas Fitur')
-            ->assertSee('Diterapkan pada: Manajemen Batch')
-            ->assertSee('Diterapkan pada: Detail Pesanan')
-            ->assertSee('Diterapkan pada: Edit Pesanan')
+            ->assertDontSee('data-status-folder-tab="groups"', false)
+            ->assertDontSee('data-status-folder-tab="member_order"', false)
+            ->assertDontSee('data-status-folder-tab="order_item"', false)
+            ->assertSee('Tracking Perjalanan')
+            ->assertSee('Status Pembayaran')
             ->assertSee('<th>No.</th>', false)
             ->assertSee('Status Batch Folder')
             ->assertSee('Status Payment Folder');
@@ -999,12 +996,14 @@ class OrderRecapTest extends TestCase
             'is_active' => true,
         ]);
 
+        User::factory()->create(['role' => 'customer', 'member_id' => $member->id]);
+
         $this->actingAs($admin)->get(route('admin.member-orders.create', ['member_id' => $member->id]))
             ->assertOk()
             ->assertDontSee('admin-navbar-back', false)
             ->assertSee('Customer Pilihan')
             ->assertSee('customer.pilihan')
-            ->assertSee('LINE Connected — Eligible');
+            ->assertSee('Akun terdaftar — Eligible');
     }
 
     public function test_batch_and_status_details_use_the_compact_reorganized_layout(): void
@@ -1076,6 +1075,8 @@ class OrderRecapTest extends TestCase
             'is_active' => true,
         ]);
 
+        User::factory()->create(['role' => 'customer', 'member_id' => $eligibleMember->id]);
+
         // Create legacy member (no line_user_id)
         $legacyMember = Member::factory()->create([
             'display_name' => 'Legacy Member',
@@ -1097,7 +1098,7 @@ class OrderRecapTest extends TestCase
             ->assertSee('Pilih Member')
             ->assertSee('Eligible Member')
             ->assertSee('eligible.line')
-            ->assertSee('LINE Connected — Eligible')
+            ->assertSee('Akun terdaftar — Eligible')
             ->assertDontSee('Legacy Member')
             ->assertDontSee('Inactive Member');
     }

@@ -225,9 +225,9 @@ class MemberOrderController extends Controller
     {
         $order->loadMissing(['member', 'items', 'batch.currentStatus', 'overrideStatus', 'paymentStatus']);
 
-        // Ambil member yang eligible untuk NEW order (LINE-connected + active)
+        // Ambil member yang eligible untuk NEW order (akun customer siap + aktif)
         // Untuk edit, include member yang sedang dipakai meskipun legacy
-        $eligibleMembers = Member::eligibleForNewOrder()->get();
+        $eligibleMembers = Member::eligibleForNewOrder()->with('user')->get();
         if ($order->exists && $order->member_id) {
             $currentMember = Member::find($order->member_id);
             if ($currentMember && ! $eligibleMembers->contains('id', $currentMember->id)) {

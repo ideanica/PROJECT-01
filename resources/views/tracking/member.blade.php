@@ -39,7 +39,7 @@
                             </td>
                         </tr>
                     @empty
-                        <tr class="tracking-table-empty"><td colspan="6" class="px-4 py-8 text-center text-zinc-500">Belum ada pembelian yang tercatat untuk username LINE ini.</td></tr>
+                        <tr class="tracking-table-empty"><td colspan="6" class="px-4 py-8 text-center text-zinc-500">Belum ada pembelian yang tercatat untuk username ini.</td></tr>
                     @endforelse
                 </tbody>
             </table>
@@ -47,3 +47,4 @@
     </div>
     </div></main>
 </x-layouts.app>
+

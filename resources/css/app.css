@@ -4,7 +4,8 @@
 @import './customer.css';
 @import './landing.css';
 @import './portal-neo-brutalism.css';
-@import './admin-dashboard.css';
+@import './auth.css';
+@import './customer-shadows.css';
 
 @source '../views/**/*.blade.php';
 @source '../js/**/*.js';
@@ -1962,28 +1963,6 @@ body.catalog-modal-open { overflow: hidden; }
     overflow-x: auto;
 }
 
-.order-table-filter-notice {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    border-bottom: 1px solid #f0f0f2;
-    background: #fef2f4;
-    padding: .6rem 1.25rem;
-    font-size: .8rem;
-    color: #9f1239;
-}
-
-.order-table-filter-notice a {
-    font-weight: 600;
-    color: #be123c;
-    text-decoration: none;
-}
-
-.order-table-filter-notice a:hover {
-    text-decoration: underline;
-}
-
 .admin-list-toolbar {
     border: 1px solid #ececf0;
     border-radius: .75rem;
@@ -2280,7 +2259,7 @@ body.catalog-modal-open { overflow: hidden; }
 .detail-record-card::before {
     content: '';
     display: block;
-    /* height: 3px; */
+    height: 3px;
     background: linear-gradient(90deg, #7c3aed, #2563eb 52%, #06b6d4);
 }
 
@@ -2748,169 +2727,6 @@ body.catalog-modal-open { overflow: hidden; }
     stroke-width: 1.8;
 }
 
-/* Soft admin chrome: warm cream surfaces and matcha accents for the sidebar,
-   topbar and account menu so every admin page matches the dashboard language.
-   Active navigation state is driven by aria-current="page" on the nav links. */
-.admin-shell {
-    --chrome-cream: #fbf8f2;
-    --chrome-paper: #fffdf8;
-    --chrome-line: #ece2d4;
-    --chrome-line-soft: #f4ece0;
-    --chrome-ink: #45584e;
-    --chrome-muted: #8b9a91;
-    --chrome-green: #3f6b4c;
-    --chrome-green-deep: #35604a;
-    --chrome-green-soft: #eaf3ea;
-}
-
-.admin-sidebar {
-    border-color: var(--chrome-line);
-    background: linear-gradient(180deg, #fffdf8, #fbf6ec);
-    box-shadow: 0 1rem 2rem -1.8rem rgb(69 88 78 / .5);
-}
-
-@media (min-width: 1024px) {
-    .admin-sidebar {
-        box-shadow: 1.4rem 0 2.6rem -2.1rem rgb(69 88 78 / .45);
-    }
-}
-
-.admin-brand-row a:first-child > span:last-child > span:first-child {
-    color: var(--chrome-ink);
-}
-
-.admin-brand-row a:first-child > span:last-child > span:last-child {
-    color: #b0536f;
-}
-
-.admin-brand-row > a:last-child {
-    border-color: var(--chrome-line);
-    background: var(--chrome-paper);
-    color: var(--chrome-muted);
-}
-
-.admin-navigation > p {
-    color: #a6b0a9;
-}
-
-.admin-navigation > a {
-    border-radius: .95rem;
-    color: #6f8077;
-    transition: background-color .18s ease, color .18s ease, box-shadow .18s ease;
-}
-
-.admin-navigation > a:hover {
-    background: #f3f0e5;
-    color: var(--chrome-ink);
-}
-
-.admin-navigation > a[aria-current='page'] {
-    background: linear-gradient(180deg, #eaf3ea, #deebdf);
-    color: var(--chrome-green-deep);
-    box-shadow: 0 .45rem .9rem -.55rem rgb(69 88 78 / .6);
-}
-
-.admin-navigation > a > span:first-of-type {
-    border-radius: .7rem;
-    background: #f1eee2;
-    color: var(--chrome-muted);
-}
-
-.admin-navigation > a:hover > span:first-of-type {
-    background: #fff;
-    color: #5f7f6b;
-}
-
-.admin-navigation > a[aria-current='page'] > span:first-of-type {
-    background: #fff;
-    color: var(--chrome-green);
-    box-shadow: 0 .3rem .6rem -.35rem rgb(69 88 78 / .55);
-}
-
-.admin-topbar {
-    border-bottom-color: #f0e7d9;
-    background: rgb(255 253 248 / .86);
-    box-shadow: 0 .9rem 1.6rem -1.5rem rgb(69 88 78 / .45);
-}
-
-.admin-topbar [data-realtime-clock] {
-    color: var(--chrome-ink);
-}
-
-.admin-topbar [data-realtime-date] {
-    color: #9aa79e;
-}
-
-.admin-topbar [data-user-menu-button] {
-    border-color: var(--chrome-line);
-    background: var(--chrome-paper);
-    color: #7b8b82;
-    box-shadow: 0 .4rem .9rem -.55rem rgb(69 88 78 / .55);
-}
-
-.admin-topbar [data-user-menu-button]:hover {
-    border-color: #d7e5d8;
-    background: var(--chrome-green-soft);
-    color: var(--chrome-green-deep);
-}
-
-.admin-user-menu {
-    border-color: var(--chrome-line);
-    border-radius: 1.1rem;
-    box-shadow: 0 1.4rem 2.8rem -1.5rem rgb(69 88 78 / .55);
-}
-
-.admin-user-menu > :is(div, form) {
-    border-color: var(--chrome-line-soft);
-}
-
-.admin-user-menu .text-zinc-900 {
-    color: var(--chrome-ink);
-}
-
-.admin-user-menu .text-zinc-400 {
-    color: #9aa79e;
-}
-
-.admin-user-menu .text-zinc-700 {
-    color: #5f7168;
-}
-
-.admin-user-menu form button {
-    border-radius: .85rem;
-    background: linear-gradient(180deg, #5c9a68, #437a4f);
-    color: #fff;
-    box-shadow: 0 .55rem 1rem -.6rem rgb(61 107 73 / .85);
-    transition: background-color .18s ease, box-shadow .18s ease;
-}
-
-.admin-user-menu form button:hover {
-    background: linear-gradient(180deg, #549063, #3d6f48);
-    box-shadow: 0 .7rem 1.2rem -.6rem rgb(61 107 73 / .8);
-}
-
-.admin-navbar-back {
-    border-color: var(--chrome-line);
-    border-radius: .85rem;
-    background: var(--chrome-paper);
-    color: #607169;
-    box-shadow: 0 .35rem .8rem -.55rem rgb(69 88 78 / .6);
-}
-
-.admin-navbar-back:hover {
-    border-color: #d7e5d8;
-    background: var(--chrome-green-soft);
-    color: var(--chrome-green-deep);
-}
-
-.admin-page-heading h1 {
-    color: var(--chrome-ink);
-}
-
-.admin-page-heading p {
-    color: var(--chrome-muted);
-}
-
 /* Admin type scale: every text size is reduced by exactly 3px. */
 .admin-shell {
     font-size: 13px;
@@ -2971,7 +2787,59 @@ body.catalog-modal-open { overflow: hidden; }
     }
 }
 
-/* Dashboard styles now live in resources/css/admin-dashboard.css. */
+.admin-shell .dashboard-welcome-subtitle {
+    font-size: 13px !important;
+}
+
+.admin-shell .dashboard-section-subtitle {
+    font-size: 11px !important;
+}
+
+/* Dashboard cards: reduce every card radius by 5px. */
+.admin-shell .dashboard-card {
+    border-radius: 13px;
+}
+
+.admin-shell .dashboard-card-group {
+    border-radius: 9px;
+}
+
+.admin-shell .dashboard-mini-card {
+    border-radius: 5px;
+}
+
+/* Dashboard list panels follow the same +3px table type scale. */
+.admin-shell .dashboard-table-card {
+    font-size: 14px;
+}
+
+.admin-shell .dashboard-table-card .text-xs {
+    font-size: 10px !important;
+}
+
+.admin-shell .dashboard-table-card .text-sm {
+    font-size: 12px !important;
+}
+
+.admin-shell .dashboard-table-card .text-lg {
+    font-size: 16px !important;
+}
+
+.admin-shell .dashboard-latest-batches {
+    font-size: 12.5px;
+}
+
+.admin-shell .dashboard-latest-batches .text-xs {
+    font-size: 8.5px !important;
+}
+
+.admin-shell .dashboard-latest-batches .text-sm {
+    font-size: 10.5px !important;
+}
+
+.admin-shell .dashboard-latest-batches .text-lg {
+    font-size: 14.5px !important;
+}
 
 /* Key-catalog-inspired create and edit form system. */
 .admin-form-shell {
@@ -3038,7 +2906,7 @@ body.catalog-modal-open { overflow: hidden; }
 
 .admin-form-body {
     display: grid;
-    gap: 1.5rem;
+    gap: 14px;
     padding: 20px 24px;
     background: #f8fafc;
 }
@@ -3081,7 +2949,7 @@ body.catalog-modal-open { overflow: hidden; }
 }
 
 .admin-form-section {
-    padding: 12px;
+    padding: 16px;
     border: 1px solid #e4e4e7;
     border-radius: 12px;
     background: #fff;
@@ -3157,20 +3025,15 @@ body.catalog-modal-open { overflow: hidden; }
 .admin-form-help {
     display: block;
     margin-top: 6px;
-    color: #71717a;
-    font-size: .65rem;
-    line-height: 1.5;
-}
-
-.admin-form-help a {
-    color: #7c3aed;
-    text-decoration: underline;
+    color: #8b8b95;
+    font-size: 10px;
+    line-height: 1.45;
 }
 
 .admin-form-choice {
     display: flex;
-    align-items: center;
-    gap: .5rem;
+    align-items: flex-start;
+    gap: 10px;
     padding: 12px 13px;
     border: 1px solid #ddd6fe;
     border-radius: 10px;
@@ -3182,24 +3045,14 @@ body.catalog-modal-open { overflow: hidden; }
 
 .admin-form-choice input[type='checkbox'] {
     flex: 0 0 auto;
-    width: 1rem;
-    height: 1rem;
     margin-top: 2px;
-    border: 1px solid #d4d4d8;
-    border-radius: .25rem;
-    accent-color: #7c3aed;
-}
-
-.admin-form-choice span {
-    color: #3f3f46;
-    font-size: .75rem;
 }
 
 .admin-form-choice small {
     display: block;
-    margin-top: .1rem;
-    color: #a1a1aa;
-    font-size: .6rem;
+    margin-top: 2px;
+    color: #71717a;
+    font-size: 10px;
 }
 
 .admin-form-readonly {
@@ -3459,27 +3312,27 @@ body.catalog-modal-open { overflow: hidden; }
 }
 
 .status-table-col-number {
-    width: 7%;
+    width: 8%;
 }
 
 .status-table-col-status {
-    width: 28%;
+    width: 18%;
 }
 
 .status-table-col-description {
-    width: 28%;
+    width: 37%;
 }
 
 .status-table-col-properties {
-    width: 16%;
+    width: 18%;
 }
 
 .status-table-col-usage {
-    width: 7%;
+    width: 8%;
 }
 
 .status-table-col-actions {
-    width: 14%;
+    width: 11%;
 }
 
 .admin-shell .status-table th {
@@ -4209,8 +4062,8 @@ body.status-modal-open {
 
 .admin-shell .select2-container--default.select2-container--focus .select2-selection--single,
 .admin-shell .select2-container--default.select2-container--open .select2-selection--single {
-    border-color: #2f6b46;
-    box-shadow: 0 0 0 3px rgb(47 107 70 / .12);
+    border-color: #a78bfa;
+    box-shadow: 0 0 0 3px rgb(139 92 246 / .12);
 }
 
 .admin-form-shell .select2-container .select2-selection--single {
@@ -4220,7 +4073,7 @@ body.status-modal-open {
 
 .select2-dropdown {
     overflow: hidden;
-    border: 1px solid #e4e4e7;
+    border: 1px solid #ddd6fe;
     border-radius: 10px;
     background: #fff;
     font-family: 'Poppins', ui-sans-serif, system-ui, sans-serif !important;
@@ -4263,13 +4116,13 @@ body.status-modal-open {
 }
 
 .select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {
-    background: #e4e4e7;
-    color: #18181b;
+    background: #7c3aed;
+    color: #fff;
 }
 
 .select2-container--default .select2-results__option--selected {
-    background: #d4d4d8;
-    color: #18181b;
+    background: #f5f3ff;
+    color: #6d28d9;
 }
 
 @media (max-width: 640px) {
@@ -5033,15 +4886,15 @@ details[open] > summary .ocean-chevron {
         left: .75rem;
         z-index: 90;
         display: grid !important;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns: repeat(4, minmax(0, 1fr));
         gap: .25rem !important;
         overflow: visible !important;
         margin: 0;
-        border: 1px solid rgb(236 226 212 / .9);
-        border-radius: 1.4rem;
-        background: rgb(255 253 248 / .94);
+        border: 1px solid rgb(255 255 255 / .9);
+        border-radius: 1.2rem;
+        background: rgb(255 255 255 / .94);
         padding: .38rem !important;
-        box-shadow: 0 1.1rem 2.2rem -1.1rem rgb(69 88 78 / .5);
+        box-shadow: 0 .8rem 2rem -.9rem rgb(24 24 27 / .32);
         backdrop-filter: blur(18px);
     }
 
@@ -5051,7 +4904,7 @@ details[open] > summary .ocean-chevron {
         flex-direction: column;
         justify-content: center;
         gap: .12rem !important;
-        border-radius: 1rem !important;
+        border-radius: .9rem !important;
         padding: .35rem .2rem !important;
         text-align: center;
     }
@@ -5059,16 +4912,17 @@ details[open] > summary .ocean-chevron {
     .admin-navigation > a > span:first-of-type {
         width: 1.65rem !important;
         height: 1.65rem !important;
-        border-radius: .7rem !important;
+        border-radius: .55rem !important;
     }
 
     .admin-navigation > a > span:last-of-type {
         max-width: 100%;
         overflow: hidden;
-        font-size: .5rem !important;
+        font-size: .6rem !important;
         line-height: 1.15;
         text-overflow: ellipsis;
-        white-space: nowrap;
+        white-space: normal;
+        overflow-wrap: anywhere;
     }
 
     .admin-topbar {
@@ -5082,6 +4936,10 @@ details[open] > summary .ocean-chevron {
 }
 
 @media (max-width: 820px) {
+    .admin-shell input:not([type="checkbox"]):not([type="radio"]),
+    .admin-shell select,
+    .admin-shell textarea { min-width: 0; font-size: 16px; }
+
     .admin-page {
         min-width: 0;
         padding: 1.15rem .75rem 1.5rem !important;
@@ -5355,6 +5213,15 @@ details[open] > summary .ocean-chevron {
         max-width: 100%;
         overflow-x: auto;
         padding-bottom: .2rem;
+    }
+
+    .dashboard-stat-card {
+        min-height: 0;
+        padding: 1rem !important;
+    }
+
+    .dashboard-latest-batches a {
+        align-items: flex-start;
     }
 
     .admin-form-footer-note {
@@ -6134,9 +6001,9 @@ body.customer-theme,
 
 .public-account-chip img,
 .public-account-chip > span {
-    width: 30px;
-    height: 30px;
-    flex: 0 0 30px;
+    width: 24px;
+    height: 24px;
+    flex: 0 0 24px;
     border-radius: 50%;
 }
 
@@ -6221,15 +6088,58 @@ body.customer-theme,
 .tracking-site-header {
     position: relative;
     z-index: 20;
-    padding: 17px max(22px, 4.5vw) 0;
+    height: 12.9cqw;
+    min-height: 124px;
+    container-type: inline-size;
     background: #fbd7e2;
 }
-.tracking-site-browser { width: min(100%, 1240px); height: 110px; margin: 0 auto; background: #fffefa; box-shadow: -6px 6px 0 #9bc8a4; }
-.tracking-site-header .op-browserbar { height: 27px; }
-.tracking-site-header .op-navrow { height: 81px; grid-template-columns: minmax(190px, 1fr) auto; padding-inline: 28px; }
-.tracking-site-header .op-brand img { width: 260px; max-width: 100%; height: 82px; }
-.tracking-site-header .op-nav { justify-content: flex-end; gap: clamp(6px, 1.2vw, 20px); }
-.tracking-site-header .op-nav a { font: 700 14px/1 "Nunito Sans", sans-serif; }
+.tracking-site-header .tracking-site-browser {
+    position: absolute;
+    z-index: 30;
+    top: 16px;
+    left: 50%;
+    width: min(1180px, 89.3%);
+    height: 91px;
+    margin: 0;
+    transform: translateX(-50%);
+    background: #fffefa;
+    box-shadow: var(--customer-shadow-card) #9bc8a4;
+}
+.tracking-site-header .op-browserbar { height: 22px; }
+.tracking-site-header .op-navrow {
+    height: 67px;
+    grid-template-columns: 205px minmax(0, 1fr);
+    gap: 18px;
+    padding: 3px 14px 4px 25px;
+}
+.tracking-site-header .op-brand { height: 58px; }
+.tracking-site-header .op-brand img {
+    width: 190px;
+    max-width: none;
+    height: 76px;
+    object-fit: contain;
+}
+.tracking-site-header .op-nav {
+    justify-self: end;
+    justify-content: flex-end;
+    gap: 5px;
+}
+.tracking-site-header .op-nav a {
+    gap: 8px;
+    padding: 0 12px;
+    font: 700 14px/1 "Nunito Sans", sans-serif;
+}
+.tracking-site-header .tracking-nav-icon {
+    display: block;
+    width: 20px;
+    height: 20px;
+    flex: 0 0 20px;
+}
+.tracking-site-header .tracking-nav-icon-home {
+    width: 22px;
+    height: 22px;
+    flex-basis: 22px;
+}
 .tracking-site-header .op-nav a.is-active { color: var(--track-pink); }
 .tracking-site-header .op-nav a:focus-visible, .tracking-site-footer a:focus-visible { outline: 3px solid var(--track-pink); outline-offset: 3px; }
 
@@ -6271,11 +6181,31 @@ body.customer-theme,
     margin: 0 auto;
     overflow: hidden;
     border: 2px solid var(--track-outline);
-    border-radius: 20px;
+    border-radius: 16px;
     background: #ffe0e9;
-    box-shadow: -8px 8px 0 #6eab80;
+    box-shadow: var(--customer-shadow-card) #6eab80;
 }
-.tracking-lookup-frame > .op-browserbar { height: 38px; padding-inline: 18px; border-bottom: 1.5px solid var(--track-outline); font: 700 11px/1 monospace; }
+.tracking-lookup-frame > .op-browserbar {
+    height: 30px;
+    padding: 0 14px;
+    border-bottom: 1.5px solid var(--track-outline);
+    background: #f7cbd8;
+    color: #8d3e5b;
+    font: 700 10px/1 monospace;
+}
+.tracking-lookup-frame > .op-browserbar strong {
+    display: inline-flex;
+    align-items: center;
+    height: 100%;
+    letter-spacing: .02em;
+}
+.tracking-lookup-frame > .op-browserbar .op-window-dots {
+    gap: 6px;
+}
+.tracking-lookup-frame > .op-browserbar .op-window-dots i {
+    width: 11px;
+    height: 11px;
+}
 .ocean-tracking .tracking-lookup-hero-inner {
     display: grid;
     width: auto;
@@ -6283,9 +6213,9 @@ body.customer-theme,
     align-items: center;
     gap: 24px;
     grid-template-columns: minmax(0, 1.35fr) minmax(270px, .65fr);
-    margin: 10px;
+    margin: 8px;
     border: 1.5px solid var(--track-outline);
-    border-radius: 12px;
+    border-radius: 10px;
     background: #fffefa;
     padding: clamp(25px, 4vw, 55px);
 }
@@ -6301,7 +6231,7 @@ body.customer-theme,
     border: 2px solid #557861 !important;
     border-radius: 14px;
     background: #fff !important;
-    box-shadow: -4px 4px 0 #d0a0af;
+    box-shadow: var(--customer-shadow-card) #d0a0af;
 }
 .ocean-tracking .tracking-lookup-form:focus-within { outline: 3px solid #f3a7be; outline-offset: 3px; }
 .ocean-tracking .tracking-lookup-search-icon { color: var(--track-green); }
@@ -6313,7 +6243,7 @@ body.customer-theme,
     border-radius: 10px;
     background: linear-gradient(#69aa6e, #438951) !important;
     color: #fff !important;
-    box-shadow: -3px 3px 0 #355d40 !important;
+    box-shadow: var(--customer-shadow-control) #355d40 !important;
     font: 800 13px/1 "Nunito Sans", sans-serif;
 }
 .ocean-tracking .tracking-lookup-form button:hover { background: #3e814b !important; transform: translate(1px, -1px); }
@@ -6331,7 +6261,7 @@ body.customer-theme,
     border: 2px solid var(--track-outline) !important;
     border-radius: 17px;
     background: #ffe0e9 !important;
-    box-shadow: -7px 7px 0 #87b999 !important;
+    box-shadow: var(--customer-shadow-card) #87b999 !important;
 }
 .tracking-result-titlebar { display: flex; height: 35px; align-items: center; justify-content: space-between; border-bottom: 1.5px solid var(--track-outline); padding: 0 18px; color: #8d3e5b; font: 700 10px/1 monospace; }
 .tracking-history-card .tracking-result-titlebar { background: #d6eadb; color: #38694a; }
@@ -6344,18 +6274,18 @@ body.customer-theme,
 .ocean-tracking .tracking-result-item, .ocean-tracking .tracking-history-list details, .ocean-tracking .tracking-order-summary > div { border-color: #dce9dd; }
 .ocean-tracking .tracking-result-item-icon, .ocean-tracking .tracking-history-icon { border: 1px solid #ca7894; background: #ffe1ea; color: var(--track-pink); }
 .ocean-tracking .tracking-result-item strong, .ocean-tracking .tracking-history-list summary strong, .ocean-tracking .tracking-result-heading h3 { color: var(--track-ink); }
-.ocean-tracking .tracking-search-page .tracking-result-action { border: 1.5px solid #386744; background: #4d9158; color: #fff; box-shadow: -3px 3px 0 #355d40; }
+.ocean-tracking .tracking-search-page .tracking-result-action { border: 1.5px solid #386744; background: #4d9158; color: #fff; box-shadow: var(--customer-shadow-control) #355d40; }
 .ocean-tracking .tracking-search-page .tracking-result-action:hover { background: #3b7848; color: #fff; }
 
 .ocean-tracking :is(.customer-detail-page, .order-detail-page) { background: #fffaf1 !important; color: var(--track-ink); }
 .ocean-tracking :is(.detail-topbar, .order-detail-topbar) { color: var(--track-green); }
 .ocean-tracking :is(.customer-detail-heading, .order-detail-hero-copy) h1 { color: var(--track-pink) !important; }
-.ocean-tracking :is(.detail-record-card, .order-table-card, .order-detail-panel, .order-detail-stats article) { border: 2px solid #815767 !important; border-radius: 16px; background: #fffefa !important; box-shadow: -6px 6px 0 #e6a5b9 !important; }
+.ocean-tracking :is(.detail-record-card, .order-table-card, .order-detail-panel, .order-detail-stats article) { border: 2px solid #815767 !important; border-radius: 16px; background: #fffefa !important; box-shadow: var(--customer-shadow-card) #e6a5b9 !important; }
 .ocean-tracking .detail-record-hero { background: #ffe1e9; }
 .ocean-tracking .detail-record-card > footer { background: #4b8756 !important; }
 .ocean-tracking .detail-record-summary .detail-record-field { border: 1px solid #83ad8b !important; background: #e7f3e8 !important; }
-.ocean-tracking .order-detail-hero { border: 2px solid #815767 !important; border-radius: 16px; background: linear-gradient(110deg, #ffe0e9, #e2f1e4) !important; box-shadow: -6px 6px 0 #87b999; }
-.ocean-tracking .order-detail-stats article:nth-child(even) { box-shadow: -6px 6px 0 #87b999 !important; }
+.ocean-tracking .order-detail-hero { border: 2px solid #815767 !important; border-radius: 16px; background: linear-gradient(110deg, #ffe0e9, #e2f1e4) !important; box-shadow: var(--customer-shadow-card) #87b999; }
+.ocean-tracking .order-detail-stats article:nth-child(even) { box-shadow: var(--customer-shadow-card) #87b999 !important; }
 .ocean-tracking .order-detail-item { border-color: #d8e9db !important; background: #f0f8f0 !important; }
 .ocean-tracking :is(.order-table-action, .order-detail-topbar > a) { border-radius: 9px; }
 
@@ -6373,7 +6303,7 @@ body.customer-theme,
 }
 @media (max-width: 700px) {
     .ocean-tracking .tracking-search-page .tracking-lookup-hero { min-height: 0; padding: 30px 18px 58px; }
-    .tracking-lookup-frame { border-radius: 14px; box-shadow: -5px 5px 0 #6eab80; }
+    .tracking-lookup-frame { border-radius: 14px; box-shadow: var(--customer-shadow-card) #6eab80; }
     .ocean-tracking .tracking-lookup-hero-inner { display: flex; flex-direction: column; gap: 0; min-height: 0; align-items: stretch; margin: 7px; padding: 24px 17px 4px; }
     .ocean-tracking .tracking-lookup-hero h1 { font-size: clamp(28px, 8vw, 50px); }
     .ocean-tracking .tracking-lookup-copy > p { font-size: 14px; }
@@ -6396,7 +6326,7 @@ body.customer-theme,
 /* One compact browser navbar across the landing, tracking, and profile pages. */
 @media (max-width: 760px) {
     :is(.op-page, .tracking-site-header, .profile-site-header) {
-        --op-mobile-card-shadow: -2px 3px 0 #79a486;
+        --op-mobile-card-shadow: var(--customer-shadow-control) #79a486;
     }
     .op-page .op-header.op-mobile-navbar,
     .profile-site-header .op-header.op-mobile-navbar {
@@ -6470,12 +6400,6 @@ body.customer-theme,
     display: grid;
     gap: 1rem;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-}
-
-@media (max-width: 640px) {
-    .payment-methods-grid {
-        grid-template-columns: 1fr;
-    }
 }
 
 .payment-method-card {
@@ -6747,6 +6671,44 @@ body.customer-theme,
     max-width: 28rem;
 }
 
+.admin-form-choice {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+}
+
+.admin-form-choice input[type="checkbox"] {
+    width: 1rem;
+    height: 1rem;
+    border: 1px solid #d4d4d8;
+    border-radius: .25rem;
+    accent-color: #7c3aed;
+}
+
+.admin-form-choice span {
+    color: #3f3f46;
+    font-size: .75rem;
+}
+
+.admin-form-choice small {
+    display: block;
+    margin-top: .1rem;
+    color: #a1a1aa;
+    font-size: .6rem;
+}
+
+/* Admin payment method warning */
+.admin-form-help {
+    color: #71717a;
+    font-size: .65rem;
+    line-height: 1.5;
+}
+
+.admin-form-help a {
+    color: #7c3aed;
+    text-decoration: underline;
+}
+
 /* Ensure modals work properly */
 .status-modal[data-status-modal] {
     position: fixed;
@@ -6834,4 +6796,2799 @@ body.customer-theme,
     padding: .35rem .75rem;
     font-size: .65rem;
     font-weight: 700;
+}
+
+/* Admin form shell updates for settings */
+.admin-form-shell .admin-form-section {
+    margin-top: 1.5rem;
+}
+
+.payment-methods-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+
+@media (max-width: 640px) {
+    .payment-methods-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Admin form shell updates for settings */
+.admin-form-shell .admin-form-section {
+    margin-top: 1.5rem;
+}
+
+.payment-methods-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+
+@media (max-width: 640px) {
+    .payment-methods-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Keep Tracking's desktop browser navbar on the same geometry as Landing/Profile. */
+@media (min-width: 761px) and (max-width: 1024px) {
+    .tracking-site-header { min-height: 112px; }
+    .tracking-site-header .tracking-site-browser {
+        width: min(1180px, 89.3%);
+        height: 91px;
+    }
+    .tracking-site-header .op-navrow {
+        grid-template-columns: 196px minmax(0, 1fr);
+        gap: 4px;
+        padding-left: 17px;
+        padding-right: 12px;
+    }
+    .tracking-site-header .op-brand img { width: 184px; }
+    .tracking-site-header .op-nav a { padding: 0 8px; }
+}
+
+@media (max-width: 760px) {
+    .tracking-site-header {
+        height: 108px;
+        min-height: 108px;
+        padding: 0;
+    }
+    .tracking-site-header .tracking-site-browser.op-mobile-navbar {
+        top: 12px;
+        left: 12px;
+        width: calc(100% - 24px);
+        height: 84px;
+        margin: 0;
+        transform: none;
+    }
+    .tracking-site-header .tracking-nav-icon {
+        width: 14px;
+        height: 14px;
+        flex-basis: 14px;
+    }
+    .tracking-site-header .tracking-nav-icon-home {
+        width: 15px;
+        height: 15px;
+        flex-basis: 15px;
+    }
+}
+
+
+/* Tracking reference mockup match — October 2026 */
+body.ocean-tracking {
+    background: #fff8f2;
+}
+
+.ocean-tracking .tracking-site-header {
+    position: relative;
+    z-index: 30;
+    height: 188px;
+    min-height: 188px;
+    padding: 0;
+    overflow: visible;
+    background:
+        radial-gradient(circle at 48% 105%, rgba(255,255,255,.82) 0 34px, transparent 35px),
+        radial-gradient(circle at 54% 107%, rgba(255,255,255,.86) 0 29px, transparent 30px),
+        #f8d5df;
+}
+
+.ocean-tracking .tracking-site-header .tracking-site-browser {
+    top: 44px;
+    left: 50%;
+    width: min(1240px, calc(100% - 120px));
+    height: 108px;
+    border: 2px solid #815767;
+    border-radius: 18px;
+    transform: translateX(-50%);
+    background: #fffefa;
+    box-shadow: var(--customer-shadow-card) #95bd9d;
+}
+
+.ocean-tracking .tracking-site-header .op-browserbar {
+    height: 28px;
+    border-bottom: 2px solid #815767;
+    background: #f8d6e0;
+}
+
+.ocean-tracking .tracking-site-header .op-window-dots {
+    gap: 8px;
+}
+
+.ocean-tracking .tracking-site-header .op-window-dots i {
+    width: 14px;
+    height: 14px;
+    border: 2px solid #74505e;
+    box-shadow: inset 0 0 0 2px rgba(255,255,255,.38);
+}
+
+.ocean-tracking .tracking-site-header .op-navrow {
+    height: 78px;
+    display: grid;
+    grid-template-columns: 250px minmax(0, 1fr);
+    align-items: center;
+    gap: 24px;
+    padding: 0 28px 0 36px;
+}
+
+.ocean-tracking .tracking-site-header .op-brand {
+    height: 76px;
+}
+
+.ocean-tracking .tracking-site-header .op-brand img {
+    width: 222px;
+    height: 88px;
+    margin: 0;
+    object-fit: contain;
+}
+
+.ocean-tracking .tracking-site-header .op-nav {
+    height: 100%;
+    display: flex;
+    justify-self: end;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.ocean-tracking .tracking-site-header .op-nav a {
+    min-height: 48px;
+    gap: 9px;
+    border-radius: 999px;
+    padding: 0 18px;
+    color: #34594a;
+    font: 800 15px/1 "Nunito Sans", sans-serif;
+    transition: transform .16s ease, background .16s ease, color .16s ease;
+}
+
+.ocean-tracking .tracking-site-header .op-nav a:hover {
+    background: #f6eee8;
+    transform: translateY(-1px);
+}
+
+.ocean-tracking .tracking-site-header .op-nav a.is-active {
+    background: #fde8ee;
+    color: #df4773;
+}
+
+.ocean-tracking .tracking-site-header .tracking-nav-icon {
+    width: 21px;
+    height: 21px;
+    flex: 0 0 21px;
+}
+
+.ocean-tracking .tracking-site-header .tracking-nav-icon-home {
+    width: 22px;
+    height: 22px;
+    flex-basis: 22px;
+}
+
+.ocean-tracking .tracking-search-page.ocean-home.ocean-editorial,
+.ocean-tracking .tracking-search-page .tracking-search-shell {
+    background: #fff8f2 !important;
+}
+
+.ocean-tracking .tracking-search-page .tracking-reference-hero {
+    position: relative;
+    min-height: 700px;
+    padding: 28px 4.6vw 92px;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at 3% 22%, #fffdf8 0 34px, transparent 35px),
+        radial-gradient(circle at 10% 17%, #fffdf8 0 28px, transparent 29px),
+        radial-gradient(circle at 86% 19%, #fffdf8 0 34px, transparent 35px),
+        radial-gradient(circle at 96% 28%, #fffdf8 0 29px, transparent 30px),
+        linear-gradient(180deg, #f8d5df 0 70%, #c7eadc 70% 100%) !important;
+}
+
+.ocean-tracking .tracking-search-page .tracking-reference-hero::before {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    inset: auto 0 0;
+    height: 178px;
+    background:
+        url('/assets/pastel_mint_ocean_wave_banner.png') center bottom / 100% 100% no-repeat;
+    opacity: .82;
+    pointer-events: none;
+}
+
+.ocean-tracking .tracking-search-page .tracking-reference-hero::after {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    left: -2%;
+    right: -2%;
+    bottom: 6px;
+    height: 92px;
+    background:
+        url('/assets/pastel_aqua_wave_banner.png') center bottom / 104% 100% no-repeat;
+    opacity: .68;
+    pointer-events: none;
+}
+
+.ocean-tracking .tracking-reference-hero .tracking-lookup-frame {
+    position: relative;
+    z-index: 2;
+    width: min(100%, 1240px);
+    margin: 0 auto;
+    overflow: hidden;
+    border: 2px solid #815767;
+    border-radius: 22px;
+    background: #f8d3df;
+    box-shadow: var(--customer-shadow-card) #6fab80;
+}
+
+.ocean-tracking .tracking-reference-hero .tracking-lookup-titlebar {
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 2px solid #815767;
+    padding: 0 20px;
+    background: linear-gradient(180deg, #f9d7e1 0%, #f4c8d5 100%);
+    color: #a63b60;
+}
+
+.ocean-tracking .tracking-titlebar-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.ocean-tracking .tracking-titlebar-paw {
+    width: 20px;
+    height: 20px;
+    color: #dc4772;
+}
+
+.ocean-tracking .tracking-titlebar-label strong {
+    font: 800 12px/1 "Nunito Sans", sans-serif;
+    letter-spacing: .16em;
+}
+
+.ocean-tracking .tracking-reference-hero .tracking-lookup-titlebar .op-window-dots {
+    gap: 8px;
+}
+
+.ocean-tracking .tracking-reference-hero .tracking-lookup-titlebar .op-window-dots i {
+    width: 14px;
+    height: 14px;
+    border: 2px solid #74505e;
+}
+
+.ocean-tracking .tracking-reference-hero .tracking-lookup-hero-inner {
+    position: relative;
+    display: grid;
+    min-height: 520px;
+    grid-template-columns: minmax(0, 1.2fr) minmax(360px, .8fr);
+    align-items: center;
+    gap: 34px;
+    margin: 12px;
+    border: 2px solid #9b667a;
+    border-radius: 18px;
+    padding: 46px 58px 42px 70px;
+    overflow: hidden;
+    background: #fffefa;
+}
+
+.ocean-tracking .tracking-reference-hero .tracking-lookup-copy {
+    position: relative;
+    z-index: 4;
+    align-self: center;
+    min-width: 0;
+}
+
+.ocean-tracking .tracking-reference-hero .tracking-lookup-kicker {
+    display: inline-flex;
+    min-height: 38px;
+    align-items: center;
+    gap: 15px;
+    border: 0;
+    border-radius: 999px;
+    padding: 0 20px;
+    background: #fde4eb;
+    color: #df4773 !important;
+    font: 800 12px/1 "Nunito Sans", sans-serif;
+    letter-spacing: .08em;
+}
+
+.ocean-tracking .tracking-reference-hero .tracking-lookup-kicker b {
+    color: #dc4772;
+    font-size: 12px;
+}
+
+.ocean-tracking .tracking-reference-hero h1 {
+    position: relative;
+    max-width: 760px;
+    margin: 18px 0 0;
+    color: #df4773 !important;
+    font: 900 clamp(50px, 5.25vw, 76px)/.92 "Bricolage Grotesque", "Nunito Sans", sans-serif;
+    letter-spacing: -.055em;
+}
+
+.ocean-tracking .tracking-reference-hero h1 > span {
+    color: #3f8856;
+}
+
+.ocean-tracking .tracking-reference-hero h1 > i {
+    display: inline-flex;
+    width: .44em;
+    height: .44em;
+    margin-left: 9px;
+    align-items: center;
+    justify-content: center;
+    color: #ef8ca8;
+    font-style: normal;
+    letter-spacing: 0;
+    transform: translateY(-4px) rotate(-10deg);
+}
+.ocean-tracking .tracking-reference-hero .tracking-headline-paw svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.ocean-tracking .tracking-reference-hero .tracking-lookup-copy > p {
+    max-width: 660px;
+    margin: 20px 0 0;
+    color: #516b60 !important;
+    font: 600 clamp(15px, 1.4vw, 19px)/1.55 "Nunito Sans", sans-serif;
+}
+
+.ocean-tracking .tracking-reference-hero .tracking-lookup-form {
+    display: grid;
+    max-width: 690px;
+    min-height: 72px;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 10px;
+    margin-top: 30px;
+    border: 2px solid #efadc0 !important;
+    border-radius: 21px;
+    padding: 7px 7px 7px 18px;
+    background: #fff !important;
+    box-shadow:
+        0 0 0 5px #fde6ec,
+        0 8px 0 -2px #daa0b1 !important;
+}
+
+.ocean-tracking .tracking-reference-hero .tracking-lookup-form:focus-within {
+    outline: 3px solid #f4a2ba;
+    outline-offset: 5px;
+}
+
+.ocean-tracking .tracking-reference-hero .tracking-lookup-search-icon {
+    display: grid;
+    width: 34px;
+    height: 34px;
+    place-items: center;
+    color: #3d8b58;
+}
+
+.ocean-tracking .tracking-reference-hero .tracking-lookup-form input {
+    min-width: 0;
+    border: 0;
+    background: transparent;
+    color: #36594c;
+    font: 600 16px/1.3 "Nunito Sans", sans-serif;
+    outline: none;
+}
+
+.ocean-tracking .tracking-reference-hero .tracking-lookup-form input::placeholder {
+    color: #81958c;
+}
+
+.ocean-tracking .tracking-reference-hero .tracking-lookup-form button {
+    min-width: 188px;
+    min-height: 54px;
+    border: 2px solid #356c46 !important;
+    border-radius: 14px;
+    background: linear-gradient(180deg, #69ad72 0%, #438d52 100%) !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.38), 0 4px 0 #2f6640 !important;
+    color: #fff !important;
+    font: 900 14px/1 "Nunito Sans", sans-serif;
+}
+
+.ocean-tracking .tracking-reference-hero .tracking-lookup-form button:hover {
+    transform: translateY(-1px);
+    background: linear-gradient(180deg, #5fa56a, #3c824a) !important;
+}
+
+.ocean-tracking .tracking-reference-hero .tracking-lookup-hint {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin: 20px 0 0;
+    color: #4f6b60 !important;
+    font: 700 14px/1.4 "Nunito Sans", sans-serif;
+}
+
+.ocean-tracking .tracking-reference-hero .tracking-lookup-art {
+    position: relative;
+    min-height: 455px;
+    align-self: stretch;
+}
+
+.ocean-tracking .tracking-art-halo {
+    position: absolute;
+    z-index: 0;
+    width: 330px;
+    height: 330px;
+    right: 4%;
+    top: 10%;
+    border-radius: 50%;
+    background: linear-gradient(145deg, #d9f0e3, #bfe4d2);
+}
+
+.ocean-tracking .tracking-art-halo::after {
+    content: "";
+    position: absolute;
+    right: -34px;
+    bottom: 12px;
+    width: 190px;
+    height: 145px;
+    border-radius: 52% 48% 45% 55%;
+    background:
+        radial-gradient(ellipse at 30% 75%, #7caf86 0 9%, transparent 10%),
+        radial-gradient(ellipse at 52% 57%, #8fc297 0 10%, transparent 11%),
+        radial-gradient(ellipse at 73% 70%, #6faa7d 0 9%, transparent 10%),
+        #c5e5d0;
+    opacity: .82;
+}
+
+.ocean-tracking .tracking-art-sand {
+    position: absolute;
+    z-index: 1;
+    right: -5%;
+    bottom: -6%;
+    width: 112%;
+    max-width: none;
+    height: 180px;
+    object-fit: contain;
+    opacity: .9;
+}
+
+.ocean-tracking .tracking-art-mascot {
+    position: absolute;
+    z-index: 4;
+    right: 1%;
+    bottom: 2%;
+    width: min(96%, 420px);
+    max-height: 430px;
+    object-fit: contain;
+}
+
+.ocean-tracking .tracking-art-note {
+    position: absolute;
+    z-index: 6;
+    top: 2%;
+    left: 5%;
+    display: grid;
+    width: 150px;
+    height: 108px;
+    place-content: center;
+    border-radius: 48% 52% 45% 55%;
+    background: #fbdce6;
+    color: #36594c;
+    font: 900 11px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace;
+    text-align: center;
+    transform: rotate(-8deg);
+}
+
+.ocean-tracking .tracking-art-note::after {
+    content: "";
+    position: absolute;
+    left: 46px;
+    bottom: -12px;
+    width: 28px;
+    height: 25px;
+    background: #fbdce6;
+    clip-path: polygon(0 0, 100% 0, 30% 100%);
+}
+
+.ocean-tracking .tracking-art-rays {
+    position: absolute;
+    z-index: 5;
+    top: 15%;
+    left: -1%;
+    color: #e95d82;
+    font: 900 28px/1 "Nunito Sans", sans-serif;
+    letter-spacing: -5px;
+    transform: rotate(-38deg);
+}
+
+.ocean-tracking .tracking-art-star {
+    position: absolute;
+    z-index: 6;
+    line-height: 1;
+}
+
+.ocean-tracking .tracking-art-star-one {
+    top: 14%;
+    right: 0;
+    color: #df4773;
+    font-size: 34px;
+}
+
+.ocean-tracking .tracking-art-star-two {
+    bottom: 29%;
+    left: 2%;
+    color: #3f8856;
+    font-size: 23px;
+}
+
+.ocean-tracking .tracking-art-flower {
+    position: absolute;
+    z-index: 6;
+    left: 12%;
+    top: 48%;
+    color: #f6789a;
+    font-size: 38px;
+    text-shadow: 0 0 0 5px #fff;
+}
+
+.ocean-tracking .tracking-art-starfish {
+    position: absolute;
+    z-index: 5;
+    right: 4%;
+    bottom: 1%;
+    width: 55px;
+    height: 55px;
+    object-fit: contain;
+    transform: rotate(12deg);
+}
+
+.ocean-tracking .tracking-art-leaves {
+    position: absolute;
+    z-index: 1;
+    bottom: 9%;
+    width: 90px;
+    height: 145px;
+    border-radius: 60% 40% 60% 40%;
+    background:
+        radial-gradient(ellipse at 50% 20%, #8fc59a 0 20%, transparent 21%),
+        radial-gradient(ellipse at 30% 48%, #75b386 0 19%, transparent 20%),
+        radial-gradient(ellipse at 67% 63%, #9dcea6 0 20%, transparent 21%);
+    opacity: .88;
+}
+
+.ocean-tracking .tracking-art-leaves-left {
+    left: 7%;
+    transform: rotate(-12deg);
+}
+
+.ocean-tracking .tracking-art-leaves-right {
+    right: 0;
+    transform: rotate(12deg);
+}
+
+.ocean-tracking .tracking-site-footer {
+    position: relative;
+    min-height: 152px;
+    overflow: hidden;
+    border-top: 0;
+    background: #fffdf4;
+}
+
+.ocean-tracking .tracking-site-footer::before {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    top: -38px;
+    left: -3%;
+    width: 106%;
+    height: 76px;
+    border-radius: 50% 50% 0 0;
+    background: #fffdf4;
+    transform: rotate(-.7deg);
+}
+
+.ocean-tracking .tracking-site-footer-inner {
+    position: relative;
+    z-index: 2;
+    width: min(calc(100% - 120px), 1240px);
+    min-height: 152px;
+    padding: 40px 0 24px;
+}
+
+.ocean-tracking .tracking-site-footer-brand img {
+    width: 210px;
+}
+
+.ocean-tracking .tracking-site-footer-credit {
+    color: #456051;
+    font-size: 11px;
+    letter-spacing: .015em;
+}
+
+@media (max-width: 1050px) {
+    .ocean-tracking .tracking-site-header .tracking-site-browser {
+        width: calc(100% - 54px);
+    }
+
+    .ocean-tracking .tracking-site-header .op-navrow {
+        grid-template-columns: 210px minmax(0,1fr);
+        padding-inline: 22px;
+    }
+
+    .ocean-tracking .tracking-site-header .op-brand img {
+        width: 190px;
+    }
+
+    .ocean-tracking .tracking-site-header .op-nav a {
+        min-height: 44px;
+        padding-inline: 12px;
+        font-size: 13px;
+    }
+
+    .ocean-tracking .tracking-reference-hero .tracking-lookup-hero-inner {
+        grid-template-columns: minmax(0,1.1fr) minmax(300px,.9fr);
+        padding: 40px 36px 36px 44px;
+    }
+
+    .ocean-tracking .tracking-art-mascot {
+        width: min(103%, 380px);
+    }
+}
+
+@media (max-width: 760px) {
+    .ocean-tracking .tracking-site-header {
+        height: 110px;
+        min-height: 110px;
+        background: #f8d5df;
+    }
+
+    .ocean-tracking .tracking-site-header .tracking-site-browser.op-mobile-navbar {
+        top: 12px;
+        left: 12px;
+        width: calc(100% - 24px);
+        height: 86px;
+        transform: none;
+        border-radius: 14px;
+        box-shadow: var(--customer-shadow-card) #95bd9d;
+    }
+
+    .ocean-tracking .tracking-site-header .op-browserbar {
+        height: 21px;
+    }
+
+    .ocean-tracking .tracking-site-header .op-navrow {
+        height: 63px;
+        display: flex;
+        gap: 4px;
+        padding: 0 10px;
+    }
+
+    .ocean-tracking .tracking-site-header .op-brand {
+        height: 62px;
+    }
+
+    .ocean-tracking .tracking-site-header .op-brand img {
+        width: clamp(96px, 30vw, 125px);
+        height: auto;
+    }
+
+    .ocean-tracking .tracking-site-header .op-nav {
+        margin-left: auto;
+        gap: 0;
+    }
+
+    .ocean-tracking .tracking-site-header .op-nav a {
+        min-height: 38px;
+        gap: 4px;
+        padding: 0 clamp(4px,1.4vw,8px);
+        font-size: clamp(9px,2.7vw,11px);
+    }
+
+    .ocean-tracking .tracking-site-header .tracking-nav-icon {
+        width: 15px;
+        height: 15px;
+        flex-basis: 15px;
+    }
+
+    .ocean-tracking .tracking-site-header .tracking-nav-icon-home {
+        width: 16px;
+        height: 16px;
+        flex-basis: 16px;
+    }
+
+    .ocean-tracking .tracking-search-page .tracking-reference-hero {
+        min-height: 0;
+        padding: 24px 14px 76px;
+        background: linear-gradient(180deg, #f8d5df 0 77%, #c7eadc 77% 100%) !important;
+    }
+
+    .ocean-tracking .tracking-reference-hero .tracking-lookup-frame {
+        border-radius: 16px;
+        box-shadow: var(--customer-shadow-card) #6fab80;
+    }
+
+    .ocean-tracking .tracking-reference-hero .tracking-lookup-titlebar {
+        height: 36px;
+        padding-inline: 12px;
+    }
+
+    .ocean-tracking .tracking-titlebar-label {
+        gap: 7px;
+    }
+
+    .ocean-tracking .tracking-titlebar-paw {
+        width: 16px;
+        height: 16px;
+    }
+
+    .ocean-tracking .tracking-titlebar-label strong {
+        font-size: 9px;
+        letter-spacing: .1em;
+    }
+
+    .ocean-tracking .tracking-reference-hero .tracking-lookup-titlebar .op-window-dots i {
+        width: 10px;
+        height: 10px;
+        border-width: 1.5px;
+    }
+
+    .ocean-tracking .tracking-reference-hero .tracking-lookup-hero-inner {
+        display: flex;
+        min-height: 0;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        margin: 7px;
+        padding: 25px 18px 7px;
+        border-radius: 12px;
+    }
+
+    .ocean-tracking .tracking-reference-hero .tracking-lookup-kicker {
+        min-height: 30px;
+        gap: 8px;
+        padding-inline: 12px;
+        font-size: 9px;
+        letter-spacing: .04em;
+    }
+
+    .ocean-tracking .tracking-reference-hero h1 {
+        margin-top: 15px;
+        font-size: clamp(36px, 11vw, 54px);
+    }
+
+    .ocean-tracking .tracking-reference-hero .tracking-lookup-copy > p {
+        margin-top: 16px;
+        font-size: 14px;
+    }
+
+    .tracking-copy-break {
+        display: none;
+    }
+
+    .ocean-tracking .tracking-reference-hero .tracking-lookup-form {
+        min-height: 62px;
+        margin-top: 22px;
+        border-radius: 17px;
+        padding: 6px 6px 6px 10px;
+        box-shadow: 0 0 0 4px #fde6ec, 0 7px 0 -2px #daa0b1 !important;
+    }
+
+    .ocean-tracking .tracking-reference-hero .tracking-lookup-form input {
+        font-size: 16px;
+    }
+
+    .ocean-tracking .tracking-reference-hero .tracking-lookup-form button {
+        width: 52px;
+        min-width: 52px;
+        min-height: 48px;
+        padding: 0;
+    }
+
+    .ocean-tracking .tracking-reference-hero .tracking-lookup-form button span {
+        display: none;
+    }
+
+    .ocean-tracking .tracking-reference-hero .tracking-lookup-hint {
+        margin-top: 18px;
+        font-size: 11px;
+    }
+
+    .ocean-tracking .tracking-reference-hero .tracking-lookup-art {
+        width: 100%;
+        min-height: 310px;
+    }
+
+    .ocean-tracking .tracking-art-halo {
+        width: 230px;
+        height: 230px;
+        right: 7%;
+        top: 16%;
+    }
+
+    .ocean-tracking .tracking-art-mascot {
+        right: 6%;
+        bottom: -1%;
+        width: 270px;
+        max-height: 300px;
+    }
+
+    .ocean-tracking .tracking-art-sand {
+        right: -10%;
+        bottom: -9%;
+        width: 120%;
+        height: 130px;
+    }
+
+    .ocean-tracking .tracking-art-note {
+        width: 112px;
+        height: 82px;
+        top: 8%;
+        left: 3%;
+        font-size: 8px;
+    }
+
+    .ocean-tracking .tracking-art-rays {
+        top: 21%;
+        left: -1%;
+        font-size: 20px;
+    }
+
+    .ocean-tracking .tracking-art-star-one {
+        right: 3%;
+        top: 16%;
+        font-size: 25px;
+    }
+
+    .ocean-tracking .tracking-art-star-two {
+        bottom: 32%;
+        left: 6%;
+        font-size: 17px;
+    }
+
+    .ocean-tracking .tracking-art-flower {
+        top: 48%;
+        left: 12%;
+        font-size: 26px;
+    }
+
+    .ocean-tracking .tracking-art-starfish {
+        width: 42px;
+        height: 42px;
+    }
+
+    .ocean-tracking .tracking-site-footer {
+        min-height: 126px;
+    }
+
+    .ocean-tracking .tracking-site-footer-inner {
+        width: calc(100% - 36px);
+        min-height: 126px;
+        flex-direction: row;
+        align-items: center;
+        gap: 14px;
+        padding: 28px 0 18px;
+    }
+
+    .ocean-tracking .tracking-site-footer-brand img {
+        width: 135px;
+    }
+
+    .ocean-tracking .tracking-site-footer-credit {
+        margin-left: auto;
+        font-size: 8px;
+    }
+}
+
+html[data-customer-theme="dark"] .ocean-tracking .tracking-site-header,
+html[data-customer-theme="dark"] .ocean-tracking .tracking-search-page .tracking-reference-hero {
+    filter: saturate(.82) brightness(.78);
+}
+
+html[data-customer-theme="dark"] .ocean-tracking .tracking-reference-hero .tracking-lookup-hero-inner,
+html[data-customer-theme="dark"] .ocean-tracking .tracking-site-header .tracking-site-browser,
+html[data-customer-theme="dark"] .ocean-tracking .tracking-site-footer {
+    background-color: #1b3027;
+}
+
+
+/* Tracking composition hardening — fixes SVG intrinsic sizing and desktop balance */
+@media (min-width: 761px) {
+    .ocean-tracking .tracking-reference-hero .tracking-lookup-hero-inner {
+        min-height: 500px;
+        max-height: 560px;
+        grid-template-columns: minmax(0, 1.18fr) minmax(340px, .82fr);
+        align-items: center;
+        padding: 42px 54px 40px 66px;
+    }
+
+    .ocean-tracking .tracking-reference-hero .tracking-lookup-copy {
+        align-self: center;
+        padding-block: 4px;
+    }
+
+    .ocean-tracking .tracking-reference-hero h1 {
+        margin-top: 18px;
+        max-width: 690px;
+        font-size: clamp(52px, 4.9vw, 72px);
+        line-height: .93;
+    }
+
+    .ocean-tracking .tracking-reference-hero h1 > i.tracking-headline-paw {
+        display: inline-flex !important;
+        width: 30px !important;
+        height: 30px !important;
+        min-width: 30px;
+        max-width: 30px;
+        min-height: 30px;
+        max-height: 30px;
+        flex: 0 0 30px;
+        margin-left: 10px;
+        vertical-align: middle;
+        overflow: hidden;
+        transform: translateY(-3px) rotate(-10deg);
+    }
+
+    .ocean-tracking .tracking-reference-hero .tracking-headline-paw svg {
+        display: block !important;
+        width: 30px !important;
+        height: 30px !important;
+        min-width: 30px;
+        max-width: 30px;
+        min-height: 30px;
+        max-height: 30px;
+        flex: none;
+    }
+
+    .ocean-tracking .tracking-reference-hero .tracking-lookup-copy > p {
+        margin-top: 20px;
+    }
+
+    .ocean-tracking .tracking-reference-hero .tracking-lookup-form {
+        margin-top: 26px;
+    }
+
+    .ocean-tracking .tracking-reference-hero .tracking-lookup-art {
+        min-height: 420px;
+        max-height: 440px;
+    }
+
+    .ocean-tracking .tracking-reference-hero .tracking-art-halo {
+        width: 300px;
+        height: 300px;
+        right: 3%;
+        top: 11%;
+    }
+
+    .ocean-tracking .tracking-reference-hero .tracking-art-mascot {
+        right: 1%;
+        bottom: 1%;
+        width: min(94%, 395px);
+        max-height: 405px;
+    }
+
+    .ocean-tracking .tracking-reference-hero .tracking-art-note {
+        top: 1%;
+        left: 4%;
+    }
+
+    .ocean-tracking .tracking-reference-hero .tracking-art-sand {
+        bottom: -7%;
+        height: 165px;
+    }
+}
+
+@media (max-width: 760px) {
+    .ocean-tracking .tracking-reference-hero h1 > i.tracking-headline-paw {
+        display: inline-flex !important;
+        width: 22px !important;
+        height: 22px !important;
+        min-width: 22px;
+        max-width: 22px;
+        min-height: 22px;
+        max-height: 22px;
+        overflow: hidden;
+        vertical-align: middle;
+    }
+
+    .ocean-tracking .tracking-reference-hero .tracking-headline-paw svg {
+        width: 22px !important;
+        height: 22px !important;
+        min-width: 22px;
+        max-width: 22px;
+        min-height: 22px;
+        max-height: 22px;
+    }
+}
+
+
+/* Tracking neo-brutalism final — profile-aligned strawberry matcha */
+body.ocean-tracking {
+    --tracking-ink: #355a45;
+    --tracking-outline: #496d54;
+    --tracking-pink: #fbd7e3;
+    --tracking-pink-strong: #e64675;
+    --tracking-mint: #d9eddd;
+    --tracking-matcha: #76b67c;
+    --tracking-paper: #fffdfa;
+    --tracking-muted: #617369;
+    background:
+        linear-gradient(rgba(91,135,102,.055) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(91,135,102,.055) 1px, transparent 1px),
+        #fffaf1;
+    background-size: 42px 42px;
+    color: var(--tracking-ink);
+    font-family: "Nunito Sans", sans-serif;
+}
+
+.ocean-tracking .customer-public-shell,
+.ocean-tracking .public-landing-main,
+.ocean-tracking .tracking-search-page,
+.ocean-tracking .tracking-search-shell {
+    background: transparent !important;
+}
+
+/* Match the fixed Profile / Landing navbar geometry. */
+.ocean-tracking .tracking-site-header {
+    position: relative;
+    container-type: inline-size;
+    height: 12.9cqw;
+    min-height: 118px;
+    padding: 0;
+    background: transparent;
+}
+
+.ocean-tracking .tracking-site-header .tracking-site-browser {
+    position: absolute;
+    z-index: 30;
+    top: 16px;
+    left: 50%;
+    width: min(1180px, 89.3%);
+    height: 91px;
+    margin: 0;
+    border: 2px solid var(--tracking-outline);
+    border-radius: 18px;
+    transform: translateX(-50%);
+    background: var(--tracking-paper);
+    box-shadow: var(--customer-shadow-card) #91bd9b;
+}
+
+.ocean-tracking .tracking-site-header .op-browserbar {
+    height: 22px;
+    border-bottom: 2px solid var(--tracking-outline);
+    background: var(--tracking-pink);
+}
+
+.ocean-tracking .tracking-site-header .op-navrow {
+    height: 67px;
+    grid-template-columns: 205px minmax(0,1fr);
+    gap: 18px;
+    padding: 3px 14px 4px 25px;
+}
+
+.ocean-tracking .tracking-site-header .op-brand {
+    height: 58px;
+}
+
+.ocean-tracking .tracking-site-header .op-brand img {
+    width: 190px;
+    height: 76px;
+    max-width: none;
+    object-fit: contain;
+}
+
+.ocean-tracking .tracking-site-header .op-nav {
+    justify-self: end;
+    justify-content: flex-end;
+    gap: 5px;
+}
+
+.ocean-tracking .tracking-site-header .op-nav a {
+    min-height: auto;
+    gap: 8px;
+    border-radius: 0;
+    padding: 0 12px;
+    background: transparent;
+    color: var(--tracking-ink);
+    font: 800 14px/1 "Nunito Sans", sans-serif;
+}
+
+.ocean-tracking .tracking-site-header .op-nav a:hover {
+    background: transparent;
+    color: var(--tracking-pink-strong);
+    transform: none;
+}
+
+.ocean-tracking .tracking-site-header .op-nav a.is-active {
+    background: transparent;
+    color: var(--tracking-pink-strong);
+}
+
+.ocean-tracking .tracking-site-header .tracking-nav-icon {
+    width: 20px;
+    height: 20px;
+    flex: 0 0 20px;
+}
+
+.ocean-tracking .tracking-site-header .tracking-nav-icon-home {
+    width: 22px;
+    height: 22px;
+    flex-basis: 22px;
+}
+
+/* Simple tracking page */
+.ocean-tracking .tracking-neo-page {
+    min-height: 470px;
+    padding: 24px 0 76px;
+    background: transparent;
+}
+
+.ocean-tracking .tracking-neo-shell {
+    width: min(89.3%, 1180px);
+    margin: 0 auto;
+}
+
+.ocean-tracking .tracking-neo-heading {
+    max-width: 720px;
+    margin-bottom: 24px;
+}
+
+.ocean-tracking .tracking-neo-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    min-height: 28px;
+    border: 1.5px solid #b72f5e;
+    border-radius: 8px;
+    padding: 0 10px;
+    background: #fff4f8;
+    box-shadow: var(--customer-shadow-control) #dd9eb3;
+    color: #ad2f59;
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: .08em;
+}
+
+.ocean-tracking .tracking-neo-heading h1 {
+    margin: 14px 0 0;
+    color: var(--tracking-ink) !important;
+    font: 900 clamp(38px, 5vw, 58px)/.98 "Nunito Sans", sans-serif;
+    letter-spacing: -.045em;
+}
+
+.ocean-tracking .tracking-neo-heading p {
+    max-width: 640px;
+    margin: 12px 0 0;
+    color: var(--tracking-muted) !important;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.6;
+}
+
+.ocean-tracking .tracking-neo-search-card {
+    overflow: hidden;
+    border: 2px solid var(--tracking-outline);
+    border-radius: 18px;
+    background: var(--tracking-paper);
+    box-shadow: var(--customer-shadow-card) #eba4bc;
+}
+
+.ocean-tracking .tracking-neo-card-head {
+    display: flex;
+    min-height: 92px;
+    align-items: center;
+    gap: 14px;
+    border-bottom: 2px solid var(--tracking-outline);
+    padding: 18px 22px;
+    background: var(--tracking-pink);
+}
+
+.ocean-tracking .tracking-neo-card-icon {
+    display: grid;
+    width: 46px;
+    height: 46px;
+    flex: 0 0 46px;
+    place-items: center;
+    border: 2px solid var(--tracking-outline);
+    border-radius: 11px;
+    background: #fffefa;
+    box-shadow: var(--customer-shadow-control) #90ba9b;
+    color: var(--tracking-ink);
+}
+
+.ocean-tracking .tracking-neo-card-head > div span,
+.ocean-tracking .tracking-neo-card-head > div strong {
+    display: block;
+}
+
+.ocean-tracking .tracking-neo-card-head > div span {
+    color: #ad2f59;
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: .1em;
+}
+
+.ocean-tracking .tracking-neo-card-head > div strong {
+    margin-top: 4px;
+    color: var(--tracking-ink);
+    font-size: 20px;
+    font-weight: 900;
+}
+
+.ocean-tracking .tracking-neo-form {
+    display: grid;
+    grid-template-columns: minmax(0,1fr) auto;
+    gap: 14px;
+    padding: 24px 24px 16px;
+}
+
+.ocean-tracking .tracking-neo-input-wrap {
+    display: grid;
+    min-width: 0;
+    min-height: 58px;
+    grid-template-columns: auto minmax(0,1fr);
+    align-items: center;
+    gap: 10px;
+    border: 2px solid #688771;
+    border-radius: 12px;
+    padding: 0 16px;
+    background: #fffefa;
+    box-shadow: var(--customer-shadow-control) #a9cbae;
+}
+
+.ocean-tracking .tracking-neo-input-icon {
+    display: grid;
+    place-items: center;
+    color: #326c47;
+}
+
+.ocean-tracking .tracking-neo-input-wrap input {
+    width: 100%;
+    min-width: 0;
+    border: 0;
+    background: transparent;
+    color: var(--tracking-ink);
+    font: 700 14px/1.4 "Nunito Sans", sans-serif;
+    outline: 0;
+}
+
+.ocean-tracking .tracking-neo-input-wrap input::placeholder {
+    color: #7d9184;
+}
+
+.ocean-tracking .tracking-neo-form button {
+    display: inline-flex;
+    min-width: 176px;
+    min-height: 58px;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    border: 2px solid var(--tracking-outline);
+    border-radius: 12px;
+    padding: 0 20px;
+    background: var(--tracking-matcha);
+    box-shadow: var(--customer-shadow-control) #4d8156;
+    color: #fff;
+    font: 900 13px/1 "Nunito Sans", sans-serif;
+    transition: transform .15s ease, box-shadow .15s ease;
+}
+
+.ocean-tracking .tracking-neo-form button:hover {
+    transform: translate(-2px,2px);
+    box-shadow: var(--customer-shadow-control) #4d8156;
+}
+
+.ocean-tracking .tracking-neo-hint,
+.ocean-tracking .tracking-neo-error {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 24px 22px;
+    border: 1.5px solid #8bac91;
+    border-radius: 10px;
+    padding: 11px 13px;
+    background: #f1f8f0;
+    color: #526a5b;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.ocean-tracking .tracking-neo-error {
+    margin-top: -8px;
+    border-color: #bc5375;
+    background: #fff0f5;
+    color: #a03255;
+}
+
+/* Result cards use the same card grammar as Profile. */
+.ocean-tracking .tracking-result-section {
+    padding: 0 0 82px;
+    background: transparent;
+}
+
+.ocean-tracking .tracking-result-shell {
+    width: min(89.3%, 1180px);
+    margin: 0 auto;
+}
+
+.ocean-tracking .tracking-result-card {
+    overflow: hidden;
+    border: 2px solid var(--tracking-outline) !important;
+    border-radius: 18px;
+    background: var(--tracking-paper) !important;
+    box-shadow: var(--customer-shadow-card) #91bd9b !important;
+}
+
+.ocean-tracking .tracking-result-titlebar {
+    min-height: 42px;
+    border-bottom: 2px solid var(--tracking-outline);
+    padding: 0 16px;
+    background: var(--tracking-pink);
+    color: #ad2f59;
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: .08em;
+}
+
+.ocean-tracking .tracking-history-card .tracking-result-titlebar {
+    background: var(--tracking-mint);
+    color: #326c47;
+}
+
+.ocean-tracking .tracking-result-banner {
+    margin: 0 !important;
+    border: 0 !important;
+    border-bottom: 2px solid var(--tracking-outline) !important;
+    border-radius: 0 !important;
+    padding: 24px !important;
+    background: #fffdfa !important;
+}
+
+.ocean-tracking .tracking-result-banner h2 {
+    color: var(--tracking-ink) !important;
+}
+
+.ocean-tracking .tracking-current-status {
+    border: 1.5px solid #8bac91 !important;
+    border-radius: 10px;
+    background: #f1f8f0 !important;
+}
+
+.ocean-tracking .tracking-result-layout,
+.ocean-tracking .tracking-history-list {
+    margin: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: var(--tracking-paper) !important;
+}
+
+.ocean-tracking .tracking-result-main,
+.ocean-tracking .tracking-result-side {
+    padding: 22px;
+}
+
+.ocean-tracking .tracking-result-side {
+    border-color: #8db29a !important;
+    background: #f1f8f0 !important;
+}
+
+.ocean-tracking .tracking-result-item,
+.ocean-tracking .tracking-history-list details,
+.ocean-tracking .tracking-order-summary > div {
+    border-color: #b6cbb9 !important;
+}
+
+.ocean-tracking .tracking-result-item-icon,
+.ocean-tracking .tracking-history-icon {
+    border: 1.5px solid #a9486a !important;
+    border-radius: 8px;
+    background: #ffe2eb !important;
+    color: #a6305c !important;
+}
+
+.ocean-tracking .tracking-admin-note,
+.ocean-tracking .tracking-history-detail {
+    border: 1.5px solid #8bac91 !important;
+    border-radius: 10px;
+    background: #f1f8f0 !important;
+}
+
+.ocean-tracking .tracking-search-page .tracking-result-action {
+    border: 2px solid var(--tracking-outline) !important;
+    border-radius: 10px;
+    background: var(--tracking-matcha) !important;
+    box-shadow: var(--customer-shadow-control) #4d8156 !important;
+    color: #fff !important;
+    font-weight: 900;
+}
+
+/* Landing footer copied for Tracking. */
+.ocean-tracking .tracking-landing-footer.op-footer-reference {
+    position: relative;
+    display: block;
+    height: 183px;
+    min-height: 183px;
+    overflow: hidden;
+    border: 0;
+    background: #f7f3e9 url('/assets/oceanpaws-footer-reference-bg-v1.png') center 40%/100% 136% no-repeat;
+    color: #315d48;
+    font-family: "Nunito Sans", sans-serif;
+}
+
+.ocean-tracking .tracking-landing-footer .op-footer-reference-shell {
+    position: absolute;
+    z-index: 4;
+    top: 39px;
+    left: 50%;
+    display: grid;
+    width: min(calc(100% - 136px),1216px);
+    height: 78px;
+    grid-template-columns: 202px 288px 200px minmax(0,1fr);
+    align-items: center;
+    gap: 0;
+    padding: 0;
+    transform: translateX(-50%);
+}
+
+.ocean-tracking .tracking-landing-footer .op-footer-brand-block img {
+    display: block;
+    width: 180px;
+    height: auto;
+    margin-left: -7px;
+}
+
+.ocean-tracking .tracking-landing-footer .op-footer-center {
+    display: grid;
+    width: auto;
+    height: 26px;
+    grid-column: 2 / span 2;
+    grid-template-columns: 288px 200px;
+    align-items: center;
+    gap: 0;
+    padding: 0;
+}
+
+.ocean-tracking .tracking-landing-footer .op-footer-links,
+.ocean-tracking .tracking-landing-footer .op-footer-socials {
+    display: flex;
+    height: 24px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0;
+}
+
+.ocean-tracking .tracking-landing-footer .op-footer-links {
+    padding: 0 29px;
+    border-right: 1px solid #52765f;
+    border-left: 1px solid #52765f;
+}
+
+.ocean-tracking .tracking-landing-footer .op-footer-socials {
+    padding: 0 30px;
+    border-right: 1px solid #52765f;
+}
+
+.ocean-tracking .tracking-landing-footer .op-footer-links a,
+.ocean-tracking .tracking-landing-footer .op-footer-socials a {
+    color: #315d48;
+    text-decoration: none;
+}
+
+.ocean-tracking .tracking-landing-footer .op-footer-links a {
+    font: 500 11px/24px "Nunito Sans", sans-serif;
+}
+
+.ocean-tracking .tracking-landing-footer .op-footer-socials a {
+    display: grid;
+    width: 24px;
+    height: 24px;
+    place-items: center;
+    font-size: 19px;
+}
+
+.ocean-tracking .tracking-landing-footer .op-footer-message {
+    display: flex;
+    height: 72px;
+    grid-column: 4;
+    align-items: center;
+    justify-self: end;
+    gap: 15px;
+    padding: 0;
+}
+
+.ocean-tracking .tracking-landing-footer .op-footer-message strong {
+    font: 400 11px/1.35 ui-monospace, "Courier New", monospace;
+    letter-spacing: 0;
+}
+
+.ocean-tracking .tracking-landing-footer .op-footer-message strong span {
+    display: block;
+}
+
+.ocean-tracking .tracking-landing-footer .op-footer-shell-icon {
+    display: block;
+    width: 65px;
+    height: 65px;
+    object-fit: contain;
+    transform: rotate(-4deg);
+}
+
+.ocean-tracking .tracking-landing-footer .op-footer-bottomline {
+    position: absolute;
+    right: auto;
+    bottom: 14px;
+    left: 0;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    color: #f4fbf4;
+    font: 400 10px/1.2 ui-monospace, "Courier New", monospace;
+    text-align: center;
+}
+
+.ocean-tracking .tracking-landing-footer .op-footer-mobile-links {
+    display: none;
+}
+
+@media (max-width: 760px) {
+    .ocean-tracking .tracking-site-header {
+        height: 108px;
+        min-height: 108px;
+    }
+
+    .ocean-tracking .tracking-site-header .tracking-site-browser.op-mobile-navbar {
+        top: 12px;
+        left: 12px;
+        width: calc(100% - 24px);
+        height: 84px;
+        transform: none;
+    }
+
+    .ocean-tracking .tracking-site-header .op-navrow {
+        display: flex;
+        height: 63px;
+        gap: 4px;
+        padding: 0 10px;
+    }
+
+    .ocean-tracking .tracking-site-header .op-brand {
+        height: 62px;
+    }
+
+    .ocean-tracking .tracking-site-header .op-brand img {
+        width: clamp(96px,30vw,125px);
+        height: auto;
+    }
+
+    .ocean-tracking .tracking-site-header .op-nav {
+        margin-left: auto;
+        gap: 0;
+    }
+
+    .ocean-tracking .tracking-site-header .op-nav a {
+        gap: 4px;
+        padding: 0 clamp(3px,1vw,6px);
+        font-size: clamp(9px,2.6vw,11px);
+    }
+
+    .ocean-tracking .tracking-site-header .tracking-nav-icon {
+        width: 15px;
+        height: 15px;
+        flex-basis: 15px;
+    }
+
+    .ocean-tracking .tracking-site-header .tracking-nav-icon-home {
+        width: 16px;
+        height: 16px;
+        flex-basis: 16px;
+    }
+
+    .ocean-tracking .tracking-neo-page {
+        padding: 18px 0 54px;
+    }
+
+    .ocean-tracking .tracking-neo-shell,
+    .ocean-tracking .tracking-result-shell {
+        width: calc(100% - 28px);
+    }
+
+    .ocean-tracking .tracking-neo-heading {
+        margin-bottom: 18px;
+    }
+
+    .ocean-tracking .tracking-neo-heading h1 {
+        font-size: clamp(32px,10vw,44px);
+    }
+
+    .ocean-tracking .tracking-neo-heading p {
+        font-size: 13px;
+    }
+
+    .ocean-tracking .tracking-neo-card-head {
+        min-height: 82px;
+        padding: 16px;
+    }
+
+    .ocean-tracking .tracking-neo-card-icon {
+        width: 42px;
+        height: 42px;
+        flex-basis: 42px;
+    }
+
+    .ocean-tracking .tracking-neo-card-head > div strong {
+        font-size: 17px;
+    }
+
+    .ocean-tracking .tracking-neo-form {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        padding: 18px 16px 14px;
+    }
+
+    .ocean-tracking .tracking-neo-input-wrap {
+        min-height: 54px;
+        padding-inline: 13px;
+    }
+
+    .ocean-tracking .tracking-neo-input-wrap input {
+        font-size: 16px;
+    }
+
+    .ocean-tracking .tracking-neo-form button {
+        width: 100%;
+        min-height: 52px;
+    }
+
+    .ocean-tracking .tracking-neo-hint,
+    .ocean-tracking .tracking-neo-error {
+        margin-right: 16px;
+        margin-left: 16px;
+    }
+
+    .ocean-tracking .tracking-result-section {
+        padding-bottom: 58px;
+    }
+
+    .ocean-tracking .tracking-result-banner {
+        padding: 18px !important;
+    }
+
+    .ocean-tracking .tracking-result-main,
+    .ocean-tracking .tracking-result-side {
+        padding: 16px;
+    }
+
+    .ocean-tracking .tracking-landing-footer.op-footer-reference {
+        height: 415px;
+        min-height: 415px;
+        background-size: auto 100%;
+        background-position: center bottom;
+    }
+
+    .ocean-tracking .tracking-landing-footer .op-footer-reference-shell {
+        top: 36px;
+        left: 20px;
+        display: block;
+        width: calc(100% - 40px);
+        height: auto;
+        transform: none;
+    }
+
+    .ocean-tracking .tracking-landing-footer .op-footer-brand-block img {
+        width: 172px;
+        margin: 0;
+    }
+
+    .ocean-tracking .tracking-landing-footer .op-footer-center {
+        display: block;
+        width: 100%;
+        height: auto;
+        margin-top: 13px;
+    }
+
+    .ocean-tracking .tracking-landing-footer .op-footer-links {
+        display: none;
+    }
+
+    .ocean-tracking .tracking-landing-footer .op-footer-mobile-links {
+        display: grid;
+        width: 100%;
+    }
+
+    .ocean-tracking .tracking-landing-footer .op-footer-mobile-links a {
+        display: grid;
+        min-height: 31px;
+        grid-template-columns: 22px 1fr 18px;
+        align-items: center;
+        gap: 7px;
+        border-bottom: 1px solid rgba(80,121,93,.16);
+        color: #345e47;
+        font: 600 12px/1.2 "Nunito Sans", sans-serif;
+        text-decoration: none;
+    }
+
+    .ocean-tracking .tracking-landing-footer .op-footer-socials {
+        display: flex;
+        width: 180px;
+        height: 28px;
+        justify-content: space-between;
+        margin-top: 17px;
+        padding: 0;
+        border: 0;
+    }
+
+    .ocean-tracking .tracking-landing-footer .op-footer-message {
+        position: absolute;
+        top: 247px;
+        right: 0;
+        width: 43%;
+        height: 32px;
+    }
+
+    .ocean-tracking .tracking-landing-footer .op-footer-message strong {
+        font-size: 10px;
+    }
+
+    .ocean-tracking .tracking-landing-footer .op-footer-shell-icon {
+        display: none;
+    }
+
+    .ocean-tracking .tracking-landing-footer .op-footer-bottomline {
+        bottom: 16px;
+        font-size: 9px;
+    }
+}
+
+/* Keep the new Tracking page coherent with the already-fixed Profile dark mode. */
+html[data-customer-theme="dark"] body.ocean-tracking {
+    --tracking-ink: #edf6ef;
+    --tracking-outline: #78977f;
+    --tracking-pink: #4d303a;
+    --tracking-pink-strong: #f08aa5;
+    --tracking-mint: #263c30;
+    --tracking-matcha: #4f7f59;
+    --tracking-paper: #1b3027;
+    --tracking-muted: #aec0b4;
+    color-scheme: dark;
+    background:
+        linear-gradient(rgba(151,181,159,.055) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(151,181,159,.055) 1px, transparent 1px),
+        #12251e;
+    background-size: 42px 42px;
+}
+
+html[data-customer-theme="dark"] .ocean-tracking .tracking-site-header .tracking-site-browser,
+html[data-customer-theme="dark"] .ocean-tracking .tracking-neo-search-card,
+html[data-customer-theme="dark"] .ocean-tracking .tracking-result-card {
+    background: #1b3027 !important;
+    color: #edf6ef;
+    box-shadow: var(--customer-shadow-card) #081810 !important;
+}
+
+html[data-customer-theme="dark"] .ocean-tracking .tracking-neo-card-head,
+html[data-customer-theme="dark"] .ocean-tracking .tracking-result-titlebar {
+    background: #4d303a;
+}
+
+html[data-customer-theme="dark"] .ocean-tracking .tracking-neo-card-icon,
+html[data-customer-theme="dark"] .ocean-tracking .tracking-neo-input-wrap {
+    border-color: #78977f;
+    background: #20382e;
+    color: #edf6ef;
+    box-shadow: var(--customer-shadow-control) #081810;
+}
+
+html[data-customer-theme="dark"] .ocean-tracking .tracking-neo-input-wrap input {
+    color: #edf6ef;
+}
+
+html[data-customer-theme="dark"] .ocean-tracking .tracking-neo-hint,
+html[data-customer-theme="dark"] .ocean-tracking .tracking-current-status,
+html[data-customer-theme="dark"] .ocean-tracking .tracking-admin-note,
+html[data-customer-theme="dark"] .ocean-tracking .tracking-history-detail,
+html[data-customer-theme="dark"] .ocean-tracking .tracking-result-side {
+    border-color: #557863 !important;
+    background: #20382e !important;
+    color: #dce9df;
+}
+
+
+/* Tracking navbar: exact Landing navbar, no lookalike overrides */
+.ocean-tracking .tracking-site-header {
+    position: relative;
+    container-type: inline-size;
+    width: 100%;
+    background: transparent;
+    font-family: "Arial Rounded MT Bold", "Trebuchet MS", ui-rounded, system-ui, sans-serif;
+}
+
+.ocean-tracking .tracking-site-header .op-header {
+    background: rgba(255,253,249,.96);
+    border-color: #8d4760;
+    box-shadow: var(--customer-shadow-card) #8aaf91;
+}
+
+.ocean-tracking .tracking-site-header .op-header .op-browserbar {
+    border-bottom-color: #8d4760;
+    background: rgba(255,215,226,.82);
+    color: #8e3c59;
+}
+
+.ocean-tracking .tracking-site-header .op-window-dots i {
+    border-color: #6d5f50;
+    background: #ff7ea0;
+    box-shadow: inset 0 0 0 2px rgba(255,255,255,.4);
+}
+
+.ocean-tracking .tracking-site-header .op-window-dots i:nth-child(2) { background: #71bf86; }
+.ocean-tracking .tracking-site-header .op-window-dots i:nth-child(3) { background: #ee6a96; }
+
+.ocean-tracking .tracking-site-header .op-nav a {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 0;
+    border-radius: 0;
+    background: transparent;
+    color: #344f46;
+    font-family: inherit;
+    font-weight: 400;
+    white-space: nowrap;
+}
+
+.ocean-tracking .tracking-site-header .op-nav a:hover {
+    background: transparent;
+    color: #344f46;
+    transform: none;
+}
+
+.ocean-tracking .tracking-site-header .op-nav a i {
+    color: #527c61;
+}
+
+.ocean-tracking .tracking-site-header .op-nav a.is-active,
+.ocean-tracking .tracking-site-header .op-nav a.is-active i {
+    color: #d6436d;
+}
+
+.ocean-tracking .tracking-site-header .op-nav a.is-active::after {
+    content: none;
+}
+
+@media (min-width: 761px) {
+    .ocean-tracking .tracking-site-header {
+        height: 12.9cqw;
+        min-height: 0;
+        padding: 0;
+    }
+
+    .ocean-tracking .tracking-site-header .op-header {
+        position: absolute;
+        z-index: 30;
+        top: 1.85cqw;
+        left: 5.37%;
+        width: 90.43%;
+        height: 10.55cqw;
+        margin: 0;
+        border-width: .15cqw;
+        border-radius: 1.2cqw;
+        transform: none;
+    }
+
+    .ocean-tracking .tracking-site-header .op-header .op-browserbar {
+        height: 2.73cqw;
+        padding: 0 1.35cqw;
+        font-size: .88cqw;
+    }
+
+    .ocean-tracking .tracking-site-header .op-window-dots {
+        gap: .6cqw;
+    }
+
+    .ocean-tracking .tracking-site-header .op-window-dots i {
+        width: 1.25cqw;
+        height: 1.25cqw;
+        border-width: .15cqw;
+    }
+
+    .ocean-tracking .tracking-site-header .op-navrow {
+        display: grid;
+        height: 7.8cqw;
+        grid-template-columns: 21cqw minmax(0,1fr);
+        align-items: center;
+        gap: 1cqw;
+        padding: .3cqw 1.9cqw .4cqw 1.5cqw;
+    }
+
+    .ocean-tracking .tracking-site-header .op-brand {
+        height: 6.5cqw;
+    }
+
+    .ocean-tracking .tracking-site-header .op-brand img {
+        flex: none;
+        width: 21cqw;
+        max-width: none;
+        height: 10.2cqw;
+        margin-left: 1cqw;
+        object-fit: contain;
+    }
+
+    .ocean-tracking .tracking-site-header .op-nav {
+        height: 100%;
+        gap: 1cqw;
+        justify-self: end;
+        justify-content: flex-end;
+    }
+
+    .ocean-tracking .tracking-site-header .op-nav a {
+        gap: .8cqw;
+        padding: 0 1cqw;
+        font-size: 1.33cqw;
+    }
+
+    .ocean-tracking .tracking-site-header .op-nav a i {
+        font-size: 1.9cqw;
+    }
+}
+
+@media (max-width: 760px) {
+    .ocean-tracking .tracking-site-header {
+        height: 108px;
+        min-height: 108px;
+        padding: 0;
+    }
+
+    .ocean-tracking .tracking-site-header .op-header.op-mobile-navbar {
+        top: 12px;
+        left: 12px;
+        width: calc(100% - 24px);
+        height: 84px;
+        margin: 0;
+        transform: none;
+        overflow: hidden;
+        border: 2px solid #815767;
+        border-radius: 15px;
+        background: #fffefa;
+        box-shadow: var(--customer-shadow-control) #79a486;
+    }
+
+    .ocean-tracking .tracking-site-header .op-header.op-mobile-navbar > .op-browserbar {
+        display: flex;
+        height: 21px;
+        padding-inline: 10px;
+    }
+
+    .ocean-tracking .tracking-site-header .op-header.op-mobile-navbar .op-navrow {
+        display: flex;
+        height: calc(100% - 21px);
+        align-items: center;
+        justify-content: space-between;
+        gap: 5px;
+        padding: 0 9px;
+    }
+
+    .ocean-tracking .tracking-site-header .op-header.op-mobile-navbar .op-brand {
+        height: 100%;
+        flex: 0 0 auto;
+        justify-content: flex-start;
+        margin: 0;
+    }
+
+    .ocean-tracking .tracking-site-header .op-header.op-mobile-navbar .op-brand-logo {
+        margin: 0;
+    }
+
+    .ocean-tracking .tracking-site-header .op-header.op-mobile-navbar .op-brand img {
+        width: clamp(92px,27vw,120px);
+        max-width: none;
+        height: auto;
+        margin: 0;
+    }
+
+    .ocean-tracking .tracking-site-header .op-header.op-mobile-navbar .op-nav {
+        display: flex;
+        min-width: 0;
+        height: 100%;
+        flex: 0 1 auto;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 0;
+        margin-left: 0;
+    }
+
+    .ocean-tracking .tracking-site-header .op-header.op-mobile-navbar .op-nav a {
+        gap: 3px;
+        padding: 0 clamp(2px,.8vw,5px);
+        font: 800 clamp(9px,2.5vw,11px)/1 "Nunito Sans", sans-serif;
+        white-space: nowrap;
+    }
+
+    .ocean-tracking .tracking-site-header .op-header.op-mobile-navbar .op-nav a i {
+        font-size: clamp(11px,3vw,14px);
+    }
+}
+
+
+/* Shared Ocean Paws primary navbar — exact reference treatment */
+.ocean-primary-navbar-host {
+    position: relative;
+    z-index: 50;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    padding: 18px 0 22px;
+    background: transparent;
+}
+
+.ocean-primary-navbar-host.is-landing {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 50;
+    padding-bottom: 0;
+}
+
+.ocean-primary-navbar {
+    display: flex;
+    width: min(90.43%, 1180px);
+    min-height: 108px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 28px;
+    border: 2.5px solid #355a45;
+    border-radius: 17px;
+    padding: 0 34px;
+    background: #fffdf9;
+    box-shadow: var(--customer-shadow-card) #8aaf91;
+    color: #355a45;
+    font-family: "Nunito Sans", "Trebuchet MS", sans-serif;
+}
+
+.ocean-primary-navbar__brand {
+    display: inline-flex;
+    min-width: 0;
+    flex: 0 0 auto;
+    align-items: center;
+}
+
+.ocean-primary-navbar__brand-logo {
+    position: relative;
+    display: block;
+    flex: none;
+    line-height: 0;
+}
+
+.ocean-primary-navbar__brand-logo img {
+    display: block;
+}
+
+.ocean-primary-navbar__brand-logo::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+        110deg,
+        transparent 47%,
+        rgba(255,255,255,.08) 48%,
+        rgba(255,255,255,.9) 49.4%,
+        rgba(255,255,255,.9) 50.6%,
+        rgba(255,255,255,.08) 52%,
+        transparent 53%
+    );
+    background-size: 220% 100%;
+    background-position: 130% 0;
+    mix-blend-mode: screen;
+    -webkit-mask: url('/assets/oceanpaws-logo-no-sticker.png') center/contain no-repeat;
+    mask: url('/assets/oceanpaws-logo-no-sticker.png') center/contain no-repeat;
+    animation: ocean-primary-navbar-logo-glint 10s linear infinite;
+}
+
+@keyframes ocean-primary-navbar-logo-glint {
+    0%, 12% { background-position: 130% 0; }
+    76%, 100% { background-position: -130% 0; }
+}
+
+.ocean-primary-navbar__brand img {
+    display: block;
+    width: clamp(190px, 17.5vw, 235px);
+    max-width: none;
+    height: auto;
+    object-fit: contain;
+}
+
+.ocean-primary-navbar__links {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 17px;
+    margin-left: auto;
+}
+
+.ocean-primary-navbar__link {
+    --nav-icon-fill: #6aa97f;
+    --nav-icon-stroke: #355a45;
+    position: relative;
+    display: inline-flex;
+    min-height: 50px;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: 2.5px solid transparent;
+    border-radius: 11px;
+    padding: 0 14px;
+    color: #355a45;
+    font-size: 15px;
+    font-weight: 900;
+    line-height: 1;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: transform .14s ease, box-shadow .14s ease, background .14s ease;
+}
+
+.ocean-primary-navbar__link:hover {
+    transform: translateY(-1px);
+}
+
+.ocean-primary-navbar__link.is-active {
+    --nav-icon-fill: #ef4f7d;
+    border-color: #355a45;
+    background: #fbd7e3;
+    box-shadow: var(--customer-shadow-control) #7fa889;
+    color: #b72f5e;
+}
+
+.ocean-primary-navbar__link.is-active:hover {
+    transform: translate(-2px, 2px);
+    box-shadow: var(--customer-shadow-control) #7fa889;
+}
+
+.ocean-primary-navbar__icon {
+    display: block;
+    width: 30px;
+    height: 30px;
+    flex: 0 0 30px;
+    color: var(--nav-icon-fill);
+    overflow: visible;
+}
+
+.ocean-primary-navbar__icon.public-icon-rounded-bold {
+    color: #355a45;
+}
+
+@media (max-width: 1050px) {
+    .ocean-primary-navbar {
+        width: min(92%, 980px);
+        min-height: 100px;
+        gap: 18px;
+        padding: 0 26px;
+    }
+
+    .ocean-primary-navbar__brand img {
+        width: clamp(165px, 19vw, 205px);
+    }
+
+    .ocean-primary-navbar__links {
+        gap: 8px;
+    }
+
+    .ocean-primary-navbar__link {
+        min-height: 46px;
+        gap: 7px;
+        padding: 0 11px;
+        font-size: 13px;
+    }
+
+    .ocean-primary-navbar__icon {
+        width: 22px;
+        height: 22px;
+        flex-basis: 22px;
+    }
+}
+
+@media (max-width: 1023px) {
+    .ocean-primary-navbar-host {
+        padding: 10px 0 16px;
+    }
+
+    .ocean-primary-navbar-host.is-landing {
+        padding-bottom: 0;
+    }
+
+    .ocean-primary-navbar {
+        width: calc(100% - 24px);
+        min-height: 78px;
+        gap: 6px;
+        border-width: 2px;
+        border-radius: 13px;
+        padding: 0 12px;
+        box-shadow: var(--customer-shadow-card) #79a486;
+    }
+
+    .ocean-primary-navbar__brand img {
+        width: clamp(92px, 22vw, 116px);
+    }
+
+    .ocean-primary-navbar__links {
+        gap: 1px;
+    }
+
+    .ocean-primary-navbar__link {
+        min-height: 40px;
+        gap: 4px;
+        border-width: 2px;
+        border-radius: 9px;
+        padding: 0 clamp(4px, 1vw, 6px);
+        font-size: clamp(9px, 2vw, 10.5px);
+    }
+
+    .ocean-primary-navbar__link.is-active {
+        box-shadow: var(--customer-shadow-control) #79a486;
+    }
+
+    .ocean-primary-navbar__icon {
+        width: clamp(16px, 3.8vw, 19px);
+        height: clamp(16px, 3.8vw, 19px);
+        flex-basis: clamp(16px, 3.8vw, 19px);
+    }
+}
+
+@media (max-width: 460px) {
+    .ocean-primary-navbar {
+        min-height: 74px;
+        gap: 4px;
+        padding: 0 9px;
+    }
+
+    .ocean-primary-navbar__brand img {
+        width: clamp(82px, 21vw, 94px);
+    }
+
+    .ocean-primary-navbar__links {
+        gap: 0;
+    }
+
+    .ocean-primary-navbar__link {
+        min-height: 38px;
+        gap: 2px;
+        padding: 0 3px;
+        font-size: 8.5px;
+    }
+
+    .ocean-primary-navbar__icon {
+        width: 16px;
+        height: 16px;
+        flex-basis: 16px;
+    }
+}
+
+/* Dark mode keeps the same silhouette and active-state hierarchy. */
+html[data-customer-theme="dark"] .ocean-primary-navbar {
+    border-color: #8aa194;
+    background: #1b3027;
+    box-shadow: var(--customer-shadow-card) #081810;
+    color: #edf6ef;
+}
+
+html[data-customer-theme="dark"] .ocean-primary-navbar__link {
+    --nav-icon-stroke: #d8e8dd;
+    color: #edf6ef;
+}
+
+html[data-customer-theme="dark"] .ocean-primary-navbar__link.is-active {
+    --nav-icon-fill: #f08aa5;
+    border-color: #8aa194;
+    background: #4d303a;
+    box-shadow: var(--customer-shadow-control) #081810;
+    color: #f2a0b6;
+}
+
+html[data-customer-theme="dark"] .ocean-primary-navbar__icon path,
+html[data-customer-theme="dark"] .ocean-primary-navbar__icon rect,
+html[data-customer-theme="dark"] .ocean-primary-navbar__icon circle {
+    stroke: #081810;
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+    .ocean-primary-navbar__brand-logo::after {
+        animation: none;
+        background-position: 50% 0;
+        opacity: .22;
+    }
+}
+
+
+/* Continuous tracking page grid background. */
+.ocean-tracking .public-landing-main {
+    background:
+        linear-gradient(rgba(91, 135, 102, .055) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(91, 135, 102, .055) 1px, transparent 1px),
+        #fffaf1 !important;
+    background-size: 42px 42px !important;
+}
+
+.ocean-tracking .tracking-search-page,
+.ocean-tracking .tracking-search-shell,
+.ocean-tracking .tracking-neo-page {
+    background: transparent !important;
+}
+
+.ocean-tracking .tracking-result-section {
+    background: transparent !important;
+}
+
+
+/* Tracking route background grid — paint on the actual /tracking page root. */
+body.ocean-tracking .public-landing-main > .tracking-search-page.ocean-home.ocean-editorial {
+    background-color: #fffaf1 !important;
+    background-image:
+        linear-gradient(rgba(91, 135, 102, .055) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(91, 135, 102, .055) 1px, transparent 1px) !important;
+    background-size: 42px 42px !important;
+    background-position: 0 0 !important;
+}
+
+body.ocean-tracking .tracking-search-page .tracking-search-shell,
+body.ocean-tracking .tracking-search-page .tracking-neo-page,
+body.ocean-tracking .tracking-search-page .tracking-result-section {
+    background: transparent !important;
+}
+
+
+/* Keep portal detail account avatar square on mobile. */
+@media (max-width: 720px) {
+    .portal-v2-account-chip {
+        width: 36px !important;
+        min-width: 36px !important;
+        height: 36px !important;
+        min-height: 36px !important;
+        flex: 0 0 36px;
+        padding: 2px !important;
+        border-radius: 11px !important;
+    }
+
+    .portal-v2-account-chip img,
+    .portal-v2-account-chip > span {
+        width: 28px !important;
+        height: 28px !important;
+        flex: 0 0 28px !important;
+        aspect-ratio: 1 / 1;
+        object-fit: cover;
+    }
+}
+
+
+/* Mobile customer navbar: toggle left, Ocean Paws logo right. */
+.ocean-primary-navbar__mobile-menu {
+    display: none;
+}
+
+@media (max-width: 1023px) {
+    .ocean-primary-navbar {
+        position: relative;
+        min-height: 70px;
+        justify-content: space-between;
+        padding: 0 14px;
+        overflow: visible;
+    }
+
+    .ocean-primary-navbar__brand {
+        order: 1;
+        margin-right: auto;
+    }
+
+    .ocean-primary-navbar__mobile-menu {
+        position: relative;
+        z-index: 80;
+        display: block;
+        flex: 0 0 auto;
+        order: 2;
+        margin-left: auto;
+    }
+
+    .ocean-primary-navbar__brand img {
+        width: clamp(96px, 28vw, 124px);
+    }
+
+    .ocean-primary-navbar > .ocean-primary-navbar__links {
+        display: none !important;
+    }
+
+    .ocean-primary-navbar__mobile-toggle {
+        display: grid;
+        width: 42px;
+        height: 42px;
+        place-items: center;
+        border: 2px solid #355a45;
+        border-radius: 11px;
+        background: #fffdf9;
+        box-shadow: var(--customer-shadow-control) #79a486;
+        cursor: pointer;
+        list-style: none;
+        user-select: none;
+    }
+
+    .ocean-primary-navbar__mobile-toggle::-webkit-details-marker {
+        display: none;
+    }
+
+    .ocean-primary-navbar__mobile-toggle::marker {
+        display: none;
+        content: "";
+    }
+
+    .ocean-primary-navbar__mobile-toggle-lines {
+        display: flex;
+        width: 18px;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .ocean-primary-navbar__mobile-toggle-lines i {
+        display: block;
+        width: 100%;
+        height: 2px;
+        border-radius: 999px;
+        background: #355a45;
+        transition: transform .18s ease, opacity .18s ease;
+    }
+
+    .ocean-primary-navbar__mobile-menu[open] .ocean-primary-navbar__mobile-toggle-lines i:nth-child(1) {
+        transform: translateY(6px) rotate(45deg);
+    }
+
+    .ocean-primary-navbar__mobile-menu[open] .ocean-primary-navbar__mobile-toggle-lines i:nth-child(2) {
+        opacity: 0;
+    }
+
+    .ocean-primary-navbar__mobile-menu[open] .ocean-primary-navbar__mobile-toggle-lines i:nth-child(3) {
+        transform: translateY(-6px) rotate(-45deg);
+    }
+
+    .ocean-primary-navbar__mobile-panel {
+        position: absolute;
+        top: calc(100% + 12px);
+        right: 0;
+        left: auto;
+        display: flex;
+        width: min(210px, calc(100vw - 40px));
+        flex-direction: column;
+        gap: 7px;
+        border: 2px solid #355a45;
+        border-radius: 13px;
+        padding: 10px;
+        background: #fffdf9;
+        box-shadow: var(--customer-shadow-control) #79a486;
+    }
+
+    .ocean-primary-navbar__mobile-link {
+        display: flex;
+        min-height: 42px;
+        align-items: center;
+        gap: 10px;
+        border: 2px solid transparent;
+        border-radius: 9px;
+        padding: 0 12px;
+        color: #355a45;
+        font-family: "Nunito Sans", "Trebuchet MS", sans-serif;
+        font-size: 12px;
+        font-weight: 900;
+        line-height: 1;
+        text-decoration: none;
+    }
+
+    .ocean-primary-navbar__mobile-link .public-icon {
+        flex: 0 0 auto;
+    }
+
+    .ocean-primary-navbar__mobile-link.is-active {
+        border-color: #355a45;
+        background: #fbd7e3;
+        box-shadow: var(--customer-shadow-control) #79a486;
+        color: #b72f5e;
+    }
+}
+
+@media (max-width: 460px) {
+    .ocean-primary-navbar {
+        min-height: 66px;
+        padding: 0 11px;
+    }
+
+    .ocean-primary-navbar__brand img {
+        width: clamp(90px, 30vw, 112px);
+    }
+
+    .ocean-primary-navbar__mobile-toggle {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+    }
+
+    .ocean-primary-navbar__mobile-panel {
+        top: calc(100% + 10px);
+        width: min(200px, calc(100vw - 32px));
+    }
+}
+
+html[data-customer-theme="dark"] .ocean-primary-navbar__mobile-toggle,
+html[data-customer-theme="dark"] .ocean-primary-navbar__mobile-panel {
+    border-color: #8aa194;
+    background: #1b3027;
+    box-shadow: var(--customer-shadow-control) #081810;
+}
+
+html[data-customer-theme="dark"] .ocean-primary-navbar__mobile-toggle {
+    box-shadow: var(--customer-shadow-control) #081810;
+}
+
+html[data-customer-theme="dark"] .ocean-primary-navbar__mobile-toggle-lines i {
+    background: #d8e8dd;
+}
+
+html[data-customer-theme="dark"] .ocean-primary-navbar__mobile-link {
+    color: #edf6ef;
+}
+
+html[data-customer-theme="dark"] .ocean-primary-navbar__mobile-link.is-active {
+    border-color: #8aa194;
+    background: #4d303a;
+    box-shadow: var(--customer-shadow-control) #081810;
+    color: #f2a0b6;
+}
+
+
+/* Tracking footer parity with the current landing footer. */
+.ocean-tracking .tracking-landing-footer.op-footer-reference {
+    position: relative;
+    isolation: isolate;
+    display: block;
+    height: 183px;
+    min-height: 183px;
+    overflow: hidden;
+    border: 0;
+    background: #f7f3e9 url('/assets/oceanpaws-footer-reference-bg-v1.png') center 40% / 100% 136% no-repeat;
+}
+
+.ocean-tracking .tracking-landing-footer.op-footer-reference::before {
+    content: none;
+}
+
+.ocean-tracking .tracking-landing-footer .op-footer-reference-shell {
+    position: absolute;
+    top: 39px;
+    left: 50%;
+    display: grid;
+    width: min(calc(100% - 136px), 1216px);
+    height: 78px;
+    grid-template-columns: 202px 288px 200px minmax(0, 1fr);
+    align-items: center;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    transform: translateX(-50%);
+}
+
+.ocean-tracking .tracking-landing-footer .op-footer-brand-block img {
+    width: 180px;
+    margin: 0 0 0 -7px;
+}
+
+.ocean-tracking .tracking-landing-footer .op-footer-message {
+    display: flex;
+    height: 72px;
+    grid-column: 4;
+    align-items: center;
+    justify-self: end;
+    gap: 15px;
+    padding: 0;
+}
+
+.ocean-tracking .tracking-landing-footer .op-footer-message strong {
+    font: 400 11px/1.35 ui-monospace, "Courier New", monospace;
+    letter-spacing: 0;
+}
+
+.ocean-tracking .tracking-landing-footer .op-footer-message strong span {
+    display: block;
+}
+
+.ocean-tracking .tracking-landing-footer .op-footer-shell-icon {
+    display: block;
+    width: 65px;
+    height: 65px;
+    object-fit: contain;
+    transform: rotate(-4deg);
+    filter: none;
+}
+
+.ocean-tracking .tracking-landing-footer .op-footer-bottomline {
+    z-index: 4;
+    right: auto;
+    bottom: 14px;
+    left: 0;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    text-align: center;
+    font: 400 10px/1.2 ui-monospace, "Courier New", monospace;
+    letter-spacing: 0;
+    text-shadow: none;
+}
+
+@media (max-width: 1160px) {
+    .ocean-tracking .tracking-landing-footer.op-footer-reference {
+        height: 265px;
+        min-height: 265px;
+        background-size: 100% 115%;
+    }
+
+    .ocean-tracking .tracking-landing-footer .op-footer-reference-shell {
+        top: 39px;
+        width: calc(100% - 64px);
+        height: auto;
+        grid-template-columns: 1fr auto;
+        grid-template-rows: 72px 38px;
+        row-gap: 7px;
+    }
+
+    .ocean-tracking .tracking-landing-footer .op-footer-brand-block {
+        grid-column: 1;
+        grid-row: 1;
+    }
+
+    .ocean-tracking .tracking-landing-footer .op-footer-message {
+        grid-column: 2;
+        grid-row: 1;
+        padding-left: 0;
+    }
+
+    .ocean-tracking .tracking-landing-footer .op-footer-bottomline {
+        left: 0;
+        width: 100%;
+    }
+}
+
+@media (max-width: 1023px) {
+    .ocean-tracking .tracking-landing-footer.op-footer-reference {
+        height: 292px;
+        min-height: 292px;
+        margin-top: -2px;
+        background-size: auto 100%;
+        background-position: center bottom;
+    }
+
+    .ocean-tracking .tracking-landing-footer.op-footer-reference::after {
+        content: "";
+        position: absolute;
+        z-index: 2;
+        top: 0;
+        right: 0;
+        left: 0;
+        height: 72%;
+        pointer-events: none;
+        background-image:
+            linear-gradient(rgba(211, 190, 151, .075) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(211, 190, 151, .075) 1px, transparent 1px);
+        background-size: 38px 38px;
+        background-position: 0 0;
+    }
+
+    .ocean-tracking .tracking-landing-footer .op-footer-reference-shell {
+        top: 93px;
+        left: 18px;
+        display: grid;
+        width: calc(100% - 36px);
+        height: auto;
+        grid-template-columns: minmax(0, 1fr) auto;
+        grid-template-rows: none;
+        align-items: center;
+        gap: 12px;
+        padding: 0;
+        transform: none;
+    }
+
+    .ocean-tracking .tracking-landing-footer .op-footer-brand-block {
+        display: flex;
+        min-width: 0;
+        grid-column: 1;
+        grid-row: auto;
+        justify-content: flex-start;
+    }
+
+    .ocean-tracking .tracking-landing-footer .op-footer-brand-block img {
+        width: clamp(118px, 36vw, 148px);
+        margin: 0;
+    }
+
+    .ocean-tracking .tracking-landing-footer .op-footer-center,
+    .ocean-tracking .tracking-landing-footer .op-footer-links,
+    .ocean-tracking .tracking-landing-footer .op-footer-mobile-links,
+    .ocean-tracking .tracking-landing-footer .op-footer-socials {
+        display: none;
+    }
+
+    .ocean-tracking .tracking-landing-footer .op-footer-message {
+        position: static;
+        display: flex;
+        width: auto;
+        height: auto;
+        grid-column: 2;
+        grid-row: auto;
+        align-items: center;
+        justify-self: end;
+        gap: 7px;
+        padding: 0;
+        transform: none;
+        text-align: left;
+        white-space: nowrap;
+    }
+
+    .ocean-tracking .tracking-landing-footer .op-footer-message strong {
+        display: grid;
+        gap: 1px;
+        font-size: clamp(7px, 2.15vw, 9px);
+        line-height: 1.25;
+        text-align: left;
+    }
+
+    .ocean-tracking .tracking-landing-footer .op-footer-shell-icon {
+        display: block;
+        width: clamp(32px, 9vw, 40px);
+        height: clamp(32px, 9vw, 40px);
+    }
+
+    .ocean-tracking .tracking-landing-footer .op-footer-bottomline {
+        right: 0;
+        bottom: 12px;
+        left: 0;
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+        color: #f8fff8;
+        font-size: 8px;
+        text-align: center;
+    }
+}
+
+@media (max-width: 380px) {
+    .ocean-tracking .tracking-landing-footer .op-footer-reference-shell {
+        left: 14px;
+        width: calc(100% - 28px);
+        gap: 8px;
+    }
+
+    .ocean-tracking .tracking-landing-footer .op-footer-brand-block img {
+        width: 112px;
+    }
+
+    .ocean-tracking .tracking-landing-footer .op-footer-message {
+        gap: 5px;
+    }
+
+    .ocean-tracking .tracking-landing-footer .op-footer-shell-icon {
+        width: 30px;
+        height: 30px;
+    }
 }

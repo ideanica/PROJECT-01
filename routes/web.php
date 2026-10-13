@@ -1,23 +1,27 @@
 <?php
 
 use App\Http\Controllers\Admin\BatchController;
+use App\Http\Controllers\Admin\CustomerApprovalController;
+use App\Http\Controllers\Admin\CustomerGroupController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\MemberController;
 use App\Http\Controllers\Admin\MemberOrderController;
 use App\Http\Controllers\Admin\OrderStatusController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\StatusHistoryController;
+use App\Http\Controllers\AdminProfileController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
-use App\Http\Controllers\Auth\LineAuthController;
+use App\Http\Controllers\Auth\RegisteredCustomerController;
+use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\CustomerPortalController;
+use App\Http\Controllers\CustomerProfileController;
 use App\Http\Controllers\MemberTrackingController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\TestimonialController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [MemberTrackingController::class, 'home'])->name('home');
-Route::get('/orders', [CustomerPortalController::class, 'orders'])->name('orders.index');
-Route::get('/billing', [CustomerPortalController::class, 'billing'])->name('billing.index');
+Route::redirect('/orders', '/profile')->name('orders.index');
+Route::redirect('/billing', '/profile')->name('billing.index');
 Route::get('/billing/orders', [CustomerPortalController::class, 'billingOrders'])->name('billing.orders');
 Route::get('/billing/ems', [CustomerPortalController::class, 'billingEms'])->name('billing.ems');
 Route::get('/services', [CustomerPortalController::class, 'services'])->name('services.index');
@@ -33,18 +37,28 @@ Route::post('/history', [MemberTrackingController::class, 'historyLookup'])->mid
 Route::get('/history/{memberCode}', [MemberTrackingController::class, 'member'])->middleware(['signed', 'throttle:30,1'])->name('tracking.member');
 Route::get('/history/{memberCode}/orders/{memberOrder}', [MemberTrackingController::class, 'order'])->middleware(['signed', 'throttle:30,1'])->name('tracking.order');
 Route::get('/profile', ProfileController::class)->name('profile.show');
-Route::get('/testimonials', [TestimonialController::class, 'index'])->name('testimonials.index');
-Route::get('/testimonials/{orderItem}/create', [TestimonialController::class, 'create'])->name('testimonials.create');
-Route::post('/testimonials/{orderItem}', [TestimonialController::class, 'store'])->middleware('throttle:5,1')->name('testimonials.store');
+Route::get('/profile/detail', [CustomerProfileController::class, 'detail'])->middleware('auth')->name('profile.detail');
+Route::get('/profile/edit', [CustomerProfileController::class, 'edit'])->middleware('auth')->name('profile.edit');
+Route::put('/profile', [CustomerProfileController::class, 'update'])->middleware('auth')->name('profile.update');
+Route::put('/profile/admin', [AdminProfileController::class, 'update'])->middleware(['auth', 'can:access-admin'])->name('profile.admin.update');
+Route::get('/profile/photo/{member}', [CustomerProfileController::class, 'photo'])->middleware('auth')->name('profile.photo');
 Route::get('/profile/orders/{memberOrder}/payment-proof', [ProfileController::class, 'paymentProof'])
     ->middleware('auth')
     ->name('profile.orders.payment-proof');
-Route::get('/auth/line', [LineAuthController::class, 'redirect'])->middleware('throttle:10,1')->name('line-auth.redirect');
-Route::get('/auth/line/callback', [LineAuthController::class, 'callback'])->middleware('throttle:10,1')->name('line-auth.callback');
+Route::redirect('/auth/line', '/login');
+Route::redirect('/auth/line/callback', '/login');
 
 Route::middleware('guest')->group(function () {
+    Route::get('/forgot-password', [PasswordResetController::class, 'request'])->name('password.request');
+    Route::post('/forgot-password', [PasswordResetController::class, 'email'])->middleware('throttle:5,1,password-email')->name('password.email');
+    Route::get('/reset-password/{token}', [PasswordResetController::class, 'edit'])->name('password.reset');
+    Route::post('/reset-password', [PasswordResetController::class, 'update'])->middleware('throttle:5,1,password-reset')->name('password.update');
     Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
     Route::post('/login', [AuthenticatedSessionController::class, 'store'])->middleware('throttle:5,1');
+    Route::get('/register', [RegisteredCustomerController::class, 'create'])->name('register');
+    Route::post('/register', [RegisteredCustomerController::class, 'store'])->middleware('throttle:5,1');
+    Route::redirect('/admin/login', '/login')->name('admin.login');
+    Route::post('/admin/login', [AuthenticatedSessionController::class, 'store'])->middleware('throttle:5,1')->name('admin.login.store');
 });
 
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->middleware('auth')->name('logout');
@@ -54,7 +68,7 @@ Route::prefix('admin')
     ->middleware(['auth', 'can:access-admin'])
     ->group(function () {
         Route::get('/', DashboardController::class)->name('dashboard');
-        
+
         // Specific batch routes MUST come before resource route to avoid conflicts
         Route::get('batches/settings', [BatchController::class, 'settings'])->name('batches.settings');
         Route::post('batches/settings/payment-methods', [BatchController::class, 'storePaymentMethod'])->name('batches.payment-methods.store');
@@ -62,10 +76,12 @@ Route::prefix('admin')
         Route::post('batches/settings/payment-methods/{paymentMethod}/toggle', [BatchController::class, 'togglePaymentMethod'])->name('batches.payment-methods.toggle');
         Route::delete('batches/settings/payment-methods/{paymentMethod}', [BatchController::class, 'destroyPaymentMethod'])->name('batches.payment-methods.destroy');
         Route::post('batches/{batch}/status', [BatchController::class, 'transition'])->name('batches.status');
-        
+
         Route::resource('batches', BatchController::class);
         Route::resource('order-statuses', OrderStatusController::class);
+        Route::post('members/{member}/approve', [CustomerApprovalController::class, 'store'])->name('members.approve');
         Route::resource('members', MemberController::class);
+        Route::resource('customer-groups', CustomerGroupController::class);
         Route::resource('products', ProductController::class);
         Route::patch('products/{product}/status', [ProductController::class, 'updateStatus'])->name('products.status');
         Route::resource('member-orders', MemberOrderController::class);

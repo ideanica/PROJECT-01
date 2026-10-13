@@ -122,14 +122,14 @@ class OrderStatus extends Model
     public function scopeActiveFor($query, string $targetScope)
     {
         return $query->where('is_active', true)
-            ->whereIn('scope', [$targetScope, 'all'])
+            ->whereIn('scope', $targetScope === 'payment' ? ['payment'] : [$targetScope, 'all'])
             ->orderBy('sequence')
             ->orderBy('name');
     }
 
     public function isUsableFor(string $targetScope): bool
     {
-        return $this->is_active && in_array($this->scope, [$targetScope, 'all'], true);
+        return $this->is_active && in_array($this->scope, $targetScope === 'payment' ? ['payment'] : [$targetScope, 'all'], true);
     }
 
     public function usedCount(): int

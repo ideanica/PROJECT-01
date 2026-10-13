@@ -17,32 +17,40 @@ class AuthenticatedSessionController extends Controller
 
     public function store(Request $request)
     {
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
+        $request->merge(['username' => mb_strtolower(trim((string) $request->input('username', $request->input('email'))))]);
+        $data = $request->validate([
+            'username' => ['required', 'string', 'max:255'],
             'password' => ['required', 'string'],
         ]);
+        $field = str_contains($data['username'], '@') ? 'email' : 'username';
+        $credentials = [$field => $data['username'], 'password' => $data['password']];
 
-        if (! Auth::attempt($credentials + ['role' => 'admin'], $request->boolean('remember'))) {
+        if (! Auth::attemptWhen(
+            $credentials,
+            fn ($user) => $user->isAdmin() || ($user->role === 'customer' && ! $user->registration_pending && $user->password_set_at !== null && $user->member?->is_active),
+            $request->boolean('remember')
+        )) {
             throw ValidationException::withMessages([
-                'email' => 'Email atau password tidak sesuai.',
+                'username' => 'Username LINE/email atau password tidak sesuai, atau akun belum aktif. Jika belum memilih group saat registrasi, tunggu persetujuan admin.',
             ]);
         }
 
         $request->session()->regenerate();
         $request->session()->put('login_at', now()->timestamp);
+        $request->session()->put('auth_identity', Auth::user()->sessionIdentity());
 
-        return new RedirectResponse('/admin', 303);
+        $request->session()->forget('url.intended');
+
+        return redirect()->route(Auth::user()->isAdmin() ? 'admin.dashboard' : 'profile.show');
     }
 
     public function destroy(Request $request)
     {
-        $redirectTo = $request->user()?->isAdmin() ? '/login' : '/profile';
-
         Auth::logout();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return new RedirectResponse($redirectTo, 303);
+        return new RedirectResponse(route('login', [], false), 303);
     }
 }
