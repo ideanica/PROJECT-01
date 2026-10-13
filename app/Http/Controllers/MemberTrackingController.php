@@ -194,6 +194,7 @@ class MemberTrackingController extends Controller
             'batch.currentStatus',
             'overrideStatus',
             'paymentStatus',
+            'payments',
             'items.overrideStatus',
             'items.shipmentGroup.currentStatus',
         ];
