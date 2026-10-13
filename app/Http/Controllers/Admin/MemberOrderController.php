@@ -39,6 +39,9 @@ class MemberOrderController extends Controller
             })
             ->when($filters['date_from'] ?? null, fn ($query, $date) => $query->whereDate('created_at', '>=', $date))
             ->when($filters['date_to'] ?? null, fn ($query, $date) => $query->whereDate('created_at', '<=', $date))
+            ->when($request->boolean('problem'), function ($query) {
+                $query->whereHas('overrideStatus', fn ($query) => $query->whereIn('status_type', ['failed', 'cancelled']));
+            })
             ->latest()
             ->paginate(15)
             ->withQueryString();

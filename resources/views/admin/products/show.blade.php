@@ -1,11 +1,14 @@
 <x-layouts.app title="Detail {{ $product->name }}">
-    <x-page-heading title="Detail Produk" description="Informasi katalog dan pemakaian produk dalam satu tampilan.">
-        <x-slot:action>
-            <div class="flex flex-wrap gap-2">
-                <a class="admin-form-secondary" href="{{ route('admin.products.edit', $product, false) }}">Edit Produk</a>
-            </div>
-        </x-slot:action>
-    </x-page-heading>
+    <div class="[&_h1]:text-black!">
+        <x-page-heading title="Detail Produk" description="Informasi katalog dan pemakaian produk dalam satu tampilan.">
+            <x-slot:action>
+                <div class="flex flex-wrap gap-2">
+                    <a class="admin-form-secondary" href="{{ route('admin.products.edit', $product, false) }}">Edit Produk</a>
+                </div>
+            </x-slot:action>
+        </x-page-heading>
+    </div>
+
 
     <article class="detail-record-card">
         <header class="detail-record-hero">
