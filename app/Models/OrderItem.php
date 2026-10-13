@@ -16,6 +16,7 @@ class OrderItem extends Model
     protected $fillable = [
         'member_order_id',
         'product_id',
+        'shipment_group_id',
         'item_name',
         'variant',
         'quantity',
@@ -42,6 +43,11 @@ class OrderItem extends Model
     public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);
+    }
+
+    public function shipmentGroup(): BelongsTo
+    {
+        return $this->belongsTo(ShipmentGroup::class);
     }
 
     public function overrideStatus(): BelongsTo

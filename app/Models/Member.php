@@ -52,6 +52,21 @@ class Member extends Model
         return $this->belongsTo(CustomerGroup::class);
     }
 
+    /** Member aktif boleh dicatat ke order, terlepas dari kesiapan akun login. */
+    public function scopeAvailableForOrder(Builder $query): Builder
+    {
+        return $query->where('is_active', true);
+    }
+
+    public function isAvailableForOrder(): bool
+    {
+        return $this->is_active;
+    }
+
+    /**
+     * Scope legacy lama tetap dipertahankan untuk halaman administrasi akun.
+     * Jangan gunakan scope ini untuk menentukan apakah buyer boleh memiliki order.
+     */
     public function scopeEligibleForNewOrder(Builder $query): Builder
     {
         return $query->whereHas('user', fn ($user) => $user->where('role', 'customer')->whereNotNull('password_set_at')->where('registration_pending', false))
@@ -68,17 +83,26 @@ class Member extends Model
         return $this->is_active && ! $this->user?->registration_pending && $this->user?->role === 'customer' && $this->user?->password_set_at !== null;
     }
 
+    public function getAccountStateAttribute(): string
+    {
+        if (! $this->user) {
+            return 'unlinked';
+        }
+
+        return $this->user->registration_pending ? 'pending_claim' : 'linked';
+    }
+
     public function getEligibilityStatusLabelAttribute(): string
     {
         if (! $this->is_active) {
-            return 'Akun nonaktif - Tidak dapat digunakan untuk order baru';
+            return 'Member nonaktif';
         }
 
-        if (! $this->isEligibleForNewOrder()) {
-            return 'Akun belum siap - Tidak dapat digunakan untuk order baru';
-        }
-
-        return 'Akun terdaftar — Eligible';
+        return match ($this->account_state) {
+            'unlinked' => 'Belum punya akun login',
+            'pending_claim' => 'Claim akun menunggu persetujuan',
+            default => 'Akun terhubung',
+        };
     }
 
     public function setUsernameAttribute(?string $value): void
