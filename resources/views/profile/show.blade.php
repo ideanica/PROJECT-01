@@ -131,7 +131,11 @@
             @if(!$user)
                 <p class="profile-line-config">Belum punya akun? <a href="{{ route('register') }}" class="font-semibold underline">Daftar terlebih dahulu</a></p>
             @endif
-            <a class="portal-v2-back" href="{{ route('catalog.index') }}"><x-public-icon name="bag" :size="18" /> Lihat katalog batch</a>
+            <a class="section-card profile-catalog-link" href="{{ route('catalog.index') }}">
+                <span class="icon-chip"><x-public-icon name="bag" :size="20" /></span>
+                <strong data-i18n-id="Lihat katalog batch" data-i18n-en="View batch catalog">Lihat katalog batch</strong>
+                <x-public-icon name="chevron-right" :size="18" />
+            </a>
 
             <section class="section-card activity-card">
                 <div class="activity-head"><span class="icon-chip"><x-public-icon name="sparkle" :size="20" /></span><div><strong class="block text-[12px]" data-i18n-id="Rekap aktivitas kamu" data-i18n-en="Your activity recap">Rekap aktivitas kamu</strong><span class="block text-[10px] text-[#5a7fa4]" data-i18n-id="{{ $isMember ? 'Semua aktivitas akun customer kamu.' : 'Login untuk melihat aktivitasmu.' }}" data-i18n-en="{{ $isMember ? 'All activity from your customer account.' : 'Login to view your activity.' }}">{{ $isMember ? 'Semua aktivitas akun customer kamu.' : 'Login untuk melihat aktivitasmu.' }}</span></div></div>
