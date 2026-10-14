@@ -61,11 +61,6 @@ html[data-customer-theme="dark"] body.ocean-auth { background: var(--pv2-cream);
 .auth-password-monitor-interactive [data-password-icon] { flex: 0 0 12px; font-size: 11px; }
 .auth-password-monitor-interactive .auth-password-checklist .is-met { color: var(--auth-card-ink, var(--pv2-ink-deep)); font-weight: 800; }
 @media (prefers-reduced-motion: reduce) { .auth-password-monitor-interactive .auth-password-progress::-webkit-progress-value { transition: none; } }
-.auth-group .select2-container .select2-selection--single { height: 44px; border: var(--pv2-border); border-radius: 8px; background: var(--pv2-paper); box-shadow: -3px 3px 0 var(--pv2-ink); }
-.auth-group .select2-container .select2-selection__rendered { line-height: 40px; padding-left: 12px; color: var(--pv2-ink-deep); font-size: 13px; }
-.auth-group .select2-container .select2-selection__arrow { height: 40px; }
-.auth-select2-dropdown { border: var(--pv2-border); background: var(--pv2-paper); color: var(--pv2-ink-deep); }
-.auth-select2-dropdown .select2-search__field { border: var(--pv2-border); border-radius: 6px; }
 .auth-remember { display: flex; align-items: center; gap: 10px; color: var(--pv2-ink-deep); font-size: 12px; }
 .auth-remember input { width: 18px; height: 18px; accent-color: var(--pv2-ink); }
 .auth-submit { display: flex; min-height: 44px; width: 100%; align-items: center; justify-content: center; border: var(--pv2-border); border-radius: 8px; background: var(--pv2-pink); padding: 10px 14px; color: var(--pv2-ink-deep); font-size: 13px; font-weight: 900; box-shadow: -4px 4px 0 var(--pv2-ink); cursor: pointer; transition: transform .15s, box-shadow .15s; }

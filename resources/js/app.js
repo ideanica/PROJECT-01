@@ -1,5 +1,4 @@
 import $ from 'jquery';
-import './landing-scroll-reveal';
 import './password-monitor';
 import './profile-photo';
 

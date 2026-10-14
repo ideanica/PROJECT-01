@@ -4,12 +4,12 @@ Tanggal: 14 Oktober 2026.
 
 ## Dasar pemulihan
 
-`main` sebelum perbaikan: `2d59f0c`. Versi referensi tampilan: `backend` pada `66990df`.
-Riwayat `backend` sudah menjadi ancestor `main`; pemulihan dilakukan pada resource tampilan,
-bukan dengan mengganti seluruh aplikasi atau membuang commit fitur baru.
-Profil menggunakan sumber yang sama pada kedua branch. Form akun kembali menggunakan
-komponen auth bersama. Indikator password, pencarian group, dan animasi scroll dipertahankan.
-Animasi scroll tidak lagi membuat konten bergantung pada IntersectionObserver untuk terlihat.
+Referensi tampilan yang ditentukan user adalah commit `2d59f0c` pada `main`,
+dengan caption `interactive tab hero`. Pemulihan awal yang menggunakan `backend`
+sebagai referensi telah dikoreksi. Stylesheet landing, navbar, login/register, tracking,
+dan JavaScript interaksi dikembalikan ke commit tersebut. Fitur integrasi admin/customer
+dan perbaikan validasi backend dipertahankan. Indikator password, pencarian group,
+animasi hero, dan scroll reveal menggunakan implementasi dari commit referensi.
 
 ## Hubungan fitur
 

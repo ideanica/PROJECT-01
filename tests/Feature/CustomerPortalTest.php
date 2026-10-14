@@ -35,7 +35,7 @@ class CustomerPortalTest extends TestCase
 
         $this->get(route('tracking.index'))
             ->assertOk()
-            ->assertSee('Cari pesananmu.')
+            ->assertSee('<h1 id="order-search-title"><span>Cari</span><span>pesananmu.</span></h1>', false)
             ->assertSee('TRACKING PESANAN')
             ->assertDontSee('tracking-trust-section', false)
             ->assertSee('id="tracking-query"', false)

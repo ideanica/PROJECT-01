@@ -50,7 +50,7 @@ class CustomerAuthTest extends TestCase
 
     public function test_inactive_or_missing_group_and_password_confirmation_are_rejected(): void
     {
-        $this->get('/register')->assertOk()->assertSee('Belum memilih');
+        $this->get('/register')->assertOk()->assertSee('Belum punya');
         $inactive = $this->group(false);
         $this->get('/register')->assertDontSee($inactive->name);
         $this->post('/register', $this->registration(['customer_group_id' => $inactive->id]))->assertSessionHasErrors('customer_group_id');

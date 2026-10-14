@@ -243,15 +243,15 @@
         <div class="public-topbar-inner">
             <nav class="public-desktop-nav" aria-label="Navigasi utama">
                 <a href="{{ route('home') }}" class="{{ $homeActive ? 'active' : '' }}">
-                    <x-public-icon name="home" :size="16" /><span>Home</span>
+                    <x-public-icon name="home" variant="rounded-bold" :size="16" /><span>Home</span>
                 </a>
                 @if($member)
                     <a href="{{ route('orders.index') }}" class="{{ $ordersActive ? 'active' : '' }}">
-                        <x-public-icon name="bag" :size="16" /><span>Pesanan</span>
+                        <x-public-icon name="bag" variant="rounded-bold" :size="16" /><span>Pesanan</span>
                     </a>
                 @endif
                 <a href="{{ route('profile.show') }}" class="{{ $profileActive ? 'active' : '' }}">
-                    <x-public-icon name="user" :size="16" /><span>Profil</span>
+                    <x-public-icon name="user" variant="rounded-bold" :size="16" /><span>Profil</span>
                 </a>
             </nav>
 

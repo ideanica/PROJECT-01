@@ -24,7 +24,7 @@ class CustomerApprovalTest extends TestCase
 
     public function test_registration_without_any_groups_waits_for_admin_and_cannot_login_or_order(): void
     {
-        $this->get('/register')->assertOk()->assertSee('Belum memilih')->assertSee('Daftar akun');
+        $this->get('/register')->assertOk()->assertSee('Belum punya')->assertSee('Daftar akun');
         $user = $this->registerPending();
         $this->assertTrue($user->registration_pending);
         $this->assertNull($user->member->customer_group_id);
