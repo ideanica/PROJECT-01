@@ -78,6 +78,11 @@
                 height: 15px;
             }
 
+            .ocean-profile .profile-orders-section h2 {
+                font-size: 16px !important;
+                line-height: 1.15;
+            }
+
             .ocean-profile .order-link .order-bubble {
                 width: 42px;
                 height: 42px;
@@ -97,6 +102,13 @@
                 border-radius: 10px;
             }
 
+            .ocean-profile .profile-catalog-link .icon-chip {
+                border: 2px solid var(--profile-outline) !important;
+                background: #76b67c !important;
+                color: #fff !important;
+                box-shadow: var(--customer-shadow-control) #4d8156 !important;
+            }
+
             .ocean-profile .profile-catalog-link .icon-chip svg,
             .ocean-profile .activity-head .icon-chip svg {
                 width: 17px;
@@ -108,12 +120,20 @@
                 height: 15px;
             }
 
+            .ocean-profile .activity-summary {
+                gap: 8px;
+                padding: 12px 14px;
+            }
+
             .ocean-profile .metric-card {
-                min-height: 78px;
+                min-height: 58px;
+                gap: 8px;
+                padding: 8px 9px;
+                align-items: center;
             }
 
             .ocean-profile .metric-card .tiny-icon {
-                --metric-icon-card-size: 32px;
+                --metric-icon-card-size: 36px;
                 width: var(--metric-icon-card-size);
                 height: var(--metric-icon-card-size);
                 flex-basis: var(--metric-icon-card-size);
@@ -122,6 +142,24 @@
             .ocean-profile .metric-card .tiny-icon svg {
                 width: 14px;
                 height: 14px;
+            }
+
+            .ocean-profile .metric-copy {
+                display: flex;
+                min-width: 0;
+                height: 36px;
+                flex-direction: column;
+                justify-content: space-between;
+            }
+
+            .ocean-profile .metric-copy strong {
+                font-size: 17px;
+                line-height: 1;
+            }
+
+            .ocean-profile .metric-copy span {
+                font-size: 8px;
+                line-height: 1.05;
             }
 
             .ocean-profile .cal-arrow {
