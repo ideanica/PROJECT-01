@@ -291,6 +291,7 @@ html[data-customer-theme="dark"] .ocean-profile .profile-form-heading h1 { color
 .ocean-profile .order-link small { margin-top: 11px; color: var(--profile-ink); font-size: 13px; }
 
 .ocean-profile .activity-card { overflow: hidden; }
+.ocean-profile .profile-catalog-link { background: #d9eddd !important; }
 .ocean-profile .activity-head {
   min-height: 92px;
   gap: 15px;
@@ -299,6 +300,7 @@ html[data-customer-theme="dark"] .ocean-profile .profile-form-heading h1 { color
   background: #d9eddd;
 }
 .ocean-profile .activity-head .icon-chip,
+.ocean-profile .profile-catalog-link .icon-chip,
 .ocean-profile .metric-card .tiny-icon {
   border: 2px solid var(--profile-outline);
   border-radius: 11px;
