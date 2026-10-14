@@ -133,9 +133,9 @@
     <style>
         @media (max-width: 1023px) {
             .op-page .op-cta-copy .op-line {
-                width: calc(100% - 20px) !important;
+                width: 100% !important;
                 min-width: 0 !important;
-                max-width: calc(100% - 20px) !important;
+                max-width: 100% !important;
                 box-sizing: border-box;
                 align-self: center;
             }

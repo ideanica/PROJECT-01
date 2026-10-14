@@ -64,6 +64,18 @@ html[data-customer-theme="dark"] body.ocean-auth { background: var(--pv2-cream);
 .auth-remember { display: flex; align-items: center; gap: 10px; color: var(--pv2-ink-deep); font-size: 12px; }
 .auth-remember input { width: 18px; height: 18px; accent-color: var(--pv2-ink); }
 .auth-submit { display: flex; min-height: 44px; width: 100%; align-items: center; justify-content: center; border: var(--pv2-border); border-radius: 8px; background: var(--pv2-pink); padding: 10px 14px; color: var(--pv2-ink-deep); font-size: 13px; font-weight: 900; box-shadow: -4px 4px 0 var(--pv2-ink); cursor: pointer; transition: transform .15s, box-shadow .15s; }
+
+@media (max-width: 1023px) {
+    body.ocean-auth:has(:is(.auth-form-login, .auth-form-register)) .customer-public-shell > main {
+        width: calc(100% - 2 * var(--ocean-responsive-gutter, 16px));
+        max-width: 560px;
+    }
+    body.ocean-auth .auth-card { padding: clamp(18px, 4vw, 28px); }
+    body.ocean-auth .auth-card input:not([type='checkbox']),
+    body.ocean-auth .auth-card select { font-size: 16px; }
+    .auth-password-heading { flex-wrap: wrap; }
+    .auth-password-monitor-interactive .auth-password-checklist { gap: 6px 10px; }
+}
 .auth-submit:hover { transform: translate(-2px, 2px); box-shadow: -2px 2px 0 var(--pv2-ink); }
 .auth-submit:active { transform: translate(-4px, 4px); box-shadow: none; }
 .auth-submit:disabled { opacity: .6; cursor: wait; transform: none; box-shadow: none; }
