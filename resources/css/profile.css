@@ -291,7 +291,7 @@ html[data-customer-theme="dark"] .ocean-profile .profile-form-heading h1 { color
 .ocean-profile .order-link small { margin-top: 11px; color: var(--profile-ink); font-size: 13px; }
 
 .ocean-profile .activity-card { overflow: hidden; }
-.ocean-profile .profile-catalog-link { background: #d9eddd !important; }
+.ocean-profile .profile-catalog-link { background: var(--profile-pink) !important; }
 .ocean-profile .activity-head {
   min-height: 92px;
   gap: 15px;
@@ -300,7 +300,6 @@ html[data-customer-theme="dark"] .ocean-profile .profile-form-heading h1 { color
   background: #d9eddd;
 }
 .ocean-profile .activity-head .icon-chip,
-.ocean-profile .profile-catalog-link .icon-chip,
 .ocean-profile .metric-card .tiny-icon {
   border: 2px solid var(--profile-outline);
   border-radius: 11px;
@@ -309,6 +308,7 @@ html[data-customer-theme="dark"] .ocean-profile .profile-form-heading h1 { color
   color: #fff !important;
 }
 .ocean-profile .activity-head strong { color: var(--profile-ink) !important; font-size: 19px !important; font-weight: 900; }
+.ocean-profile .profile-catalog-link .icon-chip { border: 2px solid var(--profile-outline); border-radius: 11px; background: #f7bad0; color: #9d2b55; box-shadow: var(--customer-shadow-control) #a76d86; }
 .ocean-profile .activity-head span:last-child { color: var(--profile-muted) !important; font-size: 11px !important; }
 .ocean-profile .activity-summary {
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -450,6 +450,10 @@ html[data-customer-theme="dark"] .ocean-profile .profile-form-heading h1 { color
   .ocean-profile .metric-card .tiny-icon { width: 34px; height: 34px; flex-basis: 34px; }
   .ocean-profile .metric-copy strong { font-size: 22px; }
   .ocean-profile .metric-copy span { font-size: 9px; }
+}
+@media (max-width: 639px) {
+  .ocean-profile .metric-card .tiny-icon { min-width: calc(16px + 1rem + 4px); min-height: calc(16px + 1rem + 4px); }
+  .ocean-profile .metric-card .tiny-icon svg { width: calc(16px + 1rem); height: calc(16px + 1rem); }
 }
 @media (max-width: 380px) {
   .ocean-profile .profile-edit-photo-card .profile-person { align-items: flex-start; gap: 16px; }

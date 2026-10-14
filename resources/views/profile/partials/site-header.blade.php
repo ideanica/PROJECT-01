@@ -141,7 +141,7 @@
         color: #edf6ef;
     }
 
-    html[data-customer-theme="dark"] .ocean-profile .profile-catalog-link { background: #263c30 !important; }
+    html[data-customer-theme="dark"] .ocean-profile .profile-catalog-link { background: var(--profile-pink) !important; }
     html[data-customer-theme="dark"] .ocean-profile .activity-head {
         border-color: #78977f !important;
         background: #263c30;
