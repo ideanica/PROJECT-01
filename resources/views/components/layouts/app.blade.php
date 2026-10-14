@@ -27,8 +27,8 @@
         $isAuthPage = request()->routeIs(['login', 'register', 'admin.login', 'password.*']);
         $isOceanTracking = request()->routeIs('tracking.*');
         $isOceanProfile = request()->routeIs('profile.*');
-        $isTrackingLanding = request()->routeIs(['home', 'tracking.*', 'profile.*', 'billing.*', 'services.*', 'testimonials.*', 'orders.*']);
-        $hasPublicDock = request()->routeIs(['home', 'tracking.index', 'tracking.search', 'profile.*', 'billing.*', 'services.*', 'testimonials.*', 'orders.*']);
+        $isTrackingLanding = request()->routeIs(['home', 'tracking.*', 'profile.*', 'billing.*', 'services.*', 'catalog.*', 'testimonials.*', 'orders.*']);
+        $hasPublicDock = request()->routeIs(['home', 'tracking.index', 'tracking.search', 'profile.*', 'billing.*', 'services.*', 'catalog.*', 'testimonials.*', 'orders.*']);
         $registrationRequests = $isAdmin ? \App\Models\User::where('registration_pending', true)->count() : 0;
         $adminNav = [
             ['route' => 'admin.dashboard', 'match' => 'admin.dashboard', 'label' => 'Dashboard', 'icon' => 'dashboard'],

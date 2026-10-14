@@ -35,7 +35,7 @@
                         </h1>
                         <p>Shop your NCT WISH favorites with us and <br>make every WISH a little more special <svg class="op-inline-heart" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78Z" /></svg></p>
                         <div class="op-actions">
-                            <a class="op-line" href="{{ $loginDestination }}"><svg xmlns="http://www.w3.org/2000/svg" class="op-login-icon" viewBox="0 0 640 640" width="24" height="24" fill="#355a45" aria-hidden="true" focusable="false" style="display:block;width:24px;height:24px;flex:0 0 24px;"><!--!Font Awesome Free v7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc.--><path d="M409 337C418.4 327.6 418.4 312.4 409 303.1L265 159C258.1 152.1 247.8 150.1 238.8 153.8C229.8 157.5 224 166.3 224 176L224 256L112 256C85.5 256 64 277.5 64 304L64 336C64 362.5 85.5 384 112 384L224 384L224 464C224 473.7 229.8 482.5 238.8 486.2C247.8 489.9 258.1 487.9 265 481L409 337zM416 480C398.3 480 384 494.3 384 512C384 529.7 398.3 544 416 544L480 544C533 544 576 501 576 448L576 192C576 139 533 96 480 96L416 96C398.3 96 384 110.3 384 128C384 145.7 398.3 160 416 160L480 160C497.7 160 512 174.3 512 192L512 448C512 465.7 497.7 480 480 480L416 480z"/></svg><span>{{ auth()->user()?->member ? 'Buka Pesanan' : 'Login Akun' }}</span></a>
+                            <a class="op-line" href="{{ $loginDestination }}"><i class="fa fa-sign-in" aria-hidden="true"></i><span>{{ auth()->user()?->member ? 'Buka Pesanan' : 'Login Akun' }}</span></a>
                             <a class="op-search" href="{{ route('tracking.index') }}"><x-public-icon name="search" variant="rounded-bold" :size="24" /><span>Lacak Pesanan</span></a>
                         </div>
                     </div>
@@ -82,7 +82,7 @@
                     <div class="op-polaroid op-polaroid-back"></div><div class="op-polaroid op-polaroid-mid"></div>
                     <div class="op-polaroid op-polaroid-front">
                         <header class="op-photo-titlebar"><strong>OCEAN PAWS.JPG</strong><span class="op-window-dots"><i></i><i></i><i></i></span></header>
-                        <figure class="op-photo-screen"><img src="{{ asset('assets/oceanpaws-pastel-beach-parcel-v8.webp') }}" alt="Maskot Ocean Paws memegang paket di pantai" width="1448" height="1086" style="object-fit:cover;object-position:center 45%;transform:scale(1.22);transform-origin:center 45%;"></figure>
+                        <figure class="op-photo-screen"><img src="{{ asset('assets/oceanpaws-parcel-mascot-v2.webp') }}" alt=""></figure>
                         <footer class="op-photo-status"><span>Good Music · Brighter Days<br>with OCEANPAWS ♡</span><b>01 / 03</b></footer>
                     </div>
                 </div>
@@ -114,7 +114,7 @@
         <section class="op-cta" aria-labelledby="cta-title">
             <img class="op-cta-wave" src="{{ asset('assets/pastel_mint_ocean_wave_banner.png') }}" alt="" aria-hidden="true">
             <img class="op-cta-mascot" src="{{ asset('assets/oceanpaws-cta-resting-mascot.png') }}" alt="Maskot Ocean Paws di pelampung">
-            <div class="op-cta-copy"><h2 id="cta-title">Let's get closer<br><span>to your <em>WISH!</em></span></h2><a class="op-line" href="{{ $loginDestination }}"><svg xmlns="http://www.w3.org/2000/svg" class="op-login-icon" viewBox="0 0 640 640" width="24" height="24" fill="#355a45" aria-hidden="true" focusable="false" style="display:block;width:24px;height:24px;flex:0 0 24px;"><!--!Font Awesome Free v7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc.--><path d="M409 337C418.4 327.6 418.4 312.4 409 303.1L265 159C258.1 152.1 247.8 150.1 238.8 153.8C229.8 157.5 224 166.3 224 176L224 256L112 256C85.5 256 64 277.5 64 304L64 336C64 362.5 85.5 384 112 384L224 384L224 464C224 473.7 229.8 482.5 238.8 486.2C247.8 489.9 258.1 487.9 265 481L409 337zM416 480C398.3 480 384 494.3 384 512C384 529.7 398.3 544 416 544L480 544C533 544 576 501 576 448L576 192C576 139 533 96 480 96L416 96C398.3 96 384 110.3 384 128C384 145.7 398.3 160 416 160L480 160C497.7 160 512 174.3 512 192L512 448C512 465.7 497.7 480 480 480L416 480z"/></svg><span>{{ auth()->user()?->member ? 'Buka Pesanan' : 'Login Akun' }}</span></a></div>
+            <div class="op-cta-copy"><h2 id="cta-title">Let's get closer<br><span>to your <em>WISH!</em></span></h2><a class="op-line" href="{{ $loginDestination }}"><i class="fa fa-sign-in" aria-hidden="true"></i><span>{{ auth()->user()?->member ? 'Buka Pesanan' : 'Login Akun' }}</span></a></div>
             <img class="op-cta-palm" src="{{ asset('assets/kawaii_pastel_palm_tree_sticker.png') }}" alt="" aria-hidden="true">
             <div class="op-cta-sign"><img src="{{ asset('assets/oceanpaws-cta-wood-sign-v1.png') }}" alt="" aria-hidden="true"><span>NCT WISH<br><b>A BRIGHTER<br>TOMORROW<br>TOGETHER ♡</b></span></div>
             <img class="op-cta-sand" src="{{ asset('assets/oceanpaws-cta-sand-only-v2.png') }}" alt="" aria-hidden="true">
@@ -124,28 +124,14 @@
 
         <div class="op-mobile-tracking-wrap">
             <a class="op-mobile-tracking" href="{{ route('tracking.index') }}">
-                <svg xmlns="http://www.w3.org/2000/svg" class="op-tracking-search-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#9f345c" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" style="display:block;width:28px;height:28px;flex:0 0 28px;color:#9f345c;stroke:#9f345c;"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg>
+                <x-public-icon name="search" variant="rounded-bold" :size="24" />
                 <span><strong>Still looking for your order?</strong><small>Track it here!</small></span>
+                <x-public-icon name="arrow-forward" variant="rounded-bold" :size="18" />
             </a>
         </div>
     </main>
 
     <style>
-        @media (max-width: 1023px) {
-            .op-page .op-cta-copy .op-line {
-                width: calc(100% - 20px) !important;
-                min-width: 0 !important;
-                max-width: calc(100% - 20px) !important;
-                box-sizing: border-box;
-                align-self: center;
-            }
-            .op-page .op-cta-copy h2 {
-                margin-bottom: calc(clamp(5px, .9vw, 12px) + 10px) !important;
-            }
-            .op-page .op-cta-mascot {
-                left: calc(-6% - 20px) !important;
-            }
-        }
         .op-footer-reference{
             position:relative;
             isolation:isolate;

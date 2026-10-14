@@ -1,5 +1,3 @@
-import './landing-scroll-reveal';
-
 document.querySelectorAll('[data-profile-photo-editor]').forEach((editor) => {
     const input = editor.querySelector('[data-photo-input]');
     const card = editor.closest('.profile-edit-card');

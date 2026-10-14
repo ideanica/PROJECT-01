@@ -19,7 +19,7 @@ if (file_exists($envPath)) {
                 $value = substr($value, 1, -1);
             }
             // Only set if not already set (safe load)
-            if (! isset($_ENV[$key]) && getenv($key) === false) {
+            if (! isset($_ENV[$key]) && ! isset($_SERVER[$key]) && getenv($key) === false) {
                 $_ENV[$key] = $value;
                 putenv("$key=$value");
             }

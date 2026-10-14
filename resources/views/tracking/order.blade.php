@@ -113,6 +113,7 @@
                             <div><dt>Nominal dikirim</dt><dd>{{ $order->payment_amount ? 'Rp '.number_format($order->payment_amount, 0, ',', '.') : 'Belum ada' }}</dd></div>
                             <div><dt>Status pembayaran</dt><dd>{{ $order->paymentStatus?->name ?: 'Belum ditentukan' }}</dd></div>
                         </dl>
+                        <x-order-payment-method :order="$order" />
                     </section>
 
                     @if($order->notes)

@@ -87,14 +87,16 @@
                             </a>
                             <a class="{{ $tab === 'paid' ? 'active' : '' }}" href="{{ (request()->routeIs('billing.ems') ? route('billing.ems') : route('billing.orders')).'?tab=paid' }}">
                                 <x-public-icon variant="rounded-bold" name="check-circle" :size="16" />
-                                <span>Berhasil</span>
+                                <span>Riwayat pembayaran</span>
                                 <b>{{ $paidCount }}</b>
                             </a>
+                            @if($refundCount > 0)
                             <a class="{{ $tab === 'refund' ? 'active' : '' }}" href="{{ (request()->routeIs('billing.ems') ? route('billing.ems') : route('billing.orders')).'?tab=refund' }}">
                                 <x-public-icon variant="rounded-bold" name="history" :size="16" />
                                 <span>Refund</span>
                                 <b>{{ $refundCount }}</b>
                             </a>
+                            @endif
                         </nav>
                     </aside>
                 @endif
@@ -177,6 +179,7 @@
                                         @endif
                                     </div>
 
+                                    @if($tab === 'unpaid')<x-order-payment-method :order="$order" />@endif
                                     <div class="portal-v2-card-actions">
                                         <a class="portal-v2-card-action" href="{{ $order->billing_tracking_url }}">Lihat rincian <x-public-icon variant="rounded-bold" name="arrow-right" :size="14" /></a>
                                         @if($scope === 'orders' && $order->payment_proof_path)
@@ -200,4 +203,3 @@
         </div>
     </div>
 </x-layouts.app>
-

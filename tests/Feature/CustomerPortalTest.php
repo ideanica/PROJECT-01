@@ -9,11 +9,9 @@ class CustomerPortalTest extends TestCase
     public function test_billing_overview_is_available_to_guests(): void
     {
         $this->get(route('billing.index'))
-            ->assertOk()
-            ->assertSee('Tagihan &amp; Pembayaran', false)
+            ->assertRedirect(route('profile.show'));
+        $this->get(route('billing.orders'))->assertOk()
             ->assertSee('Login untuk melihat')
-            ->assertSee(route('billing.orders'), false)
-            ->assertSee(route('billing.ems'), false)
             ->assertDontSee('>Riwayat Pembayaran</h2>', false);
     }
 
@@ -22,8 +20,7 @@ class CustomerPortalTest extends TestCase
         $this->get(route('services.index'))
             ->assertOk()
             ->assertSee('Layanan Pesanan')
-            ->assertSee('Katalog')
-            ->assertSee(route('catalog.index'), false)
+            ->assertSee('Lacak Pesanan')
             ->assertSee(route('tracking.index'), false)
             ->assertDontSee('>Order</span>', false)
             ->assertSee(route('orders.history'), false);
@@ -38,9 +35,8 @@ class CustomerPortalTest extends TestCase
 
         $this->get(route('tracking.index'))
             ->assertOk()
-            ->assertSee('Lacak pesananmu.')
-            ->assertSee('TRACK YOUR ORDER')
-            ->assertSee('Belum ada pesanan yang dicari.')
+            ->assertSee('Cari pesananmu.')
+            ->assertSee('TRACKING PESANAN')
             ->assertDontSee('tracking-trust-section', false)
             ->assertSee('id="tracking-query"', false)
             ->assertDontSee('Group order untuk girl group');

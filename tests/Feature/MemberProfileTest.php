@@ -96,7 +96,7 @@ class MemberProfileTest extends TestCase
         $this->actingAs($user)
             ->get(route('orders.history'))
             ->assertOk()
-            ->assertSee('Riwayat pesanan')
+            ->assertSee('Riwayat Pesanan')
             ->assertSee('OWN-ORDER-1')
             ->assertSee('OWN-ORDER-6')
             ->assertSee('Album Caca 6')

@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\Member;
-use App\Models\Product;
+use App\Models\Batch;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -15,10 +15,10 @@ class StoreMemberOrderRequest extends FormRequest
         $rawItems = collect($this->input('items', []))
             ->filter(fn ($item) => filled($item['product_id'] ?? null) || filled($item['item_name'] ?? null));
 
-        $products = Product::query()
+        $products = Batch::find($this->integer('batch_id'))?->products()
             ->whereIn('id', $rawItems->pluck('product_id')->filter()->unique())
             ->get()
-            ->keyBy('id');
+            ->keyBy('id') ?? collect();
 
         $items = $rawItems
             ->map(function (array $item) use ($products): array {
@@ -29,7 +29,7 @@ class StoreMemberOrderRequest extends FormRequest
                     $item['variant'] = $product->variant;
                     $item['unit_price'] = filled($item['unit_price'] ?? null)
                         ? $item['unit_price']
-                        : $product->default_price;
+                        : ($product->pivot->full_price ?? $product->default_price);
                 }
 
                 return $item;
@@ -70,7 +70,9 @@ class StoreMemberOrderRequest extends FormRequest
         return [
             'order_code' => ['prohibited'],
             // member_id wajib untuk NEW order, harus merujuk ke Member yang akun customer siap + aktif
-            'member_id' => ['required', 'exists:members,id'],
+            'member_id' => $itemsAreLocked
+                ? ['required', Rule::in([$order->member_id])]
+                : ['required', 'exists:members,id', Rule::unique('member_orders', 'member_id')->where('batch_id', $this->integer('batch_id'))->ignore($order?->id)],
             // customer_name dan customer_username tidak lagi digunakan untuk pembuatan buyer baru
             'customer_name' => ['prohibited'],
             'customer_username' => ['prohibited'],
@@ -93,10 +95,10 @@ class StoreMemberOrderRequest extends FormRequest
             'ems_tax_due_date' => ['nullable', 'date'],
             'ems_tax_notes' => ['nullable', 'string', 'max:1000'],
             'items' => $itemsAreLocked ? ['prohibited'] : ['required', 'array', 'min:1'],
-            'items.*.id' => ['nullable', 'exists:order_items,id'],
+            'items.*.id' => ['nullable', Rule::exists('order_items', 'id')->where('member_order_id', $order?->id)],
             'items.*.product_id' => [
                 'nullable',
-                'exists:products,id',
+                Rule::exists('batch_product', 'product_id')->where('batch_id', $this->integer('batch_id')),
             ],
             'items.*.item_name' => ['required', 'string', 'max:255'],
             'items.*.variant' => ['nullable', 'string', 'max:255'],

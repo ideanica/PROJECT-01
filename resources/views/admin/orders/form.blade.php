@@ -30,6 +30,10 @@
                             <small class="admin-form-help">Kode ini menjadi kunci tracking status dan tagihan Pajak/EMS.</small>
                         </div>
                         <div>
+                            @if($itemsAreLocked)
+                                <div class="admin-form-readonly"><span>Customer</span><strong>{{ $order->member->display_name }}</strong><small>Customer tidak dapat diganti setelah pesanan diproses.</small></div>
+                                <input type="hidden" name="member_id" value="{{ $order->member_id }}">
+                            @else
                             <label class="block">
                                 <span>Pilih Member <span class="text-red-500" aria-hidden="true">*</span></span>
                                 <select name="member_id" required class="w-full rounded border border-zinc-300 bg-white px-3 py-2 text-zinc-900 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20">
@@ -45,6 +49,7 @@
                                     Buyer lama yang belum memiliki akun login dapat disiapkan akunnya melalui Kelola Customer.
                                 </small>
                             </label>
+                            @endif
                         </div>
                     </div>
                 </x-admin-form-section>
@@ -117,7 +122,7 @@
                         </div>
                     @else
                         <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
-                            <p class="text-sm text-zinc-500">Tulis nama item langsung; tidak perlu membuat master produk.</p>
+                            <p class="text-sm text-zinc-500">Pilih produk batch atau tulis nama item langsung.</p>
                             <button type="button" data-add-item class="admin-form-inline-action">+ Tambah Item</button>
                         </div>
                         <div data-items class="space-y-3">
@@ -147,12 +152,37 @@
                 const template = document.querySelector('[data-item-template]');
                 const addButton = document.querySelector('[data-add-item]');
                 let nextIndex = {{ count($rows) }};
-                addButton?.addEventListener('click', () => container.insertAdjacentHTML('beforeend', template.innerHTML.replaceAll('__INDEX__', nextIndex++)));
+                const batchSelect = document.querySelector('select[name="batch_id"]');
+                const filterProducts = () => {
+                    container.querySelectorAll('[data-item-product]').forEach((select) => {
+                        [...select.options].forEach((option) => {
+                            if (!option.value) return;
+                            option.disabled = option.dataset.batch !== batchSelect.value;
+                            option.hidden = option.disabled;
+                        });
+                        if (select.selectedOptions[0]?.disabled) select.value = '';
+                    });
+                };
+                window.jQuery(batchSelect).on('change', filterProducts);
+                addButton?.addEventListener('click', () => {
+                    container.insertAdjacentHTML('beforeend', template.innerHTML.replaceAll('__INDEX__', nextIndex++));
+                    filterProducts();
+                });
+                container?.addEventListener('change', (event) => {
+                    if (!event.target.matches('[data-item-product]')) return;
+                    const option = event.target.selectedOptions[0];
+                    if (!option?.value) return;
+                    const row = event.target.closest('[data-item-row]');
+                    row.querySelector('input[name$="[item_name]"]').value = option.dataset.name;
+                    row.querySelector('input[name$="[variant]"]').value = option.dataset.variant;
+                    row.querySelector('input[name$="[unit_price]"]').value = option.dataset.price;
+                });
                 container?.addEventListener('click', (event) => {
                     const button = event.target.closest('[data-remove-item]');
                     if (!button) return;
                     const rows = container.querySelectorAll('[data-item-row]');
                     if (rows.length === 1) {
+                        button.closest('[data-item-row]').querySelectorAll('select').forEach((select) => select.value = '');
                         button.closest('[data-item-row]').querySelectorAll('input').forEach((input) => input.value = input.matches('[data-item-qty]') ? 1 : '');
                         return;
                     }
@@ -162,4 +192,3 @@
         </script>
     @endunless
 </x-layouts.app>
-

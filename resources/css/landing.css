@@ -5617,9 +5617,9 @@
   .op-page .op-cta::after{display:none}
   .op-page .op-cta::before{top:0;bottom:auto;height:17vw;background-size:100% 100%}
   .op-page .op-cta-wave{bottom:-12%;height:62%;opacity:.6}
-  .op-page .op-cta-mascot{left:calc(-6% - 20px);bottom:-5%;width:calc(68% + 10px);height:calc(101% + 10px);object-fit:contain}
+  .op-page .op-cta-mascot{left:-6%;bottom:-5%;width:calc(68% + 10px);height:calc(101% + 10px);object-fit:contain}
   .op-page .op-cta-copy{top:27%;right:3%;left:auto;width:49%;align-items:center;transform:none}
-  .op-page .op-cta-copy h2{font-size:clamp(22px,5.8vw,30px);margin-bottom:calc(clamp(5px,.9vw,12px) + 10px)}
+  .op-page .op-cta-copy h2{font-size:clamp(22px,5.8vw,30px)}
   .op-page .op-cta-copy .op-line{width:100%;height:clamp(40px,11vw,48px);font-size:clamp(12px,3.2vw,15px)}
   .op-page .op-cta-palm{display:none}
   .op-page .op-cta-sign,.op-page .op-cta-sand,.op-page .op-cta-starfish{display:none}
@@ -5885,20 +5885,27 @@
 .op-page .op-line { background: var(--op-tab-matcha); color: #fff !important; }
 .op-page .op-line > span { color: #fff; }
 .op-page .op-search > span { color: #355a45; }
-/* Inline SVG keeps login icons independent of webfont loading. */
-.op-page .op-line > .public-icon {
-  display: block;
-  width: 24px;
-  height: 24px;
-  flex: 0 0 24px;
-  color: #355a45;
-  --portal-icon-fill-pink: #ffe5a8;
+@font-face {
+  font-family: 'Ocean Paws Font Awesome';
+  src: url('/fonts/font-awesome/fontawesome-webfont.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
 }
+.op-page .op-line > .fa-sign-in {
+  color: #ffe5a8;
+  flex-shrink: 0;
+  font-family: 'Ocean Paws Font Awesome';
+  font-size: clamp(22px, 2.2vw, 28px);
+  font-weight: normal;
+  font-style: normal;
+  line-height: 1;
+}
+.op-page .op-line > .fa-sign-in::before { content: '\f090'; }
 .op-body .public-icon-rounded-bold { color: #355a45; flex-shrink: 0; }
 .op-page .op-search > .public-icon { width: 24px; height: 24px; color: #355a45; }
 .op-page .op-search > .public-icon > circle { fill: #ffe5a8; }
-.op-page .op-mobile-tracking > .public-icon:first-child { width: 28px; height: 28px; color: inherit; }
-.op-page .op-mobile-tracking > .public-icon > circle { fill: none; }
+.op-page .op-mobile-tracking > .public-icon:first-child { width: 28px; height: 28px; }
 .op-mobile-tracking-wrap {
   display: none;
 }
@@ -5945,15 +5952,8 @@
   touch-action: manipulation;
 }
 
-/* Both hero tabs hop in sequence across viewport sizes. */
+/* Do not animate the interactive card itself: moving a touch target while a
+   finger is down makes edge taps feel inconsistent. The rear tab may still hop. */
 .op-page .op-copy-window {
   animation: none !important;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .op-page .op-copy-window { animation: op-front-tab-hop 3.6s ease-in-out infinite !important; }
-}
-
-@media (min-width: 640px) and (prefers-reduced-motion: no-preference) {
-  .op-page .op-cta::after { display: block; }
 }

@@ -22,6 +22,31 @@ class OrderRecapTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function test_order_update_cannot_edit_an_item_owned_by_another_order(): void
+    {
+        $admin = User::factory()->create();
+        $order = MemberOrder::factory()->create();
+        $otherItem = OrderItem::factory()->create(['item_name' => 'Protected item']);
+        $this->actingAs($admin)->put(route('admin.member-orders.update', $order), [
+            'member_id' => $order->member_id, 'batch_id' => $order->batch_id,
+            'items' => [['id' => $otherItem->id, 'item_name' => 'Changed item', 'quantity' => 1]],
+        ])->assertSessionHasErrors('items.0.id');
+        $this->assertSame('Protected item', $otherItem->refresh()->item_name);
+    }
+
+    public function test_duplicate_customer_order_for_a_batch_returns_validation_error(): void
+    {
+        $admin = User::factory()->create();
+        $member = Member::factory()->create();
+        User::factory()->create(['role' => 'customer', 'member_id' => $member->id]);
+        $order = MemberOrder::factory()->create(['member_id' => $member->id]);
+        $this->actingAs($admin)->post(route('admin.member-orders.store'), [
+            'member_id' => $member->id, 'batch_id' => $order->batch_id,
+            'items' => [['item_name' => 'Duplicate item', 'quantity' => 1]],
+        ])->assertSessionHasErrors('member_id');
+        $this->assertDatabaseCount('member_orders', 1);
+    }
+
     public function test_admin_can_create_status(): void
     {
         $admin = User::factory()->create();
@@ -116,8 +141,8 @@ class OrderRecapTest extends TestCase
         $this->actingAs($admin)
             ->get(route('admin.batches.show', $batch))
             ->assertOk()
-            ->assertSee('Master Batch Pembelian')
-            ->assertDontSee('Tambah Pesanan')
+            ->assertSee('Batch Pembelian')
+            ->assertSee('Tambah Pesanan')
             ->assertSee('data-status-modal-open="batch-progress"', false)
             ->assertSee('data-status-modal="batch-progress"', false)
             ->assertSee('Belum ada riwayat perubahan progress untuk batch ini.')
@@ -331,6 +356,7 @@ class OrderRecapTest extends TestCase
     {
         $admin = User::factory()->create();
         $member = Member::factory()->create();
+        User::factory()->create(['role' => 'customer', 'member_id' => $member->id]);
         $batch = Batch::factory()->create();
         $product = Product::factory()->create();
         $batch->products()->attach($product);
@@ -634,13 +660,14 @@ class OrderRecapTest extends TestCase
     {
         $admin = User::factory()->create();
         $member = Member::factory()->create();
+        User::factory()->create(['role' => 'customer', 'member_id' => $member->id]);
         $batch = Batch::factory()->create();
         $product = Product::factory()->create([
             'name' => 'Wish Bakery Plush',
             'variant' => 'Sakuya',
-            'default_price' => 395000,
+            'default_price' => 300000,
         ]);
-        $batch->products()->attach($product);
+        $batch->products()->attach($product, ['full_price' => 395000]);
 
         $this->actingAs($admin)->post(route('admin.member-orders.store'), [
             'member_id' => $member->id,
@@ -666,6 +693,7 @@ class OrderRecapTest extends TestCase
     {
         $admin = User::factory()->create();
         $member = Member::factory()->create();
+        User::factory()->create(['role' => 'customer', 'member_id' => $member->id]);
         $batch = Batch::factory()->create();
         $product = Product::factory()->create();
         $batch->products()->attach($product);
@@ -870,7 +898,7 @@ class OrderRecapTest extends TestCase
             ->assertSee('data-order-status-override-form', false)
             ->assertDontSee('data-order-status-override-toggle', false)
             ->assertDontSee('data-order-status-override-form hidden', false)
-            ->assertSee('Kembali ke Pesanan');
+            ->assertSee('Tutup');
     }
 
     public function test_updated_special_order_status_is_rendered_directly_in_the_second_card(): void

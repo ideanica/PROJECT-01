@@ -25,6 +25,7 @@ Route::redirect('/billing', '/profile')->name('billing.index');
 Route::get('/billing/orders', [CustomerPortalController::class, 'billingOrders'])->name('billing.orders');
 Route::get('/billing/ems', [CustomerPortalController::class, 'billingEms'])->name('billing.ems');
 Route::get('/services', [CustomerPortalController::class, 'services'])->name('services.index');
+Route::get('/catalog', [CustomerPortalController::class, 'catalog'])->name('catalog.index');
 Route::get('/orders/unpaid', [CustomerPortalController::class, 'unpaid'])->name('orders.unpaid');
 Route::get('/orders/shipping', [CustomerPortalController::class, 'shipping'])->name('orders.shipping');
 Route::get('/orders/refunds', [CustomerPortalController::class, 'refunds'])->name('orders.refunds');

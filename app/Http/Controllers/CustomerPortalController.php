@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\MemberOrder;
+use App\Models\Batch;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 
@@ -103,6 +104,13 @@ class CustomerPortalController extends Controller
             'description' => 'Pilih layanan yang kamu butuhkan untuk mulai jajan atau memantau pesanan.',
             'items' => [
                 [
+                    'icon' => 'bag',
+                    'title' => 'Katalog',
+                    'description' => 'Lihat batch yang dipublikasikan admin, variasi produk, harga DP dan pelunasan.',
+                    'note' => 'Informasi batch terbaru',
+                    'url' => route('catalog.index'),
+                ],
+                [
                     'icon' => 'search',
                     'title' => 'Lacak Pesanan',
                     'description' => 'Cari status terkini menggunakan kode pesanan atau username.',
@@ -123,6 +131,15 @@ class CustomerPortalController extends Controller
     public function unpaid(Request $request)
     {
         return $this->orderList($request, 'unpaid');
+    }
+
+    public function catalog()
+    {
+        $batches = Batch::query()->where('is_catalog_visible', true)->where('is_archived', false)
+            ->with(['currentStatus', 'products' => fn ($query) => $query->where('products.is_active', true)->wherePivot('is_available', true)])
+            ->latest()->paginate(12);
+
+        return view('portal.catalog', compact('batches'));
     }
 
     public function shipping(Request $request)
@@ -283,6 +300,7 @@ class CustomerPortalController extends Controller
         }
 
         $requestedTab = $request->string('tab')->toString();
+        $requestedTab = $requestedTab === 'history' ? 'paid' : $requestedTab;
         $tab = in_array($requestedTab, ['unpaid', 'paid', 'refund'], true) ? $requestedTab : 'unpaid';
 
         if ($scope === 'ems') {
@@ -299,7 +317,7 @@ class CustomerPortalController extends Controller
                 ->filter(fn ($order) => ! $order->is_refunded && ($order->paymentStatus?->code === 'lunas' || $order->payment_submitted_at !== null))
                 ->values();
             $refundOrders = $orders->filter(fn ($order) => $order->is_refunded)->values();
-            $title = 'Tagihan';
+            $title = 'Tagihan Pesanan';
             $description = 'Semua transaksi yang belum dibayar, berhasil, dan direfund tersusun di sini.';
         }
 

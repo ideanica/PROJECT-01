@@ -6,6 +6,7 @@
 @import './portal-neo-brutalism.css';
 @import './auth.css';
 @import './customer-shadows.css';
+@import './admin-theme.css';
 
 @source '../views/**/*.blade.php';
 @source '../js/**/*.js';
@@ -8969,10 +8970,6 @@ html[data-customer-theme="dark"] .ocean-tracking .tracking-result-side {
     flex: 0 0 30px;
     color: var(--nav-icon-fill);
     overflow: visible;
-}
-
-.ocean-primary-navbar__icon.public-icon-rounded-bold {
-    color: #355a45;
 }
 
 @media (max-width: 1050px) {

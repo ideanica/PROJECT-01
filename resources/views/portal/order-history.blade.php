@@ -160,6 +160,11 @@
                                         <div><span>Jumlah item</span><strong>{{ $itemCount }} item</strong></div>
                                         <div><span>Pembayaran</span><strong>{{ $paymentLabel }}</strong></div>
                                     </div>
+                                    <ul class="portal-order-items" aria-label="Item pesanan">
+                                        @foreach($order->items as $item)
+                                            <li>{{ $item->quantity }} × {{ $item->item_name }}@if($item->variant) · {{ $item->variant }}@endif</li>
+                                        @endforeach
+                                    </ul>
 
                                     <a class="portal-v2-card-action" href="{{ $order->history_tracking_url }}">Lihat rincian <x-public-icon variant="rounded-bold" name="arrow-right" :size="14" /></a>
                                 </article>
@@ -179,4 +184,3 @@
         </div>
     </div>
 </x-layouts.app>
-

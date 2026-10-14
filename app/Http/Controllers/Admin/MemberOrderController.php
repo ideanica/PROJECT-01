@@ -233,7 +233,7 @@ class MemberOrderController extends Controller
         }
 
         $batches = Batch::query()
-            ->with('currentStatus')
+            ->with(['currentStatus', 'products'])
             ->where(fn ($query) => $query
                 ->where('is_archived', false)
                 ->when($order->batch_id, fn ($query, $batchId) => $query->orWhere('id', $batchId)))

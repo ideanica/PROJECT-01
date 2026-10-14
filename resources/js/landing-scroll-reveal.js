@@ -14,13 +14,6 @@ if (landingPage) {
     ].filter(({ element }) => element);
 
     if (!reducedMotion.matches && 'IntersectionObserver' in window) {
-        revealTargets.forEach(({ element }) => {
-            element.style.opacity = '0';
-            element.style.transform = 'translate3d(0, 34px, 0)';
-            element.style.transition = 'opacity 680ms ease, transform 680ms cubic-bezier(.22, 1, .36, 1)';
-            element.style.willChange = 'opacity, transform';
-        });
-
         const observer = new IntersectionObserver((entries) => {
             entries.forEach((entry) => {
                 if (!entry.isIntersecting) return;
@@ -28,19 +21,19 @@ if (landingPage) {
                 const target = revealTargets.find(({ element }) => element === entry.target);
                 const delay = target?.delay ?? 0;
 
-                entry.target.style.transitionDelay = `${delay}ms`;
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translate3d(0, 0, 0)';
+                // Keep content visible if observation is delayed, and preserve
+                // the transforms used by the landing layout and touch targets.
+                if (!reducedMotion.matches && typeof entry.target.animate === 'function') {
+                    entry.target.animate([{ opacity: 0.35 }, { opacity: 1 }], {
+                        duration: 680,
+                        delay,
+                        easing: 'ease-out',
+                    });
+                }
                 observer.unobserve(entry.target);
-
-                window.setTimeout(() => {
-                    entry.target.style.willChange = 'auto';
-                    entry.target.style.transitionDelay = '0ms';
-                }, 760 + delay);
             });
         }, {
-            threshold: 0.12,
-            rootMargin: '0px 0px -8% 0px',
+            threshold: 0.01,
         });
 
         revealTargets.forEach(({ element }) => observer.observe(element));
