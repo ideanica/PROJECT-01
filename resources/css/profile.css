@@ -452,7 +452,7 @@ html[data-customer-theme="dark"] .ocean-profile .profile-form-heading h1 { color
   .ocean-profile .metric-copy span { font-size: 9px; }
 }
 @media (max-width: 639px) {
-  .ocean-profile .metric-card { min-height: calc(83px + 1rem); }
+  .ocean-profile .metric-card { min-height: calc(79px + 1rem); }
   .ocean-profile .metric-card .tiny-icon {
     --metric-icon-card-size: calc(34px + 1rem);
     width: var(--metric-icon-card-size);
