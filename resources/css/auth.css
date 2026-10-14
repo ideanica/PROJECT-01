@@ -60,6 +60,12 @@ html[data-customer-theme="dark"] body.ocean-auth { background: var(--pv2-cream);
 .auth-password-monitor-interactive .auth-password-checklist li { align-items: center; gap: 4px; font-size: 10px; line-height: 1.6; }
 .auth-password-monitor-interactive [data-password-icon] { flex: 0 0 12px; font-size: 11px; }
 .auth-password-monitor-interactive .auth-password-checklist .is-met { color: var(--auth-card-ink, var(--pv2-ink-deep)); font-weight: 800; }
+@media (max-width: 639px) {
+    .auth-form-register .auth-password-heading strong { font-size: 10px; }
+    .auth-form-register .auth-password-count,
+    .auth-form-register .auth-password-checklist li { font-size: 9px; }
+    .auth-form-register .auth-password-monitor-interactive [data-password-icon] { font-size: 10px; }
+}
 @media (prefers-reduced-motion: reduce) { .auth-password-monitor-interactive .auth-password-progress::-webkit-progress-value { transition: none; } }
 .auth-remember { display: flex; align-items: center; gap: 10px; color: var(--pv2-ink-deep); font-size: 12px; }
 .auth-remember input { width: 18px; height: 18px; accent-color: var(--pv2-ink); }
