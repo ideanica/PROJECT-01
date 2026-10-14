@@ -601,32 +601,3 @@ html[data-customer-theme="dark"] :is(.portal-v2, .portal-overview-page) {
 }
 html[data-customer-theme="dark"] .portal-v2-order-card:nth-child(n) { background: var(--pv2-paper); }
 html[data-customer-theme="dark"] .portal-v2-card-action { background: var(--pv2-mint); color: var(--pv2-ink)!important; }
-
-@media (max-width: 1023px) {
-  .portal-v2, .portal-overview-page { padding-inline: var(--ocean-responsive-gutter, 16px); }
-  .portal-v2-layout { grid-template-columns: minmax(0, 1fr); }
-  .portal-v2-filter-panel { position: static; min-height: 0; height: auto; }
-  .portal-v2-filter-head { display: none; }
-  .portal-v2-filters a { min-height: 48px; padding-block: 8px; line-height: 1.4; }
-  .portal-v2-filters a span { min-width: 0; overflow-wrap: anywhere; }
-  .portal-v2-card-title h3 { white-space: normal; overflow-wrap: anywhere; }
-  .portal-v2-hero-copy h1 { max-width: 100%; overflow-wrap: anywhere; }
-  .portal-v2-back, .portal-v2-card-action { min-height: 44px; }
-}
-@media (min-width: 640px) and (max-width: 1023px) {
-  .portal-v2-hero { display: grid; grid-template-columns: minmax(0, 1fr) 180px; gap: 20px; padding: 28px; }
-  .portal-v2-hero:not(:has(.portal-v2-hero-stat)) { grid-template-columns: minmax(0, 1fr); }
-  .portal-v2-hero-copy h1 { font-size: clamp(36px, 5.4vw, 54px); }
-  .portal-v2-hero-stat { display: flex; margin-top: 0; padding: 20px; transform: none; }
-  .portal-v2-filters { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 0; }
-  .portal-v2-order-grid, .portal-overview-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .portal-v2-card-top { grid-template-columns: 54px minmax(0, 1fr); }
-  .portal-v2-card-top .status-badge, .portal-v2-state { grid-column: 1 / -1; justify-self: start; }
-}
-@media (max-width: 639px) {
-  .portal-v2-filters a { grid-template-columns: minmax(0, 1fr) auto; gap: 6px; font-size: 12px; }
-  .portal-v2-filters a > .public-icon { grid-column: 1; grid-row: 1; }
-  .portal-v2-filters a > b { grid-column: 2; grid-row: 1; }
-  .portal-v2-filters a > span { grid-column: 1 / -1; grid-row: 2; }
-  .portal-v2-filters a:last-child:nth-child(odd) { grid-column: 1 / -1; }
-}

@@ -60,29 +60,23 @@ saat runtime. Gambar halaman publik yang diperiksa berhasil dimuat.
 Ini merupakan verifikasi lokal dan audit alur yang tersedia, bukan pengujian deployment produksi,
 load test, atau pembuktian bahwa setiap kemungkinan kondisi konkurensi telah tercakup.
 
-## Perbaikan responsive setelah baseline `844f3ee`
+## Koreksi responsive mengikuti `interactive tab hero`
 
-Perubahan layout dibatasi pada lebar di bawah 1024px, mengikuti breakpoint desktop proyek.
-Hero memakai tinggi berdasarkan isi pada mobile, dan komposisi teks/ilustrasi berdampingan
-pada tablet. Dua lapisan tab berbagi kolom grid sehingga ukurannya tetap mengikuti isi.
-Gutter navbar, profil, tracking, form akun, dan portal menggunakan ukuran fluid yang sama.
-Judul tracking, tab tagihan, grid kartu, ukuran kontrol, dan keterbacaan form admin disesuaikan.
-Menu mobile menutup saat memilih tautan, menyentuh area luar, atau menekan Escape.
+Override yang menyusun ulang mobile/tablet pada `d1a4787` dibatalkan. Stylesheet landing,
+profil, auth, dan portal serta markup tracking kembali ke baseline `844f3ee` yang
+memakai desain `2d59f0c` (`interactive tab hero`). Susunan, posisi, layering, animasi,
+navbar, dan grid mengikuti referensi tersebut; tablet tidak diubah menjadi hero dua kolom.
 
-Form edit pesanan sebelumnya memiliki kolom grid intrinsik sekitar 664px meskipun layar
-hanya 320px. Kolom sekarang memakai `minmax(0, 1fr)` dan anak grid dapat menyusut;
-field catatan terukur sekitar 231px pada layar yang sama tanpa kehilangan isinya.
-Tidak ada perubahan pada controller, route, model, schema, atau aturan bisnis dalam tahap ini.
+Perubahan ukuran hanya pada judul tracking di layar maksimal 380px agar tidak terpotong,
+dan batas penyusutan kolom form admin maksimal 1023px agar nilai Select2 panjang tidak
+memaksa kolom keluar viewport. Integrasi backend dan fitur sebelumnya tetap dipertahankan.
 
-Verifikasi tambahan:
+Verifikasi: build produksi berhasil; 22 tes akun, approval, dan portal lulus dengan
+232 assertion. Perbandingan geometri dan gaya elemen desktop 1440px pada landing,
+tracking, profil, dan register sama dengan baseline. Pemeriksaan browser tambahan
+menggunakan database fixture lokal, bukan perubahan data produksi.
 
-- 88 pemeriksaan halaman publik pada 320, 360, 375, 390, 430, 480, 640, 768, 820, 912, dan 1023px.
-- 88 pemeriksaan halaman customer setelah login, termasuk profil/edit/detail, riwayat,
-  tagihan/EMS, kategori pesanan, katalog, dan detail pesanan melalui signed URL.
-- 160 pemeriksaan halaman admin pada delapan lebar mobile/tablet; tidak ditemukan overflow
-  atau konten form yang melebar keluar layar setelah perbaikan grid.
-- Menu dan hit target hero diuji dengan sentuhan pada delapan kombinasi viewport,
-  termasuk landscape 812 × 375px. Tautan tracking tetap bekerja ketika tab hero beranimasi.
-- Geometri dan properti visual elemen desktop 1440px pada landing, tracking, profil,
-  dan register sama dengan baseline stylesheet sebelum perubahan responsive.
-- Build produksi berhasil; 22 tes akun, approval, dan portal lulus dengan 232 assertion.
+Browser memeriksa 64 halaman publik pada delapan lebar 320–1023px serta 62 halaman
+customer/admin pada 320 dan 820px, tanpa overflow horizontal halaman atau error JavaScript.
+Input harga native pada form admin 820px memiliki isi lebih panjang dari area teks;
+nilai tetap dapat diedit melalui scroll internal input, tanpa mengubah grid referensi.

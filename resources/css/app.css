@@ -9593,40 +9593,9 @@ html[data-customer-theme="dark"] .ocean-primary-navbar__mobile-link.is-active {
         height: 30px;
     }
 }
-
-/* Shared mobile/tablet gutters and touch targets; desktop starts at 1024px. */
+/* Allow long selected values to shrink inside the existing mobile form column. */
 @media (max-width: 1023px) {
-    .op-body, .customer-theme { --ocean-responsive-gutter: clamp(16px, 3vw, 28px); }
-    .ocean-primary-navbar { width: calc(100% - 2 * var(--ocean-responsive-gutter, 16px)); min-height: 72px; padding-inline: 14px; }
-    .ocean-primary-navbar__brand img { width: clamp(110px, 28vw, 148px); }
-    .ocean-primary-navbar__mobile-toggle { width: 44px; height: 44px; }
-    .ocean-primary-navbar__mobile-toggle:focus-visible { outline: 3px solid currentColor; outline-offset: 4px; }
-    .ocean-primary-navbar__mobile-link { min-height: 44px; font-size: 14px; }
-    .admin-shell .admin-page { padding-bottom: calc(112px + env(safe-area-inset-bottom)); }
     .admin-shell .admin-form-body { grid-template-columns: minmax(0, 1fr); }
     .admin-shell .admin-form-body > * { min-width: 0; }
     .admin-shell .admin-form-shell .select2-container { min-width: 0; max-width: 100%; }
-    .admin-shell .text-\[10px\], .admin-shell .text-\[11px\] { font-size: 11px !important; }
-    .admin-shell .text-xs { font-size: 12px !important; }
-    .admin-shell .text-sm { font-size: 13px !important; }
-    .admin-shell :is(.admin-form-shell, .dashboard-table-card, .dashboard-latest-batches) .text-xs { font-size: 12px !important; }
-    .admin-shell :is(.admin-form-shell, .dashboard-table-card, .dashboard-latest-batches) .text-sm { font-size: 13px !important; }
-    .admin-shell .order-table * { font-size: 12px !important; }
-    .admin-shell .admin-page :is(.admin-form-primary, .admin-form-secondary, .admin-form-inline-action, .admin-form-danger-action) { min-height: 44px; font-size: 13px !important; }
-    .admin-shell .admin-page input:not([type='checkbox']):not([type='radio']):not([type='hidden']):not([type='file']),
-    .admin-shell .admin-page select,
-    .admin-shell .admin-page textarea { min-height: 46px; font-size: 16px !important; }
-    .admin-shell .select2-selection--single { min-height: 46px; }
-    .admin-shell .select2-container .select2-selection--single .select2-selection__rendered { line-height: 42px; font-size: 16px !important; }
-    .admin-shell .select2-container .select2-selection--single .select2-selection__arrow { height: 42px; }
-    .admin-shell .admin-navigation > a { min-height: 60px; }
-    .admin-shell .admin-navigation > a > span:last-of-type { font-size: 11px !important; }
-}
-@media (min-width: 640px) and (max-width: 1023px) {
-    .ocean-primary-navbar__brand img { width: clamp(148px, 18vw, 180px); }
-    .admin-shell [data-item-row] > .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
-@media (max-width: 480px) {
-    .admin-shell .admin-form-actions { width: 100%; flex-direction: column; align-items: stretch; }
-    .admin-shell .admin-form-actions > :is(a, button) { width: 100%; min-width: 0; }
 }

@@ -452,16 +452,6 @@ html[data-customer-theme="dark"] .ocean-profile .profile-form-heading h1 { color
   .ocean-profile .profile-order-hub .order-link { min-height: 112px; padding: 10px; }
   .ocean-profile .order-link small { font-size: 11px; }
 }
-@media (max-width: 1023px) {
-  .ocean-profile .profile-page,
-  .ocean-profile .profile-page.profile-detail-page { padding-inline: var(--ocean-responsive-gutter, 16px); }
-  .ocean-profile .profile-shell,
-  .ocean-profile .profile-detail-page .profile-detail-shell { width: 100%; max-width: none; margin-inline: 0; }
-  .ocean-profile .profile-edit-form input,
-  .ocean-profile .profile-edit-form textarea { font-size: 16px; }
-  .profile-edit-back, .profile-detail-edit,
-  .profile-edit-form footer > :is(a, button) { min-height: 44px; }
-}
 @media (prefers-reduced-motion: reduce) {
   .ocean-profile .profile-order-hub .order-link { animation: none; transition: none; }
 }

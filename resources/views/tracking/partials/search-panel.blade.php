@@ -80,18 +80,8 @@
     .ocean-tracking .tracking-classic .tracking-neo-form button { min-height: 64px; }
     .ocean-tracking .tracking-classic .tracking-neo-hint { font-size: 14px; }
 }
-@media (max-width: 1023px) {
-    .ocean-tracking .tracking-neo-page.tracking-classic { padding: 28px 0 72px; }
-    .ocean-tracking .tracking-classic .tracking-neo-shell { width: calc(100% - 2 * var(--ocean-responsive-gutter, 16px)); }
-    .ocean-tracking .tracking-classic .tracking-neo-heading h1 { font-size: clamp(42px, 11.2vw, 90px); line-height: 1.05; }
-    .ocean-tracking .tracking-classic .tracking-neo-heading h1 span { max-width: 100%; }
-    .ocean-tracking .tracking-classic .tracking-neo-heading p { margin-top: 20px; font-size: clamp(16px, 2.8vw, 21px); line-height: 1.5; }
-}
-@media (max-width: 480px) {
-    .ocean-tracking .tracking-classic .tracking-neo-search-card { padding: 20px 14px; }
-    .ocean-tracking .tracking-classic .tracking-neo-input-wrap { gap: 10px; padding-inline: 12px; }
-    .ocean-tracking .tracking-classic .tracking-neo-form { gap: 14px; }
-    .ocean-tracking .tracking-classic .tracking-neo-form button { font-size: 16px; }
+@media (max-width: 380px) {
+    .ocean-tracking .tracking-classic .tracking-neo-heading h1 { font-size: clamp(48px, 15vw, 56px); }
 }
 html[data-customer-theme="dark"] .ocean-tracking .tracking-classic {
     --classic-ink: #e6f2e6; --classic-outline: #9dc5a4; --classic-paper: #284338; --classic-pink: #6a4050; --classic-matcha: #54784b;

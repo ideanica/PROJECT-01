@@ -2,22 +2,6 @@ import $ from 'jquery';
 import './password-monitor';
 import './profile-photo';
 
-document.querySelectorAll('.ocean-primary-navbar__mobile-menu').forEach((menu) => {
-    const mobileViewport = window.matchMedia('(max-width: 1023px)');
-    menu.addEventListener('click', (event) => {
-        if (mobileViewport.matches && event.target.closest('a')) menu.open = false;
-    });
-    document.addEventListener('click', (event) => {
-        if (mobileViewport.matches && menu.open && !menu.contains(event.target)) menu.open = false;
-    });
-    document.addEventListener('keydown', (event) => {
-        if (mobileViewport.matches && menu.open && event.key === 'Escape') {
-            menu.open = false;
-            menu.querySelector('summary').focus();
-        }
-    });
-});
-
 document.querySelectorAll('[data-profile-edit-form]').forEach((form) => {
     const button = form.querySelector('[data-profile-save]');
     form.addEventListener('submit', () => {
