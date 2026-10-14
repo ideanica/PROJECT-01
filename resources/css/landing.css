@@ -5957,3 +5957,7 @@
 @media (min-width: 640px) and (prefers-reduced-motion: no-preference) {
   .op-page .op-cta::after { display: block; }
 }
+
+@media (max-width: 639px) {
+  .op-page .op-cta-copy h2 { font-size: clamp(20px, 5.2vw, 27px); }
+}
