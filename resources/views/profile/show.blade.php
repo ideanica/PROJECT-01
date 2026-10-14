@@ -31,6 +31,110 @@
                 padding-top: 20px;
             }
         }
+
+        @media (max-width: 560px) {
+            .ocean-profile .profile-top {
+                min-height: 88px;
+                padding: 12px 14px;
+                gap: 10px;
+                align-items: center;
+            }
+
+            .ocean-profile .profile-person {
+                gap: 10px;
+            }
+
+            .ocean-profile .profile-person strong {
+                font-size: 15px !important;
+                line-height: 1.2;
+            }
+
+            .ocean-profile .profile-photo {
+                width: 44px;
+                height: 44px;
+                flex-basis: 44px;
+                padding: 2px;
+            }
+
+            .ocean-profile .profile-member-labels {
+                gap: 4px 6px;
+                margin-top: 5px;
+            }
+
+            .ocean-profile .profile-login-label,
+            .ocean-profile .member-pill {
+                font-size: 9px;
+            }
+
+            .ocean-profile .settings-btn {
+                width: 38px;
+                height: 38px;
+                flex: 0 0 38px;
+                border-radius: 9px;
+            }
+
+            .ocean-profile .settings-btn svg {
+                width: 15px;
+                height: 15px;
+            }
+
+            .ocean-profile .order-link .order-bubble {
+                width: 42px;
+                height: 42px;
+                border-radius: 11px;
+            }
+
+            .ocean-profile .order-link .order-bubble svg {
+                width: 16px;
+                height: 16px;
+            }
+
+            .ocean-profile .profile-catalog-link .icon-chip,
+            .ocean-profile .activity-head .icon-chip {
+                width: 38px;
+                height: 38px;
+                flex: 0 0 38px;
+                border-radius: 10px;
+            }
+
+            .ocean-profile .profile-catalog-link .icon-chip svg,
+            .ocean-profile .activity-head .icon-chip svg {
+                width: 17px;
+                height: 17px;
+            }
+
+            .ocean-profile .profile-catalog-link > svg {
+                width: 15px;
+                height: 15px;
+            }
+
+            .ocean-profile .metric-card {
+                min-height: 78px;
+            }
+
+            .ocean-profile .metric-card .tiny-icon {
+                --metric-icon-card-size: 32px;
+                width: var(--metric-icon-card-size);
+                height: var(--metric-icon-card-size);
+                flex-basis: var(--metric-icon-card-size);
+            }
+
+            .ocean-profile .metric-card .tiny-icon svg {
+                width: 14px;
+                height: 14px;
+            }
+
+            .ocean-profile .cal-arrow {
+                width: 34px;
+                height: 34px;
+                border-radius: 9px;
+            }
+
+            .ocean-profile .cal-arrow svg {
+                width: 12px;
+                height: 12px;
+            }
+        }
     </style>
     <div class="page profile-page">
         <div class="profile-shell profile-stack">
