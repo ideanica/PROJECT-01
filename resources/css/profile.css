@@ -452,8 +452,17 @@ html[data-customer-theme="dark"] .ocean-profile .profile-form-heading h1 { color
   .ocean-profile .metric-copy span { font-size: 9px; }
 }
 @media (max-width: 639px) {
-  .ocean-profile .metric-card .tiny-icon { min-width: calc(16px + 1rem + 4px); min-height: calc(16px + 1rem + 4px); }
-  .ocean-profile .metric-card .tiny-icon svg { width: calc(16px + 1rem); height: calc(16px + 1rem); }
+  .ocean-profile .metric-card { min-height: calc(83px + 1rem); }
+  .ocean-profile .metric-card .tiny-icon {
+    --metric-icon-card-size: calc(34px + 1rem);
+    width: var(--metric-icon-card-size);
+    height: var(--metric-icon-card-size);
+    flex-basis: var(--metric-icon-card-size);
+  }
+  .ocean-profile .metric-card .tiny-icon svg {
+    width: calc(var(--metric-icon-card-size) * 16 / 34);
+    height: calc(var(--metric-icon-card-size) * 16 / 34);
+  }
 }
 @media (max-width: 380px) {
   .ocean-profile .profile-edit-photo-card .profile-person { align-items: flex-start; gap: 16px; }
