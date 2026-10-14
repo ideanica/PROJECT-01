@@ -77,11 +77,11 @@ class CustomerAuthTest extends TestCase
         $this->assertDatabaseHas('member_orders', ['member_id' => $member->id, 'batch_id' => $batch->id]);
     }
 
-    public function test_registration_cannot_claim_existing_buyer_or_inject_admin_role(): void
+    public function test_registration_rejects_mismatched_buyer_claim_or_injected_admin_role(): void
     {
         Member::factory()->create(['username' => 'old.buyer', 'email' => 'old@example.test']);
-        $this->post('/register', $this->registration(['username' => 'old.buyer']))->assertSessionHasErrors('username');
-        $this->post('/register', $this->registration(['email' => 'old@example.test']))->assertSessionHasErrors('email');
+        $this->post('/register', $this->registration(['username' => 'old.buyer']))->assertSessionHasErrors('email');
+        $this->post('/register', $this->registration(['email' => 'old@example.test']))->assertSessionHasErrors('username');
         $this->post('/register', $this->registration(['role' => 'admin']))->assertSessionHasErrors('role');
         $this->assertDatabaseCount('members', 1);
         $this->assertDatabaseCount('users', 0);
@@ -92,21 +92,24 @@ class CustomerAuthTest extends TestCase
         User::factory()->create(['username' => 'existing.buyer']);
 
         $this->post('/register', $this->registration(['username' => ' Existing.Buyer ']))
-            ->assertSessionHasErrors(['username' => 'Username LINE sudah digunakan. Silakan pilih username LINE lain.']);
+            ->assertSessionHasErrors(['username' => 'Username LINE sudah memiliki akun login.']);
 
         $this->assertDatabaseCount('users', 1);
         $this->assertDatabaseCount('members', 0);
     }
 
-    public function test_registration_rejects_existing_member_username_after_normalization(): void
+    public function test_registration_claims_existing_member_after_normalization_and_waits_for_approval(): void
     {
-        Member::factory()->create(['username' => 'existing.buyer']);
+        $member = Member::factory()->create(['username' => 'existing.buyer', 'email' => 'existing@example.test']);
 
-        $this->post('/register', $this->registration(['username' => ' Existing.Buyer ']))
-            ->assertSessionHasErrors(['username' => 'Username LINE sudah digunakan. Silakan pilih username LINE lain.']);
+        $this->post('/register', $this->registration(['username' => ' Existing.Buyer ', 'email' => 'existing@example.test']))
+            ->assertSessionHasNoErrors()->assertRedirect(route('login'));
 
-        $this->assertDatabaseCount('users', 0);
+        $this->assertDatabaseCount('users', 1);
         $this->assertDatabaseCount('members', 1);
+        $user = User::where('username', 'existing.buyer')->sole();
+        $this->assertSame($member->id, $user->member_id);
+        $this->assertTrue($user->registration_pending);
     }
 
     public function test_registration_requires_every_password_strength_category(): void

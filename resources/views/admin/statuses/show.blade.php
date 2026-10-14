@@ -19,28 +19,30 @@
 @endphp
 
 <x-layouts.app title="Status {{ $orderStatus->name }}">
-    <x-page-heading title="Detail Status" description="Informasi, aturan, cakupan, dan pemakaian status dalam sistem.">
-        <x-slot:action>
-            <div class="flex flex-wrap gap-2">
-                <a class="admin-form-primary" href="{{ route('admin.order-statuses.edit', $orderStatus, false) }}">Edit Status</a>
-                @if($orderStatus->is_active || ! $totalUsage)
-                    <form method="POST" action="{{ route('admin.order-statuses.destroy', $orderStatus, false) }}" onsubmit="return confirm('{{ $totalUsage ? 'Nonaktifkan status ini?' : 'Hapus permanen status ini?' }}')">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="admin-form-danger-action">{{ $totalUsage ? 'Nonaktifkan Status' : 'Hapus Status' }}</button>
-                    </form>
-                @endif
-            </div>
-        </x-slot:action>
-    </x-page-heading>
+    <div class="[&_h1]:text-black!">
+        <x-page-heading title="Detail Status" description="Informasi, aturan, cakupan, dan pemakaian status dalam sistem.">
+            <x-slot:action>
+                <div class="flex flex-wrap gap-2">
+                    <a class="admin-form-primary" href="{{ route('admin.order-statuses.edit', $orderStatus, false) }}">Edit Status</a>
+                    @if($orderStatus->is_active || ! $totalUsage)
+                        <form method="POST" action="{{ route('admin.order-statuses.destroy', $orderStatus, false) }}" onsubmit="return confirm('{{ $totalUsage ? 'Nonaktifkan status ini?' : 'Hapus permanen status ini?' }}')">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="admin-form-danger-action">{{ $totalUsage ? 'Nonaktifkan Status' : 'Hapus Status' }}</button>
+                        </form>
+                    @endif
+                </div>
+            </x-slot:action>
+        </x-page-heading>
+    </div>
 
-    <article class="detail-record-card">
+    <article class="detail-record-card before:bg-none! [&_.detail-record-hero]:bg-[linear-gradient(135deg,#ffffff,#f6faf6_58%,#eef6ef)]!">
         <header class="detail-record-hero">
             <div class="min-w-0">
-                <p class="detail-record-kicker">Manajemen Status</p>
+                <p class="detail-record-kicker text-[#275a3a]!">Manajemen Status</p>
                 <div class="mt-2 flex flex-wrap items-center gap-3">
                     <h2 class="detail-record-title">{{ $orderStatus->name }}</h2>
-                    <x-status-badge :status="$orderStatus" />
+                    {{-- <x-status-badge :status="$orderStatus" /> --}}
                     <span class="detail-record-state {{ $orderStatus->is_active ? 'detail-record-state-active' : 'detail-record-state-muted' }}">{{ $orderStatus->is_active ? 'Aktif' : 'Nonaktif' }}</span>
                 </div>
                 <p class="detail-record-description">{{ $orderStatus->description ?: 'Belum ada keterangan untuk status ini.' }}</p>
@@ -61,8 +63,8 @@
             <div class="detail-record-section-heading">
                 <div><h3>Penerapan Status</h3><p>{{ $scopeDefinition['description'] ?? 'Cakupan penerapan status.' }}</p></div>
             </div>
-            <div class="status-folder-application mb-0">
-                <span class="status-folder-application-icon" aria-hidden="true">
+            <div class="status-folder-application border-[#e4e4e7]! bg-[#eef4ef]! mb-0">
+                <span class="status-folder-application-icon bg-[#eef4ef]! text-[#2f6b46]!" aria-hidden="true">
                     <svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="7.5"/><path d="M10 8.5v5M10 6.25h.01"/></svg>
                 </span>
                 <div>

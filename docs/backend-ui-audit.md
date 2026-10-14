@@ -80,3 +80,17 @@ Browser memeriksa 64 halaman publik pada delapan lebar 320–1023px serta 62 hal
 customer/admin pada 320 dan 820px, tanpa overflow horizontal halaman atau error JavaScript.
 Input harga native pada form admin 820px memiliki isi lebih panjang dari area teks;
 nilai tetap dapat diedit melalui scroll internal input, tanpa mengubah grid referensi.
+
+## Sinkronisasi remote sebelum push main/backend (15 Oktober 2026)
+
+Perubahan `origin/backend` sampai `298193e` (termasuk frontend admin dari main)
+digabungkan dengan perbaikan tampilan lokal. Payment ledger, shipment group, dan
+account claim dipertahankan bersama katalog, konfigurasi pembayaran, validasi
+kepemilikan item, serta penguncian buyer pada order yang sudah diproses.
+Fixture/assertion lama disesuaikan dengan ledger dan account claim yang baru.
+Tidak ada perubahan pada CSS landing, auth, profil, atau markup profil dalam merge.
+
+Verifikasi gabungan: 119 tes lulus dengan 945 assertion; build produksi berhasil;
+route list berhasil; 31 halaman customer/admin pada browser mobile mengembalikan
+respons normal tanpa overflow atau error JavaScript. Migrasi baru diverifikasi
+pada SQLite fixture lokal, tanpa menjalankan migrasi pada database aplikasi utama.

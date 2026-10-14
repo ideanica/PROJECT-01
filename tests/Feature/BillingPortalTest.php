@@ -25,7 +25,7 @@ class BillingPortalTest extends TestCase
         ]);
         $batch = Batch::factory()->create(['payment_method_id' => $method->id]);
         $status = OrderStatus::factory()->create(['scope' => 'payment', 'code' => 'menunggu-dp']);
-        MemberOrder::factory()->create(['member_id' => $member->id, 'batch_id' => $batch->id, 'payment_status_id' => $status->id]);
+        MemberOrder::factory()->create(['member_id' => $member->id, 'batch_id' => $batch->id, 'payment_status_id' => $status->id, 'total_amount' => 300000]);
         $this->actingAs($user)->get(route('billing.orders'))->assertOk()
             ->assertSee('QRIS Ocean Paws')->assertSee('Gunakan kode pesanan saat konfirmasi.');
     }
@@ -54,15 +54,17 @@ class BillingPortalTest extends TestCase
             'total_amount' => 300000,
             'payment_amount' => 100000,
         ]);
-        MemberOrder::factory()->create([
+        $paidOrder = MemberOrder::factory()->create([
             'member_id' => $member->id,
-            'batch_id' => $batch->id,
             'order_code' => 'PAID-CACA-01',
             'batch_id' => Batch::factory()->create()->id,
             'payment_status_id' => $paidStatus->id,
             'payment_amount' => 250000,
             'payment_submitted_at' => now(),
+            'total_amount' => 250000,
         ]);
+
+        $paidOrder->payments()->create(['type' => 'full_payment', 'amount' => 250000, 'status' => 'verified', 'paid_at' => now()]);
 
         $this->actingAs($user)
             ->get(route('billing.orders'))

@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Models\Member;
 use App\Models\Batch;
+use App\Models\ShipmentGroup;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -37,30 +38,26 @@ class StoreMemberOrderRequest extends FormRequest
             ->values()
             ->all();
 
-        $this->merge(['items' => $items]);
+        $this->merge([
+            'go_number' => $this->filled('go_number') ? trim((string) $this->input('go_number')) : null,
+            'items' => $items,
+        ]);
 
         if ($this->filled('ems_tax_amount') && $this->input('ems_tax_status', 'not_billed') === 'not_billed') {
             $this->merge(['ems_tax_status' => 'unpaid']);
         }
     }
 
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return $this->user()?->can('access-admin') === true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, ValidationRule|array<mixed>|string>
-     */
+    /** @return array<string, ValidationRule|array<mixed>|string> */
     public function rules(): array
     {
         $order = $this->route('member_order');
-        $currentPaymentStatusId = $this->route('member_order')?->payment_status_id;
+        $currentPaymentStatusId = $order?->payment_status_id;
         $isExistingOrder = $order !== null;
         $itemsAreLocked = $order
             ? ($order->loadMissing(['batch.currentStatus', 'overrideStatus', 'paymentStatus'])->batch?->orders_locked
@@ -69,16 +66,17 @@ class StoreMemberOrderRequest extends FormRequest
 
         return [
             'order_code' => ['prohibited'],
-            // member_id wajib untuk NEW order, harus merujuk ke Member yang akun customer siap + aktif
+            // Keep processed orders attached to their buyer and prevent duplicate buyer/batch orders.
             'member_id' => $itemsAreLocked
                 ? ['required', Rule::in([$order->member_id])]
-                : ['required', 'exists:members,id', Rule::unique('member_orders', 'member_id')->where('batch_id', $this->integer('batch_id'))->ignore($order?->id)],
+                : ['required', Rule::exists('members', 'id')->where('is_active', true), Rule::unique('member_orders', 'member_id')->where('batch_id', $this->integer('batch_id'))->ignore($order?->id)],
             // customer_name dan customer_username tidak lagi digunakan untuk pembuatan buyer baru
             'customer_name' => ['prohibited'],
             'customer_username' => ['prohibited'],
             'batch_id' => $itemsAreLocked
                 ? ['required', Rule::in([$order->batch_id])]
                 : ['required', 'exists:batches,id'],
+            'go_number' => ['nullable', 'string', 'max:50'],
             'override_status_id' => ['prohibited'],
             'payment_status_id' => [
                 'nullable',
@@ -100,6 +98,7 @@ class StoreMemberOrderRequest extends FormRequest
                 'nullable',
                 Rule::exists('batch_product', 'product_id')->where('batch_id', $this->integer('batch_id')),
             ],
+            'items.*.shipment_group_id' => ['nullable', 'exists:shipment_groups,id'],
             'items.*.item_name' => ['required', 'string', 'max:255'],
             'items.*.variant' => ['nullable', 'string', 'max:255'],
             'items.*.quantity' => ['required', 'integer', 'min:1'],
@@ -114,14 +113,33 @@ class StoreMemberOrderRequest extends FormRequest
     public function after(): array
     {
         return [
-            function ($validator) {
-                // Validasi tambahan: member harus akun customer siap dan aktif untuk NEW order
-                if ($this->filled('member_id') && ! $this->route('member_order')) {
+            function ($validator): void {
+                if ($this->filled('member_id')) {
                     $member = Member::find($this->integer('member_id'));
-                    if ($member && ! $member->isEligibleForNewOrder()) {
-                        $validator->errors()->add('member_id', 'Member tidak eligible untuk order baru. Member harus memiliki akun customer dengan password dan aktif.');
+                    if ($member && ! $member->isAvailableForOrder()) {
+                        $validator->errors()->add('member_id', 'Member nonaktif tidak dapat digunakan untuk order baru.');
                     }
                 }
+
+                $batchId = $this->integer('batch_id');
+                if (! $batchId) {
+                    return;
+                }
+
+                collect($this->input('items', []))
+                    ->pluck('shipment_group_id')
+                    ->filter()
+                    ->unique()
+                    ->each(function ($shipmentGroupId) use ($batchId, $validator): void {
+                        $belongsToBatch = ShipmentGroup::query()
+                            ->whereKey($shipmentGroupId)
+                            ->where('batch_id', $batchId)
+                            ->exists();
+
+                        if (! $belongsToBatch) {
+                            $validator->errors()->add('items', 'Shipment group item harus berasal dari Batch yang sama dengan pesanan.');
+                        }
+                    });
             },
         ];
     }

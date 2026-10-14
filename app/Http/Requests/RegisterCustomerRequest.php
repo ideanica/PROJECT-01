@@ -26,8 +26,9 @@ class RegisterCustomerRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'username' => ['required', 'string', 'min:3', 'max:50', 'regex:/^[a-z0-9][a-z0-9._-]*$/', 'unique:users,username', 'unique:members,username'],
-            'email' => ['required', 'email', 'max:255', 'unique:users,email', 'unique:members,email'],
+            // Member lama boleh memiliki username/email yang sama; controller akan menjalankan account claim yang aman.
+            'username' => ['required', 'string', 'min:3', 'max:50', 'regex:/^[a-z0-9][a-z0-9._-]*$/', 'unique:users,username'],
+            'email' => ['required', 'email', 'max:255', 'unique:users,email'],
             'customer_group_id' => ['nullable', Rule::exists('customer_groups', 'id')->where('is_active', true)],
             'password' => ['required', 'confirmed', Password::min(8)->mixedCase()->numbers()->symbols()],
             'role' => ['prohibited'],
@@ -41,7 +42,8 @@ class RegisterCustomerRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'username.unique' => 'Username LINE sudah digunakan. Silakan pilih username LINE lain.',
+            'username.unique' => 'Username LINE sudah memiliki akun login.',
+            'email.unique' => 'Email sudah memiliki akun login.',
             'password.required' => 'Password wajib diisi.',
             'password.confirmed' => 'Konfirmasi password tidak cocok.',
             'password.min' => 'Password harus memiliki minimal 8 karakter.',

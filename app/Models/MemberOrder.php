@@ -18,6 +18,7 @@ class MemberOrder extends Model
         'order_code',
         'member_id',
         'batch_id',
+        'go_number',
         'override_status_id',
         'payment_status_id',
         'order_source',
@@ -98,9 +99,46 @@ class MemberOrder extends Model
         return $this->hasMany(OrderItem::class);
     }
 
+    public function payments(): HasMany
+    {
+        return $this->hasMany(OrderPayment::class);
+    }
+
     public function statusHistories(): MorphMany
     {
         return $this->morphMany(StatusHistory::class, 'trackable')->latest();
+    }
+
+    public function getPaidAmountAttribute(): float
+    {
+        if ($this->relationLoaded('payments')) {
+            return (float) $this->payments
+                ->where('status', 'verified')
+                ->sum(fn (OrderPayment $payment) => (float) $payment->amount);
+        }
+
+        return (float) $this->payments()->where('status', 'verified')->sum('amount');
+    }
+
+    public function getRemainingAmountAttribute(): float
+    {
+        return max(0, (float) ($this->total_amount ?? 0) - $this->paid_amount);
+    }
+
+    public function getLedgerPaymentStateAttribute(): string
+    {
+        $total = (float) ($this->total_amount ?? 0);
+        $paid = $this->paid_amount;
+
+        if ($paid <= 0) {
+            return 'unpaid';
+        }
+
+        if ($total > 0 && $paid >= $total) {
+            return 'paid';
+        }
+
+        return 'partial';
     }
 
     public function getEffectiveStatusAttribute(): ?OrderStatus

@@ -6,8 +6,10 @@ use App\Http\Controllers\Admin\CustomerGroupController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\MemberController;
 use App\Http\Controllers\Admin\MemberOrderController;
+use App\Http\Controllers\Admin\OrderPaymentController;
 use App\Http\Controllers\Admin\OrderStatusController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ShipmentGroupController;
 use App\Http\Controllers\Admin\StatusHistoryController;
 use App\Http\Controllers\AdminProfileController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
@@ -43,9 +45,7 @@ Route::get('/profile/edit', [CustomerProfileController::class, 'edit'])->middlew
 Route::put('/profile', [CustomerProfileController::class, 'update'])->middleware('auth')->name('profile.update');
 Route::put('/profile/admin', [AdminProfileController::class, 'update'])->middleware(['auth', 'can:access-admin'])->name('profile.admin.update');
 Route::get('/profile/photo/{member}', [CustomerProfileController::class, 'photo'])->middleware('auth')->name('profile.photo');
-Route::get('/profile/orders/{memberOrder}/payment-proof', [ProfileController::class, 'paymentProof'])
-    ->middleware('auth')
-    ->name('profile.orders.payment-proof');
+Route::get('/profile/orders/{memberOrder}/payment-proof', [ProfileController::class, 'paymentProof'])->middleware('auth')->name('profile.orders.payment-proof');
 Route::redirect('/auth/line', '/login');
 Route::redirect('/auth/line/callback', '/login');
 
@@ -64,29 +64,37 @@ Route::middleware('guest')->group(function () {
 
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->middleware('auth')->name('logout');
 
-Route::prefix('admin')
-    ->name('admin.')
-    ->middleware(['auth', 'can:access-admin'])
-    ->group(function () {
-        Route::get('/', DashboardController::class)->name('dashboard');
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'can:access-admin'])->group(function () {
+    Route::get('/', DashboardController::class)->name('dashboard');
 
-        // Specific batch routes MUST come before resource route to avoid conflicts
-        Route::get('batches/settings', [BatchController::class, 'settings'])->name('batches.settings');
-        Route::post('batches/settings/payment-methods', [BatchController::class, 'storePaymentMethod'])->name('batches.payment-methods.store');
-        Route::put('batches/settings/payment-methods/{paymentMethod}', [BatchController::class, 'updatePaymentMethod'])->name('batches.payment-methods.update');
-        Route::post('batches/settings/payment-methods/{paymentMethod}/toggle', [BatchController::class, 'togglePaymentMethod'])->name('batches.payment-methods.toggle');
-        Route::delete('batches/settings/payment-methods/{paymentMethod}', [BatchController::class, 'destroyPaymentMethod'])->name('batches.payment-methods.destroy');
-        Route::post('batches/{batch}/status', [BatchController::class, 'transition'])->name('batches.status');
+    Route::get('batches/settings', [BatchController::class, 'settings'])->name('batches.settings');
+    Route::post('batches/settings/payment-methods', [BatchController::class, 'storePaymentMethod'])->name('batches.payment-methods.store');
+    Route::put('batches/settings/payment-methods/{paymentMethod}', [BatchController::class, 'updatePaymentMethod'])->name('batches.payment-methods.update');
+    Route::post('batches/settings/payment-methods/{paymentMethod}/toggle', [BatchController::class, 'togglePaymentMethod'])->name('batches.payment-methods.toggle');
+    Route::delete('batches/settings/payment-methods/{paymentMethod}', [BatchController::class, 'destroyPaymentMethod'])->name('batches.payment-methods.destroy');
+    Route::post('batches/{batch}/status', [BatchController::class, 'transition'])->name('batches.status');
 
-        Route::resource('batches', BatchController::class);
-        Route::resource('order-statuses', OrderStatusController::class);
-        Route::post('members/{member}/approve', [CustomerApprovalController::class, 'store'])->name('members.approve');
-        Route::resource('members', MemberController::class);
-        Route::resource('customer-groups', CustomerGroupController::class);
-        Route::resource('products', ProductController::class);
-        Route::patch('products/{product}/status', [ProductController::class, 'updateStatus'])->name('products.status');
-        Route::resource('member-orders', MemberOrderController::class);
-        Route::get('member-orders/{member_order}/payment-proof', [MemberOrderController::class, 'paymentProof'])->name('member-orders.payment-proof');
-        Route::post('member-orders/{member_order}/status', [MemberOrderController::class, 'transition'])->name('member-orders.status');
-        Route::get('status-histories', StatusHistoryController::class)->name('status-histories.index');
-    });
+    Route::get('batches/{batch}/shipments', [ShipmentGroupController::class, 'index'])->name('batches.shipments.index');
+    Route::post('batches/{batch}/shipments', [ShipmentGroupController::class, 'store'])->name('batches.shipments.store');
+    Route::put('batches/{batch}/shipments/{shipmentGroup}', [ShipmentGroupController::class, 'update'])->name('batches.shipments.update');
+    Route::delete('batches/{batch}/shipments/{shipmentGroup}', [ShipmentGroupController::class, 'destroy'])->name('batches.shipments.destroy');
+
+    Route::resource('batches', BatchController::class);
+    Route::resource('order-statuses', OrderStatusController::class);
+    Route::post('members/{member}/approve', [CustomerApprovalController::class, 'store'])->name('members.approve');
+    Route::resource('members', MemberController::class);
+    Route::resource('customer-groups', CustomerGroupController::class);
+    Route::resource('products', ProductController::class);
+    Route::patch('products/{product}/status', [ProductController::class, 'updateStatus'])->name('products.status');
+    Route::resource('member-orders', MemberOrderController::class);
+    Route::get('member-orders/{member_order}/payment-proof', [MemberOrderController::class, 'paymentProof'])->name('member-orders.payment-proof');
+    Route::post('member-orders/{member_order}/status', [MemberOrderController::class, 'transition'])->name('member-orders.status');
+
+    Route::get('member-orders/{member_order}/payments', [OrderPaymentController::class, 'index'])->name('member-orders.payments.index');
+    Route::post('member-orders/{member_order}/payments', [OrderPaymentController::class, 'store'])->name('member-orders.payments.store');
+    Route::put('member-orders/{member_order}/payments/{payment}', [OrderPaymentController::class, 'update'])->name('member-orders.payments.update');
+    Route::delete('member-orders/{member_order}/payments/{payment}', [OrderPaymentController::class, 'destroy'])->name('member-orders.payments.destroy');
+    Route::get('member-orders/{member_order}/payments/{payment}/proof', [OrderPaymentController::class, 'proof'])->name('member-orders.payments.proof');
+
+    Route::get('status-histories', StatusHistoryController::class)->name('status-histories.index');
+});

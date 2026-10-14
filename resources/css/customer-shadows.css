@@ -1,3 +1,5 @@
+@import './admin-dashboard.css';
+
 /* Shared depth across customer pages; each component keeps its shadow color. */
 :root {
   --customer-shadow-card: -6px 6px 0;

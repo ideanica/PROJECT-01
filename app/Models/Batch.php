@@ -25,13 +25,13 @@ class Batch extends Model
         'notes',
         'catalog_image_path',
         'catalog_image_disk',
-        'qris_image_path', // legacy - for old batches
+        'qris_image_path',
         'ordering_deadline',
         'is_catalog_visible',
         'started_at',
         'completed_at',
         'is_archived',
-        'payment_method_id', // global payment method reference
+        'payment_method_id',
     ];
 
     protected function casts(): array
@@ -55,6 +55,11 @@ class Batch extends Model
         return $this->hasMany(MemberOrder::class);
     }
 
+    public function shipmentGroups(): HasMany
+    {
+        return $this->hasMany(ShipmentGroup::class)->orderBy('created_at');
+    }
+
     public function products(): BelongsToMany
     {
         return $this->belongsToMany(Product::class)
@@ -67,25 +72,15 @@ class Batch extends Model
         return $this->belongsTo(PaymentMethod::class);
     }
 
-    /**
-     * Get the effective payment method for this batch.
-     * Priority: batch's own payment_method_id > global active QRIS > legacy qris_image_path
-     */
     public function getEffectivePaymentMethod(): ?PaymentMethod
     {
-        // If batch has its own payment method reference, use it
         if ($this->payment_method_id) {
             return $this->paymentMethod;
         }
 
-        // Otherwise use the globally active QRIS
         return PaymentMethod::getActiveQris();
     }
 
-    /**
-     * Get the payment method image URL.
-     * Falls back to legacy qris_image_path for old batches.
-     */
     public function getPaymentMethodImageUrlAttribute(): ?string
     {
         $paymentMethod = $this->getEffectivePaymentMethod();
@@ -94,7 +89,6 @@ class Batch extends Model
             return $paymentMethod->image_url;
         }
 
-        // Legacy fallback for old batches
         if ($this->qris_image_path) {
             return '/storage/'.ltrim($this->qris_image_path, '/');
         }
@@ -102,9 +96,6 @@ class Batch extends Model
         return null;
     }
 
-    /**
-     * Check if batch has a payment method configured (global or legacy).
-     */
     public function getHasPaymentMethodAttribute(): bool
     {
         return $this->getEffectivePaymentMethod() !== null
@@ -135,9 +126,7 @@ class Batch extends Model
             : Storage::disk($disk)->url($this->catalog_image_path);
     }
 
-    /**
-     * @deprecated Use getPaymentMethodImageUrlAttribute instead
-     */
+    /** @deprecated Use getPaymentMethodImageUrlAttribute instead. */
     public function getQrisImageUrlAttribute(): ?string
     {
         return $this->payment_method_image_url;

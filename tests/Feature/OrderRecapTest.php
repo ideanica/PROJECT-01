@@ -1031,7 +1031,7 @@ class OrderRecapTest extends TestCase
             ->assertDontSee('admin-navbar-back', false)
             ->assertSee('Customer Pilihan')
             ->assertSee('customer.pilihan')
-            ->assertSee('Akun terdaftar — Eligible');
+            ->assertSee('Akun terhubung');
     }
 
     public function test_batch_and_status_details_use_the_compact_reorganized_layout(): void
@@ -1090,7 +1090,7 @@ class OrderRecapTest extends TestCase
             ->assertSee(route('admin.members.show', $member, false), false);
     }
 
-    public function test_order_form_shows_eligible_members_for_new_order(): void
+    public function test_order_form_shows_active_members_with_or_without_login_accounts(): void
     {
         $admin = User::factory()->create();
         $batch = Batch::factory()->create();
@@ -1126,8 +1126,8 @@ class OrderRecapTest extends TestCase
             ->assertSee('Pilih Member')
             ->assertSee('Eligible Member')
             ->assertSee('eligible.line')
-            ->assertSee('Akun terdaftar — Eligible')
-            ->assertDontSee('Legacy Member')
+            ->assertSee('Akun terhubung')
+            ->assertSee('Legacy Member')->assertSee('Belum punya akun login')
             ->assertDontSee('Inactive Member');
     }
 
