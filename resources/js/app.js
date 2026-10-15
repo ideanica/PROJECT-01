@@ -2,6 +2,22 @@ import $ from 'jquery';
 import './password-monitor';
 import './profile-photo';
 
+document.querySelectorAll('[data-password-toggle]').forEach((button) => {
+    const input = document.getElementById(button.getAttribute('aria-controls'));
+    if (!input) return;
+
+    button.hidden = false;
+    button.addEventListener('click', () => {
+        const isVisible = input.type === 'password';
+        input.type = isVisible ? 'text' : 'password';
+        button.setAttribute('aria-pressed', String(isVisible));
+        button.setAttribute('aria-label', `${isVisible ? 'Sembunyikan' : 'Tampilkan'} ${button.dataset.passwordLabel}`);
+        const icon = button.querySelector('i');
+        icon.classList.toggle('bi-eye', !isVisible);
+        icon.classList.toggle('bi-eye-slash', isVisible);
+    });
+});
+
 document.querySelectorAll('[data-profile-edit-form]').forEach((form) => {
     const button = form.querySelector('[data-profile-save]');
     form.addEventListener('submit', () => {

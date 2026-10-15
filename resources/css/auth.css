@@ -36,6 +36,12 @@ html[data-customer-theme="dark"] body.ocean-auth { background: var(--pv2-cream);
 .ocean-auth .auth-card input:not([type="checkbox"]), .ocean-auth .auth-card select { width: 100%; min-width: 0; min-height: 44px; margin-top: 6px; border: var(--pv2-border); border-radius: 8px; background: #fff; padding: 9px 11px; color: var(--pv2-ink-deep); font-size: 13px; box-shadow: -3px 3px 0 var(--pv2-mint); outline: none; }
 .ocean-auth .auth-card input:not([type="checkbox"]):focus, .ocean-auth .auth-card select:focus { outline: 3px solid var(--pv2-pink-strong); outline-offset: 3px; box-shadow: none; }
 .auth-hint { margin-top: -6px; color: var(--pv2-text); font-size: 11px; line-height: 1.6; }
+.auth-password-control { position: relative; margin-top: 6px; }
+.ocean-auth .auth-card .auth-password-control input { margin-top: 0; padding-right: 52px; }
+.auth-password-toggle { position: absolute; inset: 0 2px 0 auto; width: 44px; display: grid; place-items: center; border: 0; border-radius: 10px; background: transparent; color: var(--auth-card-ink, var(--pv2-ink-deep)); font-size: 20px; cursor: pointer; }
+.auth-password-toggle[hidden] { display: none; }
+.auth-password-toggle:hover { color: var(--pv2-pink-strong); }
+.auth-password-toggle:focus-visible { outline: 2px solid var(--pv2-pink-strong); outline-offset: -4px; }
 .auth-password-monitor { min-width: 0; border: var(--pv2-border); border-radius: 8px; background: var(--pv2-cream); padding: 12px; font-size: 11px; line-height: 1.6; }
 .auth-password-summary { margin: 0; color: var(--pv2-ink-deep); font-weight: 800; }
 .auth-password-progress { display: block; width: 100%; height: 6px; margin: 8px 0 10px; overflow: hidden; border: 0; border-radius: 999px; background: #dedbd4; accent-color: #a51e3e; }

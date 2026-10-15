@@ -19,8 +19,8 @@
                     @error('customer_group_id')<small class="auth-field-error">{{ $message }}</small>@enderror
                 </label>
                 <p class="auth-hint">Pilih “Belum punya” jika belum tergabung dalam group. Admin akan menentukan group dan menyetujui akun sebelum kamu bisa login.</p>
-                <x-text-input label="Password" name="password" type="password" autocomplete="new-password" minlength="8" aria-describedby="password-requirements" required />
-                <x-text-input label="Konfirmasi password" name="password_confirmation" type="password" autocomplete="new-password" minlength="8" aria-describedby="password-requirements" required />
+                <x-text-input label="Password" name="password" type="password" password-toggle autocomplete="new-password" minlength="8" aria-describedby="password-requirements" required />
+                <x-text-input label="Konfirmasi password" name="password_confirmation" type="password" password-toggle autocomplete="new-password" minlength="8" aria-describedby="password-requirements" required />
                 <x-password-requirements interactive />
                 <button type="submit" class="auth-submit">Daftar akun</button>
             </form>

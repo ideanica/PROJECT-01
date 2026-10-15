@@ -6,7 +6,7 @@
         <form method="POST" action="{{ route('login') }}" class="auth-form auth-form-login">
             @csrf
             <x-text-input label="Username LINE atau email" name="username" autocomplete="username" autocapitalize="none" spellcheck="false" required autofocus />
-            <x-text-input label="Password" name="password" type="password" autocomplete="current-password" required />
+            <x-text-input label="Password" name="password" type="password" password-toggle autocomplete="current-password" required />
             <a class="auth-link text-right" href="{{ route('password.request') }}">Lupa password?</a>
             <label class="auth-remember">
                 <input type="checkbox" name="remember" value="1" @checked(old('remember'))>
