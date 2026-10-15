@@ -148,7 +148,7 @@ class MemberTrackingController extends Controller
         return view('tracking.member', compact('member'));
     }
 
-    public function order(string $memberCode, MemberOrder $memberOrder)
+    public function order(Request $request, string $memberCode, MemberOrder $memberOrder)
     {
         $member = Member::where('member_code', $memberCode)->where('is_active', true)->firstOrFail();
 
@@ -160,7 +160,35 @@ class MemberTrackingController extends Controller
             'member' => $member,
             'order' => $memberOrder,
             'timeline' => $this->timelineFor($memberOrder),
+            'backUrl' => $this->orderBackUrl($request),
         ]);
+    }
+
+    private function orderBackUrl(Request $request): string
+    {
+        foreach ([$request->query('return_to'), $request->headers->get('referer')] as $candidate) {
+            if (! is_string($candidate) || preg_match('/[\x00-\x20\\\\]/', $candidate)) {
+                continue;
+            }
+
+            if (str_starts_with($candidate, $request->getSchemeAndHttpHost().'/')) {
+                $candidate = substr($candidate, strlen($request->getSchemeAndHttpHost()));
+            }
+
+            if (! str_starts_with($candidate, '/') || str_starts_with($candidate, '//')) {
+                continue;
+            }
+
+            $path = parse_url($candidate, PHP_URL_PATH);
+            if (! is_string($path) || $path === $request->getPathInfo()
+                || preg_match('#^/(history/[^/]+/orders/|tracking/order/)#', $path)) {
+                continue;
+            }
+
+            return $candidate;
+        }
+
+        return $request->user()?->member ? route('orders.history') : route('tracking.index');
     }
 
     private function timelineFor(MemberOrder $order)

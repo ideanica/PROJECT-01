@@ -1,5 +1,5 @@
 <x-layouts.app :title="$title.' — Ocean Paws'">
-    <div class="portal-v2 portal-orders-v2">
+    <div class="portal-v2 portal-orders-v2 {{ $member ? 'portal-order-workspace' : '' }}">
         <div class="portal-v2-shell">
             <a class="portal-v2-back" href="{{ route('profile.show') }}" aria-label="Kembali ke profil"><x-public-icon variant="rounded-bold" name="arrow-left" :size="18" /><span>Kembali</span></a>
 
@@ -13,7 +13,7 @@
                 @else
                     <div class="portal-v2-section-head"><div><span>DAFTAR PESANAN</span><h2>{{ $title }}</h2></div><strong>{{ $orders->count() }} data</strong></div>
 
-                    <div class="portal-v2-order-grid">
+                    <div class="portal-v2-order-grid" data-order-scroll tabindex="0" role="region" aria-label="Daftar pesanan, gulir untuk melihat pesanan lain">
                         @forelse($orders as $order)
                             @php
                                 $trackingStatus = $order->tracking_status;

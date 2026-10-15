@@ -81,3 +81,55 @@ html[data-customer-theme="dark"] body.ocean-tracking .tracking-neo-eyebrow {
 html[data-customer-theme="dark"] body.ocean-tracking .tracking-neo-input-wrap input::placeholder {
     color: #9eb4a5;
 }
+
+/* Order details use the same outlined pink/mint cards as the customer portal. */
+.ocean-tracking .order-detail-page { font-family: 'Nunito Sans', sans-serif; color: var(--pv2-ink); background: var(--pv2-cream) !important; }
+.ocean-tracking .order-detail-page :is(.order-detail-panel, .order-detail-stats article) { border: 2px solid var(--pv2-outline) !important; background: var(--pv2-paper) !important; box-shadow: var(--customer-shadow-card) var(--pv2-shadow-color) !important; }
+.ocean-tracking .order-detail-page .order-detail-hero { border: 2px solid var(--pv2-outline) !important; background: var(--pv2-pink) !important; box-shadow: var(--customer-shadow-card) var(--pv2-mint-shadow); }
+.ocean-tracking .order-detail-page .order-detail-cover { background: var(--pv2-mint); color: var(--pv2-ink); }
+.ocean-tracking .order-detail-page .order-detail-hero h1 { color: var(--pv2-pink-strong) !important; font-family: inherit; overflow-wrap: anywhere; }
+.ocean-tracking .order-detail-page :is(.order-detail-topbar, .order-detail-topbar > a, .order-detail-section-heading h2, .order-detail-payment-card header h2, .order-detail-item-copy h3, .order-detail-item-price > strong, .order-detail-stats strong, .order-detail-payment-card dd, .order-detail-note-card > span) { color: var(--pv2-ink) !important; font-family: inherit; }
+.ocean-tracking .order-detail-page .order-detail-topbar > a { min-height: 40px; padding: 8px 14px; border: 2px solid var(--pv2-outline); background: var(--pv2-paper); box-shadow: var(--customer-shadow-control) var(--pv2-shadow-color); border-radius: 10px; }
+.ocean-tracking .order-detail-page .order-detail-topbar > a:focus-visible { outline: 2px solid var(--pv2-pink-strong); outline-offset: 4px; }
+.ocean-tracking .order-detail-page :is(.order-detail-hero p, .order-detail-stats small, .order-detail-payment-card dt, .order-detail-item-copy p, .order-detail-item-copy small, .order-detail-note-card p, .order-detail-timeline-entry p, .order-detail-timeline-entry time, .order-detail-empty, .order-detail-topbar > span) { color: var(--pv2-text); }
+.ocean-tracking .order-detail-page :is(.order-detail-stat-icon, .order-detail-item-icon, .order-detail-side-icon) { display: grid; width: 44px; height: 44px; flex: 0 0 44px; place-items: center; border: 2px solid var(--pv2-outline); border-radius: 11px; background: var(--pv2-pink); color: var(--pv2-ink); box-shadow: var(--customer-shadow-control) var(--pv2-shadow-color); }
+.ocean-tracking .order-detail-page :is(.order-detail-stat-icon, .order-detail-item-icon, .order-detail-side-icon) svg { width: 22px; height: 22px; }
+.ocean-tracking .order-detail-page .order-detail-stats article:nth-child(even) .order-detail-stat-icon { background: var(--pv2-mint); box-shadow: var(--customer-shadow-control) var(--pv2-mint-shadow); }
+.ocean-tracking .order-detail-page :is(.order-detail-section-heading, .order-detail-payment-card > header) { border-bottom: 2px solid var(--pv2-outline); background: var(--pv2-mint); }
+.ocean-tracking .order-detail-page .order-detail-section-heading :is(span, .public-icon),
+.ocean-tracking .order-detail-page .order-detail-payment-card header small { color: var(--pv2-ink) !important; }
+.ocean-tracking .order-detail-page :is(.order-detail-section-heading h2, .order-detail-payment-card header h2) { font-size: 20px; font-weight: 900; }
+.ocean-tracking .order-detail-page .order-detail-section-heading > b { background: var(--pv2-pink); color: var(--pv2-ink); border: 1px solid var(--pv2-outline); }
+.ocean-tracking .order-detail-page .order-detail-item { grid-template-columns: 44px minmax(0, 1fr) auto; gap: 14px; border: 2px solid var(--pv2-outline) !important; border-radius: 12px; padding: 16px; background: var(--pv2-paper) !important; box-shadow: var(--customer-shadow-control) var(--pv2-mint-shadow); }
+.ocean-tracking .order-detail-page .order-detail-item-copy h3 { font-size: 15px; line-height: 1.4; overflow-wrap: anywhere; }
+.ocean-tracking .order-detail-page .order-detail-item-copy :is(p, small) { font-size: 12px; line-height: 1.5; }
+.ocean-tracking .order-detail-page .order-detail-item-price > strong { font-size: 14px; }
+.ocean-tracking .order-detail-page .order-detail-stats strong { font-size: clamp(14px, 1.4vw, 18px); overflow-wrap: anywhere; }
+.ocean-tracking .order-detail-page .order-detail-stats small { font-size: 11px; }
+.ocean-tracking .order-detail-page .order-detail-payment-card :is(dt, dd) { font-size: 12px; overflow-wrap: anywhere; }
+.ocean-tracking .order-detail-page .order-detail-payment-card dl { border-top: 0; }
+.ocean-tracking .order-detail-page .order-detail-payment-card dl > div { border-color: var(--pv2-mint); }
+.ocean-tracking .order-detail-page .order-payment-method { margin: 0 16px 18px; }
+.order-detail-payment-history { margin: 0 16px 18px; padding-top: 14px; border-top: 2px dashed var(--pv2-outline); color: var(--pv2-ink); font-size: 12px; }
+.order-detail-payment-history > strong { display: block; font-size: 14px; }
+.order-detail-payment-history > div { display: flex; align-items: start; justify-content: space-between; gap: 12px; margin-top: 12px; }
+.order-detail-payment-history small { color: var(--pv2-text); }
+.ocean-tracking .order-detail-page .order-detail-timeline-dot { background: var(--pv2-pink); border-color: var(--pv2-outline); }
+.ocean-tracking .order-detail-page .order-detail-timeline-entry { border-color: var(--pv2-mint); }
+.ocean-tracking .order-detail-page .order-detail-note-card { padding: 18px; }
+.ocean-tracking .order-detail-page .order-detail-note-card p { font-size: 12px; line-height: 1.6; }
+@media (max-width: 600px) {
+  .ocean-tracking .order-detail-page .order-detail-item { grid-template-columns: 44px minmax(0, 1fr); padding: 12px; gap: 12px; }
+  .ocean-tracking .order-detail-page .order-detail-item-price { grid-column: 2; justify-self: stretch; align-items: start; }
+  .ocean-tracking .order-detail-page .order-detail-stats article { align-items: start; gap: 10px; flex-direction: column; }
+  .ocean-tracking .order-detail-page .order-detail-stats strong { font-size: 15px; }
+}
+
+/* Shared legacy icon rules use !important; keep the detail palette authoritative. */
+.ocean-tracking .order-detail-page :is(.order-detail-stat-icon, .order-detail-item-icon, .order-detail-side-icon) { background: var(--pv2-pink) !important; color: var(--pv2-ink) !important; }
+.ocean-tracking .order-detail-page .order-detail-stats article:nth-child(even) .order-detail-stat-icon { background: var(--pv2-mint) !important; }
+.ocean-tracking .order-detail-page .order-detail-cover { background: var(--pv2-mint) !important; color: var(--pv2-ink) !important; }
+.ocean-tracking .order-detail-page .order-detail-cover:not(:has(img)) { min-height: 120px; }
+.ocean-tracking .order-detail-page .order-detail-cover > svg { width: 48px; height: 48px; }
+.ocean-tracking .order-detail-page :is(.order-detail-hero p, .order-detail-stats small, .order-detail-payment-card dt, .order-detail-item-copy p, .order-detail-item-copy small, .order-detail-note-card p, .order-detail-timeline-entry p, .order-detail-timeline-entry time, .order-detail-empty) { color: var(--pv2-text) !important; }
+.ocean-tracking .order-detail-page .order-detail-panel { overflow: hidden; }

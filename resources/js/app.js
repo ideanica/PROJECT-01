@@ -2,6 +2,18 @@ import $ from 'jquery';
 import './password-monitor';
 import './profile-photo';
 
+document.querySelectorAll('[data-order-scroll]').forEach((list) => {
+    const key = `ocean-order-scroll:${location.pathname}${location.search}`;
+    const restore = () => {
+        try { list.scrollTop = Number(sessionStorage.getItem(key)) || 0; } catch {}
+    };
+    window.addEventListener('pageshow', restore);
+    window.addEventListener('pagehide', () => {
+        try { sessionStorage.setItem(key, String(list.scrollTop)); } catch {}
+    });
+    document.fonts.ready.then(restore);
+});
+
 document.querySelectorAll('[data-password-toggle]').forEach((button) => {
     const input = document.getElementById(button.getAttribute('aria-controls'));
     if (!input) return;

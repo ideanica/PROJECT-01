@@ -30,3 +30,22 @@ body:has(.admin-shell) { background: var(--pv2-cream); }
 .order-payment-method p { margin-top: 8px; white-space: pre-line; overflow-wrap: anywhere; font-size: 12px; line-height: 1.6; }
 .portal-order-items { margin: 12px 0; color: var(--pv2-text); font-size: 12px; line-height: 1.6; overflow-wrap: anywhere; }
 .catalog-batch-image { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 12px; margin-bottom: 16px; }
+
+/* Payment disclosure shares the pink/mint card palette in billing and detail views. */
+.order-payment-method { padding: 0; overflow: hidden; border: 2px solid var(--pv2-outline, #496d54); box-shadow: var(--customer-shadow-control) var(--pv2-mint-shadow, #91bd9b); }
+.order-payment-method summary { display: flex; align-items: center; gap: 10px; min-height: 48px; padding: 10px 12px; background: var(--pv2-pink); color: var(--pv2-ink); font-size: 13px; font-weight: 900; cursor: pointer; list-style: none; }
+.order-payment-method summary::-webkit-details-marker { display: none; }
+.order-payment-method summary > span:nth-child(2) { flex: 1; min-width: 0; }
+.order-payment-method summary > svg { flex-shrink: 0; transition: transform .15s ease; }
+.order-payment-method[open] summary > svg { transform: rotate(90deg); }
+.order-payment-method summary:focus-visible { outline: 3px solid var(--pv2-pink-strong); outline-offset: -4px; }
+.order-payment-method-icon { display: grid; width: 34px; height: 34px; flex: 0 0 34px; place-items: center; border: 2px solid var(--pv2-outline, #496d54); border-radius: 9px; background: var(--pv2-mint); }
+.order-payment-method-content { padding: 16px; border-top: 2px solid var(--pv2-outline, #496d54); }
+.order-payment-method-content header > span { display: block; font-size: 9px; letter-spacing: .1em; color: var(--pv2-text); }
+.order-payment-method-content header > strong { display: block; margin-top: 4px; font-size: 17px; color: var(--pv2-ink); }
+.order-payment-account > span { display: block; font-size: 10px; color: var(--pv2-text); }
+.order-payment-account > strong { color: var(--pv2-ink); }
+.order-payment-qr { margin-top: 14px; padding: 12px; border: 1px solid var(--pv2-outline, #496d54); border-radius: 10px; background: #fff; }
+.order-payment-method .order-payment-qr img { width: min(100%, 260px); margin: 0 auto; }
+.order-payment-instructions { margin-top: 14px; padding: 12px; border-radius: 10px; background: var(--pv2-mint); font-size: 12px; }
+.order-payment-method .order-payment-instructions p { margin-top: 5px; }

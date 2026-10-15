@@ -160,11 +160,11 @@ class CustomerPortalController extends Controller
                 ->latest()
                 ->get();
 
-            $orders->each(function ($order) use ($member): void {
+            $orders->each(function ($order) use ($member, $request): void {
                 $order->setAttribute('history_tracking_url', URL::temporarySignedRoute(
                     'tracking.order',
                     now()->addMinutes(30),
-                    ['memberCode' => $member->member_code, 'memberOrder' => $order]
+                    ['memberCode' => $member->member_code, 'memberOrder' => $order, 'return_to' => $request->getRequestUri()]
                 ));
             });
         }
@@ -201,11 +201,11 @@ class CustomerPortalController extends Controller
                 ->filter(fn ($order) => in_array($scope, $this->orderGroups($order), true))
                 ->values();
 
-            $orders->each(function ($order) use ($member): void {
+            $orders->each(function ($order) use ($member, $request): void {
                 $order->setAttribute('portal_tracking_url', URL::temporarySignedRoute(
                     'tracking.order',
                     now()->addMinutes(30),
-                    ['memberCode' => $member->member_code, 'memberOrder' => $order]
+                    ['memberCode' => $member->member_code, 'memberOrder' => $order, 'return_to' => $request->getRequestUri()]
                 ));
             });
         }
@@ -271,11 +271,11 @@ class CustomerPortalController extends Controller
                 ->latest()
                 ->get();
 
-            $orders->each(function ($order) use ($member): void {
+            $orders->each(function ($order) use ($member, $request): void {
                 $order->setAttribute('billing_tracking_url', URL::temporarySignedRoute(
                     'tracking.order',
                     now()->addMinutes(30),
-                    ['memberCode' => $member->member_code, 'memberOrder' => $order]
+                    ['memberCode' => $member->member_code, 'memberOrder' => $order, 'return_to' => $request->getRequestUri()]
                 ));
             });
         }

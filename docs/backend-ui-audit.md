@@ -94,3 +94,21 @@ Verifikasi gabungan: 119 tes lulus dengan 945 assertion; build produksi berhasil
 route list berhasil; 31 halaman customer/admin pada browser mobile mengembalikan
 respons normal tanpa overflow atau error JavaScript. Migrasi baru diverifikasi
 pada SQLite fixture lokal, tanpa menjalankan migrasi pada database aplikasi utama.
+
+## Daftar pesanan dan detail (16 Oktober 2026)
+
+Halaman riwayat dan kategori pesanan memakai workspace setinggi viewport. Kartu
+tersusun satu kolom; hanya daftar yang memiliki scroll vertikal. Judul, filter,
+dan header tetap diam. Posisi scroll disimpan per halaman/filter dalam sesi browser.
+Detail pesanan memakai card dan ikon pink/mint yang konsisten, termasuk mode gelap.
+Metode pembayaran dibuka melalui disclosure native yang mendukung keyboard.
+
+Signed URL dari riwayat, kategori, dan billing menyertakan halaman asal. Tombol
+kembali mempertahankan query filter; link lama memakai referrer lokal atau fallback
+portal/tracking. Alamat eksternal dan modifikasi query signed URL ditolak.
+
+Verifikasi: 123 tes lulus, 962 assertion; build produksi berhasil. Browser memeriksa
+scroll terisolasi pada 10 kombinasi viewport 320–1440px, termasuk landscape 812x375.
+Sesudah penyesuaian visual terakhir, lima viewport diperiksa ulang, berikut toggle,
+QR, navigasi kembali, pemulihan scroll, dan palet terang/gelap. Data browser memakai
+SQLite fixture lokal. Tidak ada perubahan schema atau data aplikasi utama.

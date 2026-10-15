@@ -52,7 +52,7 @@
             session()->put('login_at', $loginAt);
         }
     @endphp
-    <body class="{{ $isAdmin ? 'bg-[#f6f7fb]' : 'customer-theme' }}{{ $isOceanTracking ? ' ocean-tracking' : '' }}{{ $isOceanProfile ? ' ocean-profile' : '' }}{{ $isAuthPage ? ' ocean-auth' : '' }} text-zinc-950 antialiased">
+    <body class="{{ $isAdmin ? 'bg-[#f6f7fb]' : 'customer-theme' }}{{ $isOceanTracking ? ' ocean-tracking' : '' }}{{ $isOceanProfile ? ' ocean-profile' : '' }}{{ $isAuthPage ? ' ocean-auth' : '' }}{{ request()->routeIs(['orders.history', 'orders.unpaid', 'orders.shipping', 'orders.refunds']) && auth()->user()?->member ? ' has-order-workspace' : '' }} text-zinc-950 antialiased">
         @if ($isAdmin)
             <div class="admin-shell min-h-screen">
                 <aside class="admin-sidebar border-b border-zinc-200 bg-white lg:fixed lg:inset-y-0 lg:left-0 lg:z-50 lg:flex lg:w-72 lg:flex-col lg:border-b-0 lg:border-r">

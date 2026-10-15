@@ -6,11 +6,11 @@
         .portal-orders-v2 .portal-v2-section-count{display:flex;min-width:72px;align-items:baseline;justify-content:center;gap:4px;border:2px solid var(--pv2-outline);border-radius:12px;padding:9px 11px;background:var(--pv2-paper);box-shadow:var(--customer-shadow-control) var(--pv2-shadow-color)}.portal-orders-v2 .portal-v2-section-count strong{font-family:var(--pv2-heading);font-size:20px;line-height:1}.portal-orders-v2 .portal-v2-section-count span{color:var(--pv2-text);font-size:9px;font-weight:900;letter-spacing:.04em}
         @media(max-width:700px){.portal-orders-v2 .portal-v2-section-head{min-height:72px;border-radius:14px;padding:11px 12px;background:var(--pv2-paper);box-shadow:var(--customer-shadow-control) var(--pv2-shadow-color)}.portal-orders-v2 .portal-v2-section-head-icon{width:40px;height:40px}.portal-orders-v2 .portal-v2-section-copy h2{font-size:19px}.portal-orders-v2 .portal-v2-section-count{min-width:58px;padding:8px 9px}.portal-orders-v2 .portal-v2-section-count strong{font-size:17px}}
     </style>
-    <div class="portal-v2 portal-orders-v2">
+    <div class="portal-v2 portal-orders-v2 {{ $member ? 'portal-order-workspace' : '' }}">
         <div class="portal-v2-shell">
             <a class="portal-v2-back" href="{{ route('profile.show') }}" aria-label="Kembali ke profil"><x-public-icon variant="rounded-bold" name="arrow-left" :size="18" /><span>Kembali</span></a>
 
-            <section class="portal-v2-hero portal-v2-hero-orders"><div class="portal-v2-hero-copy"><span class="portal-v2-kicker">DATA MILIKMU</span><h1>Riwayat<br>pesanan</h1><p>Semua jajanan, pembayaran, dan perjalanan paketmu dirapikan dalam satu tempat.</p></div><div class="portal-v2-hero-stat"><span class="portal-v2-stat-icon"><x-public-icon variant="rounded-bold" name="history" :size="26" /></span><small>{{ $filter === 'all' ? 'SEMUA PESANAN' : 'HASIL FILTER' }}</small><strong>{{ $orders->count() }}</strong><p>dari {{ $allOrderCount }} pesanan</p></div></section>
+            <section class="portal-v2-hero portal-v2-hero-orders"><div class="portal-v2-hero-copy"><span class="portal-v2-kicker">DATA MILIKMU</span><h1>Riwayat pesanan</h1><p>Semua jajanan, pembayaran, dan perjalanan paketmu dirapikan dalam satu tempat.</p></div><div class="portal-v2-hero-stat"><span class="portal-v2-stat-icon"><x-public-icon variant="rounded-bold" name="history" :size="26" /></span><small>{{ $filter === 'all' ? 'SEMUA PESANAN' : 'HASIL FILTER' }}</small><strong>{{ $orders->count() }}</strong><p>dari {{ $allOrderCount }} pesanan</p></div></section>
 
             <div class="portal-v2-layout">
                 @if($member)
@@ -29,7 +29,7 @@
                     @else
                         <div class="portal-v2-section-head"><div class="portal-v2-section-head-main"><span class="portal-v2-section-head-icon"><x-public-icon variant="rounded-bold" name="bag" :size="18" /></span><div class="portal-v2-section-copy"><span>DAFTAR PESANAN</span><h2>{{ $filter === 'all' ? 'Semua pesananmu' : 'Pesanan terfilter' }}</h2></div></div><div class="portal-v2-section-count"><strong>{{ $orders->count() }}</strong><span>data</span></div></div>
 
-                        <div class="portal-v2-order-grid">
+                        <div class="portal-v2-order-grid" data-order-scroll tabindex="0" role="region" aria-label="Daftar pesanan, gulir untuk melihat pesanan lain">
                             @forelse($orders as $order)
                                 @php
                                     $trackingStatus = $order->tracking_status;
