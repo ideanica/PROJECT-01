@@ -1,30 +1,4 @@
-/* Shared customer palette, scoped to operational pages. */
-body:has(.admin-shell) { background: var(--pv2-cream); }
-.admin-shell { color: var(--pv2-ink-deep); }
-.admin-shell .admin-sidebar { border-color: var(--pv2-ink); background: var(--pv2-paper); }
-.admin-shell .admin-navigation a { border: 2px solid transparent; }
-.admin-shell .admin-navigation a.bg-zinc-950 {
-  border-color: var(--pv2-ink);
-  background: var(--pv2-ink);
-  box-shadow: -3px 3px 0 var(--pv2-pink);
-}
-.admin-shell .admin-navigation a:not(.bg-zinc-950):hover { background: var(--pv2-mint); color: var(--pv2-ink); }
-.admin-shell .admin-form-header h1 { color: var(--pv2-ink-deep); }
-.admin-shell .admin-form-eyebrow { color: var(--pv2-ink); }
-.admin-shell .admin-form-intro { border-color: var(--pv2-ink); background: var(--pv2-mint); }
-.admin-shell .admin-form-intro h2,
-.admin-shell .admin-form-intro-icon,
-.admin-shell .text-violet-600 { color: var(--pv2-ink); }
-.admin-shell .admin-form-readonly { border-color: var(--pv2-ink); background: var(--pv2-cream); }
-.admin-shell .admin-form-inline-action { border-color: var(--pv2-ink); background: var(--pv2-yellow); color: var(--pv2-ink-deep); }
-.admin-shell .admin-form-primary { border: var(--pv2-border); background: var(--pv2-mint); color: var(--pv2-ink-deep); box-shadow: -3px 3px 0 var(--pv2-ink); }
-.admin-shell .admin-form-primary:hover { background: var(--pv2-pink); }
-.admin-shell .admin-form-secondary { border-color: var(--pv2-ink); background: var(--pv2-paper); color: var(--pv2-ink); }
-.admin-shell .detail-record-card,
-.admin-shell .admin-form-shell { border: var(--pv2-border); background: var(--pv2-paper); box-shadow: -4px 4px 0 var(--pv2-ink); }
-.admin-shell .admin-page input:focus,
-.admin-shell .admin-page select:focus,
-.admin-shell .admin-page textarea:focus { border-color: var(--pv2-ink); outline: 2px solid var(--pv2-mint); outline-offset: 2px; }
+/* Customer payment and catalog presentation; admin styling lives in app.css. */
 .order-payment-method { margin-top: 16px; border: var(--pv2-border); border-radius: 12px; padding: 14px; background: var(--pv2-paper); color: var(--pv2-ink-deep); }
 .order-payment-method img { display: block; width: min(100%, 240px); height: auto; margin: 12px auto; object-fit: contain; }
 .order-payment-method p { margin-top: 8px; white-space: pre-line; overflow-wrap: anywhere; font-size: 12px; line-height: 1.6; }

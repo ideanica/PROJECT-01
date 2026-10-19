@@ -13,7 +13,13 @@ class CustomerGroupController extends Controller
     {
         return view('admin.groups.index', [
             'pendingCount' => User::where('registration_pending', true)->count(),
-            'groups' => CustomerGroup::withCount('members')->orderBy('name')->paginate(15),
+            'groups' => CustomerGroup::withCount('members')
+                ->when(request('q'), fn ($query, $search) => $query->where(function ($query) use ($search) {
+                    $query->where('name', 'like', "%{$search}%")
+                        ->orWhere('description', 'like', "%{$search}%");
+                }))
+                ->when(in_array(request('status'), ['active', 'inactive'], true), fn ($query) => $query->where('is_active', request('status') === 'active'))
+                ->orderBy('name')->paginate(15)->withQueryString(),
         ]);
     }
 

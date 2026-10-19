@@ -32,6 +32,7 @@ class MemberController extends Controller
                 });
             })
             ->when(request('customer_group_id'), fn ($query, $id) => $query->where('customer_group_id', $id))
+            ->when(in_array(request('status'), ['active', 'inactive'], true), fn ($query) => $query->where('is_active', request('status') === 'active'))
             ->when(request('registration') === 'pending', fn ($query) => $query->whereHas('user', fn ($user) => $user->where('registration_pending', true)))
             ->latest()
             ->paginate(15)
