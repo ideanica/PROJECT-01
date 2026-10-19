@@ -52,7 +52,7 @@
             session()->put('login_at', $loginAt);
         }
     @endphp
-    <body class="{{ $isAdmin ? 'bg-[#f6f7fb]' : 'customer-theme' }}{{ $isOceanTracking ? ' ocean-tracking' : '' }}{{ $isOceanProfile ? ' ocean-profile' : '' }}{{ $isAuthPage ? ' ocean-auth' : '' }}{{ request()->routeIs(['orders.history', 'orders.unpaid', 'orders.shipping', 'orders.refunds']) && auth()->user()?->member ? ' has-order-workspace' : '' }} text-zinc-950 antialiased">
+    <body class="{{ $isAdmin ? 'bg-[#fbf8f2]' : 'customer-theme' }}{{ $isOceanTracking ? ' ocean-tracking' : '' }}{{ $isOceanProfile ? ' ocean-profile' : '' }}{{ $isAuthPage ? ' ocean-auth' : '' }}{{ request()->routeIs(['orders.history', 'orders.unpaid', 'orders.shipping', 'orders.refunds']) && auth()->user()?->member ? ' has-order-workspace' : '' }} text-zinc-950 antialiased">
         @if ($isAdmin)
             <div class="admin-shell min-h-screen">
                 <aside class="admin-sidebar border-b border-zinc-200 bg-white lg:fixed lg:inset-y-0 lg:left-0 lg:z-50 lg:flex lg:w-72 lg:flex-col lg:border-b-0 lg:border-r">
@@ -71,8 +71,8 @@
                     <nav class="admin-navigation flex gap-1 overflow-x-auto px-4 pb-4 text-sm lg:block lg:flex-1 lg:space-y-1 lg:overflow-y-auto lg:px-5 lg:pb-6" aria-label="Navigasi admin">
                         <p class="mb-3 hidden px-3 text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400 lg:block">Workspace</p>
                         @foreach ($adminNav as $item)
-                            <a href="{{ route($item['route']) }}" class="{{ request()->routeIs($item['match']) ? 'bg-zinc-950 text-white shadow-lg shadow-zinc-950/10' : 'text-zinc-500 hover:bg-zinc-100 hover:text-zinc-950' }} group flex shrink-0 items-center gap-3 rounded-xl px-3 py-2.5 font-semibold transition lg:w-full">
-                                <span class="{{ request()->routeIs($item['match']) ? 'bg-white/10 text-white' : 'bg-zinc-100 text-zinc-500 group-hover:bg-white' }} grid h-8 w-8 shrink-0 place-items-center rounded-lg transition">
+                            <a href="{{ route($item['route']) }}" @if (request()->routeIs($item['match'])) aria-current="page" @endif class="group flex shrink-0 items-center gap-3 rounded-xl px-3 py-2.5 font-semibold transition lg:w-full">
+                                <span class="grid h-8 w-8 shrink-0 place-items-center rounded-lg transition">
                                     @switch($item['icon'])
                                         @case('dashboard')<svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg>@break
                                         @case('users')<svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>@break
@@ -106,7 +106,7 @@
                                 <div class="mt-1 text-[10px] font-semibold uppercase tracking-wide text-zinc-400" data-realtime-date>Memuat tanggal</div>
                             </div>
                             <div class="relative" data-user-menu>
-                                <button type="button" class="grid h-8 w-8 place-items-center rounded-full border border-zinc-200 bg-white text-zinc-600 shadow-sm transition hover:border-violet-300 hover:bg-violet-50 hover:text-violet-700" aria-label="Buka menu pengguna" aria-haspopup="true" aria-expanded="false" data-user-menu-button>
+                                <button type="button" class="grid h-8 w-8 place-items-center rounded-full border transition" aria-label="Buka menu pengguna" aria-haspopup="true" aria-expanded="false" data-user-menu-button>
                                     <svg viewBox="0 0 24 24" class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
                                 </button>
                                 <div class="admin-user-menu absolute right-0 top-full mt-2 w-64 overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-xl shadow-zinc-900/10" data-user-menu-panel hidden>
@@ -123,7 +123,7 @@
                                     </div>
                                     <form method="POST" action="/logout" class="border-t border-zinc-100 p-2">
                                         @csrf
-                                        <button class="flex w-full items-center justify-center gap-2 rounded-lg bg-zinc-950 px-3 py-2.5 text-xs font-bold text-white transition hover:bg-violet-700" type="submit">
+                                        <button class="flex w-full items-center justify-center gap-2 px-3 py-2.5 text-xs font-bold transition" type="submit">
                                             <svg viewBox="0 0 20 20" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 3H3v14h5M13 6l4 4-4 4m4-4H7"/></svg>
                                             Logout
                                         </button>

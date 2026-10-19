@@ -1,13 +1,15 @@
 @php($isRefunded = $order->is_refunded)
 <x-layouts.app title="Pesanan {{ $order->order_code }}">
-    <x-page-heading title="Detail Pesanan" description="Identitas, pembayaran, item, dan riwayat status dalam satu tampilan.">
-        <x-slot:action><a class="admin-form-secondary" href="{{ route('admin.member-orders.edit', $order, false) }}">Edit Pesanan</a></x-slot:action>
-    </x-page-heading>
+    <div class="[&_h1]:text-black!">
+        <x-page-heading title="Detail Pesanan" description="Identitas, pembayaran, item, dan riwayat status dalam satu tampilan.">
+            <x-slot:action><a class="admin-form-secondary" href="{{ route('admin.member-orders.edit', $order, false) }}">Edit Pesanan</a></x-slot:action>
+        </x-page-heading>
+    </div>
 
-    <article class="detail-record-card">
+    <article class="detail-record-card before:bg-none! [&_.detail-record-hero]:bg-[linear-gradient(135deg,#ffffff,#f6faf6_58%,#eef6ef)]!">
         <header class="detail-record-hero">
             <div class="min-w-0">
-                <p class="detail-record-kicker">Pesanan Pelanggan</p>
+                <p class="detail-record-kicker text-[#275a3a]!">Pesanan Pelanggan</p>
                 <div class="mt-2 flex flex-wrap items-center gap-3">
                     <h2 class="detail-record-title">{{ $order->order_code }}</h2>
                     <x-status-badge :status="$order->effective_status" />

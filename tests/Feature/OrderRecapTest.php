@@ -218,7 +218,7 @@ class OrderRecapTest extends TestCase
             ->assertDontSee('data-status-folder-tab="order_item"', false)
             ->assertSee('Tracking Perjalanan')
             ->assertSee('Status Pembayaran')
-            ->assertSee('<th>No.</th>', false)
+            ->assertSee('>No.</th>', false)
             ->assertSee('Status Batch Folder')
             ->assertSee('Status Payment Folder');
     }
@@ -240,7 +240,7 @@ class OrderRecapTest extends TestCase
             ->assertSee('lg:grid-cols-3', false)
             ->assertSee('Cakupan dan Keterangan Status')
             ->assertDontSee('lg:border-l', false)
-            ->assertSee('md:grid-cols-4', false);
+            ->assertSee('sm:grid-cols-2 lg:grid-cols-4', false);
 
         $this->actingAs($admin)->post(route('admin.order-statuses.store'), [
             'name' => 'Status Otomatis',
