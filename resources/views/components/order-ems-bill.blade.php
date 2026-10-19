@@ -8,7 +8,7 @@
         <div class="order-ems-bill-copy">
             <span>Tagihan Pajak & EMS</span>
             @if($order->has_ems_tax_bill)
-                <strong>Rp {{ number_format($order->ems_tax_amount, 0, ',', '.') }}</strong>
+                <strong>Rp {{ number_format($order->ems_tax_amount, fmod((float) $order->ems_tax_amount, 1) > 0 ? 2 : 0, ',', '.') }}</strong>
                 <small>
                     {{ $order->ems_tax_status_label }}
                     @if($order->ems_tax_due_date) · Jatuh tempo {{ $order->ems_tax_due_date->format('d M Y') }} @endif
@@ -16,7 +16,7 @@
                 @if($order->ems_tax_notes && !$compact)<p>{{ $order->ems_tax_notes }}</p>@endif
             @else
                 <strong>Belum diterbitkan</strong>
-                <small>Nominal belum ditambahkan pada pesanan ini.</small>
+                <small>Pajak EMS belum ditentukan atau belum dialokasikan dari batch.</small>
             @endif
         </div>
         <span class="order-ems-bill-status">

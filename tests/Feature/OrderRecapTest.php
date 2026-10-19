@@ -1090,7 +1090,7 @@ class OrderRecapTest extends TestCase
             ->assertSee(route('admin.members.show', $member, false), false);
     }
 
-    public function test_order_form_shows_active_members_with_or_without_login_accounts(): void
+    public function test_order_form_only_shows_active_members_with_approved_login_accounts(): void
     {
         $admin = User::factory()->create();
         $batch = Batch::factory()->create();
@@ -1127,7 +1127,7 @@ class OrderRecapTest extends TestCase
             ->assertSee('Eligible Member')
             ->assertSee('eligible.line')
             ->assertSee('Akun terhubung')
-            ->assertSee('Legacy Member')->assertSee('Belum punya akun login')
+            ->assertDontSee('Legacy Member')->assertDontSee('Belum punya akun login')
             ->assertDontSee('Inactive Member');
     }
 

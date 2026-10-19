@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreBatchRequest;
 use App\Models\Batch;
+use App\Models\MemberOrder;
 use App\Models\OrderStatus;
 use App\Models\PaymentMethod;
 use App\Models\Product;
+use App\Services\BatchEmsTaxService;
 use App\Services\StatusTransitionService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -184,6 +186,7 @@ class BatchController extends Controller
 
         try {
             DB::transaction(function () use ($request, $batch, $statuses, $oldStatusId, $newCatalogImagePath, $removeCatalogImage, $catalogImageDisk) {
+                $batch = Batch::query()->lockForUpdate()->findOrFail($batch->id);
                 $data = $request->safe()->except([
                     'current_status_id', 'status_note', 'catalog_image', 'remove_catalog_image', 'variants',
                 ]);
@@ -202,6 +205,9 @@ class BatchController extends Controller
                 ]);
 
                 $this->syncCatalogVariants($batch, $request->validated('variants', []));
+                if ($request->hasAny(array_keys(BatchEmsTaxService::rules()))) {
+                    app(BatchEmsTaxService::class)->sync($batch, clear: true);
+                }
 
                 if ($request->integer('current_status_id') && $request->integer('current_status_id') !== $oldStatusId) {
                     $statuses->transition($batch, OrderStatus::findOrFail($request->integer('current_status_id')), $request->user(), $request->input('status_note'));
@@ -232,6 +238,37 @@ class BatchController extends Controller
         $batch->update(['is_archived' => true]);
 
         return back()->with('status', 'Batch diarsipkan.');
+    }
+
+    public function updateEmsTax(Request $request, Batch $batch, BatchEmsTaxService $taxes)
+    {
+        abort_if($batch->is_archived, 403);
+        $rules = BatchEmsTaxService::rules();
+        $rules['ems_tax_amount'][] = 'present';
+        $data = $request->validate($rules);
+
+        DB::transaction(function () use ($batch, $data, $taxes): void {
+            $batch = Batch::query()->lockForUpdate()->findOrFail($batch->id);
+            $batch->update($data);
+            $taxes->sync($batch, clear: true);
+        });
+
+        return back()->with('status', 'Pajak EMS batch dan pembagian per pelanggan diperbarui.');
+    }
+
+    public function updateEmsPayment(Request $request, Batch $batch, MemberOrder $memberOrder)
+    {
+        abort_if($batch->is_archived, 403);
+        abort_unless($memberOrder->batch_id === $batch->id, 404);
+        $data = $request->validate(['ems_tax_status' => ['required', 'in:unpaid,paid']]);
+        DB::transaction(function () use ($batch, $memberOrder, $data): void {
+            Batch::query()->lockForUpdate()->findOrFail($batch->id);
+            $memberOrder->refresh();
+            abort_unless($memberOrder->batch_id === $batch->id && $memberOrder->has_ems_tax_bill, 422);
+            $memberOrder->update($data);
+        });
+
+        return back()->with('status', 'Status pembayaran EMS pelanggan diperbarui.');
     }
 
     public function transition(Request $request, Batch $batch, StatusTransitionService $statuses)

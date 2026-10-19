@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Services\BatchEmsTaxService;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Validator;
@@ -24,6 +25,7 @@ class StoreBatchRequest extends FormRequest
     public function rules(): array
     {
         return [
+            ...BatchEmsTaxService::rules(),
             'batch_name' => ['nullable', 'string', 'max:255'],
             'current_status_id' => ['nullable', 'exists:order_statuses,id'],
             'description' => ['nullable', 'string'],

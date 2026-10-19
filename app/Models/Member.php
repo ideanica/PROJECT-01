@@ -52,21 +52,18 @@ class Member extends Model
         return $this->belongsTo(CustomerGroup::class);
     }
 
-    /** Member aktif boleh dicatat ke order, terlepas dari kesiapan akun login. */
+    /** Hanya member aktif dengan akun customer yang sudah siap login. */
     public function scopeAvailableForOrder(Builder $query): Builder
     {
-        return $query->where('is_active', true);
+        return $query->eligibleForNewOrder();
     }
 
     public function isAvailableForOrder(): bool
     {
-        return $this->is_active;
+        return $this->isEligibleForNewOrder();
     }
 
-    /**
-     * Scope legacy lama tetap dipertahankan untuk halaman administrasi akun.
-     * Jangan gunakan scope ini untuk menentukan apakah buyer boleh memiliki order.
-     */
+    /** Akun sudah disetujui dan memiliki kredensial login. */
     public function scopeEligibleForNewOrder(Builder $query): Builder
     {
         return $query->whereHas('user', fn ($user) => $user->where('role', 'customer')->whereNotNull('password_set_at')->where('registration_pending', false))

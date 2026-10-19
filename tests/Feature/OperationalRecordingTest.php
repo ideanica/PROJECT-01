@@ -16,7 +16,7 @@ class OperationalRecordingTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_admin_can_create_order_for_active_member_without_user_account(): void
+    public function test_admin_cannot_create_order_for_active_member_without_user_account(): void
     {
         $admin = User::factory()->create(['role' => User::ROLE_ADMIN]);
         $member = Member::factory()->create(['is_active' => true]);
@@ -34,8 +34,8 @@ class OperationalRecordingTest extends TestCase
             ]],
         ]);
 
-        $response->assertStatus(303);
-        $this->assertDatabaseHas('member_orders', [
+        $response->assertSessionHasErrors('member_id');
+        $this->assertDatabaseMissing('member_orders', [
             'member_id' => $member->id,
             'batch_id' => $batch->id,
             'go_number' => 'GO-4',

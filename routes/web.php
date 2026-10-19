@@ -72,6 +72,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'can:access-admin'])
     Route::put('batches/settings/payment-methods/{paymentMethod}', [BatchController::class, 'updatePaymentMethod'])->name('batches.payment-methods.update');
     Route::post('batches/settings/payment-methods/{paymentMethod}/toggle', [BatchController::class, 'togglePaymentMethod'])->name('batches.payment-methods.toggle');
     Route::delete('batches/settings/payment-methods/{paymentMethod}', [BatchController::class, 'destroyPaymentMethod'])->name('batches.payment-methods.destroy');
+    Route::put('batches/{batch}/ems-tax', [BatchController::class, 'updateEmsTax'])->name('batches.ems-tax');
+    Route::put('batches/{batch}/orders/{member_order}/ems-payment', [BatchController::class, 'updateEmsPayment'])->name('batches.ems-payment');
     Route::post('batches/{batch}/status', [BatchController::class, 'transition'])->name('batches.status');
 
     Route::get('batches/{batch}/shipments', [ShipmentGroupController::class, 'index'])->name('batches.shipments.index');
