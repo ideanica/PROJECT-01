@@ -89,6 +89,10 @@
                     </div>
                 </x-admin-form-section>
 
+                <x-admin-form-section title="Pajak EMS per Batch">
+                    @include('admin.batches.partials.ems-tax-fields')
+                </x-admin-form-section>
+
                 <x-admin-form-section title="Pembayaran">
                     @if($batchPaymentMethod)
                         <div class="admin-payment-method-card">

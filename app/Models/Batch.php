@@ -32,11 +32,16 @@ class Batch extends Model
         'completed_at',
         'is_archived',
         'payment_method_id',
+        'ems_tax_amount',
+        'ems_tax_due_date',
+        'ems_tax_notes',
     ];
 
     protected function casts(): array
     {
         return [
+            'ems_tax_amount' => 'decimal:2',
+            'ems_tax_due_date' => 'date',
             'started_at' => 'datetime',
             'completed_at' => 'datetime',
             'ordering_deadline' => 'datetime',

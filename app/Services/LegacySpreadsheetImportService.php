@@ -73,6 +73,7 @@ class LegacySpreadsheetImportService
         $preview = $this->preview($sheets);
 
         DB::transaction(function () use ($preview) {
+            $affectedBatches = [];
             foreach ($preview['rows'] as $row) {
                 if (($row['status'] ?? null) !== 'valid') {
                     continue;
@@ -84,11 +85,16 @@ class LegacySpreadsheetImportService
                 );
 
                 $batch = Batch::firstOrCreate(['batch_number' => $row['batch_number']]);
+                $batch = Batch::query()->lockForUpdate()->findOrFail($batch->id);
+                $affectedBatches[$batch->id] = $batch;
 
                 MemberOrder::firstOrCreate(
                     ['member_id' => $member->id, 'batch_id' => $batch->id],
                     ['order_code' => 'ORD-'.$member->member_code.'-'.$batch->batch_number]
                 );
+            }
+            foreach ($affectedBatches as $batch) {
+                app(BatchEmsTaxService::class)->sync($batch);
             }
         });
 

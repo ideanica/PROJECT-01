@@ -14,7 +14,8 @@ Sumber audit utama: spreadsheet OceanPaws dengan pola data Batch/RESI/CODE/STATU
 
 Konsekuensinya:
 
-- admin boleh mencatat order untuk Member aktif walaupun Member belum punya User;
+- order baru hanya boleh dicatat untuk Member aktif dengan User customer yang sudah disetujui (`registration_pending = false`) dan siap login (`password_set_at` terisi);
+- order historis tetap dapat diedit dengan pemilik dan batch yang sama meskipun akun belum tersedia;
 - registrasi buyer lama tidak boleh membuat Member kedua;
 - jika identitas registrasi cocok dengan Member lama yang belum memiliki User, registrasi menjadi account claim dan wajib menunggu persetujuan admin;
 - setelah claim disetujui, seluruh history lama langsung muncul karena order tetap menunjuk ke Member yang sama.
@@ -62,7 +63,7 @@ Setiap shipment group dapat menyimpan:
 
 | Area | Kondisi sebelum perubahan | Target | Prioritas | Status |
 | --- | --- | --- | --- | --- |
-| Buyer tanpa akun | Ditolak untuk order baru | Member aktif boleh order tanpa User | P0 | Implemented in backend |
+| Buyer tanpa akun | Member aktif boleh order tanpa User | Order baru wajib memakai akun customer aktif yang sudah disetujui | P0 | Implemented in backend |
 | Account claim | Registrasi selalu membuat Member baru | Reuse Member lama dan pending approval | P0 | Implemented in backend |
 | Payment nominal | Satu `payment_amount` | Multi-entry payment ledger | P0 | Implemented in backend |
 | DP/pelunasan | Status ada, nominal historis tidak lengkap | Derived paid/remaining dari ledger | P0 | Implemented in backend |
@@ -176,3 +177,14 @@ Karena kolom legacy tidak langsung dihapus, deployment dapat dilakukan bertahap 
 ### Public tracking secret
 
 `order_code` sequential masih dipertahankan agar kompatibel. Random public tracking code sebaiknya dikerjakan terpisah bersama perubahan URL dan migration link agar tidak memutus link existing.
+
+## Pajak EMS per batch
+
+- Jalankan `php artisan migrate --force` saat deploy untuk menambahkan kolom EMS pada batch.
+- Total EMS opsional di form pembuatan/edit batch dan dapat ditentukan kemudian dari detail batch.
+- Total dibagi ke seluruh pelanggan yang tercatat pada batch, satu order per pelanggan. Jumlah item tidak memengaruhi bagian. Semua pelanggan dalam batch, termasuk pesanan refund yang masih tercatat, tetap masuk pembagi.
+- Alokasi menggunakan satuan 0,01: sisa pembulatan dibagikan menurut urutan ID member, sehingga jumlah alokasi persis sama dengan total batch.
+- Penambahan, penghapusan, pemindahan order, dan perubahan total pajak menghitung ulang alokasi secara transaksional.
+- Status EMS pelanggan dapat ditandai lunas/belum lunas dari detail batch. Status lunas dipertahankan jika nominal tidak berubah, dan kembali unpaid jika nominal berubah. Ini merupakan status manual, bukan saldo pembayaran EMS.
+- Nominal, jatuh tempo, dan catatan EMS tidak dapat dikirim melalui form pesanan. Tagihan pelanggan tetap muncul melalui field alokasi pada order agar portal dan tracking tetap kompatibel.
+- Migrasi tidak menimpa tagihan individual historis. Pada batch yang belum dikonfigurasi, tagihan lama tetap tersimpan sampai admin menyimpan pengaturan EMS batch; mengisi total mengganti tagihan lama dengan pembagian rata, mengosongkan total menghapus alokasinya.

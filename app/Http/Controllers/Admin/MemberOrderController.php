@@ -9,6 +9,7 @@ use App\Models\Member;
 use App\Models\MemberOrder;
 use App\Models\OrderStatus;
 use App\Models\ShipmentGroup;
+use App\Services\BatchEmsTaxService;
 use App\Services\StatusTransitionService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -56,6 +57,7 @@ class MemberOrderController extends Controller
     public function store(StoreMemberOrderRequest $request, StatusTransitionService $statuses)
     {
         $order = DB::transaction(function () use ($request, $statuses) {
+            Batch::query()->whereKey($request->integer('batch_id'))->lockForUpdate()->firstOrFail();
             $member = Member::findOrFail($request->integer('member_id'));
 
             $order = MemberOrder::create($request->safe()->except([
@@ -67,6 +69,8 @@ class MemberOrderController extends Controller
             $order->forceFill(['order_code' => $this->generateOrderCode($order)])->save();
             $this->syncItems($order, $request->validated('items'), $statuses, $request->user());
             $order->update(['total_amount' => $order->items()->sum('subtotal')]);
+
+            app(BatchEmsTaxService::class)->sync($order->batch);
 
             return $order;
         });
@@ -107,6 +111,10 @@ class MemberOrderController extends Controller
     public function update(StoreMemberOrderRequest $request, MemberOrder $memberOrder, StatusTransitionService $statuses)
     {
         DB::transaction(function () use ($request, $memberOrder, $statuses) {
+            $oldBatchId = $memberOrder->batch_id;
+            $oldMemberId = $memberOrder->member_id;
+            $affectedBatches = Batch::query()->whereIn('id', [$oldBatchId, $request->integer('batch_id')])
+                ->orderBy('id')->lockForUpdate()->get();
             $memberOrder->loadMissing(['batch.currentStatus', 'overrideStatus', 'paymentStatus']);
             $itemsAreLocked = $memberOrder->batch->orders_locked || $memberOrder->is_refunded;
             $member = Member::findOrFail($request->integer('member_id'));
@@ -118,6 +126,14 @@ class MemberOrderController extends Controller
             if (! $itemsAreLocked) {
                 $this->syncItems($memberOrder, $request->validated('items'), $statuses, $request->user());
                 $memberOrder->update(['total_amount' => $memberOrder->items()->sum('subtotal')]);
+            }
+
+            if ($oldMemberId !== $member->id || $oldBatchId !== $memberOrder->batch_id) {
+                $memberOrder->forceFill(['ems_tax_amount' => null, 'ems_tax_status' => 'not_billed',
+                    'ems_tax_due_date' => null, 'ems_tax_notes' => null])->save();
+            }
+            foreach ($affectedBatches as $affectedBatch) {
+                app(BatchEmsTaxService::class)->sync($affectedBatch);
             }
 
             $paymentStatus = $request->filled('payment_status_id')
@@ -148,7 +164,11 @@ class MemberOrderController extends Controller
 
     public function destroy(MemberOrder $memberOrder)
     {
-        $memberOrder->delete();
+        DB::transaction(function () use ($memberOrder): void {
+            $batch = Batch::query()->lockForUpdate()->findOrFail($memberOrder->batch_id);
+            $memberOrder->delete();
+            app(BatchEmsTaxService::class)->sync($batch);
+        });
 
         return new RedirectResponse('/admin/member-orders', 303);
     }
@@ -169,6 +189,7 @@ class MemberOrderController extends Controller
 
         if (filled($data['status_id'] ?? null)) {
             $statuses->transition($memberOrder, OrderStatus::findOrFail($data['status_id']), $request->user(), $data['note'] ?? 'Status khusus pesanan diperbarui.');
+
             return back()->with('status', 'Status khusus pesanan diperbarui.');
         }
 
@@ -182,6 +203,7 @@ class MemberOrderController extends Controller
     public function paymentProof(MemberOrder $memberOrder)
     {
         abort_unless($memberOrder->payment_proof_path && Storage::disk('local')->exists($memberOrder->payment_proof_path), 404);
+
         return Storage::disk('local')->response($memberOrder->payment_proof_path);
     }
 

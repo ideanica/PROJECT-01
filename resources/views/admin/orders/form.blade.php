@@ -9,7 +9,7 @@
     <x-admin-form-shell
         title="{{ $order->exists ? 'Edit Pesanan' : 'Tambah Pesanan' }}"
         eyebrow="Pesanan dalam Batch"
-        description="Pilih buyer aktif. Buyer tidak wajib mempunyai akun login terlebih dahulu; history tetap melekat ke Member dan dapat di-claim saat akun dibuat."
+        description="Pilih pelanggan aktif yang sudah memiliki akun member yang disetujui dan siap login."
         max-width="max-w-6xl"
     >
         <form method="POST" action="{{ $order->exists ? route('admin.member-orders.update', $order, false) : route('admin.member-orders.store', [], false) }}">
@@ -17,7 +17,7 @@
             @if($order->exists) @method('PUT') @endif
 
             <div class="admin-form-body">
-                <x-admin-form-intro title="Satu Form untuk Satu Pesanan" description="Kode pesanan dibuat otomatis. Buyer unlinked tetap boleh dicatat selama Member aktif." />
+                <x-admin-form-intro title="Satu Form untuk Satu Pesanan" description="Kode pesanan dibuat otomatis. Pajak EMS ditentukan dan dibagi dari batch." />
 
                 <x-admin-form-section title="Identitas Pesanan">
                     <div class="space-y-4">
@@ -38,7 +38,7 @@
                                     <option value="{{ $member->id }}" @selected($selectedMemberId == $member->id)>{{ $member->display_name }} ({{ $member->member_code }}) · {{ $member->username }} - {{ $member->eligibility_status_label }}</option>
                                 @endforeach
                             </select>
-                            <small class="admin-form-help">Akun login bukan syarat untuk pencatatan order. Jika buyer mendaftar kemudian, account claim akan menghubungkan akun ke Member lama setelah approval admin.</small>
+                            <small class="admin-form-help">Hanya pelanggan berakun yang bisa ditambahkan. Pemilik pesanan lama tetap ditampilkan untuk menjaga riwayat.</small>
                         </label>
                         @endif
                     </div>
@@ -56,15 +56,6 @@
                     </div>
                     <label class="mt-4 block"><span>Catatan pesanan</span><textarea name="notes" rows="3" placeholder="Informasi tambahan untuk pesanan ini">{{ old('notes', $order->notes) }}</textarea></label>
                     @if($order->exists)<div class="mt-4"><a class="admin-form-secondary" href="{{ route('admin.member-orders.payments.index', $order, false) }}">Kelola payment ledger</a></div>@endif
-                </x-admin-form-section>
-
-                <x-admin-form-section title="Tagihan Pajak & EMS">
-                    <div class="grid items-start gap-4 md:grid-cols-3">
-                        <x-text-input label="Nominal tagihan" name="ems_tax_amount" type="number" min="0" step="0.01" :value="old('ems_tax_amount', $order->ems_tax_amount)" placeholder="Contoh: 85000" />
-                        <label class="block"><span>Status tagihan</span><select name="ems_tax_status"><option value="not_billed" @selected(old('ems_tax_status', $order->ems_tax_status ?: 'not_billed') === 'not_billed')>Belum ditagihkan</option><option value="unpaid" @selected(old('ems_tax_status', $order->ems_tax_status) === 'unpaid')>Menunggu pembayaran</option><option value="paid" @selected(old('ems_tax_status', $order->ems_tax_status) === 'paid')>Lunas</option></select></label>
-                        <x-text-input label="Jatuh tempo" name="ems_tax_due_date" type="date" :value="old('ems_tax_due_date', $order->ems_tax_due_date?->format('Y-m-d'))" />
-                    </div>
-                    <label class="mt-4 block"><span>Rincian tagihan</span><textarea name="ems_tax_notes" rows="3" maxlength="1000">{{ old('ems_tax_notes', $order->ems_tax_notes) }}</textarea></label>
                 </x-admin-form-section>
 
                 <x-admin-form-section title="Item Pesanan">

@@ -107,6 +107,49 @@
             </div>
         </section>
 
+        <section class="detail-record-section">
+            <div class="detail-record-section-heading"><div><h3>Pajak EMS per Batch</h3><p>Total dibagi rata ke {{ $batch->orders->count() }} pelanggan. Tagihan pelanggan diperbarui otomatis.</p></div></div>
+            @unless($batch->is_archived)
+                <form method="POST" action="{{ route('admin.batches.ems-tax', $batch, false) }}">
+                    @csrf @method('PUT')
+                    @include('admin.batches.partials.ems-tax-fields')
+                    <button type="submit" class="admin-form-primary mt-4">Simpan Pajak EMS</button>
+                </form>
+            @else
+                <p>Total pajak EMS: {{ $batch->ems_tax_amount !== null ? 'Rp '.number_format($batch->ems_tax_amount, 2, ',', '.') : 'Belum ditentukan' }}</p>
+            @endunless
+            @if($batch->ems_tax_amount === null && $batch->orders->contains(fn ($order) => $order->has_ems_tax_bill))
+                <p class="admin-form-help mt-3">Batch ini masih memiliki tagihan EMS lama per pesanan. Isi total pajak batch untuk menggantinya dengan pembagian rata.</p>
+            @endif
+            <div class="order-table-scroll mt-4">
+                <table class="order-table responsive-card-table">
+                    <thead><tr><th>Pelanggan</th><th>Bagian pajak EMS</th><th>Status</th><th>Pembayaran EMS</th></tr></thead>
+                    <tbody>
+                        @forelse($batch->orders as $order)
+                            <tr>
+                                <td data-label="Pelanggan">{{ $order->member->display_name }}</td>
+                                <td data-label="Bagian pajak EMS">{{ $order->ems_tax_amount !== null ? 'Rp '.number_format($order->ems_tax_amount, 2, ',', '.') : 'Belum ditentukan' }}</td>
+                                <td data-label="Status">{{ $order->ems_tax_status_label }}</td>
+                                <td data-label="Pembayaran EMS">
+                                    @if(!$batch->is_archived && $order->has_ems_tax_bill)
+                                        <form method="POST" action="{{ route('admin.batches.ems-payment', [$batch, $order], false) }}">
+                                            @csrf @method('PUT')
+                                            <input type="hidden" name="ems_tax_status" value="{{ $order->ems_tax_status === 'paid' ? 'unpaid' : 'paid' }}">
+                                            <button type="submit" class="admin-form-inline-action">{{ $order->ems_tax_status === 'paid' ? 'Tandai belum lunas' : 'Tandai lunas' }}</button>
+                                        </form>
+                                    @else
+                                        —
+                                    @endif
+                                </td>
+                            </tr>
+                        @empty
+                            <tr><td colspan="4">Belum ada pelanggan. Pajak akan dibagi setelah pesanan ditambahkan.</td></tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
         <section class="detail-record-section detail-record-section-tinted">
             <div class="detail-record-section-heading">
                 <div>

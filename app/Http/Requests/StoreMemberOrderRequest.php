@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Member;
 use App\Models\Batch;
+use App\Models\Member;
 use App\Models\ShipmentGroup;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -42,10 +42,6 @@ class StoreMemberOrderRequest extends FormRequest
             'go_number' => $this->filled('go_number') ? trim((string) $this->input('go_number')) : null,
             'items' => $items,
         ]);
-
-        if ($this->filled('ems_tax_amount') && $this->input('ems_tax_status', 'not_billed') === 'not_billed') {
-            $this->merge(['ems_tax_status' => 'unpaid']);
-        }
     }
 
     public function authorize(): bool
@@ -64,12 +60,15 @@ class StoreMemberOrderRequest extends FormRequest
                 || $order->is_refunded)
             : false;
 
+        $keepsExistingBuyer = $order && (int) $order->member_id === $this->integer('member_id')
+            && (int) $order->batch_id === $this->integer('batch_id');
+
         return [
             'order_code' => ['prohibited'],
             // Keep processed orders attached to their buyer and prevent duplicate buyer/batch orders.
             'member_id' => $itemsAreLocked
                 ? ['required', Rule::in([$order->member_id])]
-                : ['required', Rule::exists('members', 'id')->where('is_active', true), Rule::unique('member_orders', 'member_id')->where('batch_id', $this->integer('batch_id'))->ignore($order?->id)],
+                : ['required', Rule::exists('members', 'id')->when(! $keepsExistingBuyer, fn ($rule) => $rule->where('is_active', true)), Rule::unique('member_orders', 'member_id')->where('batch_id', $this->integer('batch_id'))->ignore($order?->id)],
             // customer_name dan customer_username tidak lagi digunakan untuk pembuatan buyer baru
             'customer_name' => ['prohibited'],
             'customer_username' => ['prohibited'],
@@ -88,10 +87,10 @@ class StoreMemberOrderRequest extends FormRequest
                         ->when($currentPaymentStatusId, fn ($query, $statusId) => $query->orWhere('id', $statusId)))),
             ],
             'notes' => ['nullable', 'string'],
-            'ems_tax_amount' => ['nullable', 'required_if:ems_tax_status,unpaid,paid', 'numeric', 'min:1'],
-            'ems_tax_status' => ['nullable', Rule::in(['not_billed', 'unpaid', 'paid'])],
-            'ems_tax_due_date' => ['nullable', 'date'],
-            'ems_tax_notes' => ['nullable', 'string', 'max:1000'],
+            'ems_tax_amount' => ['prohibited'],
+            'ems_tax_status' => ['prohibited'],
+            'ems_tax_due_date' => ['prohibited'],
+            'ems_tax_notes' => ['prohibited'],
             'items' => $itemsAreLocked ? ['prohibited'] : ['required', 'array', 'min:1'],
             'items.*.id' => ['nullable', Rule::exists('order_items', 'id')->where('member_order_id', $order?->id)],
             'items.*.product_id' => [
@@ -116,8 +115,11 @@ class StoreMemberOrderRequest extends FormRequest
             function ($validator): void {
                 if ($this->filled('member_id')) {
                     $member = Member::find($this->integer('member_id'));
-                    if ($member && ! $member->isAvailableForOrder()) {
-                        $validator->errors()->add('member_id', 'Member nonaktif tidak dapat digunakan untuk order baru.');
+                    $order = $this->route('member_order');
+                    $keepsExistingBuyer = $order && (int) $order->member_id === $this->integer('member_id')
+                        && (int) $order->batch_id === $this->integer('batch_id');
+                    if ($member && ! $keepsExistingBuyer && ! $member->isAvailableForOrder()) {
+                        $validator->errors()->add('member_id', 'Pelanggan harus aktif dan memiliki akun member yang sudah disetujui serta siap login.');
                     }
                 }
 

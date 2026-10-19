@@ -70,7 +70,7 @@
                                         @if($scope === 'orders' && $order->paymentStatus)<x-status-badge :status="$order->paymentStatus" />@else<span class="portal-v2-state {{ $order->ems_tax_status === 'paid' ? 'is-paid' : '' }}">{{ $order->ems_tax_status_label }}</span>@endif
                                     </div>
 
-                                    <div class="portal-v2-price-box"><span>{{ $amountLabel }}</span><strong>Rp {{ number_format($shownAmount, 0, ',', '.') }}</strong></div>
+                                    <div class="portal-v2-price-box"><span>{{ $amountLabel }}</span><strong>Rp {{ number_format($shownAmount, $scope === 'ems' && fmod($shownAmount, 1) > 0 ? 2 : 0, ',', '.') }}</strong></div>
 
                                     <div class="portal-v2-meta-grid">
                                         @if($scope === 'orders')
