@@ -99,8 +99,9 @@ class MemberProfileTest extends TestCase
             ->assertSee('Riwayat Pesanan')
             ->assertSee('OWN-ORDER-1')
             ->assertSee('OWN-ORDER-6')
-            ->assertSee('Album Caca 6')
-            ->assertSee('Versi 6')
+            ->assertSee('1 item')
+            ->assertDontSee('Album Caca 6')
+            ->assertDontSee('Versi 6')
             ->assertDontSee('OTHER-PRIVATE-ORDER')
             ->assertDontSee('Batch Rahasia Member Lain');
     }

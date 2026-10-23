@@ -11,21 +11,23 @@
                 @elseif(!$member)
                     <div class="portal-v2-empty"><span class="portal-v2-empty-icon"><x-public-icon variant="rounded-bold" :name="$icon" :size="32" /></span><small>PESANAN PRIBADI</small><h2>Login untuk melihat data pesananmu.</h2><p>Halaman ini hanya menampilkan pesanan yang terhubung dengan akun customer milikmu.</p><a href="{{ route('login') }}">Login</a></div>
                 @else
-                    <div class="portal-v2-section-head"><div><span>DAFTAR PESANAN</span><h2>{{ $title }}</h2></div><strong>{{ $orders->count() }} data</strong></div>
+                    <div class="portal-order-controls">
+                        <div class="portal-v2-section-head"><div><span>DAFTAR PESANAN</span><h2>{{ $title }}</h2></div><strong>{{ $orders->count() }} data</strong></div>
 
-                    <div class="portal-v2-order-grid" data-order-scroll tabindex="0" role="region" aria-label="Daftar pesanan, gulir untuk melihat pesanan lain">
+                        <x-portal-order-toolbar />
+                    </div>
+
+                    <div class="portal-v2-order-grid" data-order-scroll role="region" aria-label="Daftar pesanan">
                         @forelse($orders as $order)
                             @php
                                 $trackingStatus = $order->tracking_status;
                                 $orderTotal = (float) ($order->total_amount ?: $order->items->sum(fn ($item) => (float) ($item->subtotal ?: $item->unit_price * $item->quantity)));
-                                $paidAmount = (float) $order->paid_amount;
-                                $remainingAmount = (float) $order->remaining_amount;
                                 $itemCount = (int) $order->items->sum('quantity');
                             @endphp
                             <article class="portal-v2-order-card">
                                 <div class="portal-v2-card-top"><span class="portal-v2-thumb">@if($order->batch->catalog_image_path)<img src="{{ $order->batch->catalog_image_url }}" alt="">@else<x-public-icon variant="rounded-bold" name="box" :size="24" />@endif</span><div class="portal-v2-card-title"><small>{{ $order->order_code }}</small><h3>{{ $order->batch->batch_name ?: $order->batch->batch_number }}</h3><p>{{ $order->created_at->translatedFormat('d M Y') }}{{ $order->go_number ? ' · GO '.$order->go_number : '' }}</p></div>@if($trackingStatus)<x-status-badge :status="$trackingStatus" />@endif</div>
 
-                                <div class="portal-v2-price-box"><span>{{ $scope === 'unpaid' ? 'Sisa yang perlu dibayar' : 'Total pesanan' }}</span><strong>Rp {{ number_format($scope === 'unpaid' ? $remainingAmount : $orderTotal, 0, ',', '.') }}</strong></div>
+                                <div class="portal-v2-price-box"><span>Total pesanan</span><strong>Rp {{ number_format($orderTotal, 0, ',', '.') }}</strong></div>
 
                                 <div class="portal-v2-meta-grid">
                                     <div><span>Jumlah item</span><strong>{{ $itemCount }} item</strong></div>
@@ -33,12 +35,10 @@
                                         <div><span>Status pengiriman</span><strong>{{ $trackingStatus?->name ?: 'Dalam pengiriman' }}</strong></div>
                                     @elseif($scope === 'refund')
                                         <div><span>Status</span><strong>Refund</strong></div>
-                                    @else
-                                        <div><span>Sudah dibayar</span><strong>Rp {{ number_format($paidAmount, 0, ',', '.') }}</strong></div>
                                     @endif
                                 </div>
 
-                                <div class="portal-v2-card-actions"><a class="portal-v2-card-action" href="{{ $order->portal_tracking_url }}">{{ $scope === 'shipping' ? 'Lihat tracking' : 'Lihat rincian' }} <x-public-icon variant="rounded-bold" name="arrow-right" :size="14" /></a>@if($scope === 'unpaid')<a class="portal-v2-card-action is-secondary" href="{{ route('billing.orders') }}">Buka tagihan</a>@endif</div>
+                                <div class="portal-v2-card-actions"><a class="portal-v2-card-action {{ $scope === 'shipping' ? '' : 'is-secondary' }}" href="{{ $order->portal_tracking_url }}">{{ $scope === 'shipping' ? 'Lihat tracking' : 'Lihat Detail' }} <x-public-icon variant="rounded-bold" :name="$scope === 'shipping' ? 'arrow-right' : 'eye'" :size="16" /></a></div>
                             </article>
                         @empty
                             <div class="portal-v2-empty portal-v2-empty-inline"><span class="portal-v2-empty-icon"><x-public-icon variant="rounded-bold" :name="$icon" :size="32" /></span><small>KOSONG</small><h2>{{ $emptyTitle }}</h2><p>{{ $emptyDescription }}</p><a href="{{ route('orders.history') }}">Lihat semua pesanan</a></div>

@@ -1,6 +1,6 @@
 @php
     $selectedBatchId = (int) old('batch_id', $order->batch_id ?: request('batch_id'));
-    $itemsAreLocked = $order->exists && ($order->batch?->orders_locked || $order->is_refunded);
+    $itemsAreLocked = $order->exists && ($order->batch?->orders_locked || $order->is_refunded || $order->payments()->exists());
     $rows = old('items', $order->items?->toArray() ?: [['item_name' => '', 'quantity' => 1]]);
     $selectedMemberId = old('member_id', $order->member_id);
 @endphp
@@ -45,14 +45,36 @@
                 </x-admin-form-section>
 
                 <x-admin-form-section title="Batch dan Pembayaran">
-                    <div class="grid items-start gap-4 md:grid-cols-3">
+                    <div class="grid items-start gap-4 md:grid-cols-2 lg:grid-cols-4">
                         @if($itemsAreLocked)
                             <div class="admin-form-readonly"><span>Batch pembelian</span><strong>{{ $order->batch->batch_number }}</strong><small class="admin-form-help">Batch terkunci karena pesanan sudah diproses.</small><input type="hidden" name="batch_id" value="{{ $order->batch_id }}"></div>
                         @else
                             <label class="block"><span>Batch pembelian</span><select name="batch_id" required><option value="">Pilih batch</option>@foreach($batches as $batch)<option value="{{ $batch->id }}" @selected($selectedBatchId === $batch->id)>{{ $batch->batch_number }}{{ $batch->batch_name ? ' · '.$batch->batch_name : '' }}</option>@endforeach</select><span class="admin-form-help">Pesanan mengikuti progress batch ini.</span></label>
                         @endif
                         <x-text-input label="GO / Group" name="go_number" :value="old('go_number', $order->go_number)" placeholder="Contoh: 4 atau GO-2" />
-                        <label class="block"><span>Status pembayaran</span><select name="payment_status_id"><option value="">Belum ditentukan</option>@foreach($paymentStatuses as $status)<option value="{{ $status->id }}" @selected(old('payment_status_id', $order->payment_status_id) == $status->id)>{{ $status->name }}</option>@endforeach</select></label>
+                        @if($paymentTypeLocked)
+                            <div class="admin-form-readonly"><span>Skema pembayaran</span><strong>{{ $order->payment_type_label }}</strong><small class="admin-form-help">Skema dikunci karena pesanan sudah memiliki catatan pembayaran.</small></div>
+                        @else
+                            <label class="block">
+                                <span>Skema pembayaran @unless($order->exists)<span class="text-red-500">*</span>@endunless</span>
+                                <select name="payment_type" @required(!$order->exists)>
+                                    <option value="" @selected(old('payment_type', $order->payment_type) === null || old('payment_type', $order->payment_type) === '')>Belum ditentukan</option>
+                                    <option value="dp" @selected(old('payment_type', $order->payment_type) === 'dp')>DP</option>
+                                    <option value="full" @selected(old('payment_type', $order->payment_type) === 'full')>Lunas</option>
+                                </select>
+                                <small class="admin-form-help">
+                                    @if(old('payment_type', $order->payment_type) === 'dp')
+                                        DP mengikuti {{ number_format($order->dp_percentage ?? $dpPercentage, 2, ',', '.') }}% dari total pesanan.
+                                    @elseif(!$order->exists)
+                                        DP mengikuti persentase global admin, saat ini {{ number_format($dpPercentage, 2, ',', '.') }}%.
+                                    @else
+                                        Pilih DP untuk pembayaran awal bertahap atau Lunas untuk menagihkan total pesanan.
+                                    @endif
+                                </small>
+                            </label>
+                        @endif
+                        <div class="admin-form-readonly"><span>Status pembayaran</span><strong>{{ $order->paymentStatus?->name ?? 'Dihitung otomatis' }}</strong><small class="admin-form-help">Status lunas mengikuti pembayaran terverifikasi.</small></div>
+                        @if($order->exists)<div class="admin-form-readonly"><span>Refund</span><strong>Kelola melalui payment ledger</strong><small class="admin-form-help">Refund dengan dana keluar wajib mencatat nominal dan bukti transfer.</small></div>@endif
                     </div>
                     <label class="mt-4 block"><span>Catatan pesanan</span><textarea name="notes" rows="3" placeholder="Informasi tambahan untuk pesanan ini">{{ old('notes', $order->notes) }}</textarea></label>
                     @if($order->exists)<div class="mt-4"><a class="admin-form-secondary" href="{{ route('admin.member-orders.payments.index', $order, false) }}">Kelola payment ledger</a></div>@endif

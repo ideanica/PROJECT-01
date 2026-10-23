@@ -33,6 +33,7 @@
         $adminNav = [
             ['route' => 'admin.dashboard', 'match' => 'admin.dashboard', 'label' => 'Dashboard', 'icon' => 'dashboard'],
             ['route' => 'admin.batches.index', 'match' => 'admin.batches.*', 'label' => 'Batch', 'icon' => 'layers'],
+            ['route' => 'admin.transactions.index', 'match' => 'admin.transactions.*', 'label' => 'Transaksi', 'icon' => 'bag'],
             ['route' => 'admin.members.index', 'match' => ['admin.members.*', 'admin.customer-groups.*'], 'label' => 'Customer dan Group'.($registrationRequests ? ' ('.$registrationRequests.')' : ''), 'icon' => 'users'],
             ['route' => 'admin.order-statuses.index', 'match' => 'admin.order-statuses.*', 'label' => 'Status', 'icon' => 'route'],
         ];
@@ -149,7 +150,9 @@
                 @if($isAuthPage)
                     <x-ocean-primary-navbar active="profile" />
                 @elseif($isOceanTracking)
-                    @include('tracking.partials.site-header')
+                    @unless(request()->routeIs(['tracking.order', 'tracking.progress']))
+                        @include('tracking.partials.site-header')
+                    @endunless
                 @elseif($isOceanProfile)
                     @include('profile.partials.site-header')
                 @elseif($isAuthPage)

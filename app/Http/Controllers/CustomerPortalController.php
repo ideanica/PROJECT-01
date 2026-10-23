@@ -2,94 +2,87 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\MemberOrder;
 use App\Models\Batch;
+use App\Models\MemberOrder;
+use App\Models\OrderPayment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 
 class CustomerPortalController extends Controller
 {
-    public function orders(Request $request)
-    {
-        $user = $request->user();
-        $member = $user?->member;
-
-        if (! $user) {
-            return redirect()->route('login');
-        }
-
-        if (! $member) {
-            return redirect()->route('admin.dashboard');
-        }
-
-        $orders = $member->orders()->with($this->orderRelations())->latest()->get();
-        $unpaidCount = $orders->filter(fn ($order) => $this->isOrderUnpaid($order))->count();
-        $refundCount = $orders->filter(fn ($order) => $order->is_refunded)->count();
-
-        return view('portal.overview', [
-            'type' => 'orders',
-            'title' => 'Pusat Pesanan',
-            'description' => 'Semua riwayat pesanan dan pembayaranmu tersusun dalam satu tempat.',
-            'items' => [
-                [
-                    'icon' => 'bag',
-                    'title' => 'Pesananku',
-                    'description' => 'Lihat seluruh riwayat, status proses, dan perjalanan paket pesananmu.',
-                    'note' => $orders->count().' pesanan tersimpan',
-                    'url' => route('orders.history'),
-                ],
-                [
-                    'icon' => 'card',
-                    'title' => 'Tagihan',
-                    'description' => 'Periksa transaksi yang belum dibayar, berhasil, maupun direfund.',
-                    'note' => $unpaidCount.' perlu dibayar · '.$refundCount.' refund',
-                    'url' => route('billing.orders'),
-                ],
-            ],
-        ]);
-    }
-
     public function billing(Request $request)
     {
-        $member = $request->user()?->member;
+        if (in_array($request->query('tab'), ['paid', 'unpaid', 'refund'], true)) {
+            return $this->legacyBilling($request);
+        }
+
+        $tab = $request->query('tab') === 'history' ? 'history' : 'active';
+        $filters = $request->validate([
+            'q' => ['nullable', 'string', 'max:100'],
+            'sort' => ['nullable', 'in:newest,oldest,amount_desc,amount_asc'],
+        ]);
+        $search = mb_strtolower(trim($filters['q'] ?? ''));
+
+        $user = $request->user();
+        $member = $user?->role === 'customer' ? $user->member : null;
         $orders = $member
-            ? $member->orders()->with($this->orderRelations())->latest()->get()
+            ? $member->orders()->with(['batch.paymentMethod', 'overrideStatus', 'paymentStatus', 'payments'])->latest()->get()
             : collect();
 
-        $unpaidCount = $orders->filter(fn ($order) => $this->isOrderUnpaid($order))->count();
-        $emsCount = $orders->where('ems_tax_status', 'unpaid')->count();
+        $orders->each(function ($order) use ($member, $request): void {
+            $order->setAttribute('billing_tracking_url', URL::temporarySignedRoute(
+                'tracking.order', now()->addMinutes(30),
+                ['memberCode' => $member->member_code, 'memberOrder' => $order, 'return_to' => $request->getRequestUri()]
+            ));
+        });
+        $matchesOrder = fn ($order) => $search === '' || str_contains(mb_strtolower(implode(' ', [
+            $order->order_code, $order->batch?->batch_number, $order->batch?->batch_name,
+        ])), $search);
 
-        return view('portal.overview', [
-            'type' => 'billing',
-            'title' => 'Tagihan & Pembayaran',
-            'description' => 'Pantau tagihan pesanan, Pajak/EMS, dan riwayat pembayaranmu dari satu tempat.',
-            'items' => [
-                [
-                    'icon' => 'card',
-                    'title' => 'Tagihan Pesanan',
-                    'description' => 'Lihat DP atau pelunasan batch yang masih menunggu pembayaran.',
-                    'note' => $member ? $unpaidCount.' belum dibayar' : 'Login untuk melihat',
-                    'url' => route('billing.orders'),
-                ],
-                [
-                    'icon' => 'document',
-                    'title' => 'Tagihan EMS & Pajak',
-                    'description' => 'Periksa ongkir EMS dan pajak impor beserta rincian tiap pesanan.',
-                    'note' => $member ? $emsCount.' tagihan aktif' : 'Rincian transparan',
-                    'url' => route('billing.ems'),
-                ],
-            ],
+        $obligations = $orders->flatMap(fn ($order) => collect($order->outstanding_obligations)
+            ->map(fn ($obligation) => ['order' => $order, ...$obligation]));
+        $visibleObligations = $obligations->filter(fn ($bill) => $matchesOrder($bill['order']));
+
+        // Amount sorting compares bills, since one order may have two different balances.
+        $visibleObligations = match ($filters['sort'] ?? 'newest') {
+            'amount_desc' => $visibleObligations->sortByDesc('amount'),
+            'amount_asc' => $visibleObligations->sortBy('amount'),
+            'oldest' => $visibleObligations->sortBy(fn ($bill) => $bill['order']->created_at),
+            default => $visibleObligations->sortByDesc(fn ($bill) => $bill['order']->created_at),
+        };
+
+        // Only actual, positive verified customer payments belong in the ledger.
+        // EMS paid flags cannot supply a payment transaction/date. Refunds are explicit outflows.
+        $payments = $orders->flatMap(fn ($order) => $order->payments
+            ->filter(fn ($payment) => $payment->status === 'verified' && (float) $payment->amount > 0
+                && isset(OrderPayment::CUSTOMER_PAYMENT_LABELS[$payment->type]))
+            ->map(fn ($payment) => $payment->setRelation('order', $order)));
+        $visiblePayments = $payments->filter(fn ($payment) => $matchesOrder($payment->order)
+            || str_contains(mb_strtolower($payment->type_label), $search))
+            ->sortByDesc('id')
+            ->sortByDesc(fn ($payment) => $payment->paid_at ?? $payment->created_at)
+            ->values();
+
+        return view('portal.billing-list', [
+            'user' => $user,
+            'member' => $member,
+            'tab' => $tab,
+            'obligations' => $visibleObligations->values(),
+            'payments' => $visiblePayments,
+            'outstandingCount' => $obligations->count(),
+            'outstandingTotal' => $obligations->sum('amount'),
         ]);
     }
 
-    public function billingOrders(Request $request)
+    public function legacyBilling(Request $request)
     {
-        return $this->billingList($request, 'orders');
-    }
+        $parameters = $request->only(['q', 'sort']);
 
-    public function billingEms(Request $request)
-    {
-        return $this->billingList($request, 'ems');
+        return match ($request->query('tab')) {
+            'paid', 'history' => redirect()->route('billing.index', ['tab' => 'history', ...$parameters]),
+            'refund' => redirect()->route('orders.history', ['filter' => 'refund', ...$parameters]),
+            default => redirect()->route('billing.index', $parameters),
+        };
     }
 
     public function services()
@@ -126,16 +119,53 @@ class CustomerPortalController extends Controller
 
     public function unpaid(Request $request)
     {
-        return $this->orderList($request, 'unpaid');
+        return redirect()->route('billing.index', $request->only(['q', 'sort']));
     }
 
-    public function catalog()
+    public function catalog(Request $request)
     {
+        $filters = $request->validate([
+            'q' => ['nullable', 'string', 'max:100'],
+            'status' => ['nullable', 'in:all,open,closed'],
+        ]);
+        $status = $filters['status'] ?? 'all';
         $batches = Batch::query()->where('is_catalog_visible', true)->where('is_archived', false)
             ->with(['currentStatus', 'products' => fn ($query) => $query->where('products.is_active', true)->wherePivot('is_available', true)])
-            ->latest()->paginate(12);
+            ->when($filters['q'] ?? null, fn ($query, $search) => $query->where(function ($query) use ($search) {
+                $query->where('batch_number', 'like', "%{$search}%")
+                    ->orWhere('batch_name', 'like', "%{$search}%")
+                    ->orWhereHas('products', fn ($products) => $products->where('products.is_active', true)->where('batch_product.is_available', true)->where(function ($products) use ($search) {
+                        $products->where('products.name', 'like', "%{$search}%")
+                            ->orWhere('products.variant', 'like', "%{$search}%");
+                    }));
+            }))
+            ->when($status === 'open', fn ($query) => $query->where(fn ($query) => $query->whereNull('ordering_deadline')->orWhere('ordering_deadline', '>', now())))
+            ->when($status === 'closed', fn ($query) => $query->whereNotNull('ordering_deadline')->where('ordering_deadline', '<=', now()))
+            ->latest()->paginate(9)->withQueryString();
 
-        return view('portal.catalog', compact('batches'));
+        return view('portal.catalog', [
+            'batches' => $batches,
+            'dpPercentage' => app(\App\Services\PaymentSchedule::class)->percentage(),
+            'status' => $status,
+        ]);
+    }
+
+    public function catalogShow(Batch $batch)
+    {
+        abort_unless($batch->is_catalog_visible && ! $batch->is_archived, 404);
+
+        $batch->load([
+            'currentStatus',
+            'products' => fn ($query) => $query->where('products.is_active', true)->wherePivot('is_available', true),
+        ]);
+
+        return view('portal.catalog-show', [
+            'batch' => $batch,
+            'dpPercentage' => app(\App\Services\PaymentSchedule::class)->percentage(),
+            'emsAllocationFrozen' => $batch->ems_tax_amount !== null && $batch->orders()
+                ->whereHas('payments', fn ($payments) => $payments->where('type', 'ems')->whereIn('status', ['pending', 'verified']))
+                ->exists(),
+        ]);
     }
 
     public function shipping(Request $request)
@@ -150,6 +180,10 @@ class CustomerPortalController extends Controller
 
     public function history(Request $request)
     {
+        if ($request->query('filter') === 'unpaid') {
+            return $this->unpaid($request);
+        }
+
         $user = $request->user();
         $member = $user?->member;
         $orders = collect();
@@ -170,7 +204,7 @@ class CustomerPortalController extends Controller
         }
 
         $filter = $request->string('filter')->toString();
-        $filter = in_array($filter, ['unpaid', 'active', 'history', 'shipping', 'refund'], true)
+        $filter = in_array($filter, ['active', 'history', 'shipping', 'refund'], true)
             ? $filter
             : 'all';
 
@@ -181,7 +215,7 @@ class CustomerPortalController extends Controller
         return view('portal.order-history', [
             'user' => $user,
             'member' => $member,
-            'orders' => $filteredOrders,
+            'orders' => $this->filterOrderList($request, $filteredOrders),
             'allOrderCount' => $orders->count(),
             'filter' => $filter,
         ]);
@@ -211,14 +245,6 @@ class CustomerPortalController extends Controller
         }
 
         $page = match ($scope) {
-            'unpaid' => [
-                'eyebrow' => 'PEMBAYARAN PESANAN',
-                'title' => 'Pesanan belum dibayar',
-                'description' => 'Daftar pesanan dengan DP atau pelunasan yang masih perlu diselesaikan.',
-                'icon' => 'wallet',
-                'emptyTitle' => 'Tidak ada pesanan yang belum dibayar.',
-                'emptyDescription' => 'Semua pembayaran pesananmu sudah aman untuk saat ini.',
-            ],
             'shipping' => [
                 'eyebrow' => 'PENGIRIMAN',
                 'title' => 'Pesanan sedang dikirim',
@@ -240,7 +266,7 @@ class CustomerPortalController extends Controller
         return view('portal.order-list', [
             'user' => $user,
             'member' => $member,
-            'orders' => $orders,
+            'orders' => $this->filterOrderList($request, $orders),
             'scope' => $scope,
             ...$page,
         ]);
@@ -251,88 +277,43 @@ class CustomerPortalController extends Controller
         $trackingStatus = $order->tracking_status;
 
         return array_values(array_filter([
-            $this->isOrderUnpaid($order) ? 'unpaid' : null,
-            ! $trackingStatus?->is_final && ! $order->is_refunded ? 'active' : null,
-            $trackingStatus?->code === 'selesai' ? 'history' : null,
-            $trackingStatus?->code === 'dikirim-ke-customer' ? 'shipping' : null,
+            ! $trackingStatus?->is_final && ! $order->is_refunded && $trackingStatus?->code !== 'dikirim-ke-customer' ? 'active' : null,
+            ! $order->is_refunded && $trackingStatus?->code === 'selesai' ? 'history' : null,
+            ! $order->is_refunded && $trackingStatus?->code === 'dikirim-ke-customer' ? 'shipping' : null,
             $order->is_refunded ? 'refund' : null,
         ]));
     }
 
-    private function billingList(Request $request, string $scope)
+    private function filterOrderList(Request $request, $orders)
     {
-        $user = $request->user();
-        $member = $user?->member;
-        $orders = collect();
-
-        if ($member) {
-            $orders = $member->orders()
-                ->with($this->orderRelations())
-                ->latest()
-                ->get();
-
-            $orders->each(function ($order) use ($member, $request): void {
-                $order->setAttribute('billing_tracking_url', URL::temporarySignedRoute(
-                    'tracking.order',
-                    now()->addMinutes(30),
-                    ['memberCode' => $member->member_code, 'memberOrder' => $order, 'return_to' => $request->getRequestUri()]
-                ));
-            });
-        }
-
-        $requestedTab = $request->string('tab')->toString();
-        $requestedTab = $requestedTab === 'history' ? 'paid' : $requestedTab;
-        $tab = in_array($requestedTab, ['unpaid', 'paid', 'refund'], true) ? $requestedTab : 'unpaid';
-
-        if ($scope === 'ems') {
-            $unpaidOrders = $orders->filter(fn ($order) => $order->ems_tax_is_published && $order->ems_tax_status === 'unpaid')->values();
-            $paidOrders = $orders->filter(fn ($order) => $order->ems_tax_is_published && $order->ems_tax_status === 'paid')->values();
-            $refundOrders = collect();
-            $title = 'Tagihan EMS & Pajak';
-            $description = 'Rincian ongkir internasional dan pajak impor untuk setiap pesananmu.';
-        } else {
-            $unpaidOrders = $orders
-                ->filter(fn ($order) => $this->isOrderUnpaid($order))
-                ->values();
-            $paidOrders = $orders
-                ->filter(fn ($order) => ! $order->is_refunded && (float) $order->total_amount > 0 && $order->remaining_amount <= 0)
-                ->values();
-            $refundOrders = $orders->filter(fn ($order) => $order->is_refunded)->values();
-            $title = 'Tagihan Pesanan';
-            $description = 'Semua transaksi yang belum dibayar, berhasil, dan direfund tersusun di sini.';
-        }
-
-        $visibleOrders = match ($tab) {
-            'paid' => $paidOrders,
-            'refund' => $refundOrders,
-            default => $unpaidOrders,
-        };
-
-        return view('portal.billing-list', [
-            'user' => $user,
-            'member' => $member,
-            'scope' => $scope,
-            'tab' => $tab,
-            'title' => $title,
-            'description' => $description,
-            'orders' => $visibleOrders,
-            'unpaidCount' => $unpaidOrders->count(),
-            'paidCount' => $paidOrders->count(),
-            'refundCount' => $refundOrders->count(),
+        $filters = $request->validate([
+            'q' => ['nullable', 'string', 'max:100'],
+            'sort' => ['nullable', 'in:newest,oldest,amount_desc,amount_asc'],
         ]);
-    }
+        $search = mb_strtolower(trim($filters['q'] ?? ''));
+        $orders = $orders->filter(function ($order) use ($search) {
+            $searchable = collect([
+                $order->order_code, $order->go_number,
+                $order->batch->batch_number, $order->batch->batch_name,
+                ...$order->items->pluck('item_name')->all(),
+            ])->implode(' ');
 
-    private function isOrderUnpaid(MemberOrder $order): bool
-    {
-        return ! $order->is_refunded
-            && (float) $order->total_amount > 0
-            && $order->remaining_amount > 0;
+            return $search === '' || str_contains(mb_strtolower($searchable), $search);
+        });
+
+        return match ($filters['sort'] ?? 'newest') {
+            'oldest' => $orders->sortBy('created_at')->values(),
+            'amount_desc' => $orders->sortByDesc('total_amount')->values(),
+            'amount_asc' => $orders->sortBy('total_amount')->values(),
+            default => $orders->sortByDesc('created_at')->values(),
+        };
     }
 
     private function orderRelations(): array
     {
         return [
             'batch.currentStatus',
+            'batch.paymentMethod',
             'overrideStatus',
             'paymentStatus',
             'payments',

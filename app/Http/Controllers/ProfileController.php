@@ -22,6 +22,7 @@ class ProfileController extends Controller
                     'batch.currentStatus',
                     'overrideStatus',
                     'paymentStatus',
+                    'payments',
                     'items.overrideStatus',
                 ])
                 ->latest()
@@ -37,8 +38,9 @@ class ProfileController extends Controller
         }
 
         $stats = [
-            'unpaid' => $orders->filter(fn ($order) => in_array($order->paymentStatus?->code, ['menunggu-dp', 'menunggu-pelunasan'], true))->count(),
-            'ems' => $orders->filter(fn ($order) => $order->ems_tax_is_published && $order->ems_tax_status === 'unpaid')->count(),
+            // Count obligations, not orders: an order balance and EMS bill count separately.
+            'unpaid' => $orders->sum(fn ($order) => count($order->outstanding_obligations)),
+            'ems' => $orders->filter(fn ($order) => $order->has_outstanding_ems_tax)->count(),
             'history' => $orders->filter(fn ($order) => $order->effective_status?->code === 'selesai')->count(),
             'shipping' => $orders->filter(fn ($order) => $order->effective_status?->code === 'dikirim-ke-customer')->count(),
             'refund' => $orders->filter(fn ($order) => $order->is_refunded)->count(),
@@ -51,8 +53,8 @@ class ProfileController extends Controller
                 ?? $order->items->sum('subtotal'))),
             'payment_submitted' => $orders->sum(fn ($order) => (float) ($order->payment_amount ?? 0)),
             'ems_outstanding' => $orders
-                ->where('ems_tax_status', 'unpaid')
-                ->sum(fn ($order) => (float) ($order->ems_tax_amount ?? 0)),
+                ->filter(fn ($order) => $order->has_outstanding_ems_tax)
+                ->sum(fn ($order) => $order->ems_tax_remaining_amount),
         ];
 
         $calendarMonth = now()->startOfMonth();

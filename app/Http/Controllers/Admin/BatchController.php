@@ -10,6 +10,8 @@ use App\Models\OrderStatus;
 use App\Models\PaymentMethod;
 use App\Models\Product;
 use App\Services\BatchEmsTaxService;
+use App\Services\PaymentSchedule;
+use App\Services\PaymentVerificationService;
 use App\Services\StatusTransitionService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -133,6 +135,7 @@ class BatchController extends Controller
             'orders.overrideStatus',
             'orders.paymentStatus',
             'orders.items.overrideStatus',
+            'orders.payments',
             'products',
             'statusHistories.oldStatus',
             'statusHistories.newStatus',
@@ -140,7 +143,11 @@ class BatchController extends Controller
         ]);
         $statuses = OrderStatus::activeFor('batch')->get();
 
-        return view('admin.batches.show', compact('batch', 'statuses'));
+        return view('admin.batches.show', [
+            'batch' => $batch,
+            'statuses' => $statuses,
+            'dpPercentage' => app(PaymentSchedule::class)->percentage(),
+        ]);
     }
 
     /**
@@ -256,19 +263,47 @@ class BatchController extends Controller
         return back()->with('status', 'Pajak EMS batch dan pembagian per pelanggan diperbarui.');
     }
 
-    public function updateEmsPayment(Request $request, Batch $batch, MemberOrder $memberOrder)
+    public function updateEmsPayment(Request $request, Batch $batch, MemberOrder $memberOrder, PaymentVerificationService $payments)
     {
         abort_if($batch->is_archived, 403);
         abort_unless($memberOrder->batch_id === $batch->id, 404);
-        $data = $request->validate(['ems_tax_status' => ['required', 'in:unpaid,paid']]);
-        DB::transaction(function () use ($batch, $memberOrder, $data): void {
-            Batch::query()->lockForUpdate()->findOrFail($batch->id);
-            $memberOrder->refresh();
-            abort_unless($memberOrder->batch_id === $batch->id && $memberOrder->has_ems_tax_bill, 422);
-            $memberOrder->update($data);
-        });
+        $request->validate([
+            'ems_tax_status' => ['required', 'in:paid'],
+            'proof' => ['required', 'file', 'mimes:jpg,jpeg,png,webp,pdf', 'max:4096'],
+        ]);
+        $proofPath = null;
 
-        return back()->with('status', 'Status pembayaran EMS pelanggan diperbarui.');
+        try {
+            DB::transaction(function () use ($batch, $memberOrder, $payments, $request, &$proofPath): void {
+                Batch::query()->lockForUpdate()->findOrFail($batch->id);
+                $memberOrder = MemberOrder::query()->lockForUpdate()->findOrFail($memberOrder->id);
+                abort_unless($memberOrder->batch_id === $batch->id && $memberOrder->has_ems_tax_bill, 422);
+                if ($memberOrder->payments()->where('type', 'ems')->where('status', 'pending')->exists()) {
+                    throw ValidationException::withMessages(['proof' => 'Ada pembayaran EMS yang masih menunggu verifikasi. Proses transaksi tersebut terlebih dahulu.']);
+                }
+
+                $amount = $memberOrder->ems_tax_remaining_amount;
+                $payments->assertPayable($memberOrder, true, $amount);
+                $proofPath = $request->file('proof')->store('payment-proofs', 'local');
+                abort_unless($proofPath, 503, 'Bukti belum berhasil disimpan. Silakan coba kembali.');
+                $memberOrder->payments()->create([
+                    'type' => 'ems',
+                    'amount' => $amount,
+                    'status' => 'pending',
+                    'proof_path' => $proofPath,
+                    'paid_at' => now(),
+                    'created_by' => $request->user()->id,
+                ]);
+            });
+        } catch (Throwable $exception) {
+            if ($proofPath) {
+                Storage::disk('local')->delete($proofPath);
+            }
+
+            throw $exception;
+        }
+
+        return back()->with('status', 'Bukti pembayaran EMS tersimpan dan menunggu verifikasi melalui menu Transaksi.');
     }
 
     public function transition(Request $request, Batch $batch, StatusTransitionService $statuses)
@@ -436,6 +471,7 @@ class BatchController extends Controller
             'batch' => $batch,
             'statuses' => OrderStatus::activeFor('batch')->get(),
             'activeQris' => PaymentMethod::getActiveQris(),
+            'dpPercentage' => app(PaymentSchedule::class)->percentage(),
         ];
     }
 
@@ -443,6 +479,7 @@ class BatchController extends Controller
     {
         $existingProductIds = $batch->products()->pluck('products.id')->map(fn ($id) => (int) $id)->all();
         $sync = [];
+        $dpPercentage = app(PaymentSchedule::class)->percentage();
 
         foreach (array_values($variants) as $index => $variant) {
             $product = null;
@@ -461,7 +498,7 @@ class BatchController extends Controller
             ])->save();
 
             $sync[$product->id] = [
-                'dp_price' => $variant['dp_price'],
+                'dp_price' => min((float) $variant['full_price'], max(0.01, round((float) $variant['full_price'] * $dpPercentage / 100, 2))),
                 'full_price' => $variant['full_price'],
                 'sort_order' => $index,
                 'is_available' => filter_var($variant['is_available'] ?? true, FILTER_VALIDATE_BOOL),

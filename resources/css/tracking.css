@@ -82,8 +82,9 @@ html[data-customer-theme="dark"] body.ocean-tracking .tracking-neo-input-wrap in
     color: #9eb4a5;
 }
 
-/* Order details use the same outlined pink/mint cards as the customer portal. */
-.ocean-tracking .order-detail-page { font-family: 'Nunito Sans', sans-serif; color: var(--pv2-ink); background: var(--pv2-cream) !important; }
+/* Order details use the same outlined pink/mint cards as the customer portal.
+ * Legacy mobile page padding is important; the shell owns horizontal gutters here. */
+.ocean-tracking .order-detail-page { padding-inline:0 !important; font-family: 'Nunito Sans', sans-serif; color: var(--pv2-ink); background: var(--pv2-cream) !important; }
 .ocean-tracking .order-detail-page :is(.order-detail-panel, .order-detail-stats article) { border: 2px solid var(--pv2-outline) !important; background: var(--pv2-paper) !important; box-shadow: var(--customer-shadow-card) var(--pv2-shadow-color) !important; }
 .ocean-tracking .order-detail-page .order-detail-hero { border: 2px solid var(--pv2-outline) !important; background: var(--pv2-pink) !important; box-shadow: var(--customer-shadow-card) var(--pv2-mint-shadow); }
 .ocean-tracking .order-detail-page .order-detail-cover { background: var(--pv2-mint); color: var(--pv2-ink); }
@@ -104,7 +105,7 @@ html[data-customer-theme="dark"] body.ocean-tracking .tracking-neo-input-wrap in
 .ocean-tracking .order-detail-page .order-detail-item-copy h3 { font-size: 15px; line-height: 1.4; overflow-wrap: anywhere; }
 .ocean-tracking .order-detail-page .order-detail-item-copy :is(p, small) { font-size: 12px; line-height: 1.5; }
 .ocean-tracking .order-detail-page .order-detail-item-price > strong { font-size: 14px; }
-.ocean-tracking .order-detail-page .order-detail-stats strong { font-size: clamp(14px, 1.4vw, 18px); overflow-wrap: anywhere; }
+.ocean-tracking .order-detail-page .order-detail-stats strong { font-size: clamp(14px, 1.4vw, 18px); overflow-wrap: anywhere; white-space: normal; }
 .ocean-tracking .order-detail-page .order-detail-stats small { font-size: 11px; }
 .ocean-tracking .order-detail-page .order-detail-payment-card :is(dt, dd) { font-size: 12px; overflow-wrap: anywhere; }
 .ocean-tracking .order-detail-page .order-detail-payment-card dl { border-top: 0; }
@@ -114,13 +115,18 @@ html[data-customer-theme="dark"] body.ocean-tracking .tracking-neo-input-wrap in
 .order-detail-payment-history > strong { display: block; font-size: 14px; }
 .order-detail-payment-history > div { display: flex; align-items: start; justify-content: space-between; gap: 12px; margin-top: 12px; }
 .order-detail-payment-history small { color: var(--pv2-text); }
+.order-detail-current-status { display:flex; flex-wrap:wrap; align-items:center; gap:10px; padding:16px 20px; color:var(--pv2-ink); }
+.order-detail-current-label { flex-basis:100%; font-size:12px; font-weight:700; color:var(--pv2-ink); }
+.order-detail-current-status > span:not(.status-badge) { font-size:12px; font-weight:700; }
 .ocean-tracking .order-detail-page .order-detail-timeline-dot { background: var(--pv2-pink); border-color: var(--pv2-outline); }
 .ocean-tracking .order-detail-page .order-detail-timeline-entry { border-color: var(--pv2-mint); }
 .ocean-tracking .order-detail-page .order-detail-note-card { padding: 18px; }
 .ocean-tracking .order-detail-page .order-detail-note-card p { font-size: 12px; line-height: 1.6; }
 @media (max-width: 600px) {
   .ocean-tracking .order-detail-page .order-detail-item { grid-template-columns: 44px minmax(0, 1fr); padding: 12px; gap: 12px; }
-  .ocean-tracking .order-detail-page .order-detail-item-price { grid-column: 2; justify-self: stretch; align-items: start; }
+  .ocean-tracking .order-detail-page .order-detail-item-price { grid-column: 1 / -1; justify-self: stretch; align-items: start; flex-wrap: wrap; }
+  .order-detail-item-price > strong { flex-shrink: 0; white-space: nowrap; }
+  .order-detail-item-price > span { max-width: 100%; }
   .ocean-tracking .order-detail-page .order-detail-stats article { align-items: start; gap: 10px; flex-direction: column; }
   .ocean-tracking .order-detail-page .order-detail-stats strong { font-size: 15px; }
 }
@@ -133,3 +139,46 @@ html[data-customer-theme="dark"] body.ocean-tracking .tracking-neo-input-wrap in
 .ocean-tracking .order-detail-page .order-detail-cover > svg { width: 48px; height: 48px; }
 .ocean-tracking .order-detail-page :is(.order-detail-hero p, .order-detail-stats small, .order-detail-payment-card dt, .order-detail-item-copy p, .order-detail-item-copy small, .order-detail-note-card p, .order-detail-timeline-entry p, .order-detail-timeline-entry time, .order-detail-empty) { color: var(--pv2-text) !important; }
 .ocean-tracking .order-detail-page .order-detail-panel { overflow: hidden; }
+
+/* Match the primary navbar container at desktop, compact desktop, and mobile widths. */
+.order-detail-shell { width:min(90.43%, 1180px); }
+.order-detail-title-row { flex-wrap:wrap; }
+.order-detail-item-price { min-width:0; }
+@media (max-width:1050px) {
+    .order-detail-shell { width:min(92%, 980px); }
+}
+@media (max-width:1023px) {
+    .order-detail-shell { width:calc(100% - 24px); }
+}
+@media (min-width:1025px) {
+    .order-detail-layout { align-items:stretch; }
+    .order-detail-main-column { min-width:0; grid-template-rows:auto 1fr; }
+    .order-detail-side-column { display:flex; min-width:0; flex-direction:column; }
+    .order-detail-order-note { margin-top:auto; }
+}
+
+@media (max-width:1024px) {
+    .order-detail-layout { grid-template-columns:minmax(0,1fr); gap:20px; margin-top:24px; }
+    .order-detail-main-column, .order-detail-side-column { min-width:0; gap:20px; }
+    .order-detail-side-column { display:grid; grid-template-columns:minmax(0,1fr); align-items:start; }
+    .order-detail-ems-card { grid-column:1/-1; }
+    .order-detail-hero-copy { padding:28px 24px; }
+    .ocean-tracking .order-detail-page .order-detail-item { grid-template-columns:44px minmax(0,1fr); }
+    .ocean-tracking .order-detail-page .order-detail-item-price { grid-column:2; justify-self:start; text-align:left; }
+}
+
+@media (max-width:700px) {
+    .order-detail-side-column { grid-template-columns:minmax(0,1fr); }
+    .order-detail-topbar { flex-wrap:wrap; gap:12px; margin-bottom:24px; }
+    .ocean-tracking .order-detail-page .order-detail-topbar > a { min-height:44px; font-size:12px; }
+    .order-detail-topbar > span { font-size:10px; letter-spacing:.08em; }
+    .order-detail-title-row h1 { font-size:clamp(28px,7vw,40px); line-height:1.1; }
+    .order-detail-hero-copy > span { font-size:10px; }
+    .order-detail-hero-copy > p { font-size:12px; }
+    .order-detail-section-heading span { font-size:9px; }
+    .order-detail-section-heading > b { font-size:11px; }
+    .order-detail-item-list { gap:14px; padding:14px; }
+    .order-detail-item-copy small { overflow-wrap:anywhere; }
+    .ocean-tracking .order-detail-page .order-detail-item-price { grid-column:1/-1; justify-self:stretch; }
+    .ocean-tracking .order-detail-page .order-detail-topbar > span { color:var(--pv2-text); }
+}

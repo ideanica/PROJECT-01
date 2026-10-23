@@ -25,14 +25,11 @@ php artisan serve
 ```
 
 Konfigurasi bawaan menggunakan SQLite. Pastikan ekstensi `pdo_sqlite` dan `sqlite3` aktif, lalu buat file `database/database.sqlite` sebelum migrasi jika belum tersedia.
+Sebelum menjalankan seeder, isi `INITIAL_ADMIN_NAME`, `INITIAL_ADMIN_USERNAME`, `INITIAL_ADMIN_EMAIL`, dan `INITIAL_ADMIN_PASSWORD` di `.env` untuk membuat admin pertama. Tanpa konfigurasi tersebut, tidak ada akun awal maupun data bisnis contoh.
 
-## Akun demo
+## Data aplikasi
 
-- Admin: `admin@example.com` / `password`
-- Pencarian riwayat customer: `dinda@example.com`
-- Tracking publik: `ORD-GO-NCT-0002`
-
-Ganti seluruh kredensial demo sebelum digunakan di production.
+Seeder bawaan hanya menyiapkan status referensi. Produk, katalog batch, pelanggan, pesanan, pembayaran, dan histori operasional muncul setelah dicatat melalui alur aplikasi yang sesuai. Tidak ada akun atau transaksi demo bawaan.
 
 ## Login dan registrasi customer
 
@@ -145,14 +142,7 @@ php artisan migrate --force
 php artisan db:seed --force
 ```
 
-Untuk database MySQL baru, schema juga dapat di-import langsung melalui
-phpMyAdmin menggunakan `database/schema/mysql-schema.sql`. Pilih database yang
-masih kosong sebelum import karena script tersebut menghapus tabel dengan nama
-yang sama. Setelah schema berhasil, import `database/schema/mysql-seed.sql`
-untuk memasukkan data awal dan akun admin demo. Alternatifnya, jalankan
-`php artisan db:seed --force` menggunakan koneksi database production.
-
-Seeder membuat akun demo. Ganti password admin dan hapus data demo sebelum website production digunakan secara publik.
+Sebelum membuat admin pertama, isi `INITIAL_ADMIN_NAME`, `INITIAL_ADMIN_USERNAME`, `INITIAL_ADMIN_EMAIL`, dan `INITIAL_ADMIN_PASSWORD` pada environment deployment. Jalankan migrasi dan seeder melalui Laravel. Seeder admin tidak membuat kredensial default, tidak mengubah akun yang sudah ada, dan tidak membuat admin kedua jika admin sudah tersedia. Hapus variabel password awal setelah akun berhasil dibuat. Jangan gunakan dump SQL lama di `database/schema` untuk instalasi baru; dump itu berasal dari skema aplikasi versi terdahulu dan tidak mengikuti migrasi terkini.
 
 ### 4. Hubungkan repository ke Vercel
 

@@ -1,0 +1,27 @@
+/* Shared status treatment, inspired by coign-membership's outlined badges. */
+.status-badge {
+    display: inline-block;
+    width: max-content;
+    flex-shrink: 0;
+    max-width: 100%;
+    min-width: 0;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid color-mix(in srgb, var(--status-color, #e4e4e7) 35%, #334155);
+    border-radius: 5px;
+    padding: 4px 9px;
+    background: color-mix(in srgb, var(--status-color, #e4e4e7) 50%, white);
+    color: #111111;
+    box-shadow: none;
+    font-family: 'Nunito Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.4;
+    letter-spacing: normal;
+    text-align: center;
+    text-transform: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+}

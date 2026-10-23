@@ -1,4 +1,4 @@
-@props(['order', 'compact' => false, 'showEmpty' => false])
+@props(['order', 'compact' => false, 'showEmpty' => false, 'showStatusBadge' => true])
 
 @if($order->ems_tax_is_published || $showEmpty)
     <aside class="order-ems-bill {{ $compact ? 'order-ems-bill-compact' : '' }} {{ $order->ems_tax_status === 'paid' ? 'is-paid' : '' }}">
@@ -19,8 +19,10 @@
                 <small>Pajak EMS belum ditentukan atau belum dialokasikan dari batch.</small>
             @endif
         </div>
-        <span class="order-ems-bill-status">
-            {{ $order->has_ems_tax_bill ? match($order->ems_tax_status) { 'paid' => 'Lunas', 'unpaid' => 'Perlu dibayar', default => 'Draft' } : 'Belum ada' }}
-        </span>
+        @if($showStatusBadge)
+            <x-status-badge class="order-ems-bill-status"
+                :label="$order->has_ems_tax_bill ? match($order->ems_tax_status) { 'paid' => 'Lunas', 'unpaid' => 'Perlu dibayar', default => 'Draft' } : 'Belum ada'"
+                :color="match($order->ems_tax_status) { 'paid' => '#bbf7d0', 'unpaid' => '#fef08a', default => '#e4e4e7' }" />
+        @endif
     </aside>
 @endif

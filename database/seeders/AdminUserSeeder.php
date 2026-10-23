@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use RuntimeException;
 
 class AdminUserSeeder extends Seeder
 {
@@ -17,16 +18,30 @@ class AdminUserSeeder extends Seeder
             return;
         }
 
-        User::firstOrCreate(
-            ['email' => 'admin@example.com'],
-            [
-                'name' => 'OceanPaws Admin',
-                'username' => 'admin',
-                'role' => User::ROLE_ADMIN,
-                'password_set_at' => now(),
-                'email_verified_at' => now(),
-                'password' => Hash::make('password'),
-            ],
-        );
+        $attributes = config('seeders.admin');
+        $required = ['name', 'username', 'email', 'password'];
+        $provided = collect($required)->filter(fn (string $key) => filled($attributes[$key] ?? null));
+
+        if ($provided->isEmpty()) {
+            return;
+        }
+
+        if ($provided->count() !== count($required)) {
+            throw new RuntimeException('Lengkapi INITIAL_ADMIN_NAME, INITIAL_ADMIN_USERNAME, INITIAL_ADMIN_EMAIL, dan INITIAL_ADMIN_PASSWORD untuk membuat admin awal.');
+        }
+
+        if (User::where('email', $attributes['email'])->orWhere('username', $attributes['username'])->exists()) {
+            throw new RuntimeException('Email atau username admin awal sudah dipakai akun lain. Admin seeder tidak mengubah akun yang sudah ada.');
+        }
+
+        User::create([
+            'name' => $attributes['name'],
+            'username' => $attributes['username'],
+            'email' => $attributes['email'],
+            'role' => User::ROLE_ADMIN,
+            'password_set_at' => now(),
+            'email_verified_at' => now(),
+            'password' => Hash::make($attributes['password']),
+        ]);
     }
 }

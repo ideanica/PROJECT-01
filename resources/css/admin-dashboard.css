@@ -612,16 +612,6 @@
     text-align: center;
 }
 
-.admin-dashboard .status-badge {
-    border: 1px solid #d4d4d8 !important;
-    border-radius: 8px !important;
-    box-shadow: none !important;
-    padding: .22rem .55rem !important;
-    font-size: .58rem !important;
-    font-weight: 600;
-    letter-spacing: .01em;
-}
-
 /* Responsive: the admin sidebar collapses into a bottom dock below 1024px. */
 @media (min-width: 1024px) {
     .admin-dashboard .admin-dash-hero {
@@ -735,3 +725,20 @@
         letter-spacing: .04em;
     }
 }
+
+.transaction-filters { display: flex; align-items: end; flex-wrap: wrap; gap: 12px; border-bottom: 1px solid #e4e4e7; padding: 20px; }
+.transaction-filters label { display: grid; gap: 7px; min-width: 140px; flex: 1 1 140px; font-size: 12px; font-weight: 600; }
+.transaction-filters .transaction-search { flex: 2 1 240px; }
+.transaction-filters :is(input,select) { width: 100%; min-width: 0; }
+.transaction-review-grid { display: grid; align-items: start; gap: 24px; grid-template-columns: minmax(0,1.25fr) minmax(0,1fr); }
+.transaction-panel { min-width: 0; border: 1px solid #e4e4e7; border-radius: 16px; background: white; padding: 24px; box-shadow: 0 1px 3px #18181b08; }
+.transaction-proof-image { display: block; max-width: 100%; max-height: 75vh; margin: auto; object-fit: contain; }
+.transaction-proof-placeholder { display: grid; gap: 12px; min-height: 240px; place-content: center; border: 1px dashed #d4d4d8; border-radius: 12px; padding: 24px; text-align: center; color: #71717a; font-size: 14px; }
+.transaction-facts { display: grid; gap: 12px; font-size: 13px; }
+.transaction-facts > div { display: flex; justify-content: space-between; gap: 16px; }
+.transaction-facts dt { flex-shrink: 0; color: #71717a; }
+.transaction-facts dd { text-align: right; overflow-wrap: anywhere; min-width: 0; }
+.transaction-facts a { color: #2f6b46; text-decoration: underline; }
+.transaction-note { margin-top: 16px; border-radius: 10px; background: #f4f4f5; padding: 12px; font-size: 13px; line-height: 1.7; overflow-wrap: anywhere; white-space: pre-line; }
+@media (max-width: 1023px) { .transaction-review-grid { grid-template-columns: minmax(0,1fr); } }
+@media (max-width: 480px) { .transaction-panel { padding: 16px; } .transaction-filters { padding: 16px; } .transaction-filters label { flex-basis: 100%; } }

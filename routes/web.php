@@ -16,18 +16,26 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredCustomerController;
 use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\CustomerPortalController;
+use App\Http\Controllers\CustomerPaymentController;
+use App\Http\Controllers\CustomerOrderController;
+use App\Http\Controllers\Admin\TransactionController;
 use App\Http\Controllers\CustomerProfileController;
 use App\Http\Controllers\MemberTrackingController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [MemberTrackingController::class, 'home'])->name('home');
-Route::redirect('/orders', '/profile')->name('orders.index');
-Route::redirect('/billing', '/profile')->name('billing.index');
-Route::get('/billing/orders', [CustomerPortalController::class, 'billingOrders'])->name('billing.orders');
-Route::get('/billing/ems', [CustomerPortalController::class, 'billingEms'])->name('billing.ems');
+Route::redirect('/orders', '/order-history')->name('orders.index');
+Route::get('/billing', [CustomerPortalController::class, 'billing'])->name('billing.index');
+Route::get('/billing/orders/{memberOrder}/payment/{billType}', [CustomerPaymentController::class, 'show'])->middleware('auth')->whereIn('billType', ['order', 'ems'])->name('billing.payments.show');
+Route::post('/billing/orders/{memberOrder}/payments', [CustomerPaymentController::class, 'store'])->middleware(['auth', 'throttle:10,1'])->name('billing.payments.store');
+Route::get('/billing/orders/{memberOrder}/payments/{payment}/proof', [CustomerPaymentController::class, 'proof'])->middleware('auth')->name('billing.payments.proof');
+Route::get('/billing/orders', [CustomerPortalController::class, 'legacyBilling'])->name('billing.orders');
+Route::get('/billing/ems', [CustomerPortalController::class, 'legacyBilling'])->name('billing.ems');
 Route::get('/services', [CustomerPortalController::class, 'services'])->name('services.index');
 Route::get('/catalog', [CustomerPortalController::class, 'catalog'])->name('catalog.index');
+Route::get('/catalog/{batch}', [CustomerPortalController::class, 'catalogShow'])->name('catalog.show');
+Route::post('/catalog/{batch}/orders', [CustomerOrderController::class, 'store'])->middleware(['auth', 'throttle:5,1'])->name('catalog.orders.store');
 Route::get('/orders/unpaid', [CustomerPortalController::class, 'unpaid'])->name('orders.unpaid');
 Route::get('/orders/shipping', [CustomerPortalController::class, 'shipping'])->name('orders.shipping');
 Route::get('/orders/refunds', [CustomerPortalController::class, 'refunds'])->name('orders.refunds');
@@ -66,6 +74,10 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->midd
 
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'can:access-admin'])->group(function () {
     Route::get('/', DashboardController::class)->name('dashboard');
+    Route::get('transactions', [TransactionController::class, 'index'])->name('transactions.index');
+    Route::put('transactions/settings', [TransactionController::class, 'settings'])->name('transactions.settings');
+    Route::get('transactions/{payment}', [TransactionController::class, 'show'])->name('transactions.show');
+    Route::post('transactions/{payment}/review', [TransactionController::class, 'review'])->name('transactions.review');
 
     Route::get('batches/settings', [BatchController::class, 'settings'])->name('batches.settings');
     Route::post('batches/settings/payment-methods', [BatchController::class, 'storePaymentMethod'])->name('batches.payment-methods.store');
@@ -94,6 +106,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'can:access-admin'])
 
     Route::get('member-orders/{member_order}/payments', [OrderPaymentController::class, 'index'])->name('member-orders.payments.index');
     Route::post('member-orders/{member_order}/payments', [OrderPaymentController::class, 'store'])->name('member-orders.payments.store');
+    Route::post('member-orders/{member_order}/payments/refund', [OrderPaymentController::class, 'refund'])->name('member-orders.payments.refund');
     Route::put('member-orders/{member_order}/payments/{payment}', [OrderPaymentController::class, 'update'])->name('member-orders.payments.update');
     Route::delete('member-orders/{member_order}/payments/{payment}', [OrderPaymentController::class, 'destroy'])->name('member-orders.payments.destroy');
     Route::get('member-orders/{member_order}/payments/{payment}/proof', [OrderPaymentController::class, 'proof'])->name('member-orders.payments.proof');

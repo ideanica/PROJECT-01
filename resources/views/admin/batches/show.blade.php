@@ -84,10 +84,12 @@
 
             <div class="order-table-scroll mt-4">
                 <table class="order-table responsive-card-table">
-                    <thead><tr><th>Variasi</th><th>Harga DP</th><th>Harga Lunas</th><th>Ketersediaan</th></tr></thead>
+                    <thead><tr><th>Variasi</th><th>DP ({{ number_format($dpPercentage, 2, ',', '.') }}%)</th><th>Harga Lunas</th><th>Ketersediaan</th></tr></thead>
                     <tbody>
                         @forelse($batch->products as $product)
-                            <tr><td data-label="Variasi"><div class="order-table-primary">{{ $product->variant ?: $product->name }}</div></td><td data-label="Harga DP">Rp {{ number_format($product->pivot->dp_price, 0, ',', '.') }}</td><td data-label="Harga lunas">Rp {{ number_format($product->pivot->full_price, 0, ',', '.') }}</td><td data-label="Ketersediaan">{{ $product->pivot->is_available ? 'Tersedia' : 'Tidak tersedia' }}</td></tr>
+                            @php($fullPrice = (float) ($product->pivot->full_price ?? $product->default_price ?? 0))
+                            @php($dpPrice = min($fullPrice, max(0.01, round($fullPrice * $dpPercentage / 100, 2))))
+                            <tr><td data-label="Variasi"><div class="order-table-primary">{{ $product->variant ?: $product->name }}</div></td><td data-label="DP">Rp {{ number_format($dpPrice, fmod($dpPrice, 1) > 0 ? 2 : 0, ',', '.') }}</td><td data-label="Harga lunas">Rp {{ number_format($fullPrice, fmod($fullPrice, 1) > 0 ? 2 : 0, ',', '.') }}</td><td data-label="Ketersediaan">{{ $product->pivot->is_available ? 'Tersedia' : 'Tidak tersedia' }}</td></tr>
                         @empty
                             <tr><td colspan="4" class="px-4 py-8 text-center text-zinc-500">Belum ada variasi katalog.</td></tr>
                         @endforelse
@@ -133,12 +135,18 @@
                                 <td data-label="Bagian pajak EMS">{{ $order->ems_tax_amount !== null ? 'Rp '.number_format($order->ems_tax_amount, 2, ',', '.') : 'Belum ditentukan' }}</td>
                                 <td data-label="Status">{{ $order->ems_tax_status_label }}</td>
                                 <td data-label="Pembayaran EMS">
-                                    @if(!$batch->is_archived && $order->has_ems_tax_bill)
-                                        <form method="POST" action="{{ route('admin.batches.ems-payment', [$batch, $order], false) }}">
+                                    @php($emsPaymentPending = $order->payments->contains(fn ($payment) => $payment->type === 'ems' && $payment->status === 'pending'))
+                                    @if(!$batch->is_archived && $order->has_outstanding_ems_tax && !$emsPaymentPending)
+                                        <form method="POST" enctype="multipart/form-data" action="{{ route('admin.batches.ems-payment', [$batch, $order], false) }}">
                                             @csrf @method('PUT')
-                                            <input type="hidden" name="ems_tax_status" value="{{ $order->ems_tax_status === 'paid' ? 'unpaid' : 'paid' }}">
-                                            <button type="submit" class="admin-form-inline-action">{{ $order->ems_tax_status === 'paid' ? 'Tandai belum lunas' : 'Tandai lunas' }}</button>
+                                            <input type="hidden" name="ems_tax_status" value="paid">
+                                            <label class="block text-sm"><span>Bukti pembayaran EMS</span><input class="mt-1 block max-w-xs" type="file" name="proof" accept="image/jpeg,image/png,image/webp,application/pdf" required></label>
+                                            <button type="submit" class="admin-form-inline-action mt-2">Kirim bukti untuk verifikasi</button>
                                         </form>
+                                    @elseif($emsPaymentPending)
+                                        <span>Menunggu verifikasi bukti</span>
+                                    @elseif($order->ems_tax_status === 'paid')
+                                        <span>Lunas</span>
                                     @else
                                         —
                                     @endif

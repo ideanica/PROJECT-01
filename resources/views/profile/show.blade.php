@@ -262,7 +262,7 @@
                             <span class="order-bubble"><x-public-icon name="bag" :size="19" />@if($summary['orders'])<b>{{ $summary['orders'] }}</b>@endif</span>
                             <small data-i18n-id="Pesananku" data-i18n-en="My Orders">Pesananku</small>
                         </a>
-                        <a class="order-link" href="{{ $isMember ? route('billing.orders') : $profileActionUrl }}">
+                        <a class="order-link" href="{{ $isMember ? route('billing.index') : $profileActionUrl }}">
                             <span class="order-bubble"><x-public-icon name="card" :size="19" />@if($stats['unpaid'])<b>{{ $stats['unpaid'] }}</b>@endif</span>
                             <small data-i18n-id="Tagihan" data-i18n-en="Billing">Tagihan</small>
                         </a>

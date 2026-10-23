@@ -22,8 +22,11 @@ class CatalogVisibilityTest extends TestCase
         $batch->products()->attach($product, ['dp_price' => 100000, 'full_price' => 250000, 'is_available' => true]);
         $batch->products()->attach($unavailable, ['is_available' => false]);
         $batch->products()->attach($inactive, ['is_available' => true]);
-        $this->get(route('catalog.index'))->assertOk()->assertSee('Published Wish Batch')
-            ->assertSee('Available Album')->assertSee('100.000')->assertSee('250.000')->assertSee('Pemesanan ditutup')
+        $this->get(route('catalog.index'))->assertOk()->assertSee('Published Wish Batch')->assertSee('Pemesanan ditutup')
             ->assertDontSee('Hidden Wish Batch')->assertDontSee('Archived Wish Batch')->assertDontSee('Unavailable Album')->assertDontSee('Inactive Album');
+
+        $this->get(route('catalog.show', $batch))->assertOk()->assertSee('Available Album')
+            ->assertSee('125.000')->assertSee('250.000')->assertSee('50,00%')
+            ->assertDontSee('Unavailable Album')->assertDontSee('Inactive Album');
     }
 }

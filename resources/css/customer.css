@@ -2508,7 +2508,6 @@ html[data-customer-theme="dark"] .nav-item.active {
   font-size: 9px;
 }
 
-.billing-order-card .status-badge,
 .billing-state-pill {
   flex: 0 0 auto;
   white-space: nowrap;
@@ -2724,10 +2723,6 @@ html[data-customer-theme="dark"] .nav-item.active {
     font-size: 9px;
   }
 
-  .profile-order-card .status-badge {
-    font-size: 9px;
-  }
-
   .profile-order-items {
     gap: 8px;
     padding: 13px 16px;
@@ -2760,21 +2755,6 @@ html[data-customer-theme="dark"] .nav-item.active {
 }
 
 @media (max-width:767px) {
-  .profile-order-card .status-badge {
-    gap: 4px;
-    max-width: 104px;
-    padding: 5px 7px;
-    font-size: 7px;
-    line-height: 1.15;
-    white-space: normal;
-  }
-
-  .profile-order-card .status-badge>span {
-    width: 5px;
-    height: 5px;
-    flex: 0 0 5px;
-  }
-
   .billing-list-page {
     padding: 22px 1.5rem 104px;
   }
@@ -2874,23 +2854,12 @@ html[data-customer-theme="dark"] .nav-item.active {
     font-size: 7px;
   }
 
-  .billing-order-card .status-badge,
   .billing-state-pill {
     max-width: 92px;
     padding: 5px 7px;
     font-size: 6.5px;
     line-height: 1.15;
     white-space: normal;
-  }
-
-  .billing-order-card .status-badge {
-    gap: 4px;
-  }
-
-  .billing-order-card .status-badge>span {
-    width: 5px;
-    height: 5px;
-    flex: 0 0 5px;
   }
 
   .billing-order-amount {
@@ -3117,11 +3086,6 @@ html[data-customer-theme="dark"] .nav-item.active {
   flex: 0 0 auto;
 }
 
-.order-detail-main-status .status-badge {
-  font-size: 9px;
-  white-space: nowrap;
-}
-
 .order-detail-hero-copy>p {
   margin: 12px 0 0;
   color: #6483a0;
@@ -3333,11 +3297,6 @@ html[data-customer-theme="dark"] .nav-item.active {
   margin-top: 6px;
 }
 
-.order-detail-item-price .status-badge {
-  font-size: 7px;
-  white-space: nowrap;
-}
-
 .order-detail-timeline {
   display: grid;
   border-top: 1px solid #e5eef5;
@@ -3374,27 +3333,23 @@ html[data-customer-theme="dark"] .nav-item.active {
   gap: 7px;
 }
 
-.order-detail-timeline-statuses>span {
+.order-detail-timeline-statuses>span:not(.status-badge) {
   color: #8aa0b2;
-  font-size: 8px;
-}
-
-.order-detail-timeline-statuses .status-badge {
-  font-size: 7.5px;
+  font-size: 12px;
 }
 
 .order-detail-timeline-entry p {
-  margin: 8px 0 0;
+  margin: 10px 0 0;
   color: #4e7493;
-  font-size: 9px;
-  line-height: 1.55;
+  font-size: 14px;
+  line-height: 1.7;
 }
 
 .order-detail-timeline-entry time {
   display: block;
   margin-top: 4px;
   color: #92a7b8;
-  font-size: 7px;
+  font-size: 12px;
 }
 
 .order-detail-empty {
@@ -3524,10 +3479,6 @@ html[data-customer-theme="dark"] .nav-item.active {
   color: #173f64;
 }
 
-.order-detail-ems-card .order-ems-bill-status {
-  color: #397aa8;
-}
-
 @media (max-width:900px) {
   .order-detail-hero {
     grid-template-columns: minmax(0, 1fr) 180px;
@@ -3590,11 +3541,6 @@ html[data-customer-theme="dark"] .nav-item.active {
 
   .order-detail-title-row h1 {
     font-size: 31px;
-  }
-
-  .order-detail-main-status .status-badge {
-    padding: 5px 7px;
-    font-size: 7px;
   }
 
   .order-detail-hero-copy>p {
@@ -3716,11 +3662,6 @@ html[data-customer-theme="dark"] .nav-item.active {
     margin-top: 0;
   }
 
-  .order-detail-item-price .status-badge {
-    padding: 4px 6px;
-    font-size: 6px;
-  }
-
   .order-detail-timeline {
     padding: 4px 14px 14px;
   }
@@ -3731,19 +3672,6 @@ html[data-customer-theme="dark"] .nav-item.active {
 
   .order-detail-timeline-statuses {
     gap: 5px;
-  }
-
-  .order-detail-timeline-statuses .status-badge {
-    padding: 4px 6px;
-    font-size: 6px;
-  }
-
-  .order-detail-timeline-statuses>span {
-    font-size: 6px;
-  }
-
-  .order-detail-timeline-entry p {
-    font-size: 8px;
   }
 
   .order-detail-payment-card>header {

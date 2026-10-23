@@ -1,760 +1,845 @@
-Kerjakan refactor pada repository `softmitend/PROJECT-01` untuk memperbaiki alur admin terkait:
+Kerjakan repository `softmitend/PROJECT-01`.
 
-1. form Tambah Batch;
-2. pengaturan QRIS/payment method;
-3. struktur navigasi admin terkait menu Pesanan.
+WAJIB:
+- Gunakan branch `backend`.
+- Jangan gunakan branch `main` sebagai acuan.
+- Jangan merge ke `main`.
+- Fokus hanya pada halaman customer `Tagihan` dan logic yang berkaitan langsung dengannya.
+- Jangan mengubah fitur lain yang tidak diperlukan.
+- Sebelum mengubah kode, inspeksi implementasi existing secara menyeluruh.
+- Pertahankan design language existing project.
+- Setelah selesai, jalankan test yang relevan.
 
-Jangan melakukan redesign besar di luar scope ini.
+# TUJUAN
 
-Gunakan struktur, naming, style Laravel, Blade, CSS, dan pola UI existing sebanyak mungkin.
+Refactor halaman `Tagihan` customer agar tidak lagi terlihat seperti halaman `Pesananku`.
 
-Sebelum mengubah kode, audit terlebih dahulu:
+Konsep baru:
 
-- routes admin;
-- `BatchController`;
-- model `Batch`;
-- model `MemberOrder`;
-- model `Member`;
-- form create/edit Batch;
-- halaman list/detail Batch;
-- admin navigation/sidebar;
-- current QRIS storage;
-- current payment-related fields;
-- current order/member order routes;
-- current migrations;
-- tests existing.
+**Tagihan = financial center customer**
 
-Tujuan utamanya adalah membuat admin workflow lebih sesuai dengan sistem Group Order berbasis Batch.
+Halaman ini harus berfungsi seperti halaman tagihan pada aplikasi finansial seperti SPayLater/SPinjam:
 
----
+- menunjukkan berapa kewajiban pembayaran yang masih harus dibayar
+- menunjukkan total nominal outstanding
+- menyediakan action untuk melakukan pembayaran
+- menyimpan riwayat pembayaran yang sudah dilakukan
 
-# A. Business flow yang harus dipahami
+Halaman Tagihan TIDAK boleh menjadi duplicate order history.
 
-PROJECT-01 menggunakan konsep:
+Jangan tampilkan card produk, thumbnail produk, variant, daftar item, atau detail shipment di halaman ini.
 
-```text
-Batch
-→ memiliki banyak buyer
-→ setiap buyer memiliki MemberOrder
-→ setiap MemberOrder memiliki item/payment/status/tracking masing-masing
-```
-
-Admin bekerja terutama berdasarkan Batch.
-
-Flow utama:
-
-```text
-Admin membuat Batch
-→ membuka Batch
-→ menambahkan buyer ke Batch
-→ menentukan item/variant/qty
-→ MemberOrder dibuat
-→ seluruh buyer mengikuti progress utama Batch
-→ individual MemberOrder hanya menyimpan kondisi individual seperti pembayaran, shipment, exception, override, dll.
-```
-
-Karena itu:
-
-- Batch adalah pusat operasional utama;
-- MemberOrder tetap penting sebagai entity transaksi individual;
-- tetapi MemberOrder/Pesanan tidak perlu menjadi primary navigation terpisah.
+Informasi produk dan lifecycle order tetap menjadi tanggung jawab halaman `Pesananku`.
 
 ---
 
-# B. Hapus upload QRIS dari form Tambah/Edit Batch
+# STRUKTUR HALAMAN
 
-Saat ini form Tambah Batch memiliki upload QRIS.
+Buat halaman Tagihan customer dengan struktur utama:
 
-Ini tidak efisien karena QRIS OceanPaws digunakan berulang pada banyak Batch.
+## 1. Header
 
-QRIS bukan properti unik suatu Batch.
+Contoh:
 
-QRIS adalah global payment method milik bisnis.
+`Tagihan`
 
-Hapus requirement dan UI:
+Deskripsi singkat:
 
-```text
-Upload QRIS pembayaran
-```
+`Kelola pembayaran yang masih harus diselesaikan dan lihat riwayat pembayaranmu.`
 
-dari create/edit Batch.
+Jangan gunakan istilah backend yang terlalu teknis.
 
-Jangan meminta admin upload QRIS setiap membuat Batch.
+---
 
-Form Batch baru harus fokus hanya pada data yang benar-benar milik Batch.
+# 2. FINANCIAL SUMMARY
 
-Contoh struktur form:
+Di bagian atas halaman, tampilkan summary yang ringkas.
 
-```text
-IDENTITAS BATCH
-- nomor batch otomatis
+Contoh:
+
+`Total yang harus dibayar`
+
+**Rp425.000**
+
+`2 tagihan aktif`
+
+Summary harus dihitung dari seluruh kewajiban pembayaran customer yang masih outstanding.
+
+Jangan hanya menghitung jumlah order.
+
+Satu order dapat memiliki lebih dari satu kewajiban pembayaran.
+
+Contoh:
+
+Order A:
+- Pelunasan Rp250.000
+- EMS & Pajak Rp75.000
+
+Maka:
+
+- active billing count = 2
+- total outstanding = Rp325.000
+
+Gunakan logic existing sebagai source of truth.
+
+---
+
+# 3. TAB NAVIGATION
+
+Halaman Tagihan hanya memiliki dua tab utama:
+
+- `Tagihan Aktif`
+- `Riwayat Pembayaran`
+
+Jangan gunakan tab:
+
+- Paid Orders
+- Refund Orders
+- Active Orders
+- Shipping
+- Semua Pesanan
+
+Halaman ini berbasis pembayaran, bukan lifecycle pesanan.
+
+---
+
+# 4. TAB: TAGIHAN AKTIF
+
+Tab ini hanya menampilkan kewajiban pembayaran yang masih harus dilakukan customer.
+
+Possible financial obligations:
+
+- DP
+- Pelunasan
+- EMS & Pajak
+
+Gunakan existing business rule dan existing payment status.
+
+JANGAN menciptakan status baru jika model existing sudah memiliki status yang cukup.
+
+---
+
+# ACTIVE BILLING CARD
+
+Jangan gunakan product card.
+
+Setiap active billing entry dibuat sebagai financial card sederhana.
+
+Contoh:
+
+--------------------------------
+
+Pelunasan Pesanan
+
+Batch October GO  
+ORD-A82KF1
+
+Sisa pembayaran
+
+Rp250.000
+
+Jatuh tempo  
+28 Oktober 2026
+
+Menunggu Pelunasan
+
+[Bayar Sekarang]
+
+--------------------------------
+
+Contoh EMS:
+
+--------------------------------
+
+EMS & Pajak
+
+Batch September GO  
+ORD-P91XC3
+
+Rp75.000
+
+Jatuh tempo  
+30 Oktober 2026
+
+Belum Dibayar
+
+[Bayar Sekarang]
+
+--------------------------------
+
+Card tidak perlu menampilkan:
+
+- image produk
+- nama item
+- variant
+- quantity item
+- daftar item
+- tracking status
+- shipment progress
+
+Yang boleh tampil:
+
+- jenis tagihan
 - nama batch
+- order code
+- nominal outstanding
+- due date jika memang tersedia
+- payment status
+- payment method
+- CTA pembayaran
 
-KATALOG
-- foto katalog
-- batas pemesanan
-- tampilkan di katalog
-
-VARIASI BARANG
-- tambah variant
-- harga
-- DP/full price jika digunakan
-
-PEMBAYARAN
-- skema pembayaran:
-  - Full
-  - DP
-
-Jika DP:
-- nominal/default DP bila memang digunakan
-
-Metode pembayaran:
-QRIS OceanPaws
-status: Aktif
-
-[Kelola metode pembayaran]
-
-PROGRESS
-- status awal
-- tanggal mulai
-- tanggal selesai
-
-INFORMASI
-- deskripsi
-- catatan admin
-```
-
-Jangan tampilkan file input QRIS pada Batch.
+Gunakan hierarchy visual yang membuat nominal menjadi elemen paling dominan.
 
 ---
 
-# C. Buat pengaturan payment method / QRIS global
+# 5. ACTIVE OBLIGATION LOGIC
 
-Tambahkan pengelolaan payment method yang dapat digunakan berulang oleh seluruh Batch dan invoice.
+Jangan berasumsi:
 
-Prefer struktur domain seperti:
+`1 order = 1 tagihan`
 
-```text
-PaymentMethod
-```
-
-atau naming lain yang konsisten dengan project.
-
-Contoh tabel:
-
-```text
-payment_methods
-
-id
-name
-type
-image_path
-account_name nullable
-instructions nullable
-is_active
-created_at
-updated_at
-```
+Satu order dapat menghasilkan beberapa financial obligations.
 
 Contoh:
 
-```text
-name:
-QRIS OceanPaws
+Order
+├── DP
+├── Pelunasan
+└── EMS & Pajak
 
-type:
-qris
+Satu order bisa memiliki:
 
-image_path:
-...
+- satu kewajiban pembayaran biasa
+- satu kewajiban EMS
 
-is_active:
-true
-```
+secara bersamaan.
 
-Saat ini cukup mendukung QRIS, tetapi jangan membuat struktur yang hanya bisa bekerja untuk satu file QR secara hard-coded jika mudah dibuat generic.
-
-Di masa depan payment method dapat berkembang menjadi:
-
-```text
-QRIS
-Bank Transfer
-dll.
-```
-
-Namun jangan membuat fitur tambahan yang belum dibutuhkan.
+Jika keduanya outstanding, keduanya harus bisa terlihat di halaman Tagihan.
 
 ---
 
-# D. QRIS aktif
+# REGULAR ORDER PAYMENT
 
-Sistem harus dapat menentukan QRIS/payment method yang sedang aktif.
+Inspeksi existing model dahulu.
 
-Untuk sekarang business rule-nya:
+Gunakan existing payment ledger / amount calculation.
 
-- satu QRIS utama dapat digunakan berulang;
-- admin dapat mengganti QRIS aktif;
-- QRIS lama jangan dihapus secara destruktif jika pernah dipakai;
-- QRIS lama dapat dibuat inactive;
-- payment method baru dapat dijadikan active.
+Secara konseptual regular order obligation aktif jika:
 
-Jika perlu, enforce hanya satu payment method aktif per type `qris`.
+- order bukan refund
+- `total_amount > 0`
+- `remaining_amount > 0`
+
+Gunakan field atau accessor existing yang benar.
+
+Jangan menghitung ulang nominal secara manual jika model sudah menyediakan:
+
+- `remaining_amount`
+- `paid_amount`
+- payment ledger
+- equivalent accessor
+
+Gunakan satu source of truth.
+
+---
+
+# DP VS PELUNASAN
+
+Jika existing payment status memungkinkan membedakan:
+
+- DP
+- Pelunasan
+
+maka label obligation harus mencerminkan hal tersebut.
 
 Contoh:
 
-```text
-QRIS Lama
-Inactive
+`DP Pesanan`
 
-QRIS OceanPaws Baru
-Active
-```
+atau
 
-Jangan overwrite file QR lama jika hal tersebut membuat histori transaksi kehilangan referensi lama.
+`Pelunasan Pesanan`
 
----
+Jangan menebak berdasarkan nominal.
 
-# E. Lokasi pengaturan QRIS
+Gunakan payment scheme/status existing.
 
-Jangan menambahkan menu sidebar terpisah bernama:
+Jika tidak dapat dibedakan secara reliable, gunakan label generik:
 
-```text
-QRIS
-```
+`Pembayaran Pesanan`
 
-Gunakan modul Batch yang sudah ada.
-
-Halaman utama Batch sebaiknya mempunyai navigation internal seperti:
-
-```text
-Batch
-
-[ Daftar Batch ] [ Pengaturan ]
-```
-
-## Daftar Batch
-
-Tetap menampilkan batch existing.
-
-## Pengaturan
-
-Berisi pengaturan reusable terkait operasional Batch.
-
-Minimal:
-
-```text
-Pembayaran
-```
-
-dan di dalamnya:
-
-```text
-QRIS / Payment Method aktif
-preview QR
-status
-nama payment method
-instruksi pembayaran
-
-[Ganti / Tambah Payment Method]
-```
-
-Jika memang ada setting Batch global lain yang sudah relevan dan existing, boleh dikelompokkan di halaman ini.
-
-Jangan membuat terlalu banyak konfigurasi baru yang belum dibutuhkan.
+daripada membuat business rule palsu.
 
 ---
 
-# F. Form Batch harus menggunakan Payment Method aktif
+# EMS & PAJAK
 
-Ketika admin membuat Batch:
+EMS obligation aktif jika existing data menunjukkan kurang lebih:
 
-jangan menyimpan duplicate QR image baru ke Batch.
+- EMS tax sudah dipublish
+- nominal EMS > 0
+- EMS belum dibayar
 
-Jika ada satu payment method aktif, tampilkan informasi seperti:
+Inspeksi field existing seperti:
 
-```text
-Metode pembayaran
+- `ems_tax_is_published`
+- `ems_tax_status`
+- `ems_tax_due_date`
+- EMS amount field
 
-QRIS OceanPaws
-Aktif
+Gunakan implementation existing yang sebenarnya.
 
-Pembayaran untuk Batch ini akan menggunakan payment method aktif.
-[Kelola]
-```
+Jika EMS belum dipublish admin, jangan tampilkan ke customer sebagai tagihan.
 
-Jika belum ada payment method aktif:
+Jika EMS sudah lunas, jangan tampilkan di Tagihan Aktif.
 
-tampilkan warning yang jelas.
+---
+
+# 6. PAYMENT METHOD
+
+Untuk kewajiban yang aktif, tampilkan metode pembayaran existing jika tersedia.
+
+Project kemungkinan sudah memiliki:
+
+`resources/views/components/order-payment-method.blade.php`
+
+Gunakan component existing jika sesuai.
+
+Jika admin telah menentukan QRIS/payment method aktif, customer tetap harus dapat melihatnya.
+
+Jangan membuat sistem payment method baru.
+
+---
+
+# 7. PAYMENT CTA
+
+Gunakan CTA seperti:
+
+`Bayar Sekarang`
+
+atau wording existing project yang paling konsisten.
+
+CTA hanya muncul jika obligation masih outstanding.
+
+Jangan tampilkan tombol bayar jika:
+
+- nominal sudah lunas
+- order direfund
+- EMS sudah lunas
+- obligation belum dipublish
+- customer tidak memiliki kewajiban pembayaran
+
+CTA harus menuju flow existing untuk pembayaran/upload bukti.
+
+Jangan membuat duplicate payment form jika existing detail/payment flow sudah tersedia.
+
+---
+
+# 8. TAB: RIWAYAT PEMBAYARAN
+
+Tab `Riwayat Pembayaran` bukan riwayat order.
+
+Tampilkan PAYMENT TRANSACTIONS yang sudah berhasil/terverifikasi.
+
+Gunakan existing `OrderPayment` atau ledger equivalent.
+
+Buat tampilannya lebih mirip transaction history daripada order cards.
 
 Contoh:
 
-```text
-Belum ada metode pembayaran aktif.
-Atur QRIS terlebih dahulu di Pengaturan Batch.
-```
+RIWAYAT PEMBAYARAN
 
-Jangan silently gagal.
+Oktober 2026
 
-Tentukan secara aman apakah Batch perlu:
+DP Pesanan
+Batch October GO · ORD-A82KF1
+12 Oktober 2026
+Rp150.000
+Terverifikasi
 
-- reference ke `payment_method_id`, atau
-- menggunakan payment method global saat invoice dibuat.
+EMS & Pajak
+Batch August GO · ORD-K21PQ9
+4 Oktober 2026
+Rp85.000
+Terverifikasi
 
-Pilih desain yang paling sesuai dengan struktur project existing.
+September 2026
 
-Prinsip penting:
+Pelunasan Pesanan
+Batch September GO · ORD-X92MA1
+26 September 2026
+Rp320.000
+Terverifikasi
 
-historical payment records tidak boleh berubah secara salah hanya karena admin mengganti QRIS aktif kemudian.
+Gunakan list yang compact.
 
-Jika Invoice domain sudah tersedia setelah audit, prefer Invoice menyimpan `payment_method_id`.
-
-Jika Invoice domain belum tersedia dan implementasinya di luar scope task ini, siapkan struktur PaymentMethod dengan bersih tanpa melakukan refactor Invoice besar yang tidak diminta.
-
----
-
-# G. Legacy QRIS data
-
-Jangan merusak Batch lama yang mungkin sudah memiliki QRIS image sendiri.
-
-Audit field existing seperti:
-
-```text
-qris_image
-qris_path
-atau field serupa
-```
-
-Untuk legacy Batch:
-
-- jangan delete file/data lama secara destruktif;
-- pastikan halaman lama tidak error;
-- jika masih diperlukan untuk histori, pertahankan sebagai legacy fallback.
-
-Untuk NEW Batch:
-
-- jangan lagi meminta upload QRIS per Batch;
-- gunakan global PaymentMethod.
-
-Jika perlu migration, buat migration baru.
-
-Jangan edit migration lama secara destruktif.
+Jangan tampilkan thumbnail produk.
 
 ---
 
-# H. Ubah posisi menu Pesanan pada admin
+# RIWAYAT PAYMENT DATA
 
-Saat ini sidebar memiliki menu seperti:
+Gunakan payment transaction existing.
 
-```text
-Dashboard
-Batch
-Pesanan
-Status
-```
+Prioritaskan transaksi yang:
 
-Untuk business flow terbaru, `Pesanan` tidak perlu lagi menjadi primary top-level navigation.
+- sudah diverifikasi
+- memiliki nominal pembayaran
+- memiliki tanggal pembayaran/verifikasi
 
-Alasannya:
+Urutkan:
 
-satu Batch memiliki banyak buyer dan tiap buyer memiliki MemberOrder.
+`terbaru -> terlama`
 
-Admin seharusnya bekerja melalui:
+Jika memungkinkan, group berdasarkan bulan dan tahun.
 
-```text
-Batch
-→ detail Batch
-→ daftar Buyer/Pesanan
-→ detail MemberOrder buyer
-```
+Contoh:
+
+Oktober 2026
+
+September 2026
+
+Agustus 2026
+
+Jika grouping membuat implementation terlalu kompleks untuk current view architecture, chronological list tetap boleh, tetapi desain harus tetap terasa seperti transaction ledger.
+
+---
+
+# PAYMENT HISTORY CONTENT
+
+Setiap row dapat menampilkan:
+
+- jenis pembayaran
+- batch
+- order code
+- tanggal pembayaran/verifikasi
+- nominal
+- status
+
+Contoh status:
+
+`Terverifikasi`
+
+Jangan menampilkan seluruh detail order.
+
+Jika customer perlu melihat context order lebih jauh, order code atau row dapat mengarah ke detail order existing.
+
+---
+
+# PAYMENT HISTORY ≠ PAID ORDER HISTORY
+
+Ini sangat penting.
+
+Jangan membuat logic:
+
+"order yang sudah lunas = satu row riwayat pembayaran"
+
+Yang harus ditampilkan adalah actual payment transaction.
+
+Contoh:
+
+Satu order memiliki:
+
+DP:
+Rp100.000
+
+Pelunasan:
+Rp200.000
+
+Maka Riwayat Pembayaran boleh memiliki dua transaction entries:
+
+DP Pesanan        Rp100.000  
+Pelunasan         Rp200.000
 
 Bukan:
 
-```text
-Pesanan
-→ pilih order
-→ baru mengetahui Batch
-```
+Order ABC         Rp300.000
 
-Karena itu:
+kecuali existing database memang hanya menyimpan satu aggregate payment dan tidak memiliki ledger transaction yang lebih detail.
 
-hapus menu `Pesanan` dari primary sidebar navigation.
-
-PENTING:
-
-jangan menghapus:
-
-- model `MemberOrder`;
-- tabel member_orders;
-- controller logic yang masih diperlukan;
-- routes yang masih digunakan untuk detail/update order;
-- relationships;
-- payment data;
-- tracking;
-- shipment;
-- override status;
-- history.
-
-Yang dihapus hanya posisi `Pesanan` sebagai menu utama admin.
+Gunakan data existing yang tersedia.
 
 ---
 
-# I. MemberOrder tetap hidup sebagai detail transaksi buyer
+# 9. EMPTY STATE
 
-MemberOrder tetap merupakan transaksi individual buyer dalam suatu Batch.
+Jika tidak ada active billing:
 
-Struktur konseptual:
-
-```text
-Batch
-└── MemberOrder
-    ├── Member
-    ├── Items
-    ├── Payment
-    ├── Invoice
-    ├── Tracking
-    ├── Shipment
-    ├── Override
-    └── Status
-```
-
-Jangan menghapus atau menggabungkan MemberOrder ke Batch.
-
-Batch dan MemberOrder memiliki tanggung jawab berbeda.
-
-Batch:
-- progress utama Group Order;
-- katalog/variant;
-- periode;
-- buyer list;
-- overall operational context.
-
-MemberOrder:
-- buyer tertentu;
-- item buyer;
-- payment buyer;
-- invoice buyer;
-- tracking code;
-- shipment buyer;
-- exception/override individual.
-
----
-
-# J. Detail Batch menjadi pusat pengelolaan buyer
-
-Pastikan Detail Batch dapat menjadi entry point utama untuk mengelola transaksi buyer.
-
-Ideal structure:
-
-```text
-Detail Batch
-
-Overview
-Buyer / Pesanan
-Progress
-Pembayaran
-QC
-Distribusi
-Aktivitas
-```
-
-Tidak wajib membuat seluruh tab tersebut jika belum tersedia dan di luar scope, tetapi desain dan routing baru jangan menghambat struktur tersebut.
-
-Minimal, Detail Batch harus memiliki area:
-
-```text
-Buyer / Pesanan
-```
-
-yang menampilkan MemberOrder di Batch tersebut.
+Tampilkan empty state yang jelas.
 
 Contoh:
 
-```text
-Vina
-2 item
-DP Lunas
-Progress: Warehouse Korea
-[Detail]
+`Tidak ada tagihan aktif`
 
-Nadia
-1 item
-Belum Bayar
-Progress: Warehouse Korea
-[Detail]
+`Semua kewajiban pembayaranmu sudah selesai.`
 
-Rani
-3 item
-Refund
-[Detail]
-```
+Jangan menampilkan halaman kosong.
 
-Admin dapat membuka detail individual buyer/order dari sini.
+Riwayat Pembayaran tetap bisa diakses melalui tab kedua.
+
+Jika tidak ada payment history:
+
+`Belum ada riwayat pembayaran.`
 
 ---
 
-# K. Detail MemberOrder
+# 10. PROFILE INTEGRATION
 
-Detail MemberOrder tetap tersedia.
+Periksa:
 
-Contoh informasi:
+`app/Http/Controllers/ProfileController.php`
 
-```text
-Buyer
-Member Code
+dan:
 
-Order Code
-Tracking Code
+`resources/views/profile/show.blade.php`
 
-Batch
+Card `Tagihan` pada Profile harus menunjukkan:
 
-Items
+- jumlah active financial obligations
+- jika memungkinkan, total nominal outstanding
 
-Status pesanan
+Contoh:
 
-Status pembayaran
+Tagihan
 
-Invoice / tagihan
+`2 tagihan aktif`
 
-Shipment
+`Rp425.000 belum dibayar`
 
-Override / exception
+Jika design existing tidak cukup untuk dua metrics, minimal:
 
-History
-```
+badge = jumlah active obligations
 
-Jangan membuat duplicate data jika already available.
-
-Gunakan existing data source.
+Jangan gunakan jumlah seluruh order.
 
 ---
 
-# L. Global lookup order
+# 11. BADGE LOGIC
 
-Karena menu Pesanan dikeluarkan dari sidebar, jangan membuat order menjadi sulit ditemukan.
+Badge Tagihan harus konsisten dengan isi halaman.
 
-Audit apakah admin sudah memiliki global search.
+Contoh:
 
-Jika global search existing:
+Order A:
+- Pelunasan outstanding
+- EMS outstanding
 
-pastikan order dapat dicari berdasarkan:
+Order B:
+- fully paid
 
-- order code;
-- tracking code;
-- buyer/member;
-- batch.
+Maka:
 
-Jika global search belum tersedia dan implementasinya kecil serta sesuai pola UI existing, boleh tambahkan global admin search sederhana.
+Tagihan badge = 2
 
-Namun jangan membuat search system besar atau dependency baru hanya demi task ini.
+bukan 1 dan bukan 2 order.
 
-Prioritas utama tetap:
+Gunakan helper/accessor/service jika diperlukan agar calculation tidak diduplikasi antara:
 
-```text
-Batch
-→ Buyer
-→ Detail MemberOrder
-```
+- ProfileController
+- CustomerPortalController
 
----
-
-# M. Sidebar target
-
-Jangan melakukan redesign keseluruhan sidebar.
-
-Untuk scope ini cukup ubah struktur yang relevan.
-
-Dari:
-
-```text
-Dashboard
-Batch
-Pesanan
-Status
-```
-
-menjadi minimal:
-
-```text
-Dashboard
-Batch
-Status
-```
-
-Jika menu Buyer, Pembayaran, atau Pengiriman sudah benar-benar ada di codebase dan aktif, pertahankan sesuai business flow existing.
-
-Jangan membuat menu dummy yang belum memiliki implementasi.
-
-Jangan menghapus Status pada task ini.
+Hindari business rule yang berbeda di dua tempat.
 
 ---
 
-# N. UX requirements
+# 12. ROUTING
 
-Gunakan visual style admin existing.
+Inspeksi existing routes seperti:
 
-Jangan membuat desain yang terasa berasal dari aplikasi lain.
+- `/billing`
+- `/billing/orders`
+- `/billing/ems`
 
-Pertahankan:
+Target ideal:
 
-- typography;
-- spacing;
-- border radius;
-- card style;
-- button style;
-- purple accent;
-- sidebar appearance;
-- responsive behavior.
+`/billing`
 
-Form Tambah Batch harus menjadi lebih sederhana setelah QRIS dipindahkan.
+menjadi halaman financial center utama.
 
-Jangan mengganti keseluruhan layout.
+Jika route lama `/billing/orders` dan `/billing/ems` masih digunakan:
 
----
+- redirect ke `/billing`
+- atau pertahankan compatibility secara aman
 
-# O. Authorization
+Jangan membuat redirect loop.
 
-Semua pengaturan payment method/QRIS hanya dapat diakses admin yang memang memiliki akses admin existing.
-
-Gunakan middleware/policy existing.
-
-Jangan membuka QR management ke public/member area.
+Update Profile agar card Tagihan menuju unified billing page.
 
 ---
 
-# P. Validation
+# 13. REMOVE CUSTOMER-FACING SPLIT
 
-Tambahkan validation:
+Customer tidak perlu melihat dua halaman terpisah:
 
-Payment Method:
+- Tagihan Pesanan
+- Tagihan EMS
 
-- name required;
-- type valid;
-- image required untuk QRIS baru;
-- supported image types;
-- file size reasonable;
-- `is_active` boolean.
+Gabungkan keduanya dalam satu Tagihan experience.
 
-Gunakan storage mechanism Laravel existing.
+Backend masih boleh membedakan kedua jenis obligation.
 
-Jangan menyimpan raw file di lokasi yang tidak konsisten dengan project.
+Presentation layer harus unified.
 
 ---
 
-# Q. Tests
+# 14. REFUND
 
-Tambahkan atau perbarui tests minimal untuk:
+Refund tidak perlu menjadi tab utama halaman Tagihan.
 
-1. Admin dapat membuat Batch tanpa upload QRIS.
-2. Form Batch tidak lagi mewajibkan QRIS.
-3. Admin dapat membuat PaymentMethod QRIS.
-4. Admin dapat mengaktifkan QRIS.
-5. Sistem dapat mengetahui QRIS aktif.
-6. Mengganti QRIS aktif tidak menghapus QRIS lama.
-7. New Batch tidak membuat duplicate QR file.
-8. Legacy Batch dengan QR data lama tetap dapat dibuka.
-9. MemberOrder tidak terhapus setelah menu Pesanan dikeluarkan dari sidebar.
-10. MemberOrder tetap dapat dibuka melalui Detail Batch.
-11. Detail Batch hanya menampilkan MemberOrder milik Batch tersebut.
-12. Admin dapat membuka detail buyer/order dari Batch.
-13. Existing order/payment/tracking relationships tetap bekerja.
-14. Admin sidebar tidak lagi menampilkan top-level `Pesanan`.
-15. Existing routes yang masih dibutuhkan oleh internal links tidak menghasilkan 404.
-16. Authorization PaymentMethod hanya untuk admin.
+Refund adalah bagian dari lifecycle pesanan dan dapat tetap ditampilkan di:
+
+`Pesananku`
+
+Jika existing payment ledger memiliki refund transaction yang memang relevan secara finansial, jangan otomatis tampilkan sebagai payment history positif.
+
+Pastikan nominal dan label tidak misleading.
+
+Jangan mencampur refund dengan pembayaran customer tanpa distinction yang jelas.
 
 ---
 
-# R. Audit regresi
+# 15. PESANANKU
 
-Setelah perubahan, audit:
+Task ini fokus Tagihan.
 
-- Batch create;
-- Batch edit;
-- Batch show;
-- Batch list;
-- MemberOrder;
-- admin sidebar;
-- payment QR rendering;
-- storage QRIS;
-- public/customer pages yang mungkin masih membaca QRIS dari Batch;
-- Billing;
-- Invoice jika sudah tersedia;
-- Tracking;
-- old Batch;
-- tests.
+Jangan melakukan refactor besar terhadap Pesananku.
 
-Jangan hanya mengganti Blade dan berhenti.
+Namun pastikan setelah perubahan:
 
-Pastikan backend dan data model ikut konsisten.
+- Pesananku tetap menjadi source of truth order
+- Tagihan tidak menampilkan produk
+- tidak ada duplicate navigation yang jelas-jelas obsolete
+
+Jika perlu melakukan perubahan kecil pada Pesananku untuk memperbaiki link/back navigation, lakukan seminimal mungkin.
 
 ---
 
-# S. Build dan test
+# 16. DESIGN DIRECTION
 
-Setelah implementasi:
+Pertahankan design language project.
 
-```bash
-php artisan test
-npm run build
-```
+Namun halaman Tagihan harus lebih terasa seperti financial dashboard.
 
-Perbaiki regression yang muncul.
+Gunakan:
 
-Jangan menganggap pekerjaan selesai hanya karena halaman bisa dibuka.
+- clean hierarchy
+- nominal besar
+- spacing jelas
+- compact transaction list
+- badge status sederhana
+- CTA pembayaran yang jelas
 
-Verifikasi end-to-end:
+Hindari tampilan seperti marketplace order card.
 
-```text
-Admin
-→ Pengaturan Batch
-→ set QRIS aktif
+Prioritas informasi:
 
-Admin
-→ Tambah Batch
-→ tidak perlu upload QR
-→ simpan Batch
-
-Admin
-→ buka Detail Batch
-→ lihat daftar buyer/order
-→ buka Detail MemberOrder
-
-Admin sidebar
-→ tidak ada lagi menu Pesanan top-level
-
-Data MemberOrder existing
-→ tetap aman
-
-Legacy Batch
-→ tetap dapat dibuka
-```
+1. nominal
+2. jenis tagihan
+3. deadline/status
+4. batch/order reference
+5. action
 
 ---
 
-# T. Batas scope
+# 17. MOBILE RESPONSIVENESS
 
-Jangan:
+Pastikan halaman tetap rapi di mobile.
 
-- menghapus MemberOrder;
-- menghapus tracking;
-- menghapus payment status;
-- menghapus Invoice jika sudah ada;
-- menghapus EMS/pajak;
-- menghapus refund;
-- mengubah Profile buyer;
-- redesign landing page;
-- redesign customer portal;
-- membuat pending/unregistered buyer flow;
-- melakukan refactor besar di luar Batch/QRIS/admin navigation;
-- menghapus data production secara destruktif.
+Pada mobile:
 
-Fokus task ini hanya pada:
+- nominal tidak terpotong
+- button tidak overflow
+- transaction row mudah dibaca
+- header tidak terlalu padat
+- payment method/QR tidak merusak layout
 
-```text
-1. QRIS global / PaymentMethod
-2. membersihkan form Tambah/Edit Batch
-3. menambahkan Pengaturan di modul Batch
-4. menjadikan Detail Batch pusat transaksi buyer
-5. menghapus Pesanan sebagai primary sidebar menu tanpa menghapus MemberOrder
-```
+Gunakan existing responsive convention project.
 
-Sebelum menulis kode, jelaskan secara singkat file/model/migration yang akan diubah dan alasan masing-masing. Setelah itu implementasikan perubahan secara bertahap dan jangan berhenti di tahap planning.
+---
+
+# 18. FILE YANG WAJIB DIINSPEKSI
+
+Minimal inspeksi:
+
+- `app/Http/Controllers/CustomerPortalController.php`
+- `app/Http/Controllers/ProfileController.php`
+- `app/Models/MemberOrder.php`
+- `app/Models/OrderPayment.php`
+- `resources/views/portal/billing-list.blade.php`
+- `resources/views/profile/show.blade.php`
+- `resources/views/components/order-payment-method.blade.php`
+- `resources/views/components/order-ems-bill.blade.php`
+- `routes/web.php`
+
+Cari juga semua reference:
+
+- `billing.orders`
+- `billing.ems`
+- `billingList`
+- `billingOrders`
+- `billingEms`
+- `OrderPayment`
+- `remaining_amount`
+- `ems_tax_status`
+- `ems_tax_is_published`
+
+Jangan menganggap daftar di atas lengkap.
+
+---
+
+# 19. TEST
+
+Periksa dan update test existing seperti:
+
+- `tests/Feature/BillingPortalTest.php`
+- `tests/Feature/OrderNavigationTest.php`
+
+Tambahkan test jika perlu.
+
+Minimal cover:
+
+1. Customer dapat membuka unified billing page.
+2. Active unpaid regular payment tampil.
+3. Fully paid regular payment tidak tampil di Tagihan Aktif.
+4. Refunded order tidak menjadi active billing.
+5. Published unpaid EMS tampil.
+6. Paid EMS tidak tampil di Tagihan Aktif.
+7. Unpublished EMS tidak tampil.
+8. Regular payment + EMS dari order yang sama dapat menghasilkan dua active obligations.
+9. Total outstanding dihitung dengan benar.
+10. Active obligation count dihitung dengan benar.
+11. Profile badge konsisten dengan billing page.
+12. Verified payment tampil di Riwayat Pembayaran.
+13. Payment history diurutkan newest first.
+14. Customer tidak dapat melihat transaksi/order milik customer lain.
+15. Payment method existing tetap berfungsi.
+16. Empty state tampil ketika tidak ada active billing.
+17. Legacy route billing tidak menghasilkan broken page.
+
+Jalankan:
+
+`php artisan test`
+
+Jika full test suite memiliki pre-existing failure yang tidak terkait task ini, jelaskan secara spesifik dan tetap pastikan test billing terkait lulus.
+
+---
+
+# 20. SECURITY
+
+Jangan merusak:
+
+- customer authorization
+- ownership validation
+- signed URL
+- payment proof authorization
+- admin/customer role separation
+- safe `return_to` navigation
+
+Customer tidak boleh melihat:
+
+- order
+- tagihan
+- payment transaction
+
+milik member/customer lain.
+
+---
+
+# 21. CODE QUALITY
+
+Jangan menduplikasi calculation seperti:
+
+- active obligation count
+- total outstanding
+- EMS outstanding
+- regular outstanding
+
+di banyak controller jika bisa menggunakan shared helper/accessor/service sederhana.
+
+Namun jangan over-engineer.
+
+Gunakan architecture yang paling natural dengan struktur project existing.
+
+---
+
+# ACCEPTANCE CRITERIA
+
+Task dianggap selesai jika halaman Tagihan memiliki behavior berikut:
+
+## Tagihan Aktif
+
+Menampilkan hanya hal yang perlu dibayar.
+
+Tidak menampilkan produk.
+
+Dapat menampilkan:
+
+- DP
+- Pelunasan
+- EMS & Pajak
+
+Menampilkan:
+
+- nominal
+- batch
+- order code
+- due date jika tersedia
+- payment status
+- payment method
+- CTA bayar
+
+## Riwayat Pembayaran
+
+Menampilkan transaction history customer.
+
+Tidak menjadi clone Pesananku.
+
+Menampilkan:
+
+- jenis transaksi
+- nominal
+- tanggal
+- batch/order reference
+- verification status
+
+## Financial Summary
+
+Menampilkan:
+
+- total outstanding
+- jumlah active obligations
+
+## Profile
+
+Badge Tagihan konsisten dengan active obligations.
+
+## UX
+
+Customer harus dapat memahami halaman hanya dengan tiga pertanyaan:
+
+1. Berapa yang harus saya bayar?
+2. Untuk apa pembayaran tersebut?
+3. Apa saja yang sudah pernah saya bayar?
+
+Jika halaman masih membutuhkan customer membuka card produk atau memahami struktur internal order hanya untuk mengetahui tagihannya, refactor belum selesai.
+
+---
+
+# OUTPUT SETELAH IMPLEMENTASI
+
+Setelah selesai, berikan laporan singkat:
+
+1. Root cause implementasi billing lama.
+2. Struktur halaman Tagihan baru.
+3. Cara active obligation dihitung.
+4. Cara total outstanding dihitung.
+5. Cara Riwayat Pembayaran mengambil transaction data.
+6. Cara DP/Pelunasan/EMS dibedakan.
+7. Perubahan route.
+8. Perubahan Profile badge.
+9. File yang diubah.
+10. Test yang dibuat/diubah.
+11. Hasil test.
+12. Edge case yang ditemukan.
+
+Kerjakan perubahan langsung pada branch `backend`.

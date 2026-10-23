@@ -7,6 +7,8 @@ use App\Models\Member;
 use App\Models\MemberOrder;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class BatchEmsTaxTest extends TestCase
@@ -20,7 +22,7 @@ class BatchEmsTaxTest extends TestCase
             User::factory()->create(['role' => 'customer', 'member_id' => $member->id, 'registration_pending' => false]);
         }
 
-        return ['member_id' => $member->id, 'batch_id' => $batch->id,
+        return ['member_id' => $member->id, 'batch_id' => $batch->id, 'payment_type' => 'full',
             'items' => [['item_name' => 'Photocard', 'quantity' => 1, 'unit_price' => 100000]]];
     }
 
@@ -77,20 +79,34 @@ class BatchEmsTaxTest extends TestCase
         $this->assertSame('unpaid', $order->fresh()->ems_tax_status);
     }
 
-    public function test_payment_state_is_preserved_only_when_share_does_not_change_and_tax_can_be_cleared(): void
+    public function test_ems_payment_is_recorded_in_ledger_and_allocation_freezes_afterward(): void
     {
-        $this->actingAs(User::factory()->create());
+        Storage::fake('local');
+        $admin = User::factory()->create();
+        $this->actingAs($admin);
         $batch = Batch::factory()->create(['ems_tax_amount' => 100]);
         $this->post(route('admin.member-orders.store'), $this->payload($batch))->assertStatus(303);
         $order = $batch->orders()->sole();
-        $this->put(route('admin.batches.ems-payment', [$batch, $order]), ['ems_tax_status' => 'paid'])->assertSessionHasNoErrors();
+        $this->put(route('admin.batches.ems-payment', [$batch, $order]), ['ems_tax_status' => 'paid'])
+            ->assertSessionHasErrors('proof');
+        $this->assertSame('unpaid', $order->fresh()->ems_tax_status);
+        $this->put(route('admin.batches.ems-payment', [$batch, $order]), [
+            'ems_tax_status' => 'paid', 'proof' => UploadedFile::fake()->image('ems-proof.jpg'),
+        ])->assertSessionHasNoErrors();
+        $payment = $order->payments()->sole();
+        $this->assertSame('ems', $payment->type);
+        $this->assertSame('pending', $payment->status);
+        $this->assertSame(100.0, (float) $payment->amount);
+        Storage::disk('local')->assertExists($payment->proof_path);
+        $this->assertSame('unpaid', $order->fresh()->ems_tax_status);
+        $this->post(route('admin.transactions.review', $payment), ['decision' => 'verified'])->assertSessionHasNoErrors();
         $this->put(route('admin.batches.ems-tax', $batch), ['ems_tax_amount' => 100, 'ems_tax_notes' => 'Changed note'])->assertSessionHasNoErrors();
         $this->assertSame('paid', $order->fresh()->ems_tax_status);
-        $this->put(route('admin.batches.ems-tax', $batch), ['ems_tax_amount' => 120])->assertSessionHasNoErrors();
-        $this->assertSame('unpaid', $order->fresh()->ems_tax_status);
-        $this->put(route('admin.batches.ems-tax', $batch), ['ems_tax_amount' => null])->assertSessionHasNoErrors();
-        $this->assertNull($order->fresh()->ems_tax_amount);
-        $this->assertSame('not_billed', $order->fresh()->ems_tax_status);
+        $this->put(route('admin.batches.ems-tax', $batch), ['ems_tax_amount' => 120])->assertSessionHasErrors('ems_tax_amount');
+        $this->assertSame('100.00', $order->fresh()->ems_tax_amount);
+        $this->put(route('admin.batches.ems-tax', $batch), ['ems_tax_amount' => null])->assertSessionHasErrors('ems_tax_amount');
+        $this->assertSame('paid', $order->fresh()->ems_tax_status);
+        $this->put(route('admin.batches.ems-payment', [$batch, $order]), ['ems_tax_status' => 'unpaid'])->assertSessionHasErrors('ems_tax_status');
     }
 
     public function test_unapproved_unready_inactive_or_admin_accounts_cannot_be_added(): void
@@ -154,7 +170,8 @@ class BatchEmsTaxTest extends TestCase
         $other = $this->payload($batch);
         $this->post(route('admin.member-orders.store'), $other)->assertStatus(303);
         $member = Member::findOrFail($payload['member_id']);
-        $this->actingAs($member->user)->get(route('billing.ems'))->assertOk()->assertSee('50,01')->assertDontSee('50,00');
+        $this->actingAs($member->user)->get(route('billing.ems'))->assertRedirect(route('billing.index'));
+        $this->get(route('billing.index'))->assertOk()->assertSee('50,01')->assertDontSee('50,00');
         $this->put(route('admin.batches.ems-tax', $batch), ['ems_tax_amount' => 1])->assertForbidden();
     }
 

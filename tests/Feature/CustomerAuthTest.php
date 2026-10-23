@@ -72,6 +72,7 @@ class CustomerAuthTest extends TestCase
             ->assertOk()->assertSee('buyer.baru');
         $this->post(route('admin.member-orders.store'), [
             'member_id' => $member->id, 'batch_id' => $batch->id,
+            'payment_type' => 'full',
             'items' => [['product_id' => $product->id, 'quantity' => 1]],
         ])->assertSessionHasNoErrors()->assertRedirect();
         $this->assertDatabaseHas('member_orders', ['member_id' => $member->id, 'batch_id' => $batch->id]);

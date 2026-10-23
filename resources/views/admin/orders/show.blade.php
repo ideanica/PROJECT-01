@@ -1,8 +1,8 @@
 @php($isRefunded = $order->is_refunded)
 <x-layouts.app title="Pesanan {{ $order->order_code }}">
     <div class="[&_h1]:text-black!">
-        <x-page-heading title="Detail Pesanan" description="Identitas, pembayaran, item, dan riwayat status dalam satu tampilan.">
-            <x-slot:action><a class="admin-form-secondary" href="{{ route('admin.member-orders.edit', $order, false) }}">Edit Pesanan</a></x-slot:action>
+        <x-page-heading title="Detail Pesanan" description="Ringkasan pelanggan, isi pesanan, dan progres pengiriman.">
+            <x-slot:action><a class="admin-form-primary" href="{{ route('admin.member-orders.payments.index', $order, false) }}">Kelola pembayaran</a><a class="admin-form-secondary" href="{{ route('admin.member-orders.edit', $order, false) }}">Edit Pesanan</a></x-slot:action>
         </x-page-heading>
     </div>
 
@@ -16,7 +16,7 @@
                 </div>
                 <p class="detail-record-description">Diperbarui {{ $order->updated_at->format('d M Y, H:i') }}</p>
             </div>
-            <div class="detail-record-id">ID #{{ str_pad($order->id, 4, '0', STR_PAD_LEFT) }}</div>
+
         </header>
 
         <section class="detail-record-section">
@@ -132,10 +132,8 @@
             </div>
         </section>
 
-        <section class="detail-record-section">
-            <div class="detail-record-section-heading">
-                <div><h3>Riwayat Status</h3><p>Urutan perubahan status pesanan dari yang terbaru.</p></div>
-            </div>
+        <details class="detail-record-section">
+            <summary class="cursor-pointer font-bold">Riwayat status ({{ $order->statusHistories->count() }})</summary>
             <div class="detail-record-timeline">
                 @forelse($order->statusHistories as $history)
                     <div class="detail-record-timeline-item">
@@ -147,7 +145,7 @@
                     <p class="text-zinc-500">Belum ada riwayat perubahan status.</p>
                 @endforelse
             </div>
-        </section>
+        </details>
     </article>
 
     @unless($isRefunded)

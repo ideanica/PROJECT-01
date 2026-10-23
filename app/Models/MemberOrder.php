@@ -23,6 +23,7 @@ class MemberOrder extends Model
         'payment_status_id',
         'order_source',
         'payment_type',
+        'dp_percentage',
         'payment_amount',
         'payment_proof_path',
         'payment_submitted_at',
@@ -43,6 +44,7 @@ class MemberOrder extends Model
             'payment_submitted_at' => 'datetime',
             'ems_tax_amount' => 'decimal:2',
             'ems_tax_due_date' => 'date',
+            'dp_percentage' => 'decimal:2',
         ];
     }
 
@@ -112,17 +114,90 @@ class MemberOrder extends Model
     public function getPaidAmountAttribute(): float
     {
         if ($this->relationLoaded('payments')) {
-            return (float) $this->payments
+            $incoming = (float) $this->payments
                 ->where('status', 'verified')
+                ->where('type', '!=', 'ems')
+                ->where('type', '!=', 'refund')
                 ->sum(fn (OrderPayment $payment) => (float) $payment->amount);
+            $refunds = (float) $this->payments->where('status', 'verified')->where('type', 'refund')->sum(fn (OrderPayment $payment) => (float) $payment->amount);
+
+            return max(0, $incoming - $refunds);
         }
 
-        return (float) $this->payments()->where('status', 'verified')->sum('amount');
+        $incoming = (float) $this->payments()->where('status', 'verified')->whereNotIn('type', ['ems', 'refund'])->sum('amount');
+        $refunds = (float) $this->payments()->where('status', 'verified')->where('type', 'refund')->sum('amount');
+
+        return max(0, $incoming - $refunds);
     }
 
     public function getRemainingAmountAttribute(): float
     {
         return max(0, (float) ($this->total_amount ?? 0) - $this->paid_amount);
+    }
+
+    public function getHasOutstandingOrderPaymentAttribute(): bool
+    {
+        return ! $this->is_refunded
+            && (float) $this->total_amount > 0
+            && $this->remaining_amount > 0;
+    }
+
+    public function getHasOutstandingEmsTaxAttribute(): bool
+    {
+        return ! $this->is_refunded
+            && $this->ems_tax_is_published
+            && $this->ems_tax_status === 'unpaid'
+            && $this->ems_tax_remaining_amount > 0;
+    }
+
+    public function getEmsTaxRemainingAmountAttribute(): float
+    {
+        if ($this->ems_tax_status === 'paid') {
+            return 0;
+        }
+
+        $paid = $this->relationLoaded('payments')
+            ? $this->payments->where('type', 'ems')->where('status', 'verified')->sum('amount')
+            : $this->payments()->where('type', 'ems')->where('status', 'verified')->sum('amount');
+
+        return max(0, round((float) $this->ems_tax_amount - (float) $paid, 2));
+    }
+
+    public function getOutstandingObligationsAttribute(): array
+    {
+        $obligations = [];
+
+        if ($this->has_outstanding_order_payment) {
+            $schedule = $this->next_payment;
+            $obligations[] = [
+                'type' => 'order',
+                'label' => in_array($this->payment_type, ['dp', 'full'], true) ? $schedule['label'] : match ($this->paymentStatus?->code) {
+                    'menunggu-dp' => 'DP',
+                    'menunggu-pelunasan' => 'Pelunasan',
+                    default => 'Pembayaran pesanan',
+                },
+                'amount' => $schedule['amount'],
+                'due_date' => null,
+                'anchor' => 'payment-summary',
+            ];
+        }
+
+        if ($this->has_outstanding_ems_tax) {
+            $obligations[] = [
+                'type' => 'ems',
+                'label' => 'EMS & Pajak',
+                'amount' => $this->ems_tax_remaining_amount,
+                'due_date' => $this->ems_tax_due_date,
+                'anchor' => 'ems-bill',
+            ];
+        }
+
+        return $obligations;
+    }
+
+    public function getNextPaymentAttribute(): array
+    {
+        return app(\App\Services\PaymentSchedule::class)->forOrder($this);
     }
 
     public function getLedgerPaymentStateAttribute(): string

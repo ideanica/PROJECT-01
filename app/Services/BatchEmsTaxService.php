@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Batch;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 class BatchEmsTaxService
 {
@@ -32,6 +33,13 @@ class BatchEmsTaxService
                 return;
             }
 
+            $ordersWithEmsPayments = DB::table('order_payments')
+                ->whereIn('member_order_id', $orders->pluck('id'))
+                ->where('type', 'ems')
+                ->whereIn('status', ['pending', 'verified'])
+                ->pluck('member_order_id')
+                ->flip();
+
             $totalCents = (int) round((float) ($batch->ems_tax_amount ?? 0) * 100);
             $share = intdiv($totalCents, $count);
             $remainder = $totalCents % $count;
@@ -39,9 +47,15 @@ class BatchEmsTaxService
             foreach ($orders as $index => $order) {
                 $cents = $share + ($index < $remainder ? 1 : 0);
                 $amount = number_format($cents / 100, 2, '.', '');
-                $amountChanged = $order->ems_tax_amount !== $amount;
+                $targetAmount = $batch->ems_tax_amount === null ? null : $amount;
+                $amountChanged = $order->ems_tax_amount !== $targetAmount;
+                if ($amountChanged && $ordersWithEmsPayments->has($order->id)) {
+                    throw ValidationException::withMessages([
+                        'ems_tax_amount' => 'Alokasi EMS tidak dapat diubah setelah ada bukti atau pembayaran terverifikasi pada tagihan batch ini.',
+                    ]);
+                }
                 $order->forceFill([
-                    'ems_tax_amount' => $batch->ems_tax_amount === null ? null : $amount,
+                    'ems_tax_amount' => $targetAmount,
                     'ems_tax_status' => $cents === 0 ? 'not_billed'
                         : (! $amountChanged && $order->ems_tax_status === 'paid' ? 'paid' : 'unpaid'),
                     'ems_tax_due_date' => $batch->ems_tax_due_date,

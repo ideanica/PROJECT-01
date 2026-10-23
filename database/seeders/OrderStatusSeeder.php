@@ -9,7 +9,7 @@ class OrderStatusSeeder extends Seeder
 {
     public function run(): void
     {
-        collect([
+        $statuses = collect([
             ['name' => 'Menunggu Pemesanan ke Supplier', 'code' => 'menunggu-pemesanan', 'description' => 'Batch sudah dibuat dan menunggu proses pemesanan produk ke store atau supplier.', 'color' => '#64748b', 'sequence' => 10, 'status_type' => 'process', 'scope' => 'batch', 'is_initial' => true, 'is_final' => false],
             ['name' => 'Sudah Dipesan ke Supplier', 'code' => 'sudah-dipesan', 'description' => 'Seluruh produk dalam batch sudah berhasil dipesan ke store atau supplier.', 'color' => '#2563eb', 'sequence' => 20, 'status_type' => 'process', 'scope' => 'batch', 'is_initial' => false, 'is_final' => false],
             ['name' => 'Tiba di Gudang Korea', 'code' => 'arrived-wh-korea', 'description' => 'Produk dalam batch sudah tiba di gudang Korea dan menunggu pengiriman ke Indonesia.', 'color' => '#7c3aed', 'sequence' => 30, 'status_type' => 'process', 'scope' => 'batch', 'is_initial' => false, 'is_final' => false],
@@ -32,7 +32,7 @@ class OrderStatusSeeder extends Seeder
             ['name' => 'Pesanan Berhasil Diamankan', 'code' => 'secured', 'description' => 'Slot atau seluruh produk pada pesanan pelanggan ini sudah berhasil diamankan.', 'color' => '#4f46e5', 'sequence' => 21, 'status_type' => 'process', 'scope' => 'member_order', 'is_initial' => false, 'is_final' => false],
             ['name' => 'Item Kurang', 'code' => 'barang-kurang', 'description' => 'Jumlah produk yang diterima untuk item ini belum lengkap.', 'color' => '#be123c', 'sequence' => 90, 'status_type' => 'failed', 'scope' => 'order_item', 'is_initial' => false, 'is_final' => false],
             ['name' => 'Item Rusak', 'code' => 'barang-rusak', 'description' => 'Item diterima dalam kondisi rusak dan memerlukan tindak lanjut.', 'color' => '#b91c1c', 'sequence' => 91, 'status_type' => 'failed', 'scope' => 'order_item', 'is_initial' => false, 'is_final' => false],
-        ])->each(function (array $status): void {
+        ])->map(function (array $status): array {
             $status['locks_order_editing'] = in_array($status['code'], [
                 'sudah-dipesan',
                 'arrived-wh-korea',
@@ -47,10 +47,19 @@ class OrderStatusSeeder extends Seeder
                 'dibatalkan',
             ], true);
 
-            OrderStatus::updateOrCreate(
-                ['code' => $status['code']],
-                $status + ['is_active' => true],
-            );
+            return $status + ['is_active' => true];
         });
+
+        $existingCodes = OrderStatus::query()->whereIn('code', $statuses->pluck('code'))->pluck('code');
+        $missingStatuses = $statuses->reject(fn (array $status) => $existingCodes->contains($status['code']));
+        if ($missingStatuses->isEmpty()) {
+            return;
+        }
+
+        $timestamp = now();
+        OrderStatus::query()->insert($missingStatuses->map(fn (array $status) => $status + [
+            'created_at' => $timestamp,
+            'updated_at' => $timestamp,
+        ])->all());
     }
 }

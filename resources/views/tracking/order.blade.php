@@ -12,19 +12,21 @@
         <div class="order-detail-shell">
             <div class="order-detail-topbar"><a href="{{ $backUrl }}" aria-label="Kembali ke halaman sebelumnya"><x-public-icon variant="rounded-bold" name="arrow-left" :size="17" /><span>Kembali</span></a><span>DETAIL PESANAN</span></div>
 
-            <section class="order-detail-hero"><div class="order-detail-hero-copy"><span>PESANAN {{ mb_strtoupper($member->display_name) }}</span><div class="order-detail-title-row"><h1>{{ $order->order_code }}</h1><div class="order-detail-main-status"><x-status-badge :status="$order->tracking_status" /></div></div><p>Batch {{ $order->batch->batch_number }} · {{ $order->batch->batch_name ?: 'K-pop merchandise' }}{{ $order->go_number ? ' · GO '.$order->go_number : '' }}</p></div><div class="order-detail-cover">@if($order->batch->catalog_image_path)<img src="{{ $order->batch->catalog_image_url }}" alt="{{ $order->batch->batch_name ?: $order->batch->batch_number }}">@else<x-public-icon variant="rounded-bold" name="box" :size="28" />@endif</div></section>
+            <section class="order-detail-hero"><div class="order-detail-hero-copy"><span>PESANAN {{ mb_strtoupper($member->display_name) }}</span><div class="order-detail-title-row"><h1>{{ $order->order_code }}</h1></div><p>Batch {{ $order->batch->batch_number }} · {{ $order->batch->batch_name ?: 'K-pop merchandise' }}{{ $order->go_number ? ' · GO '.$order->go_number : '' }}</p></div><div class="order-detail-cover">@if($order->batch->catalog_image_path)<img src="{{ $order->batch->catalog_image_url }}" alt="{{ $order->batch->batch_name ?: $order->batch->batch_number }}">@else<x-public-icon variant="rounded-bold" name="box" :size="28" />@endif</div></section>
 
+            {{--
             <section class="order-detail-stats" aria-label="Ringkasan pesanan">
                 <article><span class="order-detail-stat-icon"><x-public-icon variant="rounded-bold" name="box" :size="18" /></span><div><small>Total item</small><strong>{{ $itemCount }} item</strong></div></article>
                 <article><span class="order-detail-stat-icon"><x-public-icon variant="rounded-bold" name="card" :size="18" /></span><div><small>Total pesanan</small><strong>Rp {{ number_format($orderTotal, 0, ',', '.') }}</strong></div></article>
                 <article><span class="order-detail-stat-icon"><x-public-icon variant="rounded-bold" name="wallet" :size="18" /></span><div><small>Sisa tagihan</small><strong>Rp {{ number_format($remainingAmount, 0, ',', '.') }}</strong></div></article>
                 <article><span class="order-detail-stat-icon"><x-public-icon variant="rounded-bold" name="calendar" :size="18" /></span><div><small>Diperbarui</small><strong>{{ $order->updated_at->translatedFormat('d M Y') }}</strong></div></article>
             </section>
+            --}}
 
             <div class="order-detail-layout">
                 <div class="order-detail-main-column">
                     <section class="order-detail-panel order-detail-items-panel">
-                        <header class="order-detail-section-heading"><div><span>ISI PESANAN</span><h2>Jajanan kamu</h2></div><b>{{ $order->items->count() }} variasi</b></header>
+                        <header class="order-detail-section-heading"><div><span>ISI PESANAN</span><h2>Item pesanan</h2></div><b>{{ $order->items->count() }} variasi</b></header>
                         <div class="order-detail-item-list">
                             @forelse($order->items as $item)
                                 <article class="order-detail-item">
@@ -35,8 +37,11 @@
                                         @if($item->shipmentGroup)
                                             <small>{{ $item->shipmentGroup->name }} · {{ str($item->shipmentGroup->method)->replace('_', ' ')->title() }}{{ $item->shipmentGroup->tracking_number ? ' · Resi '.$item->shipmentGroup->tracking_number : '' }}</small>
                                         @elseif($item->notes)<small>{{ $item->notes }}</small>@endif
+                                        @if(!$order->is_refunded && $item->override_status_id && $item->effective_status?->id !== $order->tracking_status?->id)
+                                            <small>Kondisi item: {{ $item->effective_status?->name }}</small>
+                                        @endif
                                     </div>
-                                    <div class="order-detail-item-price"><strong>Rp {{ number_format((float) ($item->subtotal ?: $item->unit_price * $item->quantity), 0, ',', '.') }}</strong><span>@if($order->is_refunded)<x-status-badge :status="$order->tracking_status" />@else<x-status-badge :status="$item->effective_status" />@endif</span></div>
+                                    <div class="order-detail-item-price"><strong>Rp {{ number_format((float) ($item->subtotal ?: $item->unit_price * $item->quantity), 0, ',', '.') }}</strong></div>
                                 </article>
                             @empty
                                 <div class="order-detail-empty"><x-public-icon variant="rounded-bold" name="bag" :size="22" /><p>Belum ada item yang tercatat.</p></div>
@@ -46,9 +51,12 @@
 
                     <section class="order-detail-panel order-detail-timeline-panel">
                         <header class="order-detail-section-heading"><div><span>PERJALANAN PESANAN</span><h2>Timeline status</h2></div><x-public-icon variant="rounded-bold" name="history" :size="20" /></header>
+                        @if($timeline->isEmpty() || $timeline->first()?->newStatus?->id !== $order->tracking_status?->id)
+                            <div class="order-detail-current-status"><span>Status saat ini</span><x-status-badge :status="$order->tracking_status" /></div>
+                        @endif
                         <div class="order-detail-timeline">
                             @forelse($timeline as $history)
-                                <article class="order-detail-timeline-entry"><span class="order-detail-timeline-dot"></span><div class="order-detail-timeline-statuses"><x-status-badge :status="$history->oldStatus" /><span>menjadi</span><x-status-badge :status="$history->newStatus" /></div><p>{{ $history->note ?: 'Status pesanan diperbarui oleh admin.' }}</p><time>{{ $history->created_at->translatedFormat('d M Y, H:i') }}</time></article>
+                                <article class="order-detail-timeline-entry"><span class="order-detail-timeline-dot"></span><div class="order-detail-timeline-statuses">@if($loop->first && $history->newStatus?->id === $order->tracking_status?->id)<strong class="order-detail-current-label">Status saat ini</strong>@endif<x-status-badge :status="$history->newStatus" /></div><p>{{ $history->note ?: $history->newStatus?->description ?: 'Status pesanan diperbarui oleh admin.' }}</p><time>{{ $history->created_at->translatedFormat('d M Y, H:i') }}</time></article>
                             @empty
                                 <div class="order-detail-empty"><x-public-icon variant="rounded-bold" name="history" :size="22" /><p>Belum ada perjalanan status untuk pesanan ini.</p></div>
                             @endforelse
@@ -57,22 +65,23 @@
                 </div>
 
                 <aside class="order-detail-side-column">
-                    <section class="order-detail-panel order-detail-payment-card">
+                    <section id="payment-summary" class="order-detail-panel order-detail-payment-card">
                         <header><span class="order-detail-side-icon"><x-public-icon variant="rounded-bold" name="card" :size="19" /></span><div><small>PEMBAYARAN</small><h2>Ringkasan tagihan</h2></div></header>
                         <dl>
                             <div><dt>Total pesanan</dt><dd>Rp {{ number_format($orderTotal, 0, ',', '.') }}</dd></div>
                             <div><dt>Sudah dibayar</dt><dd>Rp {{ number_format($paidAmount, 0, ',', '.') }}</dd></div>
                             <div><dt>Sisa tagihan</dt><dd>Rp {{ number_format($remainingAmount, 0, ',', '.') }}</dd></div>
                             <div><dt>Status pembayaran</dt><dd>{{ $order->paymentStatus?->name ?: 'Belum ditentukan' }}</dd></div>
+                            @if($order->is_refunded)<div><dt>Status pesanan</dt><dd>Direfund</dd></div>@endif
                         </dl>
-                        <x-order-payment-method :order="$order" />
+                        @if($order->has_outstanding_order_payment)<x-order-payment-method :order="$order" />@endif
                         @if($verifiedPayments->isNotEmpty())
-                            <div class="order-detail-payment-history">
-                                <strong>Riwayat pembayaran</strong>
+                            <details class="order-detail-payment-history portal-order-disclosure">
+                                <summary>Riwayat pembayaran ({{ $verifiedPayments->count() }})</summary>
                                 @foreach($verifiedPayments as $payment)
-                                    <div><span>{{ str($payment->type)->replace('_', ' ')->title() }}<br><small>{{ ($payment->paid_at ?? $payment->created_at)->translatedFormat('d M Y') }}</small></span><b>Rp {{ number_format((float) $payment->amount, 0, ',', '.') }}</b></div>
+                                    <div><span>{{ match($payment->type) { 'dp' => 'DP', 'installment' => 'Cicilan', 'settlement' => 'Pelunasan', 'full_payment' => 'Pembayaran penuh', default => 'Pembayaran lainnya' } }}<br><small>{{ ($payment->paid_at ?? $payment->created_at)->translatedFormat('d M Y') }}</small></span><b>Rp {{ number_format((float) $payment->amount, 0, ',', '.') }}</b></div>
                                 @endforeach
-                            </div>
+                            </details>
                         @endif
                     </section>
 
@@ -80,13 +89,13 @@
                         <section class="order-detail-panel order-detail-note-card">
                             <span>PENGIRIMAN</span>
                             @foreach($shipmentGroups as $shipment)
-                                <div class="mt-3 first:mt-0"><strong>{{ $shipment->name }}</strong><p>{{ str($shipment->method)->replace('_', ' ')->title() }}{{ $shipment->tracking_number ? ' · Resi '.$shipment->tracking_number : '' }}</p>@if($shipment->currentStatus)<div class="mt-2"><x-status-badge :status="$shipment->currentStatus" /></div>@endif</div>
+                                <div class="mt-3 first:mt-0"><strong>{{ $shipment->name }}</strong><p>{{ str($shipment->method)->replace('_', ' ')->title() }}{{ $shipment->tracking_number ? ' · Resi '.$shipment->tracking_number : '' }}</p>@if($shipment->currentStatus)<p>Status pengiriman: {{ $shipment->currentStatus->name }}</p>@endif</div>
                             @endforeach
                         </section>
                     @endif
 
-                    @if($order->notes)<section class="order-detail-panel order-detail-note-card"><span>CATATAN PESANAN</span><p>{{ $order->notes }}</p></section>@endif
-                    @if($order->ems_tax_is_published)<section class="order-detail-panel order-detail-ems-card"><header class="order-detail-section-heading"><div><span>BIAYA TAMBAHAN</span><h2>EMS & Pajak</h2></div></header><x-order-ems-bill :order="$order" /></section>@endif
+                    @if($order->ems_tax_is_published)<section id="ems-bill" class="order-detail-panel order-detail-ems-card"><header class="order-detail-section-heading"><div><span>BIAYA TAMBAHAN</span><h2>EMS & Pajak</h2></div></header><x-order-ems-bill :order="$order" :show-status-badge="false" />@if($order->has_outstanding_ems_tax)<x-order-payment-method :order="$order" bill-type="ems" />@endif</section>@endif
+                    @if($order->notes)<section class="order-detail-panel order-detail-note-card order-detail-order-note"><span>CATATAN PESANAN</span><p>{{ $order->notes }}</p></section>@endif
                 </aside>
             </div>
         </div>

@@ -225,7 +225,7 @@
     <header aria-label="Akun customer" style="position:absolute;z-index:60;top:clamp(22px,2.5vw,34px);left:0;right:0;pointer-events:none;">
         <div style="width:min(calc(100% - clamp(28px,3.2vw,44px)),1180px);margin:0 auto;display:flex;justify-content:flex-end;align-items:center;">
             @if($member)
-                <a href="{{ route('profile.show') }}" class="public-account-chip portal-v2-account-chip" style="pointer-events:auto;display:inline-flex;min-height:42px;align-items:center;gap:9px;border:2px solid #355a45;border-radius:12px;padding:5px 12px 5px 6px;background:#fffdf8;color:#355a45;box-shadow:var(--customer-shadow-control) #355a45;text-decoration:none;">
+                <a href="{{ route('profile.show') }}" class="public-account-chip portal-v2-account-chip" style="pointer-events:auto;display:inline-flex;width:auto;height:42px;min-height:42px;align-items:center;gap:9px;border:2px solid #355a45;border-radius:12px;padding:5px;background:#fffdf8;color:#355a45;box-shadow:var(--customer-shadow-control) #355a45;text-decoration:none;">
                     @if($member->avatar_url)
                         <img src="{{ $member->avatar_url }}" alt="Foto profil {{ $member->display_name }}" style="width:28px;height:28px;flex:0 0 28px;border:2px solid #355a45;border-radius:9px;background:#f8d5df;object-fit:cover;box-shadow:var(--customer-shadow-pressed) #355a45;">
                     @else

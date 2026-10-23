@@ -55,9 +55,11 @@ class StoreMemberOrderRequest extends FormRequest
         $order = $this->route('member_order');
         $currentPaymentStatusId = $order?->payment_status_id;
         $isExistingOrder = $order !== null;
+        $hasPayments = $order?->payments()->exists() ?? false;
         $itemsAreLocked = $order
             ? ($order->loadMissing(['batch.currentStatus', 'overrideStatus', 'paymentStatus'])->batch?->orders_locked
-                || $order->is_refunded)
+                || $order->is_refunded
+                || $hasPayments)
             : false;
 
         $keepsExistingBuyer = $order && (int) $order->member_id === $this->integer('member_id')
@@ -75,17 +77,12 @@ class StoreMemberOrderRequest extends FormRequest
             'batch_id' => $itemsAreLocked
                 ? ['required', Rule::in([$order->batch_id])]
                 : ['required', 'exists:batches,id'],
+            'payment_type' => ! $isExistingOrder
+                ? ['required', Rule::in(['dp', 'full'])]
+                : ($hasPayments ? ['prohibited'] : ['nullable', Rule::in(['dp', 'full'])]),
             'go_number' => ['nullable', 'string', 'max:50'],
             'override_status_id' => ['prohibited'],
-            'payment_status_id' => [
-                'nullable',
-                Rule::exists('order_statuses', 'id')->where(fn ($query) => $query
-                    ->where('scope', 'payment')
-                    ->where(fn ($query) => $query
-                        ->where('is_active', true)
-                        ->when(! $isExistingOrder, fn ($query) => $query->where('code', '!=', 'refund'))
-                        ->when($currentPaymentStatusId, fn ($query, $statusId) => $query->orWhere('id', $statusId)))),
-            ],
+            'payment_status_id' => ['prohibited'],
             'notes' => ['nullable', 'string'],
             'ems_tax_amount' => ['prohibited'],
             'ems_tax_status' => ['prohibited'],

@@ -6,6 +6,7 @@ use App\Models\Member;
 use App\Models\User;
 use Database\Seeders\AdminUserSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
@@ -82,6 +83,10 @@ class AdminAccountTest extends TestCase
 
     public function test_admin_seeder_preserves_existing_credentials_and_does_not_create_another_admin(): void
     {
+        Config::set('seeders.admin', [
+            'name' => 'Initial Admin', 'username' => 'initial.admin',
+            'email' => 'admin@example.com', 'password' => 'Initial-password1!',
+        ]);
         $this->seed(AdminUserSeeder::class);
         $user = User::where('email', 'admin@example.com')->sole();
         $this->assertTrue($user->isAdmin());
@@ -89,10 +94,20 @@ class AdminAccountTest extends TestCase
         $user->email = 'changed.admin@example.test';
         $user->save();
         $password = $user->password;
+        Config::set('seeders.admin', ['name' => null, 'username' => null, 'email' => null, 'password' => null]);
         $this->seed(AdminUserSeeder::class);
         $this->assertSame($password, $user->fresh()->password);
         $this->assertTrue($user->fresh()->isAdmin());
         $this->assertSame(1, User::where('role', User::ROLE_ADMIN)->count());
+    }
+
+    public function test_admin_seeder_does_not_create_an_account_without_explicit_credentials(): void
+    {
+        Config::set('seeders.admin', ['name' => null, 'username' => null, 'email' => null, 'password' => null]);
+
+        $this->seed(AdminUserSeeder::class);
+
+        $this->assertDatabaseCount('users', 0);
     }
 
     public function test_demo_readiness_repair_preserves_password_and_does_not_activate_real_line_accounts(): void

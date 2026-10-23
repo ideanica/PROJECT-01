@@ -2,14 +2,14 @@ import $ from 'jquery';
 import './password-monitor';
 import './profile-photo';
 
-document.querySelectorAll('[data-order-scroll]').forEach((list) => {
+document.querySelectorAll('[data-order-scroll]').forEach(() => {
     const key = `ocean-order-scroll:${location.pathname}${location.search}`;
     const restore = () => {
-        try { list.scrollTop = Number(sessionStorage.getItem(key)) || 0; } catch {}
+        try { window.scrollTo({ top: Number(sessionStorage.getItem(key)) || 0, behavior: 'instant' }); } catch {}
     };
     window.addEventListener('pageshow', restore);
     window.addEventListener('pagehide', () => {
-        try { sessionStorage.setItem(key, String(list.scrollTop)); } catch {}
+        try { sessionStorage.setItem(key, String(window.scrollY)); } catch {}
     });
     document.fonts.ready.then(restore);
 });
@@ -45,6 +45,20 @@ document.querySelectorAll('[data-profile-edit-form]').forEach((form) => {
 });
 
 window.$ = window.jQuery = $;
+
+document.querySelectorAll('[data-payment-proof-form]').forEach((form) => {
+    const button = form.querySelector('button[type="submit"]');
+    form.addEventListener('submit', () => {
+        button.disabled = true;
+        button.textContent = 'Mengirim bukti...';
+        form.setAttribute('aria-busy', 'true');
+    });
+    window.addEventListener('pageshow', () => {
+        button.disabled = false;
+        button.textContent = 'Kirim bukti pembayaran';
+        form.removeAttribute('aria-busy');
+    });
+});
 
 const readOceanPreference = (key, fallback) => {
     try {
@@ -157,7 +171,7 @@ const initializeAdminSelects = async () => {
     if (typeof $.fn.select2 !== 'function') attachSelect2(window, $);
 
     const enhanceSelects = (root = document) => {
-        const selector = '.admin-shell select:not([data-native-select]):not(.select2-hidden-accessible), select[data-auth-select2]:not(.select2-hidden-accessible)';
+        const selector = '.admin-shell select:not([data-native-select]):not(.select2-hidden-accessible), select[data-auth-select2]:not(.select2-hidden-accessible), select[data-portal-select2]:not(.select2-hidden-accessible)';
         const candidates = $(root).is(selector) ? $(root) : $(root).find(selector);
 
         candidates
@@ -165,10 +179,11 @@ const initializeAdminSelects = async () => {
                 const select = $(this);
                 const modal = select.closest('.status-modal');
                 const isAuthSelect = select.is('[data-auth-select2]');
+                const isPortalSelect = select.is('[data-portal-select2]');
                 select.select2({
                     width: '100%',
-                    dropdownParent: modal.length ? modal : $(document.body),
-                    dropdownCssClass: isAuthSelect
+                    dropdownParent: isPortalSelect ? select.closest('.portal-order-toolbar') : modal.length ? modal : $(document.body),
+                    dropdownCssClass: isPortalSelect ? 'portal-select2-dropdown' : isAuthSelect
                         ? 'auth-select2-dropdown'
                         : select.closest('.admin-form-shell').length
                             ? 'admin-form-select2-dropdown'

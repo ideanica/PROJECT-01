@@ -17,9 +17,9 @@ class OrderNavigationTest extends TestCase
     {
         $member = Member::factory()->create();
         $user = User::factory()->create(['role' => 'customer', 'member_id' => $member->id]);
-        MemberOrder::factory()->create(['member_id' => $member->id, 'total_amount' => 100000]);
+        MemberOrder::factory()->create(['member_id' => $member->id, 'total_amount' => 100000, 'order_code' => 'NAV-100']);
 
-        foreach (['/order-history', '/orders/unpaid', '/billing/orders'] as $path) {
+        foreach (['/order-history', '/billing', '/billing?q=100&sort=oldest'] as $path) {
             $response = $this->actingAs($user)->get($path)->assertOk();
             $this->assertMatchesRegularExpression('/return_to='.preg_quote(urlencode($path), '/').'/', $response->getContent());
         }

@@ -9,10 +9,10 @@ class CustomerPortalTest extends TestCase
     public function test_billing_overview_is_available_to_guests(): void
     {
         $this->get(route('billing.index'))
-            ->assertRedirect(route('profile.show'));
-        $this->get(route('billing.orders'))->assertOk()
+            ->assertOk()
             ->assertSee('Login untuk melihat')
             ->assertDontSee('>Riwayat Pembayaran</h2>', false);
+        $this->get(route('billing.orders'))->assertRedirect(route('billing.index'));
     }
 
     public function test_services_overview_links_to_available_customer_features(): void

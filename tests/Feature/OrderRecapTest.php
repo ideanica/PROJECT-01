@@ -14,6 +14,8 @@ use App\Services\StatusTransitionService;
 use Database\Seeders\OrderStatusSeeder;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
@@ -42,6 +44,7 @@ class OrderRecapTest extends TestCase
         $order = MemberOrder::factory()->create(['member_id' => $member->id]);
         $this->actingAs($admin)->post(route('admin.member-orders.store'), [
             'member_id' => $member->id, 'batch_id' => $order->batch_id,
+            'payment_type' => 'full',
             'items' => [['item_name' => 'Duplicate item', 'quantity' => 1]],
         ])->assertSessionHasErrors('member_id');
         $this->assertDatabaseCount('member_orders', 1);
@@ -352,7 +355,7 @@ class OrderRecapTest extends TestCase
             ->assertDontSee('name="code"', false);
     }
 
-    public function test_admin_can_select_managed_payment_status_for_order(): void
+    public function test_admin_cannot_mark_order_paid_without_a_verified_payment(): void
     {
         $admin = User::factory()->create();
         $member = Member::factory()->create();
@@ -362,6 +365,7 @@ class OrderRecapTest extends TestCase
         $batch->products()->attach($product);
         $paymentStatus = OrderStatus::factory()->create([
             'name' => 'Lunas',
+            'code' => 'lunas',
             'scope' => 'payment',
             'is_active' => true,
         ]);
@@ -369,17 +373,16 @@ class OrderRecapTest extends TestCase
         $this->actingAs($admin)->post(route('admin.member-orders.store'), [
             'member_id' => $member->id,
             'batch_id' => $batch->id,
+            'payment_type' => 'full',
             'payment_status_id' => $paymentStatus->id,
             'items' => [[
                 'product_id' => $product->id,
                 'quantity' => 1,
             ]],
-        ])->assertRedirect();
+        ])->assertSessionHasErrors('payment_status_id');
 
-        $order = MemberOrder::whereBelongsTo($member)->whereBelongsTo($batch)->sole();
-
-        $this->assertSame($paymentStatus->id, $order->payment_status_id);
-        $this->assertMatchesRegularExpression('/^ORD-\d{4}-\d{6}$/', $order->order_code);
+        $this->assertDatabaseMissing('member_orders', ['member_id' => $member->id, 'batch_id' => $batch->id]);
+        $this->assertSame(0, $paymentStatus->paymentMemberOrders()->count());
     }
 
     public function test_progress_status_cannot_be_used_as_payment_status(): void
@@ -397,6 +400,7 @@ class OrderRecapTest extends TestCase
         $this->actingAs($admin)->post(route('admin.member-orders.store'), [
             'member_id' => $member->id,
             'batch_id' => $batch->id,
+            'payment_type' => 'full',
             'payment_status_id' => $progressStatus->id,
             'items' => [[
                 'product_id' => $product->id,
@@ -433,6 +437,7 @@ class OrderRecapTest extends TestCase
         $this->actingAs($admin)->post(route('admin.member-orders.store'), [
             'member_id' => $member->id,
             'batch_id' => $batch->id,
+            'payment_type' => 'full',
             'payment_status_id' => $refund->id,
             'items' => [[
                 'product_id' => $product->id,
@@ -459,6 +464,7 @@ class OrderRecapTest extends TestCase
         $this->actingAs($admin)->post(route('admin.member-orders.store'), [
             'member_id' => $member->id,
             'batch_id' => $batch->id,
+            'payment_type' => 'full',
             'items' => [[
                 'product_id' => $otherProduct->id,
                 'quantity' => 1,
@@ -672,6 +678,7 @@ class OrderRecapTest extends TestCase
         $this->actingAs($admin)->post(route('admin.member-orders.store'), [
             'member_id' => $member->id,
             'batch_id' => $batch->id,
+            'payment_type' => 'full',
             'items' => [[
                 'product_id' => $product->id,
                 'quantity' => 2,
@@ -708,6 +715,7 @@ class OrderRecapTest extends TestCase
         $this->actingAs($admin)->post(route('admin.member-orders.store'), [
             'member_id' => $member->id,
             'batch_id' => $batch->id,
+            'payment_type' => 'full',
             'items' => [[
                 'product_id' => $product->id,
                 'quantity' => 1,
@@ -1133,6 +1141,8 @@ class OrderRecapTest extends TestCase
 
     public function test_refund_payment_stops_order_and_item_progress_at_refunded(): void
     {
+        $this->seed(OrderStatusSeeder::class);
+        Storage::fake('local');
         $admin = User::factory()->create();
         $batchStatus = OrderStatus::factory()->create(['scope' => 'batch']);
         $nextBatchStatus = OrderStatus::factory()->create([
@@ -1140,35 +1150,29 @@ class OrderRecapTest extends TestCase
             'scope' => 'batch',
         ]);
         $itemOverride = OrderStatus::factory()->create(['scope' => 'order_item']);
-        $refund = OrderStatus::factory()->create([
-            'name' => 'Dana Dikembalikan',
-            'code' => 'refund',
-            'scope' => 'payment',
-            'status_type' => 'failed',
-            'is_final' => true,
-        ]);
+        $refund = OrderStatus::where('code', 'refund')->sole();
         $batch = Batch::factory()->create(['current_status_id' => $batchStatus->id]);
         $product = Product::factory()->create();
         $batch->products()->attach($product);
         $order = MemberOrder::factory()->create(['batch_id' => $batch->id]);
+        $order->payments()->create(['type' => 'dp', 'amount' => 25000, 'status' => 'verified', 'paid_at' => now()]);
         $item = OrderItem::factory()->create([
             'member_order_id' => $order->id,
             'product_id' => $product->id,
             'override_status_id' => $itemOverride->id,
         ]);
 
-        $this->actingAs($admin)->put(route('admin.member-orders.update', $order), [
-            'member_id' => $order->member_id,
-            'batch_id' => $batch->id,
-            'payment_status_id' => $refund->id,
-            'items' => [[
-                'id' => $item->id,
-                'product_id' => $product->id,
-                'quantity' => $item->quantity,
-                'unit_price' => $item->unit_price,
-                'override_status_id' => $itemOverride->id,
-            ]],
-        ])->assertRedirect(route('admin.member-orders.show', $order));
+        $this->actingAs($admin)->post(route('admin.member-orders.payments.refund', $order), [
+            'amount' => '25000',
+            'proof' => UploadedFile::fake()->image('refund.png'),
+        ])->assertRedirect();
+
+        $this->assertDatabaseHas('order_payments', [
+            'member_order_id' => $order->id, 'type' => 'refund', 'amount' => 25000,
+            'status' => 'verified', 'created_by' => $admin->id, 'reviewed_by' => $admin->id,
+        ]);
+        $refundPayment = $order->payments()->where('type', 'refund')->sole();
+        $this->actingAs($admin)->delete(route('admin.member-orders.payments.destroy', [$order, $refundPayment]))->assertForbidden();
 
         $order->refresh()->load(['overrideStatus', 'batch.currentStatus']);
         $this->assertSame('refunded', $order->overrideStatus->code);
@@ -1193,7 +1197,7 @@ class OrderRecapTest extends TestCase
 
         $this->post(route('tracking.search'), ['query' => $order->order_code])
             ->assertOk()
-            ->assertSee('background-color: #15803d14', false)
+            ->assertSee('--status-color: #15803d', false)
             ->assertDontSee('Selesai (Refund)')
             ->assertDontSee('Batch Tetap Berjalan Setelah Refund');
 

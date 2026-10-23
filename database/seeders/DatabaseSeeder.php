@@ -17,10 +17,6 @@ class DatabaseSeeder extends Seeder
         $this->call([
             AdminUserSeeder::class,
             OrderStatusSeeder::class,
-            GoKpopMerchSeeder::class,
-            CustomerDemoBatchSeeder::class,
-            CustomerMemberSeeder::class,
-            CustomerOrderSeeder::class,
         ]);
     }
 }

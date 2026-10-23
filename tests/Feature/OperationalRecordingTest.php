@@ -25,6 +25,7 @@ class OperationalRecordingTest extends TestCase
         $response = $this->actingAs($admin)->post(route('admin.member-orders.store'), [
             'member_id' => $member->id,
             'batch_id' => $batch->id,
+            'payment_type' => 'full',
             'go_number' => 'GO-4',
             'items' => [[
                 'item_name' => 'Wish Doll',
@@ -111,12 +112,14 @@ class OperationalRecordingTest extends TestCase
         OrderPayment::create(['member_order_id' => $order->id, 'type' => 'dp', 'amount' => 200000, 'status' => 'verified', 'paid_at' => now()]);
         OrderPayment::create(['member_order_id' => $order->id, 'type' => 'settlement', 'amount' => 300000, 'status' => 'pending']);
 
-        $response = $this->actingAs($user)->get(route('billing.orders'));
+        $response = $this->actingAs($user)->get(route('billing.index'));
 
         $response->assertOk();
         $response->assertSee('Rp 300.000');
-        $response->assertSee('Rp 200.000');
-        $response->assertDontSee('Rp 500.000</strong></div><div><span>Sudah dibayar', false);
+        $response->assertDontSee('Rp 200.000');
+        $this->get(route('billing.payments.show', [$order, 'order']))->assertOk()->assertSee('Rp 200.000')->assertSee('Sudah terverifikasi');
+        $response->assertViewHas('outstandingTotal', 300000.0);
+        $response->assertDontSee('Sudah dibayar');
     }
 
     public function test_tracking_progress_shows_shipment_group_and_resi(): void

@@ -10,6 +10,8 @@ use App\Models\MemberOrder;
 use App\Models\OrderStatus;
 use App\Models\ShipmentGroup;
 use App\Services\BatchEmsTaxService;
+use App\Services\OrderCodeGenerator;
+use App\Services\PaymentSchedule;
 use App\Services\StatusTransitionService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -54,9 +56,9 @@ class MemberOrderController extends Controller
         return view('admin.orders.form', $this->formData(new MemberOrder));
     }
 
-    public function store(StoreMemberOrderRequest $request, StatusTransitionService $statuses)
+    public function store(StoreMemberOrderRequest $request, StatusTransitionService $statuses, OrderCodeGenerator $orderCodes, PaymentSchedule $schedule)
     {
-        $order = DB::transaction(function () use ($request, $statuses) {
+        $order = DB::transaction(function () use ($request, $statuses, $orderCodes, $schedule) {
             Batch::query()->whereKey($request->integer('batch_id'))->lockForUpdate()->firstOrFail();
             $member = Member::findOrFail($request->integer('member_id'));
 
@@ -65,12 +67,14 @@ class MemberOrderController extends Controller
             ]) + [
                 'member_id' => $member->id,
                 'order_code' => 'TMP-'.Str::uuid(),
+                'dp_percentage' => $request->validated('payment_type') === 'dp' ? $schedule->percentage() : null,
             ]);
-            $order->forceFill(['order_code' => $this->generateOrderCode($order)])->save();
+            $order->forceFill(['order_code' => $orderCodes->for($order)])->save();
             $this->syncItems($order, $request->validated('items'), $statuses, $request->user());
             $order->update(['total_amount' => $order->items()->sum('subtotal')]);
 
             app(BatchEmsTaxService::class)->sync($order->batch);
+            app(\App\Services\PaymentVerificationService::class)->sync($order);
 
             return $order;
         });
@@ -108,20 +112,28 @@ class MemberOrderController extends Controller
         return view('admin.orders.form', $this->formData($memberOrder));
     }
 
-    public function update(StoreMemberOrderRequest $request, MemberOrder $memberOrder, StatusTransitionService $statuses)
+    public function update(StoreMemberOrderRequest $request, MemberOrder $memberOrder, StatusTransitionService $statuses, PaymentSchedule $schedule)
     {
-        DB::transaction(function () use ($request, $memberOrder, $statuses) {
+        DB::transaction(function () use ($request, $memberOrder, $statuses, $schedule) {
             $oldBatchId = $memberOrder->batch_id;
             $oldMemberId = $memberOrder->member_id;
             $affectedBatches = Batch::query()->whereIn('id', [$oldBatchId, $request->integer('batch_id')])
                 ->orderBy('id')->lockForUpdate()->get();
             $memberOrder->loadMissing(['batch.currentStatus', 'overrideStatus', 'paymentStatus']);
-            $itemsAreLocked = $memberOrder->batch->orders_locked || $memberOrder->is_refunded;
+            $itemsAreLocked = $memberOrder->batch->orders_locked || $memberOrder->is_refunded || $memberOrder->payments()->exists();
             $member = Member::findOrFail($request->integer('member_id'));
 
-            $memberOrder->update($request->safe()->except([
-                'order_code', 'override_status_id', 'items',
-            ]) + ['member_id' => $member->id]);
+            $attributes = $request->safe()->except([
+                'order_code', 'override_status_id', 'items', 'payment_status_id',
+            ]);
+            if (array_key_exists('payment_type', $attributes)) {
+                $attributes['dp_percentage'] = $attributes['payment_type'] === 'dp'
+                    ? ($memberOrder->payment_type === 'dp' && $memberOrder->dp_percentage !== null
+                        ? $memberOrder->dp_percentage
+                        : $schedule->percentage())
+                    : null;
+            }
+            $memberOrder->update($attributes + ['member_id' => $member->id]);
 
             if (! $itemsAreLocked) {
                 $this->syncItems($memberOrder, $request->validated('items'), $statuses, $request->user());
@@ -136,25 +148,7 @@ class MemberOrderController extends Controller
                 app(BatchEmsTaxService::class)->sync($affectedBatch);
             }
 
-            $paymentStatus = $request->filled('payment_status_id')
-                ? OrderStatus::find($request->integer('payment_status_id'))
-                : null;
-
-            if ($paymentStatus?->code === 'refund' && $memberOrder->overrideStatus?->code !== 'refunded') {
-                $refundedStatus = OrderStatus::query()
-                    ->where('code', 'refunded')
-                    ->where('scope', 'member_order')
-                    ->where('is_active', true)
-                    ->first();
-
-                if (! $refundedStatus) {
-                    throw ValidationException::withMessages([
-                        'payment_status_id' => 'Status terminal Refunded belum tersedia pada Manajemen Status.',
-                    ]);
-                }
-
-                $statuses->transition($memberOrder, $refundedStatus, $request->user(), 'Progress pesanan dihentikan otomatis karena pembayaran diubah menjadi refund.');
-            }
+            app(\App\Services\PaymentVerificationService::class)->sync($memberOrder);
         });
 
         session()->flash('status', 'Pesanan berhasil diperbarui.');
@@ -166,6 +160,8 @@ class MemberOrderController extends Controller
     {
         DB::transaction(function () use ($memberOrder): void {
             $batch = Batch::query()->lockForUpdate()->findOrFail($memberOrder->batch_id);
+            $memberOrder = MemberOrder::query()->lockForUpdate()->findOrFail($memberOrder->id);
+            abort_if($memberOrder->payments()->exists(), 403, 'Pesanan dengan riwayat pembayaran tidak dapat dihapus.');
             $memberOrder->delete();
             app(BatchEmsTaxService::class)->sync($batch);
         });
@@ -226,6 +222,7 @@ class MemberOrderController extends Controller
                 ->when($order->batch_id, fn ($query, $batchId) => $query->orWhere('id', $batchId)))
             ->orderByDesc('created_at')
             ->get();
+        $paymentTypeLocked = $order->exists && $order->payments()->exists();
 
         return [
             'order' => $order,
@@ -233,13 +230,8 @@ class MemberOrderController extends Controller
             'eligibleMembers' => $eligibleMembers,
             'shipmentGroups' => ShipmentGroup::query()->with('batch')->orderBy('batch_id')->orderBy('name')->get(),
             'itemStatuses' => OrderStatus::activeFor('order_item')->get(),
-            'paymentStatuses' => OrderStatus::query()
-                ->where('scope', 'payment')
-                ->when(! $order->exists, fn ($query) => $query->where('code', '!=', 'refund'))
-                ->where(fn ($query) => $query
-                    ->where('is_active', true)
-                    ->when($order->payment_status_id, fn ($query, $statusId) => $query->orWhere('id', $statusId)))
-                ->orderBy('sequence')->orderBy('name')->get(),
+            'paymentTypeLocked' => $paymentTypeLocked,
+            'dpPercentage' => app(PaymentSchedule::class)->percentage(),
         ];
     }
 
@@ -266,8 +258,4 @@ class MemberOrderController extends Controller
         $order->items()->whereNotIn('id', $keptIds)->delete();
     }
 
-    private function generateOrderCode(MemberOrder $order): string
-    {
-        return 'ORD-'.now()->format('ym').'-'.str_pad((string) $order->getKey(), 6, '0', STR_PAD_LEFT);
-    }
 }

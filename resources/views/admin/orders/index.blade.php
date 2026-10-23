@@ -6,11 +6,13 @@
     </div>
 
     <div class="order-table-card before:bg-none!">
-        <form class="border-b border-zinc-200 px-4 py-3 text-[12px] sm:px-5" data-auto-filter>
-            <div class="flex flex-wrap items-center gap-1.5">
+        <form method="GET" class="border-b border-zinc-200 px-4 py-3 text-[12px] sm:px-5" data-auto-filter>
+            @if(request()->boolean('problem'))<input type="hidden" name="problem" value="1">@endif
+            <div class="mb-2 text-xs font-semibold text-zinc-600">Cari pesanan dan batasi tanggal pemesanan</div>
+            <div class="flex flex-wrap items-center gap-2">
                 <label class="flex h-9 w-full items-center gap-2 rounded-md border border-zinc-200 bg-white px-3 shadow-[0_1px_2px_rgba(24,24,27,0.05)] transition focus-within:border-[#2f6b46]/45 focus-within:shadow-[0_0_0_4px_rgba(47,107,70,0.12)] lg:w-[18rem]">
                     <svg viewBox="0 0 20 20" class="h-3.5 w-3.5 shrink-0 text-zinc-700" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="9" r="5.5"/><path d="m13 13 4 4"/></svg>
-                    <input class="h-full w-full border-0! bg-transparent! p-0! text-zinc-700 shadow-none! outline-none! focus:shadow-none!" name="q" value="{{ request('q') }}" placeholder="Cari kode pesanan, pelanggan, atau batch...">
+                    <input class="h-full w-full border-0! bg-transparent! p-0! text-zinc-700 shadow-none! outline-none! focus:shadow-none!" aria-label="Cari kode pesanan, pelanggan, atau batch" name="q" value="{{ request('q') }}" placeholder="Cari kode pesanan, pelanggan, atau batch...">
                 </label>
 
                 <div class="flex h-9 w-full items-center gap-1.5 rounded-md border border-zinc-200 bg-white px-2 shadow-[0_1px_2px_rgba(24,24,27,0.05)] lg:w-auto">
@@ -22,6 +24,7 @@
                 <button class="inline-flex h-8 w-full items-center justify-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-4 font-semibold text-[#27272a] shadow-[0_1px_2px_rgba(24,24,27,0.05)] transition hover:bg-[#f4f4f5] focus:outline-none focus:ring-4 focus:ring-zinc-900/5 lg:w-auto" type="submit">
                     <svg viewBox="0 0 20 20" class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="9" r="5.5"/><path d="m13 13 4 4"/></svg>Cari
                 </button>
+                @if(request()->hasAny(['q', 'date_from', 'date_to']))<a class="admin-form-secondary" href="{{ route('admin.member-orders.index', request()->only('problem')) }}">Reset filter</a>@endif
             </div>
         </form>
         @if (request()->boolean('problem'))

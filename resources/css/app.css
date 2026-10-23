@@ -8,6 +8,7 @@
 @import './customer-shadows.css';
 @import './admin-theme.css';
 @import './admin-dashboard.css';
+@import './status-badge.css';
 
 @source '../views/**/*.blade.php';
 @source '../js/**/*.js';
@@ -587,12 +588,11 @@ body.catalog-modal-open { overflow: hidden; }
 .order-ems-bill-copy > strong { margin-top: .15rem; color: #431407; font-size: .9rem; }
 .order-ems-bill-copy > small { margin-top: .15rem; color: #9a3412; font-size: .65rem; }
 .order-ems-bill-copy > p { margin-top: .45rem; color: #7c2d12; font-size: .68rem; line-height: 1.5; }
-.order-ems-bill-status { border-radius: 999px; background: #fff; padding: .35rem .6rem; color: #c2410c; font-size: .6rem; font-weight: 700; white-space: nowrap; }
+
 .order-ems-bill.is-paid .order-ems-bill-copy > span,
 .order-ems-bill.is-paid .order-ems-bill-copy > small,
 .order-ems-bill.is-paid .order-ems-bill-copy > p { color: #047857; }
 .order-ems-bill.is-paid .order-ems-bill-copy > strong { color: #064e3b; }
-.order-ems-bill.is-paid .order-ems-bill-status { color: #047857; }
 .order-ems-bill-compact { grid-template-columns: 2.25rem minmax(0, 1fr) auto; margin: .75rem 0; padding: .7rem .8rem; }
 .order-ems-bill-compact .order-ems-bill-icon { width: 2.25rem; height: 2.25rem; }
 
@@ -1827,7 +1827,7 @@ body.catalog-modal-open { overflow: hidden; }
     font-family: 'Poppins', ui-sans-serif, system-ui, sans-serif;
 }
 
-.admin-shell * {
+.admin-shell *:not(.status-badge) {
     font-family: 'Poppins', ui-sans-serif, system-ui, sans-serif !important;
 }
 
@@ -2470,12 +2470,6 @@ body.catalog-modal-open { overflow: hidden; }
     color: #fff;
 }
 
-.detail-record-stat-badge > span {
-    background-color: rgb(255 255 255 / 92%) !important;
-    color: #92400e !important;
-    box-shadow: 0 0 0 1px rgb(255 255 255 / 35%);
-}
-
 .detail-record-field-plain {
     overflow: visible;
     border: 0;
@@ -2952,7 +2946,7 @@ body.catalog-modal-open { overflow: hidden; }
     font-size: 10px;
 }
 
-.admin-shell .order-table * {
+.admin-shell .order-table *:not(.status-badge) {
     font-size: 10px !important;
 }
 
@@ -3733,7 +3727,7 @@ body.status-modal-open {
     min-width: 0;
 }
 
-.order-special-status-stat > div > span {
+.order-special-status-stat > div > span:not(.status-badge) {
     display: block;
     color: #3f3f46;
     font-size: .6875rem;
@@ -3834,7 +3828,7 @@ body.status-modal-open {
     font-size: .6875rem;
 }
 
-.order-special-status-item > span {
+.order-special-status-item > span:not(.status-badge) {
     flex: 0 0 auto;
     border-radius: 999px;
     background: #ecfdf5;
@@ -9322,13 +9316,13 @@ body.ocean-tracking .tracking-search-page .tracking-result-section {
 /* Keep portal detail account avatar square on mobile. */
 @media (max-width: 720px) {
     .portal-v2-account-chip {
-        width: 36px !important;
-        min-width: 36px !important;
-        height: 36px !important;
-        min-height: 36px !important;
-        flex: 0 0 36px;
-        padding: 2px !important;
-        border-radius: 11px !important;
+        width: 42px !important;
+        min-width: 42px !important;
+        height: 42px !important;
+        min-height: 42px !important;
+        flex: 0 0 42px;
+        padding: 5px !important;
+        border-radius: 12px !important;
     }
 
     .portal-v2-account-chip img,

@@ -5,7 +5,6 @@ namespace App\Http\Requests;
 use App\Services\BatchEmsTaxService;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Validator;
 
 class StoreBatchRequest extends FormRequest
 {
@@ -38,7 +37,8 @@ class StoreBatchRequest extends FormRequest
             'variants' => ['nullable', 'array', 'max:50'],
             'variants.*.product_id' => ['nullable', 'integer', 'exists:products,id'],
             'variants.*.name' => ['required', 'string', 'max:255'],
-            'variants.*.dp_price' => ['required', 'numeric', 'min:0'],
+            // Retained as an optional legacy field; DP is calculated from the global setting.
+            'variants.*.dp_price' => ['nullable', 'numeric', 'min:0'],
             'variants.*.full_price' => ['required', 'numeric', 'min:0'],
             'variants.*.is_available' => ['sometimes', 'boolean'],
             'status_note' => ['nullable', 'string', 'max:1000'],
@@ -57,19 +57,4 @@ class StoreBatchRequest extends FormRequest
         ];
     }
 
-    public function after(): array
-    {
-        return [
-            function (Validator $validator): void {
-                foreach ($this->input('variants', []) as $index => $variant) {
-                    if ((float) ($variant['full_price'] ?? 0) < (float) ($variant['dp_price'] ?? 0)) {
-                        $validator->errors()->add(
-                            "variants.{$index}.full_price",
-                            'Harga lunas tidak boleh lebih kecil dari harga DP.'
-                        );
-                    }
-                }
-            },
-        ];
-    }
 }

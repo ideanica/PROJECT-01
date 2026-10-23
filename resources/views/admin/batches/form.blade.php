@@ -4,7 +4,6 @@
     $variantRows = old('variants', $batch->products->map(fn ($product) => [
         'product_id' => $product->id,
         'name' => $product->variant ?: $product->name,
-        'dp_price' => $product->pivot->dp_price,
         'full_price' => $product->pivot->full_price ?: $product->default_price,
         'is_available' => $product->pivot->is_available,
     ])->values()->all());
@@ -140,7 +139,7 @@
                         <div class="admin-variant-builder-head">
                             <div>
                                 <strong>Pilihan yang dapat dipesan pelanggan</strong>
-                                <small>Setiap variasi memiliki harga DP dan harga lunas sendiri.</small>
+                                <small>DP dihitung otomatis sebesar {{ number_format($dpPercentage, 2, ',', '.') }}% dari harga lunas.</small>
                             </div>
                             <button type="button" class="admin-form-inline-action" data-add-admin-variant>+ Tambah variasi</button>
                         </div>
@@ -150,7 +149,6 @@
                                 <div class="admin-variant-row" data-admin-variant-row>
                                     <input type="hidden" name="variants[{{ $index }}][product_id]" value="{{ $variant['product_id'] ?? '' }}">
                                     <label><span>Nama variasi</span><input name="variants[{{ $index }}][name]" value="{{ $variant['name'] ?? '' }}" placeholder="Contoh: ALT Ver." required></label>
-                                    <label><span>Harga DP</span><input type="number" min="0" step="1" name="variants[{{ $index }}][dp_price]" value="{{ $variant['dp_price'] ?? '' }}" placeholder="154500" required></label>
                                     <label><span>Harga lunas</span><input type="number" min="0" step="1" name="variants[{{ $index }}][full_price]" value="{{ $variant['full_price'] ?? '' }}" placeholder="257400" required></label>
                                     <label class="admin-variant-available flex! w-auto!">
                                         <input type="hidden" name="variants[{{ $index }}][is_available]" value="0">
@@ -170,7 +168,6 @@
                             <div class="admin-variant-row" data-admin-variant-row>
                                 <input type="hidden" name="variants[__INDEX__][product_id]" value="">
                                 <label><span>Nama variasi</span><input name="variants[__INDEX__][name]" placeholder="Contoh: ALT Ver." required></label>
-                                <label><span>Harga DP</span><input type="number" min="0" step="1" name="variants[__INDEX__][dp_price]" placeholder="154500" required></label>
                                 <label><span>Harga lunas</span><input type="number" min="0" step="1" name="variants[__INDEX__][full_price]" placeholder="257400" required></label>
                                 <label class="admin-variant-available flex! w-auto!">
                                     <input type="hidden" name="variants[__INDEX__][is_available]" value="0">
