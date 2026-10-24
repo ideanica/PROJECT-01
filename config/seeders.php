@@ -7,4 +7,5 @@ return [
         'email' => env('INITIAL_ADMIN_EMAIL'),
         'password' => env('INITIAL_ADMIN_PASSWORD'),
     ],
+    'demo_customer_password' => env('OCEANPAWS_DEMO_CUSTOMER_PASSWORD'),
 ];

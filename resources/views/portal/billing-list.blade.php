@@ -41,7 +41,6 @@
                                 <div class="billing-finance-balance"><span>{{ $obligation['type'] === 'ems' ? 'Nominal tagihan' : ($order->next_payment['type'] === 'dp' ? 'DP yang harus dibayar' : 'Sisa pembayaran') }}</span><strong>Rp {{ number_format($obligation['amount'], fmod($obligation['amount'], 1) > 0 ? 2 : 0, ',', '.') }}</strong></div>
                                 @if($obligation['due_date'])<p class="billing-finance-due">Jatuh tempo <time datetime="{{ $obligation['due_date']->toDateString() }}">{{ $obligation['due_date']->translatedFormat('d F Y') }}</time></p>@endif
                                 <dl class="billing-finance-reference"><div><dt>Batch</dt><dd>{{ $order->batch->batch_name ?: $order->batch->batch_number }}</dd></div><div><dt>Kode pesanan</dt><dd>{{ $order->order_code }}</dd></div></dl>
-                                <a class="billing-finance-proof" href="{{ $order->billing_tracking_url }}#{{ $obligation['anchor'] }}">Lihat detail pesanan</a>
                                 <x-order-payment-method :order="$order" :bill-type="$obligation['type']" />
                                 @if($obligation['type'] === 'order' && $order->payment_proof_path)<a class="billing-finance-proof" href="{{ route('profile.orders.payment-proof', $order) }}" target="_blank" rel="noopener">Lihat bukti pembayaran awal</a>@endif
                             </article>

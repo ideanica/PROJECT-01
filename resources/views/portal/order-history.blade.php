@@ -42,7 +42,7 @@
                                     $paymentLabel = $order->paymentStatus?->name ?: match($order->ledger_payment_state){'paid'=>'Lunas','partial'=>'DP / sebagian','unpaid'=>'Belum dibayar',default=>'Belum ditentukan'};
                                 @endphp
                                 <article class="portal-v2-order-card">
-                                    <div class="portal-v2-card-top"><span class="portal-v2-thumb">@if($order->batch->catalog_image_path)<img src="{{ $order->batch->catalog_image_url }}" alt="">@else<x-public-icon variant="rounded-bold" name="box" :size="24" />@endif</span><div class="portal-v2-card-title"><small>{{ $order->order_code }}</small><h3>{{ $order->batch->batch_name ?: $order->batch->batch_number }}</h3><p>{{ $order->created_at->translatedFormat('d M Y') }}{{ $order->go_number ? ' · GO '.$order->go_number : '' }}</p></div>@if($trackingStatus)<x-status-badge :status="$trackingStatus" />@endif</div>
+                                <div class="portal-v2-card-top"><span class="portal-v2-thumb">@if($order->batch->catalog_image_path)<img src="{{ $order->batch->catalog_image_url }}" alt="">@else<x-public-icon variant="rounded-bold" name="box" :size="24" />@endif</span><div class="portal-v2-card-title"><small>{{ $order->order_code }}</small><h3>{{ $order->batch->batch_name ?: $order->batch->batch_number }}</h3><p>{{ $order->created_at->translatedFormat('d M Y') }}{{ $order->go_number ? ' · GO '.$order->go_number : '' }}</p></div></div>
 
                                     <div class="portal-v2-meta-grid portal-v2-order-metrics">
                                         <div><span>Total pesanan</span><strong>Rp {{ number_format($orderTotal, 0, ',', '.') }}</strong></div>

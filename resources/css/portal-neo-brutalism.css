@@ -787,10 +787,15 @@ html[data-customer-theme="dark"] .portal-orders-v2.portal-order-workspace .porta
  :is(.portal-order-history, .billing-finance) .select2-selection--single .select2-selection__rendered { line-height:40px; }
  :is(.portal-order-history, .billing-finance) .select2-selection--single .select2-selection__arrow { height:40px; }
  .portal-order-history .portal-v2-card-title h3 { white-space:normal; line-height:1.35; }
- .portal-order-history .portal-v2-order-metrics { grid-template-columns:repeat(3,minmax(0,1fr)); gap:6px; }
+ .portal-order-history .portal-v2-order-metrics { grid-template-columns:repeat(2,minmax(0,1fr)); gap:6px; }
+ .portal-order-history .portal-v2-order-metrics > div:first-child { grid-column:1/-1; }
  .portal-order-history .portal-v2-order-metrics > div { padding:8px 6px; }
  .portal-order-history .portal-v2-order-metrics span { font-size:8px; }
  .portal-order-history .portal-v2-order-metrics strong { font-size:10px; }
+ .portal-orders-v2 .portal-v2-hero-stat { margin-top:8px; }
+ .portal-order-workspace:not(.portal-order-history) .portal-v2-hero-stat { margin-top:8px; }
+ .portal-order-toolbar .portal-order-search input,
+ .billing-finance-search input { font-size:10px; }
 }
 :is(#payment-summary,#ems-bill) { scroll-margin-top:110px; }
 :is(#payment-summary,#ems-bill):target { outline:3px solid var(--pv2-mint-strong); outline-offset:4px; }
@@ -808,6 +813,18 @@ html[data-customer-theme="dark"] .portal-orders-v2.portal-order-workspace .porta
  :is(.portal-billing-v2, .portal-order-history) .portal-v2-hero-stat small { font-size:8px; }
  :is(.portal-billing-v2, .portal-order-history) .portal-v2-hero-stat strong { font-size:28px; }
  :is(.portal-billing-v2, .portal-order-history) .portal-v2-hero-stat p { margin:0; font-size:9px; }
+}
+@media(max-width:700px) {
+ .portal-catalog-page .catalog-search-input input { font-size:10px; }
+ .portal-orders-v2.portal-order-history .portal-v2-hero-stat { margin-top:8px; }
+ .portal-order-workspace:not(.portal-order-history) .portal-v2-hero-stat { margin-top:8px; }
+ .portal-billing-v2 .portal-v2-hero-stat { margin-top:8px; }
+ .billing-finance .billing-finance-toolbar,
+ .billing-finance .billing-finance-toolbar.is-history { grid-template-columns:minmax(0,1fr) 44px; }
+ .billing-finance .billing-finance-toolbar .billing-finance-search { grid-column:1; min-width:0; }
+ .billing-finance .billing-finance-toolbar > button { grid-column:2; }
+ .billing-finance .billing-finance-toolbar > a { grid-column:1/-1; justify-self:start; }
+ .billing-finance .billing-finance-toolbar .billing-finance-search input { font-size:10px; }
 }
 
 .catalog-checkout-card { display:grid; gap:1.15rem; margin-top:1.5rem; padding:clamp(1rem,3vw,1.5rem); border:1px solid #d8e4db; border-radius:1.25rem; background:#fff; box-shadow:0 12px 32px rgb(30 67 43 / 8%); }

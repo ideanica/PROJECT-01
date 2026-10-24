@@ -169,7 +169,7 @@ class BillingFinancialCenterTest extends TestCase
         $response->assertSee($paymentUrl);
         $this->get($paymentUrl)->assertOk()->assertSee('Financial QRIS')->assertSee('financial-qris.png');
         $url = $response->viewData('obligations')->first()['order']->billing_tracking_url;
-        $response->assertSee($url.'#payment-summary');
+        $response->assertDontSee($url.'#payment-summary')->assertDontSee('Lihat detail pesanan');
         $this->get($url)->assertOk()->assertSee($paymentUrl)->assertDontSee('financial-qris.png');
     }
 
