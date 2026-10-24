@@ -11,7 +11,9 @@
 <x-layouts.app :title="($batch->batch_name ?: $batch->batch_number).' — Katalog Ocean Paws'">
     <main class="portal-v2 portal-catalog-page portal-catalog-detail-page">
         <div class="portal-v2-shell">
-            @php($catalogMember = auth()->user()?->member)
+            @php
+                $catalogMember = auth()->user()?->member;
+            @endphp
             <div class="catalog-page-topbar">
                 <a class="portal-v2-back" href="{{ route('catalog.index', request()->only('q', 'status', 'page')) }}"><x-public-icon variant="rounded-bold" name="arrow-left" :size="18" /><span>Kembali ke katalog</span></a>
                 @if($catalogMember)

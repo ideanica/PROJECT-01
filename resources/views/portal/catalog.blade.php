@@ -1,7 +1,9 @@
 <x-layouts.app title="Katalog Batch — Ocean Paws">
     <main class="portal-v2 portal-catalog-page">
         <div class="portal-v2-shell">
-            @php($catalogMember = auth()->user()?->member)
+            @php
+                $catalogMember = auth()->user()?->member;
+            @endphp
             <div class="catalog-page-topbar">
                 <a class="portal-v2-back" href="{{ route('profile.show') }}"><x-public-icon variant="rounded-bold" name="arrow-left" :size="18" /><span>Kembali ke profil</span></a>
                 @if($catalogMember)
