@@ -34,7 +34,6 @@
                     <div class="catalog-detail-facts">
                         <div><span>Status katalog</span><strong>{{ $batch->catalog_is_open ? 'Terbuka' : 'Ditutup' }}</strong></div>
                         <div><span>Batas pemesanan</span><strong>{{ $batch->ordering_deadline?->translatedFormat('d F Y, H:i') ?: 'Belum ditentukan' }}</strong></div>
-                        <div><span>Pilihan tersedia</span><strong>{{ $batch->products->count() }} variasi produk</strong></div>
                     </div>
                 </div>
             </header>

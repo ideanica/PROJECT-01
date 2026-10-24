@@ -994,3 +994,42 @@ document.querySelectorAll('[data-profile-calendar]').forEach((calendar) => {
         if (month && month !== currentMonth && /^\d{4}-(0[1-9]|1[0-2])$/.test(month)) renderMonth(month);
     });
 });
+
+document.querySelectorAll('[data-billing-tabs]').forEach((tabs) => {
+    const links = [...tabs.querySelectorAll('[data-billing-tab]')];
+    const panels = [...document.querySelectorAll('[data-billing-panel]')];
+    if (links.length !== 2 || panels.length !== 2) return;
+
+    const setTab = (tab, updateAddress = false) => {
+        const selectedTab = tab === 'history' ? 'history' : 'active';
+        const alreadySelected = links.some((link) => link.dataset.billingTab === selectedTab && link.hasAttribute('aria-current'));
+        links.forEach((link) => {
+            if (link.dataset.billingTab === selectedTab) link.setAttribute('aria-current', 'page');
+            else link.removeAttribute('aria-current');
+        });
+        panels.forEach((panel) => {
+            panel.hidden = panel.dataset.billingPanel !== selectedTab;
+        });
+
+        const url = new URL(window.location.href);
+        if (selectedTab === 'history') url.searchParams.set('tab', 'history');
+        else url.searchParams.delete('tab');
+        links.forEach((link) => {
+            const linkUrl = new URL(url);
+            if (link.dataset.billingTab === 'history') linkUrl.searchParams.set('tab', 'history');
+            else linkUrl.searchParams.delete('tab');
+            link.href = `${linkUrl.pathname}${linkUrl.search}`;
+        });
+
+        if (updateAddress && !alreadySelected) window.history.pushState({ billingTab: selectedTab }, '', url);
+    };
+
+    links.forEach((link) => link.addEventListener('click', (event) => {
+        event.preventDefault();
+        setTab(link.dataset.billingTab, true);
+    }));
+
+    window.addEventListener('popstate', () => {
+        setTab(new URL(window.location.href).searchParams.get('tab') === 'history' ? 'history' : 'active');
+    });
+});

@@ -7,9 +7,9 @@
                 <div class="portal-v2-hero-stat"><span class="portal-v2-stat-icon"><x-public-icon variant="rounded-bold" name="card" :size="26" /></span><small>Total yang harus dibayar</small><strong data-billing-total>Rp {{ number_format($outstandingTotal, fmod((float) $outstandingTotal, 1) > 0 ? 2 : 0, ',', '.') }}</strong><p data-billing-count>{{ $outstandingCount }} tagihan aktif</p></div>
             </section>
 
-            <nav class="billing-finance-tabs" aria-label="Tab pembayaran">
-                <a href="{{ route('billing.index', request()->only('q')) }}" @if($tab === 'active') aria-current="page" @endif>Tagihan Aktif</a>
-                <a href="{{ route('billing.index', ['tab' => 'history', ...request()->only('q')]) }}" @if($tab === 'history') aria-current="page" @endif>Riwayat Pembayaran</a>
+            <nav class="billing-finance-tabs" aria-label="Tab pembayaran" data-billing-tabs>
+                <a href="{{ route('billing.index', request()->only('q')) }}" data-billing-tab="active" aria-controls="billing-active-panel" @if($tab === 'active') aria-current="page" @endif>Tagihan Aktif</a>
+                <a href="{{ route('billing.index', ['tab' => 'history', ...request()->only('q')]) }}" data-billing-tab="history" aria-controls="billing-history-panel" @if($tab === 'history') aria-current="page" @endif>Riwayat Pembayaran</a>
             </nav>
 
             @if($user && !$member)
@@ -17,17 +17,13 @@
             @elseif(!$member)
                 <div class="portal-v2-empty"><small>TAGIHAN PRIBADI</small><h2>Login untuk melihat tagihanmu.</h2><p>Tagihan dan riwayat pembayaran ditampilkan setelah akun customer terhubung.</p><a href="{{ route('login') }}">Login</a></div>
             @else
-                <form class="portal-order-toolbar billing-finance-toolbar {{ $tab === 'history' ? 'is-history' : '' }}" action="{{ route('billing.index') }}" method="GET" role="search" aria-label="Cari pembayaran">
-                    @if($tab === 'history')<input type="hidden" name="tab" value="history">@endif
-                    <label class="billing-finance-search"><span>{{ $tab === 'history' ? 'Cari pembayaran' : 'Cari tagihan' }}</span><input type="search" name="q" value="{{ request('q') }}" maxlength="100" placeholder="Kode pesanan atau nama batch"></label>
-                    @if($tab === 'active')
+                <div id="billing-active-panel" data-billing-panel="active" @if($tab !== 'active') hidden @endif>
+                    <form class="portal-order-toolbar billing-finance-toolbar" action="{{ route('billing.index') }}" method="GET" role="search" aria-label="Cari tagihan">
+                        <label class="billing-finance-search"><span>Cari tagihan</span><input type="search" name="q" value="{{ request('q') }}" maxlength="100" placeholder="Kode pesanan atau nama batch"></label>
                         <label class="portal-order-sort"><span>Urutkan</span><select name="sort" data-portal-select2><option value="newest" @selected(request('sort', 'newest') === 'newest')>Terbaru</option><option value="oldest" @selected(request('sort') === 'oldest')>Terlama</option><option value="amount_desc" @selected(request('sort') === 'amount_desc')>Nominal tertinggi</option><option value="amount_asc" @selected(request('sort') === 'amount_asc')>Nominal terendah</option></select></label>
-                    @endif
-                    <button type="submit" aria-label="Terapkan pencarian" title="Cari"><x-public-icon variant="rounded-bold" name="search" :size="18" /><span class="portal-search-submit-label">Terapkan</span></button>
-                    @if(request()->filled('q') || ($tab === 'active' && request()->filled('sort')))<a href="{{ route('billing.index', $tab === 'history' ? ['tab' => 'history'] : []) }}">Reset</a>@endif
-                </form>
-
-                @if($tab === 'active')
+                        <button type="submit" aria-label="Terapkan pencarian" title="Cari"><x-public-icon variant="rounded-bold" name="search" :size="18" /><span class="portal-search-submit-label">Terapkan</span></button>
+                        @if(request()->filled('q') || request()->filled('sort'))<a href="{{ route('billing.index') }}">Reset</a>@endif
+                    </form>
                     <section class="billing-finance-bills" aria-label="Tagihan aktif">
                         @forelse($obligations as $obligation)
                             @php
@@ -51,7 +47,15 @@
                             </div>
                         @endforelse
                     </section>
-                @else
+                </div>
+
+                <div id="billing-history-panel" data-billing-panel="history" @if($tab !== 'history') hidden @endif>
+                    <form class="portal-order-toolbar billing-finance-toolbar is-history" action="{{ route('billing.index') }}" method="GET" role="search" aria-label="Cari pembayaran">
+                        <input type="hidden" name="tab" value="history">
+                        <label class="billing-finance-search"><span>Cari pembayaran</span><input type="search" name="q" value="{{ request('q') }}" maxlength="100" placeholder="Kode pesanan atau nama batch"></label>
+                        <button type="submit" aria-label="Terapkan pencarian" title="Cari"><x-public-icon variant="rounded-bold" name="search" :size="18" /><span class="portal-search-submit-label">Terapkan</span></button>
+                        @if(request()->filled('q'))<a href="{{ route('billing.index', ['tab' => 'history']) }}">Reset</a>@endif
+                    </form>
                     <section class="billing-finance-history" aria-label="Riwayat pembayaran">
                         @forelse($payments->groupBy(fn ($payment) => ($payment->paid_at ?? $payment->created_at)?->format('Y-m') ?? 'undated') as $monthPayments)
                             @php($monthDate = $monthPayments->first()->paid_at ?? $monthPayments->first()->created_at)
@@ -71,7 +75,7 @@
                             <div class="billing-finance-empty">@if(request()->filled('q'))<h2>Tidak ada pembayaran yang cocok.</h2><p>Coba kode pesanan, batch, atau jenis pembayaran lainnya.</p><a href="{{ route('billing.index', ['tab' => 'history']) }}">Tampilkan semua pembayaran</a>@else<h2>Belum ada riwayat pembayaran.</h2><p>Pembayaran yang telah diverifikasi akan tercatat di sini.</p>@endif</div>
                         @endforelse
                     </section>
-                @endif
+                </div>
             @endif
         </div>
     </div>
