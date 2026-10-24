@@ -827,6 +827,22 @@ html[data-customer-theme="dark"] .portal-orders-v2.portal-order-workspace .porta
  .billing-finance .billing-finance-toolbar .billing-finance-search input { font-size:10px; }
 }
 
+/* Explicit mobile-only overrides for form placeholder rendering and order-card metrics. */
+@media (max-width: 767px) {
+ .portal-catalog-page .catalog-search-input input,
+ .portal-catalog-page .catalog-search-input input::placeholder,
+ .portal-order-toolbar .portal-order-search input::placeholder,
+ .billing-finance-search input::placeholder { font-size:10px; }
+
+ .portal-order-history .portal-v2-meta-grid.portal-v2-order-metrics {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:6px;
+ }
+ .portal-order-history .portal-v2-meta-grid.portal-v2-order-metrics > div:first-child { grid-column:1/-1; }
+ .portal-order-history .portal-v2-meta-grid.portal-v2-order-metrics > div { padding:8px 6px; }
+}
+
 .catalog-checkout-card { display:grid; gap:1.15rem; margin-top:1.5rem; padding:clamp(1rem,3vw,1.5rem); border:1px solid #d8e4db; border-radius:1.25rem; background:#fff; box-shadow:0 12px 32px rgb(30 67 43 / 8%); }
 .catalog-checkout-heading > span { color:#538160; font-size:.7rem; font-weight:800; letter-spacing:.12em; }
 .catalog-checkout-heading h2 { margin:.35rem 0; color:#203d2b; font-size:clamp(1.2rem,3vw,1.55rem); font-weight:800; }
