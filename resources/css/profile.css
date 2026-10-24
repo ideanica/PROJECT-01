@@ -154,8 +154,8 @@ html[data-customer-theme="dark"] .ocean-profile .profile-form-heading h1 { color
 .ocean-profile .profile-catalog-link strong { flex: 1; min-width: 0; font-size: 14px; font-weight: 900; }
 .ocean-profile .profile-catalog-link > svg { flex-shrink: 0; }
 .ocean-profile .profile-catalog-link:focus-visible { outline: 2px solid var(--profile-pink-strong); outline-offset: 4px; }
-.ocean-profile .profile-catalog-link:hover { transform: translate(-2px, 2px); background: #cfe7d2 !important; box-shadow: var(--customer-shadow-pressed) #91bd9b !important; }
-.ocean-profile .profile-catalog-link:active { transform: translate(2px, 2px); background: #cfe7d2 !important; box-shadow: var(--customer-shadow-pressed) #91bd9b !important; }
+.ocean-profile .profile-catalog-link:hover { transform: translate(-2px, 2px); background: #f9d6e2 !important; box-shadow: var(--customer-shadow-pressed) #a76d86 !important; }
+.ocean-profile .profile-catalog-link:active { transform: translate(2px, 2px); background: #f9d6e2 !important; box-shadow: var(--customer-shadow-pressed) #a76d86 !important; }
 @media (max-width: 560px) { .ocean-profile .profile-catalog-link { padding: 18px; } }
 .ocean-profile .profile-top {
   min-height: 124px;
@@ -293,7 +293,7 @@ html[data-customer-theme="dark"] .ocean-profile .profile-form-heading h1 { color
 .ocean-profile .order-link small { margin-top: 11px; color: var(--profile-ink); font-size: 13px; }
 
 .ocean-profile .activity-card { overflow: hidden; }
-.ocean-profile .profile-catalog-link { background: #e8f4e8 !important; }
+.ocean-profile .profile-catalog-link { background: #fff0f5 !important; box-shadow: var(--customer-shadow-control) #d58fa8 !important; }
 .ocean-profile .activity-head {
   min-height: 92px;
   gap: 15px;
@@ -316,7 +316,7 @@ html[data-customer-theme="dark"] .ocean-profile .profile-form-heading h1 { color
   color: #9d2b55 !important;
 }
 .ocean-profile .activity-head strong { color: var(--profile-ink) !important; font-size: 19px !important; font-weight: 900; }
-.ocean-profile .profile-catalog-link .icon-chip { border: 2px solid var(--profile-outline); border-radius: 11px; background: #b9ddbd; color: #9d2b55; box-shadow: var(--customer-shadow-control) #91bd9b; }
+.ocean-profile .profile-catalog-link .icon-chip { border: 2px solid var(--profile-outline); border-radius: 11px; background: #f7bad0 !important; color: #9d2b55 !important; box-shadow: var(--customer-shadow-control) #a76d86 !important; }
 .ocean-profile .activity-head span:last-child { color: var(--profile-muted) !important; font-size: 11px !important; }
 .ocean-profile .activity-summary {
   grid-template-columns: repeat(4, minmax(0, 1fr));
