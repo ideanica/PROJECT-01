@@ -831,8 +831,12 @@ html[data-customer-theme="dark"] .portal-orders-v2.portal-order-workspace .porta
 @media (max-width: 767px) {
  .portal-catalog-page .catalog-search-input input,
  .portal-catalog-page .catalog-search-input input::placeholder,
+ .portal-order-toolbar .portal-order-search input,
  .portal-order-toolbar .portal-order-search input::placeholder,
- .billing-finance-search input::placeholder { font-size:10px; }
+ .billing-finance .billing-finance-toolbar .billing-finance-search input,
+ .billing-finance .billing-finance-toolbar .billing-finance-search input::placeholder,
+ .billing-finance-search input,
+ .billing-finance-search input::placeholder { font-size:12px; }
 
  .portal-order-history .portal-v2-meta-grid.portal-v2-order-metrics {
   display:grid;

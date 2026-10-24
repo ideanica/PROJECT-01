@@ -150,10 +150,12 @@ html[data-customer-theme="dark"] .ocean-profile .profile-form-heading h1 { color
 }
 .ocean-profile .profile-main { overflow: visible; padding: 0; }
 .ocean-profile .calendar-card { box-shadow: var(--customer-shadow-card) #91bd9b !important; }
-.ocean-profile .profile-catalog-link { display: flex; align-items: center; gap: 14px; min-width: 0; padding: 20px 24px; color: var(--profile-ink); }
+.ocean-profile .profile-catalog-link { display: flex; align-items: center; gap: 14px; min-width: 0; padding: 20px 24px; color: var(--profile-ink); transition: transform .16s ease, box-shadow .16s ease, background-color .16s ease; }
 .ocean-profile .profile-catalog-link strong { flex: 1; min-width: 0; font-size: 14px; font-weight: 900; }
 .ocean-profile .profile-catalog-link > svg { flex-shrink: 0; }
 .ocean-profile .profile-catalog-link:focus-visible { outline: 2px solid var(--profile-pink-strong); outline-offset: 4px; }
+.ocean-profile .profile-catalog-link:hover { transform: translate(-2px, 2px); background: #cfe7d2 !important; box-shadow: var(--customer-shadow-pressed) #91bd9b !important; }
+.ocean-profile .profile-catalog-link:active { transform: translate(2px, 2px); background: #cfe7d2 !important; box-shadow: var(--customer-shadow-pressed) #91bd9b !important; }
 @media (max-width: 560px) { .ocean-profile .profile-catalog-link { padding: 18px; } }
 .ocean-profile .profile-top {
   min-height: 124px;
@@ -291,7 +293,7 @@ html[data-customer-theme="dark"] .ocean-profile .profile-form-heading h1 { color
 .ocean-profile .order-link small { margin-top: 11px; color: var(--profile-ink); font-size: 13px; }
 
 .ocean-profile .activity-card { overflow: hidden; }
-.ocean-profile .profile-catalog-link { background: var(--profile-pink) !important; }
+.ocean-profile .profile-catalog-link { background: var(--profile-mint) !important; }
 .ocean-profile .activity-head {
   min-height: 92px;
   gap: 15px;
@@ -299,7 +301,13 @@ html[data-customer-theme="dark"] .ocean-profile .profile-form-heading h1 { color
   border-bottom: 2px solid var(--profile-outline) !important;
   background: #d9eddd;
 }
-.ocean-profile .activity-head .icon-chip,
+.ocean-profile .activity-head .icon-chip {
+  border: 2px solid var(--profile-outline);
+  border-radius: 11px;
+  background: #d9eddd !important;
+  box-shadow: var(--customer-shadow-control) #aacdad !important;
+  color: #3f7049 !important;
+}
 .ocean-profile .metric-card .tiny-icon {
   border: 2px solid var(--profile-outline);
   border-radius: 11px;
@@ -308,7 +316,7 @@ html[data-customer-theme="dark"] .ocean-profile .profile-form-heading h1 { color
   color: #fff !important;
 }
 .ocean-profile .activity-head strong { color: var(--profile-ink) !important; font-size: 19px !important; font-weight: 900; }
-.ocean-profile .profile-catalog-link .icon-chip { border: 2px solid var(--profile-outline); border-radius: 11px; background: #f7bad0; color: #9d2b55; box-shadow: var(--customer-shadow-control) #a76d86; }
+.ocean-profile .profile-catalog-link .icon-chip { border: 2px solid var(--profile-outline); border-radius: 11px; background: #d9eddd; color: #3f7049; box-shadow: var(--customer-shadow-control) #aacdad; }
 .ocean-profile .activity-head span:last-child { color: var(--profile-muted) !important; font-size: 11px !important; }
 .ocean-profile .activity-summary {
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -473,7 +481,8 @@ html[data-customer-theme="dark"] .ocean-profile .profile-form-heading h1 { color
   .ocean-profile .order-link small { font-size: 11px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .ocean-profile .profile-order-hub .order-link { animation: none; transition: none; }
+  .ocean-profile .profile-order-hub .order-link,
+  .ocean-profile .profile-catalog-link { animation: none; transition: none; }
 }
 
 /* The settings toggle still offers a genuinely readable dark appearance. */

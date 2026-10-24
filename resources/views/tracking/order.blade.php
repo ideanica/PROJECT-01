@@ -10,7 +10,7 @@
 
     <main class="page order-detail-page">
         <div class="order-detail-shell">
-            <div class="order-detail-topbar"><a href="{{ $backUrl }}" aria-label="Kembali ke halaman sebelumnya"><x-public-icon variant="rounded-bold" name="arrow-left" :size="17" /><span>Kembali</span></a><span>DETAIL PESANAN</span></div>
+            <div class="order-detail-topbar"><a href="{{ $backUrl }}" aria-label="Kembali ke halaman sebelumnya"><x-public-icon variant="rounded-bold" name="arrow-left" :size="17" /><span>Kembali</span></a><span class="order-detail-topbar-profile" aria-label="Foto profil {{ $member->display_name }}">@if($member->avatar_url)<img src="{{ $member->avatar_url }}" alt="Foto profil {{ $member->display_name }}">@else<span aria-hidden="true">{{ mb_strtoupper(mb_substr($member->display_name, 0, 1)) }}</span>@endif</span></div>
 
             <section class="order-detail-hero"><div class="order-detail-hero-copy"><span>PESANAN {{ mb_strtoupper($member->display_name) }}</span><div class="order-detail-title-row"><h1>{{ $order->order_code }}</h1></div><p>Batch {{ $order->batch->batch_number }} · {{ $order->batch->batch_name ?: 'K-pop merchandise' }}{{ $order->go_number ? ' · GO '.$order->go_number : '' }}</p></div><div class="order-detail-cover">@if($order->batch->catalog_image_path)<img src="{{ $order->batch->catalog_image_url }}" alt="{{ $order->batch->batch_name ?: $order->batch->batch_number }}">@else<x-public-icon variant="rounded-bold" name="box" :size="28" />@endif</div></section>
 

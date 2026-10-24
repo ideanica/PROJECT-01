@@ -102,13 +102,6 @@
                 border-radius: 10px;
             }
 
-            .ocean-profile .profile-catalog-link .icon-chip {
-                border: 2px solid var(--profile-outline) !important;
-                background: #76b67c !important;
-                color: #fff !important;
-                box-shadow: var(--customer-shadow-control) #4d8156 !important;
-            }
-
             .ocean-profile .profile-catalog-link .icon-chip svg,
             .ocean-profile .activity-head .icon-chip svg {
                 width: 17px;
