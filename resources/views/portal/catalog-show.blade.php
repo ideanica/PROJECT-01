@@ -11,14 +11,22 @@
 <x-layouts.app :title="($batch->batch_name ?: $batch->batch_number).' — Katalog Ocean Paws'">
     <main class="portal-v2 portal-catalog-page portal-catalog-detail-page">
         <div class="portal-v2-shell">
-            <a class="portal-v2-back" href="{{ route('catalog.index', request()->only('q', 'status', 'page')) }}"><x-public-icon name="arrow-left" :size="18" /> Kembali ke katalog</a>
+            @php($catalogMember = auth()->user()?->member)
+            <div class="catalog-page-topbar">
+                <a class="portal-v2-back" href="{{ route('catalog.index', request()->only('q', 'status', 'page')) }}"><x-public-icon variant="rounded-bold" name="arrow-left" :size="18" /><span>Kembali ke katalog</span></a>
+                @if($catalogMember)
+                    <a class="catalog-page-avatar" href="{{ route('profile.show') }}" aria-label="Profil {{ $catalogMember->display_name }}">
+                        @if($catalogMember->avatar_url)<img src="{{ $catalogMember->avatar_url }}" alt="Foto profil {{ $catalogMember->display_name }}">@else<span aria-hidden="true">{{ mb_strtoupper(mb_substr($catalogMember->display_name, 0, 1)) }}</span>@endif
+                    </a>
+                @endif
+            </div>
 
             <header class="catalog-detail-hero">
                 <div class="catalog-detail-image">
                     @if($batch->catalog_image_path)<img src="{{ $batch->catalog_image_url }}" alt="{{ $batch->batch_name ?: $batch->batch_number }}">@else<span><x-public-icon variant="rounded-bold" name="box" :size="46" /></span>@endif
                 </div>
                 <div class="catalog-detail-hero-copy">
-                    <div class="catalog-batch-card-status"><span>{{ $batch->batch_number }}</span><x-status-badge :label="$batch->catalog_is_open ? 'Pemesanan terbuka' : 'Pemesanan ditutup'" :color="$batch->catalog_is_open ? '#d7ebdb' : '#fbd7e3'" /></div>
+                    <div class="catalog-batch-card-status"><span>{{ $batch->batch_number }}</span></div>
                     <h1>{{ $batch->batch_name ?: $batch->batch_number }}</h1>
                     @if($batch->description)<p>{{ $batch->description }}</p>@endif
                     <div class="catalog-detail-facts">
@@ -85,7 +93,6 @@
                 <aside class="catalog-detail-note"><x-public-icon variant="rounded-bold" name="document" :size="20" /><p>@if($batch->currentStatus)<strong>Status batch:</strong> {{ $batch->currentStatus->name }}.@endif @if($batch->ordering_deadline)Batas pemesanan {{ $batch->ordering_deadline->translatedFormat('d F Y, H:i') }}.@endif</p></aside>
             @endif
 
-            <div class="catalog-detail-footer"><a class="catalog-batch-detail-button" href="{{ route('catalog.index', request()->only('q', 'status', 'page')) }}"><x-public-icon name="arrow-left" :size="17" /><span>Kembali ke katalog</span></a></div>
         </div>
     </main>
     @if($canCheckout && $batch->catalog_is_open)

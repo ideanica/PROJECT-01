@@ -1,7 +1,15 @@
 <x-layouts.app title="Katalog Batch — Ocean Paws">
     <main class="portal-v2 portal-catalog-page">
         <div class="portal-v2-shell">
-            <a class="portal-v2-back" href="{{ route('profile.show') }}"><x-public-icon name="arrow-left" :size="18" /> Kembali ke profil</a>
+            @php($catalogMember = auth()->user()?->member)
+            <div class="catalog-page-topbar">
+                <a class="portal-v2-back" href="{{ route('profile.show') }}"><x-public-icon variant="rounded-bold" name="arrow-left" :size="18" /><span>Kembali ke profil</span></a>
+                @if($catalogMember)
+                    <a class="catalog-page-avatar" href="{{ route('profile.show') }}" aria-label="Profil {{ $catalogMember->display_name }}">
+                        @if($catalogMember->avatar_url)<img src="{{ $catalogMember->avatar_url }}" alt="Foto profil {{ $catalogMember->display_name }}">@else<span aria-hidden="true">{{ mb_strtoupper(mb_substr($catalogMember->display_name, 0, 1)) }}</span>@endif
+                    </a>
+                @endif
+            </div>
 
             <header class="portal-v2-hero portal-v2-hero-orders portal-catalog-hero">
                 <div class="portal-v2-hero-copy">
@@ -29,7 +37,7 @@
                             @if($batch->catalog_image_path)<img src="{{ $batch->catalog_image_url }}" alt="{{ $batch->batch_name ?: $batch->batch_number }}" loading="lazy">@else<span><x-public-icon variant="rounded-bold" name="box" :size="32" /></span>@endif
                         </a>
                         <div class="catalog-batch-card-body">
-                            <div class="catalog-batch-card-status"><span>{{ $batch->batch_number }}</span><x-status-badge :label="$batch->catalog_is_open ? 'Pemesanan terbuka' : 'Pemesanan ditutup'" :color="$batch->catalog_is_open ? '#d7ebdb' : '#fbd7e3'" /></div>
+                            <div class="catalog-batch-card-status"><span>{{ $batch->batch_number }}</span></div>
                             <h2>{{ $batch->batch_name ?: $batch->batch_number }}</h2>
                             @if($batch->description)<p class="catalog-batch-card-description">{{ $batch->description }}</p>@else<p class="catalog-batch-card-description is-muted">Informasi dan pilihan produk batch ini tersedia di halaman detail.</p>@endif
                             <div class="catalog-batch-card-meta">

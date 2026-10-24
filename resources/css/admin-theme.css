@@ -33,6 +33,9 @@
 .catalog-batch-card-image > span { display: grid; width: 58px; height: 58px; place-items: center; border: 2px solid var(--pv2-outline); border-radius: 14px; background: var(--pv2-paper); }
 .catalog-batch-card-body { display: flex; min-width: 0; flex: 1; flex-direction: column; padding: 17px; }
 .catalog-batch-card-status { display: flex; min-width: 0; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; color: var(--pv2-pink-strong); font-size: 10px; font-weight: 900; letter-spacing: .05em; }
+.catalog-page-topbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.catalog-page-avatar { display: grid; width: 42px; height: 42px; flex: 0 0 42px; place-items: center; overflow: hidden; border: 2px solid var(--pv2-outline); border-radius: 50%; background: var(--pv2-mint); color: var(--pv2-ink); font-size: 14px; font-weight: 900; text-decoration: none; box-shadow: var(--customer-shadow-control) #eba4bc; }
+.catalog-page-avatar img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .catalog-batch-card-status .status-badge { max-width: 100%; }
 .catalog-batch-card h2 { margin: 12px 0 0; color: var(--pv2-ink); font-family: var(--pv2-heading); font-size: 20px; font-weight: 900; line-height: 1.2; overflow-wrap: anywhere; }
 .catalog-batch-card-description { display: -webkit-box; min-height: 3.2em; overflow: hidden; margin: 8px 0 0; color: var(--pv2-text); font-size: 12px; line-height: 1.6; overflow-wrap: anywhere; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
@@ -44,6 +47,9 @@
 .catalog-batch-card-meta > span:last-child svg { color: #598c63; }
 .catalog-batch-detail-button { display: flex; min-height: 44px; align-items: center; justify-content: space-between; gap: 10px; margin-top: 16px; border: 2px solid var(--pv2-outline); border-radius: 10px; padding: 0 13px; background: var(--pv2-mint); color: var(--pv2-ink); font-size: 12px; font-weight: 900; text-decoration: none; box-shadow: var(--customer-shadow-control) var(--pv2-mint-shadow); }
 .catalog-batch-detail-button:hover { background: var(--pv2-pink); }
+.portal-orders-v2 .portal-v2-card-actions .portal-v2-card-action.is-secondary { display: flex; width: 100%; min-height: 44px; align-items: center; justify-content: space-between; gap: 10px; margin: 0; border-radius: 10px; padding: 0 13px; background: var(--pv2-mint); color: var(--pv2-ink) !important; font-size: 12px; text-decoration: none; box-shadow: var(--customer-shadow-control) var(--pv2-mint-shadow); }
+.portal-orders-v2 .portal-v2-card-actions .portal-v2-card-action.is-secondary:hover { background: var(--pv2-pink); }
+.portal-v2.portal-orders-v2 .portal-v2-back { box-shadow: var(--customer-shadow-control) #eba4bc; }
 .catalog-batch-empty { grid-column: 1 / -1; display: grid; min-height: 240px; place-content: center; justify-items: center; border: 2px dashed var(--pv2-outline); border-radius: 16px; padding: 28px; background: var(--pv2-paper); text-align: center; }
 .catalog-empty-icon { display: grid; width: 48px; height: 48px; place-items: center; border: 2px solid var(--pv2-outline); border-radius: 12px; background: var(--pv2-pink); color: var(--pv2-ink); }
 .catalog-batch-empty h2 { margin: 15px 0 0; color: var(--pv2-ink); font-size: 20px; font-weight: 900; }
