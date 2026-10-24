@@ -150,12 +150,12 @@ html[data-customer-theme="dark"] .ocean-profile .profile-form-heading h1 { color
 }
 .ocean-profile .profile-main { overflow: visible; padding: 0; }
 .ocean-profile .calendar-card { box-shadow: var(--customer-shadow-card) #91bd9b !important; }
-.ocean-profile .profile-catalog-link { display: flex; align-items: center; gap: 14px; min-width: 0; padding: 20px 24px; color: var(--profile-ink); transition: transform .18s ease, box-shadow .18s ease, background-color .18s ease; }
+.ocean-profile .profile-catalog-link { display: flex; align-items: center; gap: 14px; min-width: 0; padding: 20px 24px; color: var(--profile-ink); transition: transform .34s cubic-bezier(.34,1.56,.64,1), box-shadow .18s ease, background-color .18s ease; }
 .ocean-profile .profile-catalog-link strong { flex: 1; min-width: 0; font-size: 14px; font-weight: 900; }
 .ocean-profile .profile-catalog-link > svg { flex-shrink: 0; }
 .ocean-profile .profile-catalog-link:focus-visible { outline: 2px solid var(--profile-pink-strong); outline-offset: 4px; }
-.ocean-profile .profile-catalog-link:hover { transform: translate(-2px, 2px); background: #f9d6e2 !important; box-shadow: var(--customer-shadow-pressed) #a76d86 !important; }
-.ocean-profile .profile-catalog-link:active { transform: translate(0, 2px); background: #f9d6e2 !important; box-shadow: var(--customer-shadow-pressed) #a76d86 !important; }
+.ocean-profile .profile-catalog-link:hover { transform: translate(2px, -2px); background: #f9d6e2 !important; box-shadow: var(--customer-shadow-control) #d58fa8 !important; }
+.ocean-profile .profile-catalog-link:active { transform: translate(-2px, 2px) scale(.96); background: #f9d6e2 !important; box-shadow: none !important; }
 @media (max-width: 560px) { .ocean-profile .profile-catalog-link { padding: 18px; } }
 .ocean-profile .profile-top {
   min-height: 124px;
@@ -275,10 +275,11 @@ html[data-customer-theme="dark"] .ocean-profile .profile-form-heading h1 { color
   border-radius: 14px;
   background: #fff0f5;
   box-shadow: var(--customer-shadow-control) #d58fa8;
-  transition: transform .16s ease, box-shadow .16s ease;
+  transition: transform .34s cubic-bezier(.34,1.56,.64,1), box-shadow .18s ease;
 }
 .ocean-profile .profile-order-hub .order-link:nth-child(2) { background: #e8f4e8; box-shadow: var(--customer-shadow-control) #91bd9b; }
-.ocean-profile .profile-order-hub .order-link:hover { transform: translate(-2px, 2px); box-shadow: var(--customer-shadow-pressed) #648b6e; }
+.ocean-profile .profile-order-hub .order-link:hover { transform: translate(2px, -2px); }
+.ocean-profile .profile-order-hub .order-link:active { transform: translate(-2px, 2px) scale(.96); box-shadow: none; }
 .ocean-profile .order-link .order-bubble {
   width: 50px;
   height: 50px;
@@ -483,6 +484,8 @@ html[data-customer-theme="dark"] .ocean-profile .profile-form-heading h1 { color
 @media (prefers-reduced-motion: reduce) {
   .ocean-profile .profile-order-hub .order-link,
   .ocean-profile .profile-catalog-link { animation: none; transition: none; }
+  .ocean-profile .profile-order-hub .order-link:is(:hover, :active),
+  .ocean-profile .profile-catalog-link:is(:hover, :active) { transform: none; }
 }
 
 /* The settings toggle still offers a genuinely readable dark appearance. */
