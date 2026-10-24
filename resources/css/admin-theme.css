@@ -179,7 +179,8 @@
 .payment-proof-form { display: grid; gap: 14px; margin-top: 16px; }
 .payment-proof-form label { display: grid; min-width: 0; gap: 7px; font-size: 12px; font-weight: 700; }
 .payment-proof-form :is(input, textarea) { box-sizing: border-box; width: 100%; min-width: 0; border: 1px solid #b9c9bf; border-radius: 9px; background: #fff; padding: 10px 12px; color: #243c2f; font: inherit; font-weight: 500; }
-.payment-proof-form input[type=file] { font-size: 11px; padding: 10px 8px; }
+.payment-proof-form input[type=file] { font-size: 10px; padding: 10px 8px; }
+.payment-proof-form input[type=file]::file-selector-button { display: none; }
 .payment-proof-form small { font-size: 11px; font-weight: 500; }
 .payment-proof-form button { border: 1px solid #254c37; border-radius: 10px; background: #d5e9dd; padding: 12px; color: #254c37; font-size: 12px; font-weight: 800; cursor: pointer; }
 .payment-proof-form button:hover { background: #bddcc9; }

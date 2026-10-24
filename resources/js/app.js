@@ -60,6 +60,20 @@ document.querySelectorAll('[data-payment-proof-form]').forEach((form) => {
     });
 });
 
+document.querySelectorAll('form[data-clear-search-on-empty]').forEach((form) => {
+    const searchInput = form.querySelector('input[type="search"][name="q"]');
+    if (!searchInput) return;
+
+    let hasAppliedQuery = new URL(window.location.href).searchParams.has('q') && searchInput.value.length > 0;
+    searchInput.addEventListener('input', () => {
+        if (searchInput.value.length > 0) return;
+        if (!hasAppliedQuery) return;
+
+        hasAppliedQuery = false;
+        form.requestSubmit();
+    });
+});
+
 const readOceanPreference = (key, fallback) => {
     try {
         return window.localStorage.getItem(key) || fallback;

@@ -22,14 +22,13 @@
                 <div class="portal-catalog-hero-stat"><x-public-icon variant="rounded-bold" name="box" :size="25" /><span>{{ $batches->total() }} batch tersedia</span></div>
             </header>
 
-            <form class="portal-order-toolbar catalog-filter-card" action="{{ route('catalog.index') }}" method="GET" role="search" aria-label="Cari dan filter katalog batch">
+            <form class="portal-order-toolbar catalog-filter-card" action="{{ route('catalog.index') }}" method="GET" role="search" aria-label="Cari dan filter katalog batch" data-clear-search-on-empty>
                 <label class="portal-order-search catalog-search-field">
                     <span>Cari katalog</span>
                     <span class="catalog-search-input"><input type="search" name="q" value="{{ request('q') }}" maxlength="100" placeholder="Nama batch, nomor, atau produk"></span>
                 </label>
                 <label class="portal-order-sort catalog-status-field"><span>Status pemesanan</span><select name="status" data-portal-select2><option value="all" @selected($status === 'all')>Semua batch</option><option value="open" @selected($status === 'open')>Pemesanan terbuka</option><option value="closed" @selected($status === 'closed')>Pemesanan ditutup</option></select></label>
                 <button type="submit" aria-label="Terapkan pencarian" title="Cari"><x-public-icon variant="rounded-bold" name="search" :size="18" /><span class="portal-search-submit-label">Terapkan</span></button>
-                @if(request()->filled('q') || $status !== 'all')<a class="catalog-filter-reset" href="{{ route('catalog.index') }}">Reset</a>@endif
             </form>
 
             <section class="catalog-batch-grid" aria-label="Daftar batch katalog">

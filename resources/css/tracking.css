@@ -84,7 +84,7 @@ html[data-customer-theme="dark"] body.ocean-tracking .tracking-neo-input-wrap in
 
 /* Order details use the same outlined pink/mint cards as the customer portal.
  * Legacy mobile page padding is important; the shell owns horizontal gutters here. */
-.ocean-tracking .order-detail-page { padding-inline:0 !important; font-family: 'Nunito Sans', sans-serif; color: var(--pv2-ink); background: var(--pv2-cream) !important; }
+.ocean-tracking .order-detail-page { padding-inline:0 !important; font-family: 'Nunito Sans', sans-serif; color: var(--pv2-ink); background: transparent !important; background-image: none !important; }
 .ocean-tracking .order-detail-page :is(.order-detail-panel, .order-detail-stats article) { border: 2px solid var(--pv2-outline) !important; background: var(--pv2-paper) !important; box-shadow: var(--customer-shadow-card) var(--pv2-shadow-color) !important; }
 .ocean-tracking .order-detail-page .order-detail-hero { border: 2px solid var(--pv2-outline) !important; background: var(--pv2-pink) !important; box-shadow: var(--customer-shadow-card) var(--pv2-mint-shadow); }
 .ocean-tracking .order-detail-page .order-detail-cover { background: var(--pv2-mint); color: var(--pv2-ink); }

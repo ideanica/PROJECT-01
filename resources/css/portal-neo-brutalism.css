@@ -362,7 +362,7 @@
 .portal-v2-meta-grid strong { display:block; }
 .portal-v2-meta-grid span { color:var(--pv2-muted); font-size:9px; font-weight:800; text-transform:uppercase; }
 .portal-v2-meta-grid strong { margin-top:4px; overflow:hidden; color:var(--pv2-ink-deep); font-size:11px; line-height:1.35; text-overflow:ellipsis; }
-.portal-v2-order-metrics { grid-template-columns:repeat(3,minmax(0,1fr)); }
+.portal-v2-order-metrics { grid-template-columns:repeat(2,minmax(0,1fr)); }
 .portal-v2-order-metrics > div:first-child { background:var(--pv2-pink); }
 .portal-v2-order-metrics strong { overflow-wrap:anywhere; }
 
@@ -789,7 +789,6 @@ html[data-customer-theme="dark"] .portal-orders-v2.portal-order-workspace .porta
  :is(.portal-order-history, .billing-finance) .select2-selection--single .select2-selection__arrow { height:40px; }
  .portal-order-history .portal-v2-card-title h3 { white-space:normal; line-height:1.35; }
  .portal-order-history .portal-v2-order-metrics { grid-template-columns:repeat(2,minmax(0,1fr)); gap:6px; }
- .portal-order-history .portal-v2-order-metrics > div:first-child { grid-column:1/-1; }
  .portal-order-history .portal-v2-order-metrics > div { padding:8px 6px; }
  .portal-order-history .portal-v2-order-metrics span { font-size:8px; }
  .portal-order-history .portal-v2-order-metrics strong { font-size:10px; }
@@ -844,7 +843,6 @@ html[data-customer-theme="dark"] .portal-orders-v2.portal-order-workspace .porta
   grid-template-columns:repeat(2,minmax(0,1fr));
   gap:6px;
  }
- .portal-order-history .portal-v2-meta-grid.portal-v2-order-metrics > div:first-child { grid-column:1/-1; }
  .portal-order-history .portal-v2-meta-grid.portal-v2-order-metrics > div { padding:8px 6px; }
 }
 

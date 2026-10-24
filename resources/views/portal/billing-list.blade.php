@@ -18,11 +18,10 @@
                 <div class="portal-v2-empty"><small>TAGIHAN PRIBADI</small><h2>Login untuk melihat tagihanmu.</h2><p>Tagihan dan riwayat pembayaran ditampilkan setelah akun customer terhubung.</p><a href="{{ route('login') }}">Login</a></div>
             @else
                 <div id="billing-active-panel" data-billing-panel="active" @if($tab !== 'active') hidden @endif>
-                    <form class="portal-order-toolbar billing-finance-toolbar" action="{{ route('billing.index') }}" method="GET" role="search" aria-label="Cari tagihan">
+                    <form class="portal-order-toolbar billing-finance-toolbar" action="{{ route('billing.index') }}" method="GET" role="search" aria-label="Cari tagihan" data-clear-search-on-empty>
                         <label class="billing-finance-search"><span>Cari tagihan</span><input type="search" name="q" value="{{ request('q') }}" maxlength="100" placeholder="Kode pesanan atau nama batch"></label>
                         <label class="portal-order-sort"><span>Urutkan</span><select name="sort" data-portal-select2><option value="newest" @selected(request('sort', 'newest') === 'newest')>Terbaru</option><option value="oldest" @selected(request('sort') === 'oldest')>Terlama</option><option value="amount_desc" @selected(request('sort') === 'amount_desc')>Nominal tertinggi</option><option value="amount_asc" @selected(request('sort') === 'amount_asc')>Nominal terendah</option></select></label>
                         <button type="submit" aria-label="Terapkan pencarian" title="Cari"><x-public-icon variant="rounded-bold" name="search" :size="18" /><span class="portal-search-submit-label">Terapkan</span></button>
-                        @if(request()->filled('q') || request()->filled('sort'))<a href="{{ route('billing.index') }}">Reset</a>@endif
                     </form>
                     <section class="billing-finance-bills" aria-label="Tagihan aktif">
                         @forelse($obligations as $obligation)
@@ -50,11 +49,10 @@
                 </div>
 
                 <div id="billing-history-panel" data-billing-panel="history" @if($tab !== 'history') hidden @endif>
-                    <form class="portal-order-toolbar billing-finance-toolbar is-history" action="{{ route('billing.index') }}" method="GET" role="search" aria-label="Cari pembayaran">
+                    <form class="portal-order-toolbar billing-finance-toolbar is-history" action="{{ route('billing.index') }}" method="GET" role="search" aria-label="Cari pembayaran" data-clear-search-on-empty>
                         <input type="hidden" name="tab" value="history">
                         <label class="billing-finance-search"><span>Cari pembayaran</span><input type="search" name="q" value="{{ request('q') }}" maxlength="100" placeholder="Kode pesanan atau nama batch"></label>
                         <button type="submit" aria-label="Terapkan pencarian" title="Cari"><x-public-icon variant="rounded-bold" name="search" :size="18" /><span class="portal-search-submit-label">Terapkan</span></button>
-                        @if(request()->filled('q'))<a href="{{ route('billing.index', ['tab' => 'history']) }}">Reset</a>@endif
                     </form>
                     <section class="billing-finance-history" aria-label="Riwayat pembayaran">
                         @forelse($payments->groupBy(fn ($payment) => ($payment->paid_at ?? $payment->created_at)?->format('Y-m') ?? 'undated') as $monthPayments)

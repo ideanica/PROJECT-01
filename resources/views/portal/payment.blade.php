@@ -55,7 +55,7 @@
                                         <input type="hidden" name="submission_key" value="{{ $isCurrent ? old('submission_key', (string) \Illuminate\Support\Str::uuid()) : \Illuminate\Support\Str::uuid() }}">
                                         <input type="hidden" name="amount" value="{{ $amountDue }}">
                                         <p>Waktu transaksi dicatat otomatis saat bukti pembayaran dikirim.</p>
-                                        <label>Bukti pembayaran<input type="file" name="proof" accept="image/jpeg,image/png,image/webp,application/pdf" required><small>JPG, PNG, WebP, atau PDF. Maksimal 4 MB.</small></label>
+                                        <label>Bukti pembayaran<input type="file" name="proof" accept="image/jpeg,image/png,image/webp" required><small>Unggah satu foto JPG, PNG, atau WebP. Maksimal 4 MB.</small></label>
                                         @if($errors->any())<div class="payment-feedback is-error" role="alert">{{ $errors->first() }}<p>Jika mengirim ulang, pilih kembali file bukti pembayaran.</p></div>@endif
                                         <button type="submit">Kirim bukti pembayaran</button>
                                     </form>

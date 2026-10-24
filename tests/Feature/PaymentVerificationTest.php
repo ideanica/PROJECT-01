@@ -64,6 +64,17 @@ class PaymentVerificationTest extends TestCase
         $this->assertSame(0.0, $order->fresh()->remaining_amount);
     }
 
+    public function test_customer_payment_proof_must_be_an_image(): void
+    {
+        [$order, $customer] = $this->setupOrder();
+
+        $this->submit($order, $customer, [
+            'proof' => UploadedFile::fake()->create('receipt.pdf', 20, 'application/pdf'),
+        ])->assertSessionHasErrors('proof');
+
+        $this->assertSame(0, $order->payments()->count());
+    }
+
     public function test_admin_manual_payment_must_match_system_schedule_and_cannot_choose_status_or_type(): void
     {
         [$order, , $admin] = $this->setupOrder();

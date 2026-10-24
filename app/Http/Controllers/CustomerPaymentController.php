@@ -30,7 +30,7 @@ class CustomerPaymentController extends Controller
             'bill_type' => ['required', 'in:order,ems'],
             'submission_key' => ['required', 'uuid'],
             'amount' => ['required', 'numeric', 'decimal:0,2', 'min:0.01', 'max:999999999999.99'],
-            'proof' => ['required', 'file', 'mimes:jpg,jpeg,png,webp,pdf', 'max:4096'],
+            'proof' => ['required', 'image', 'mimes:jpg,jpeg,png,webp', 'max:4096'],
         ]);
 
         $path = null;
