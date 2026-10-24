@@ -293,7 +293,7 @@ html[data-customer-theme="dark"] .ocean-profile .profile-form-heading h1 { color
 .ocean-profile .order-link small { margin-top: 11px; color: var(--profile-ink); font-size: 13px; }
 
 .ocean-profile .activity-card { overflow: hidden; }
-.ocean-profile .profile-catalog-link { background: var(--profile-mint) !important; }
+.ocean-profile .profile-catalog-link { background: #e8f4e8 !important; }
 .ocean-profile .activity-head {
   min-height: 92px;
   gap: 15px;
@@ -304,19 +304,19 @@ html[data-customer-theme="dark"] .ocean-profile .profile-form-heading h1 { color
 .ocean-profile .activity-head .icon-chip {
   border: 2px solid var(--profile-outline);
   border-radius: 11px;
-  background: #d9eddd !important;
-  box-shadow: var(--customer-shadow-control) #aacdad !important;
-  color: #3f7049 !important;
+  background: #b9ddbd !important;
+  box-shadow: var(--customer-shadow-control) #91bd9b !important;
+  color: #356c46 !important;
 }
 .ocean-profile .metric-card .tiny-icon {
   border: 2px solid var(--profile-outline);
   border-radius: 11px;
-  background: #76b67c !important;
-  box-shadow: var(--customer-shadow-control) #4d8156 !important;
-  color: #fff !important;
+  background: #f7bad0 !important;
+  box-shadow: var(--customer-shadow-control) #a76d86 !important;
+  color: #9d2b55 !important;
 }
 .ocean-profile .activity-head strong { color: var(--profile-ink) !important; font-size: 19px !important; font-weight: 900; }
-.ocean-profile .profile-catalog-link .icon-chip { border: 2px solid var(--profile-outline); border-radius: 11px; background: #d9eddd; color: #3f7049; box-shadow: var(--customer-shadow-control) #aacdad; }
+.ocean-profile .profile-catalog-link .icon-chip { border: 2px solid var(--profile-outline); border-radius: 11px; background: #b9ddbd; color: #9d2b55; box-shadow: var(--customer-shadow-control) #91bd9b; }
 .ocean-profile .activity-head span:last-child { color: var(--profile-muted) !important; font-size: 11px !important; }
 .ocean-profile .activity-summary {
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -335,8 +335,8 @@ html[data-customer-theme="dark"] .ocean-profile .profile-form-heading h1 { color
   box-shadow: var(--customer-shadow-control) #d9a9ba;
 }
 .ocean-profile .metric-card:nth-child(even) { background: #f0f8ef !important; box-shadow: var(--customer-shadow-control) #a9cbae; }
-.ocean-profile .metric-card .tiny-icon { width: 42px; height: 42px; flex-basis: 42px; background: #ed9eb8 !important; color: #9c2d55 !important; }
-.ocean-profile .metric-card:nth-child(even) .tiny-icon { background: #9cccaa !important; color: #2f6744 !important; }
+.ocean-profile .metric-card .tiny-icon { width: 42px; height: 42px; flex-basis: 42px; background: #f7bad0 !important; color: #9d2b55 !important; box-shadow: var(--customer-shadow-control) #a76d86 !important; }
+.ocean-profile .metric-card:nth-child(even) .tiny-icon { background: #b9ddbd !important; color: #356c46 !important; box-shadow: var(--customer-shadow-control) #91bd9b !important; }
 .ocean-profile .metric-copy strong { color: #ae2c58; font-size: 26px; font-weight: 900; }
 .ocean-profile .metric-card:nth-child(even) .metric-copy strong { color: #326c47; }
 .ocean-profile .metric-copy span { color: #607568; font-size: 10px; }
