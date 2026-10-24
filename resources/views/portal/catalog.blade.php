@@ -33,8 +33,8 @@
                             <h2>{{ $batch->batch_name ?: $batch->batch_number }}</h2>
                             @if($batch->description)<p class="catalog-batch-card-description">{{ $batch->description }}</p>@else<p class="catalog-batch-card-description is-muted">Informasi dan pilihan produk batch ini tersedia di halaman detail.</p>@endif
                             <div class="catalog-batch-card-meta">
-                                <span><x-public-icon name="box" :size="15" />{{ $batch->products->count() }} variasi tersedia</span>
-                                @if($batch->ordering_deadline)<span><x-public-icon name="calendar" :size="15" />{{ $batch->catalog_is_open ? 'Tutup' : 'Ditutup' }} {{ $batch->ordering_deadline->translatedFormat('d M Y, H:i') }}</span>@else<span><x-public-icon name="calendar" :size="15" />Jadwal menyusul</span>@endif
+                                <span><x-public-icon variant="rounded-bold" name="box" :size="15" />{{ $batch->products->count() }} variasi tersedia</span>
+                                @if($batch->ordering_deadline)<span><x-public-icon variant="rounded-bold" name="calendar" :size="15" />{{ $batch->catalog_is_open ? 'Tutup' : 'Ditutup' }} {{ $batch->ordering_deadline->translatedFormat('d M Y, H:i') }}</span>@else<span><x-public-icon variant="rounded-bold" name="calendar" :size="15" />Jadwal menyusul</span>@endif
                             </div>
                             <a class="catalog-batch-detail-button" href="{{ route('catalog.show', $batch) }}"><span>Lihat detail batch</span><x-public-icon variant="rounded-bold" name="arrow-right" :size="17" /></a>
                         </div>

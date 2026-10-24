@@ -16,13 +16,14 @@
         'truck' => '<path d="M5 17H3V7a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v10H9M15 9h2.6a2 2 0 0 1 1.6.8l2.4 3.2a2 2 0 0 1 .4 1.2V17h-2M15 17h1"/><circle cx="7" cy="18" r="2"/><circle cx="18" cy="18" r="2"/>',
         'box' => '<path d="m11 3.6-7 3.8a2 2 0 0 0-1 1.8v5.6a2 2 0 0 0 1 1.8l7 3.8a2 2 0 0 0 2 0l7-3.8a2 2 0 0 0 1-1.8V9.2a2 2 0 0 0-1-1.8l-7-3.8a2 2 0 0 0-2 0Z"/><path d="m3.5 8 8.5 4.7L20.5 8M12 13v7M8 5.2l8 4.5"/>',
         'document' => '<path d="M13 3H7a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V10a3 3 0 0 0-.9-2.1l-4-4A3 3 0 0 0 13 3Z"/><path d="M13 3v5a2 2 0 0 0 2 2h5M8 14h8M8 17h5"/>',
+        'calendar' => '<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18M8 14h2M14 14h2M8 17h2"/>',
         'sparkle' => '<path d="M12 3c1.2 5.2 2.8 6.8 8 8-5.2 1.2-6.8 2.8-8 8-1.2-5.2-2.8-6.8-8-8 5.2-1.2 6.8-2.8 8-8ZM20 18v4M18 20h4"/>',
         'history' => '<circle cx="12" cy="12" r="9" stroke="none" fill="var(--portal-icon-fill-mint, #bce3cf)"/><path d="M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5M12 7v5l3 2"/>',
         'check-circle' => '<circle cx="12" cy="12" r="9" fill="var(--portal-icon-fill-mint, #bce3cf)"/><path d="m8 12 2.5 2.5L16 9"/>',
     ];
     $iconFills = [
         'bag' => 'pink', 'card' => 'pink', 'wallet' => 'mint',
-        'box' => 'cream', 'document' => 'cream', 'sparkle' => 'cream',
+        'box' => 'cream', 'document' => 'cream', 'sparkle' => 'cream', 'calendar' => 'mint',
         'login' => 'pink', 'search' => 'mint', 'home' => 'pink',
         'user' => 'mint', 'menu' => 'pink', 'arrow-forward' => 'cream',
     ];
