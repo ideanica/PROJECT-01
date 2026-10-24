@@ -15,6 +15,13 @@
     $chartDescription = $months->map(fn ($month, $index) => $month->translatedFormat('M Y').': '.$monthlyOrders[$index].' pesanan')->implode(', ');
     $monthStartOffset = $calendarMonth->dayOfWeek;
     $monthItemCount = $calendarItems->sum('quantity');
+    $profileCalendarOrders = $orders->map(fn ($order) => [
+        'date' => $order->created_at->format('Y-m-d'),
+        'items' => $order->items->map(fn ($item) => [
+            'name' => $item->item_name,
+            'quantity' => (int) $item->quantity,
+        ])->values(),
+    ])->values();
     $daysTogether = $member
         ? max(0, (int) floor($member->created_at->copy()->startOfDay()->diffInDays(now()->startOfDay())))
         : 0;
@@ -301,12 +308,12 @@
                 </div>
             </section>
 
-            <div class="profile-calendar-row" id="profile-calendar">
+            <div class="profile-calendar-row" id="profile-calendar" data-profile-calendar data-calendar-orders="{{ $profileCalendarOrders->toJson() }}" data-calendar-current="{{ $calendarMonth->format('Y-m') }}">
                 <section class="section-card calendar-card">
                         <div class="calendar-head">
-                            <a class="cal-arrow" href="{{ route('profile.show', ['month' => $calendarMonth->copy()->subMonth()->format('Y-m')]) }}#profile-calendar" aria-label="Bulan sebelumnya"><x-public-icon name="arrow-left" :size="14" /></a>
-                            <div class="calendar-title"><strong>{{ $calendarMonth->translatedFormat('F Y') }}</strong><small data-i18n-id="{{ $monthItemCount }} item jajanan" data-i18n-en="{{ $monthItemCount }} snack items">{{ $monthItemCount }} item jajanan</small></div>
-                            <a class="cal-arrow" href="{{ route('profile.show', ['month' => $calendarMonth->copy()->addMonth()->format('Y-m')]) }}#profile-calendar" aria-label="Bulan berikutnya"><x-public-icon name="arrow-right" :size="14" /></a>
+                            <a class="cal-arrow" data-calendar-month="-1" href="{{ route('profile.show', ['month' => $calendarMonth->copy()->subMonth()->format('Y-m')]) }}#profile-calendar" aria-label="Bulan sebelumnya"><x-public-icon name="arrow-left" :size="14" /></a>
+                            <div class="calendar-title"><strong data-calendar-title>{{ $calendarMonth->translatedFormat('F Y') }}</strong><small data-calendar-count data-i18n-id="{{ $monthItemCount }} item jajanan" data-i18n-en="{{ $monthItemCount }} snack items">{{ $monthItemCount }} item jajanan</small></div>
+                            <a class="cal-arrow" data-calendar-month="1" href="{{ route('profile.show', ['month' => $calendarMonth->copy()->addMonth()->format('Y-m')]) }}#profile-calendar" aria-label="Bulan berikutnya"><x-public-icon name="arrow-right" :size="14" /></a>
                         </div>
                         <div class="weekdays">@foreach([['Min','Sun'],['Sen','Mon'],['Sel','Tue'],['Rab','Wed'],['Kam','Thu'],['Jum','Fri'],['Sab','Sat']] as [$day, $englishDay])<span data-i18n-id="{{ $day }}" data-i18n-en="{{ $englishDay }}">{{ $day }}</span>@endforeach</div>
                         <div class="calendar-grid">
@@ -315,7 +322,8 @@
                         </div>
                 </section>
                 <section class="section-card profile-snack-card" aria-labelledby="profile-snack-title">
-                        <div class="profile-snack-heading"><div><span class="micro" data-i18n-id="CATATAN JAJAN" data-i18n-en="SNACK LIST">CATATAN JAJAN</span><h2 id="profile-snack-title" data-i18n-id="Daftar jajanan" data-i18n-en="Your snack list">Daftar jajanan</h2></div><span class="profile-snack-count">{{ $monthItemCount }} item</span></div>
+                        <div class="profile-snack-heading"><div><span class="micro" data-i18n-id="CATATAN JAJAN" data-i18n-en="SNACK LIST">CATATAN JAJAN</span><h2 id="profile-snack-title" data-i18n-id="Daftar jajanan" data-i18n-en="Your snack list">Daftar jajanan</h2></div><span class="profile-snack-count" data-calendar-snack-count data-i18n-id="{{ $monthItemCount }} item" data-i18n-en="{{ $monthItemCount }} items">{{ $monthItemCount }} item</span></div>
+                        <div data-calendar-snack-content>
                         @if($calendarItems->isEmpty())
                             <p class="profile-snack-empty" data-i18n-id="Belum ada jajanan pada bulan ini." data-i18n-en="No snacks recorded this month.">Belum ada jajanan pada bulan ini.</p>
                         @else
@@ -325,6 +333,7 @@
                                 @endforeach
                             </ul>
                         @endif
+                        </div>
                 </section>
             </div>
             </div>

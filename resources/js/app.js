@@ -875,3 +875,122 @@ document.querySelectorAll('[data-profile-settings-button]').forEach((button) => 
         applyOceanTheme(theme);
     });
 });
+
+document.querySelectorAll('[data-profile-calendar]').forEach((calendar) => {
+    let orders;
+    try {
+        orders = JSON.parse(calendar.dataset.calendarOrders || '[]');
+    } catch {
+        return;
+    }
+
+    const title = calendar.querySelector('[data-calendar-title]');
+    const monthCount = calendar.querySelector('[data-calendar-count]');
+    const grid = calendar.querySelector('.calendar-grid');
+    const snackCount = calendar.querySelector('[data-calendar-snack-count]');
+    const snackContent = calendar.querySelector('[data-calendar-snack-content]');
+    const monthLinks = [...calendar.querySelectorAll('[data-calendar-month]')];
+    if (!title || !monthCount || !grid || !snackCount || !snackContent || !monthLinks.length) return;
+
+    let currentMonth = calendar.dataset.calendarCurrent;
+    const today = new Date();
+    const pad = (value) => String(value).padStart(2, '0');
+    const monthKey = (year, month) => `${year}-${pad(month + 1)}`;
+
+    const renderMonth = (monthValue, updateAddress = false) => {
+        const [year, monthNumber] = monthValue.split('-').map(Number);
+        if (!year || !monthNumber || monthNumber > 12) return;
+
+        const monthIndex = monthNumber - 1;
+        const selectedKey = monthKey(year, monthIndex);
+        const language = document.documentElement.lang === 'en' ? 'en' : 'id';
+        const locale = language === 'en' ? 'en-US' : 'id-ID';
+        const selectedOrders = orders.filter((order) => order.date?.startsWith(`${selectedKey}-`));
+        const items = selectedOrders.flatMap((order) => (order.items || []).map((item) => ({ ...item, date: order.date })));
+        const totalQuantity = items.reduce((total, item) => total + (Number(item.quantity) || 0), 0);
+        const monthDate = new Date(Date.UTC(year, monthIndex, 1));
+        const daysInMonth = new Date(Date.UTC(year, monthIndex + 1, 0)).getUTCDate();
+        const firstWeekday = monthDate.getUTCDay();
+
+        title.textContent = new Intl.DateTimeFormat(locale, { month: 'long', year: 'numeric', timeZone: 'UTC' }).format(monthDate);
+        monthCount.textContent = language === 'en' ? `${totalQuantity} snack items` : `${totalQuantity} item jajanan`;
+        monthCount.dataset.i18nId = `${totalQuantity} item jajanan`;
+        monthCount.dataset.i18nEn = `${totalQuantity} snack items`;
+        snackCount.textContent = language === 'en' ? `${totalQuantity} items` : `${totalQuantity} item`;
+        snackCount.dataset.i18nId = `${totalQuantity} item`;
+        snackCount.dataset.i18nEn = `${totalQuantity} items`;
+        grid.replaceChildren();
+
+        for (let blank = 0; blank < firstWeekday; blank += 1) {
+            const spacer = document.createElement('span');
+            spacer.className = 'calendar-day';
+            spacer.setAttribute('aria-hidden', 'true');
+            grid.append(spacer);
+        }
+
+        const orderDays = new Set(selectedOrders.map((order) => Number(order.date.slice(-2))));
+        for (let day = 1; day <= daysInMonth; day += 1) {
+            const cell = document.createElement('span');
+            cell.className = 'calendar-day';
+            cell.textContent = String(day);
+            if (year === today.getFullYear() && monthIndex === today.getMonth() && day === today.getDate()) cell.classList.add('is-today');
+            if (orderDays.has(day)) cell.classList.add('has-order');
+            grid.append(cell);
+        }
+
+        if (items.length === 0) {
+            const empty = document.createElement('p');
+            empty.className = 'profile-snack-empty';
+            empty.textContent = language === 'en' ? 'No snacks recorded this month.' : 'Belum ada jajanan pada bulan ini.';
+            empty.dataset.i18nId = 'Belum ada jajanan pada bulan ini.';
+            empty.dataset.i18nEn = 'No snacks recorded this month.';
+            snackContent.replaceChildren(empty);
+        } else {
+            const list = document.createElement('ul');
+            list.className = 'profile-snack-list';
+            items.forEach((item) => {
+                const row = document.createElement('li');
+                const name = document.createElement('span');
+                name.className = 'profile-snack-name';
+                name.textContent = item.name || '';
+                const date = document.createElement('span');
+                date.className = 'profile-snack-date';
+                date.textContent = new Intl.DateTimeFormat(locale, { day: '2-digit', month: 'short', timeZone: 'UTC' }).format(new Date(`${item.date}T00:00:00Z`));
+                const quantity = document.createElement('strong');
+                quantity.className = 'profile-snack-quantity';
+                quantity.textContent = `×${Number(item.quantity) || 0}`;
+                row.append(name, date, quantity);
+                list.append(row);
+            });
+            snackContent.replaceChildren(list);
+        }
+
+        currentMonth = selectedKey;
+        calendar.dataset.calendarCurrent = currentMonth;
+        monthLinks.forEach((link) => {
+            const nextMonth = new Date(Date.UTC(year, monthIndex + Number(link.dataset.calendarMonth), 1));
+            const url = new URL(link.href, window.location.origin);
+            url.searchParams.set('month', monthKey(nextMonth.getUTCFullYear(), nextMonth.getUTCMonth()));
+            link.href = `${url.pathname}${url.search}#profile-calendar`;
+        });
+
+        if (updateAddress) {
+            const url = new URL(window.location.href);
+            url.searchParams.set('month', currentMonth);
+            url.hash = 'profile-calendar';
+            window.history.pushState({ profileCalendarMonth: currentMonth }, '', url);
+        }
+    };
+
+    monthLinks.forEach((link) => link.addEventListener('click', (event) => {
+        event.preventDefault();
+        const [year, month] = currentMonth.split('-').map(Number);
+        const nextMonth = new Date(Date.UTC(year, month - 1 + Number(link.dataset.calendarMonth), 1));
+        renderMonth(monthKey(nextMonth.getUTCFullYear(), nextMonth.getUTCMonth()), true);
+    }));
+
+    window.addEventListener('popstate', () => {
+        const month = new URL(window.location.href).searchParams.get('month');
+        if (month && month !== currentMonth && /^\d{4}-(0[1-9]|1[0-2])$/.test(month)) renderMonth(month);
+    });
+});
