@@ -243,7 +243,7 @@
 .customer-theme .payment-feedback a { color: inherit; text-decoration: underline; font-weight: 700; }
 .order-detail-cancel { margin-top: 16px; border-top: 1px solid #e4c8ce; padding-top: 14px; }
 .order-detail-cancel > p { margin: 0 0 10px; color: var(--pv2-text); font-size: 11px; line-height: 1.55; }
-.order-detail-cancel-button { display: inline-flex; min-height: 44px; align-items: center; justify-content: center; border: 2px solid #8b3a4d; border-radius: 10px; padding: 0 14px; background: #fff0f2; color: #7b293d; font: inherit; font-size: 12px; font-weight: 900; cursor: pointer; box-shadow: var(--customer-shadow-control) #d99cac; transition: transform .34s cubic-bezier(.34,1.56,.64,1), box-shadow .18s ease, background-color .18s ease; }
-.order-detail-cancel-button:hover { transform: translate(2px,-2px); background: #ffe1e7; }
+.order-detail-cancel-button { display: flex; width: 100%; min-height: 48px; align-items: center; justify-content: center; border: 2px solid var(--pv2-outline); border-radius: 12px; padding: 10px 12px; background: var(--pv2-pink); color: var(--pv2-ink); font: inherit; font-size: 13px; font-weight: 900; cursor: pointer; box-shadow: var(--customer-shadow-control) var(--pv2-mint-shadow); transition: transform .34s cubic-bezier(.34,1.56,.64,1), box-shadow .18s ease, background-color .18s ease; }
+.order-detail-cancel-button:hover { transform: translate(2px,-2px); }
 .order-detail-cancel-button:active { transform: translate(-2px,2px) scale(.96); box-shadow: none; }
-.order-detail-cancel-button:focus-visible { outline: 3px solid #d99cac; outline-offset: 2px; }
+.order-detail-cancel-button:focus-visible { outline: 3px solid var(--pv2-pink-strong); outline-offset: 3px; }
