@@ -44,6 +44,18 @@
                                 <p>SIMULASI PREVIEW · BUKAN QR PEMBAYARAN</p>
                             </div>
                             <div class="order-payment-instructions"><strong>Informasi metode pembayaran</strong><p>Ini tampilan preview untuk melihat susunan halaman pembayaran. QR di atas hanya contoh visual, tidak terhubung ke rekening atau pembayaran apa pun.</p></div>
+                            @if($owner)
+                                <div class="payment-submission">
+                                    <header class="payment-section-title"><span class="payment-section-title-icon"><x-public-icon variant="rounded-bold" name="document" :size="22" /></span><div><span>SIMULASI ALUR</span><h2>Kirim bukti pembayaran</h2></div></header>
+                                    <p>Setelah customer membayar, bukti dikirim ke admin. Admin memeriksa bukti sebelum status tagihan berubah menjadi DP atau lunas.</p>
+                                    <form class="payment-proof-form" data-payment-preview-form>
+                                        <label for="preview-payment-proof">Bukti pembayaran<input id="preview-payment-proof" type="file" name="proof" accept="image/jpeg,image/png,image/webp" required><small>Unggah satu foto JPG, PNG, atau WebP. Maksimal 4 MB.</small></label>
+                                        <p class="payment-feedback" data-payment-preview-status role="status" aria-live="polite" hidden></p>
+                                        <button type="submit">Kirim bukti pembayaran</button>
+                                        <small>Preview saja. File tidak diunggah dan tidak mengubah status tagihan.</small>
+                                    </form>
+                                </div>
+                            @endif
                         @elseif($owner)
                             <div class="payment-submission">
                                 <header class="payment-section-title"><span class="payment-section-title-icon"><x-public-icon variant="rounded-bold" name="document" :size="22" /></span><div><span>KONFIRMASI PEMBAYARAN</span><h2>Kirim bukti pembayaran</h2></div></header>

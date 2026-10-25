@@ -60,6 +60,32 @@ document.querySelectorAll('[data-payment-proof-form]').forEach((form) => {
     });
 });
 
+document.querySelectorAll('[data-payment-preview-form]').forEach((form) => {
+    const fileInput = form.querySelector('input[type="file"]');
+    const button = form.querySelector('button[type="submit"]');
+    const status = form.querySelector('[data-payment-preview-status]');
+    if (!fileInput || !button || !status) return;
+
+    form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const file = fileInput.files?.[0];
+        if (!file) return;
+
+        if (file.size > 4 * 1024 * 1024) {
+            status.hidden = false;
+            status.textContent = 'Ukuran file maksimal 4 MB.';
+            status.classList.add('is-error');
+            return;
+        }
+
+        status.hidden = false;
+        status.classList.remove('is-error');
+        status.textContent = 'Bukti berhasil dikirim (simulasi). Admin akan memverifikasi sebelum status pembayaran diperbarui.';
+        button.disabled = true;
+        button.textContent = 'Bukti terkirim (simulasi)';
+    });
+});
+
 document.querySelectorAll('form[data-clear-search-on-empty]').forEach((form) => {
     const searchInput = form.querySelector('input[type="search"][name="q"]');
     if (!searchInput) return;
