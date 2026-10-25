@@ -325,7 +325,8 @@ html[data-customer-theme="dark"] body.ocean-tracking .tracking-neo-input-wrap in
     display:grid;
     grid-template-columns:40px minmax(0,1fr) auto;
     align-items:center;
-    gap:10px;
+    column-gap:10px;
+    row-gap:2px;
     margin:12px 0 0;
     border:0;
     border-top:1px solid var(--tracking-mint);
@@ -368,6 +369,7 @@ html[data-customer-theme="dark"] body.ocean-tracking .tracking-neo-input-wrap in
     margin:0;
     color:var(--tracking-ink);
     font-size:13px;
+    line-height:1.2;
     white-space:normal;
 }
 .ocean-tracking .tracking-order-summary > .order-ems-bill .order-ems-bill-copy > small,
@@ -376,6 +378,7 @@ html[data-customer-theme="dark"] body.ocean-tracking .tracking-neo-input-wrap in
     grid-row:3;
     margin:0;
     color:var(--tracking-muted);
+    line-height:1.3;
 }
 .ocean-tracking .tracking-order-summary > .order-ems-bill .order-ems-bill-copy > p {
     grid-row:4;
