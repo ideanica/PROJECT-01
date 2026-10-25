@@ -21,12 +21,12 @@ class CustomerCatalogDemoSeederTest extends TestCase
         $this->seed(CustomerCatalogDemoSeeder::class);
 
         $batches = Batch::query()
-            ->whereIn('batch_number', ['OP-DEMO-CATALOG-OPEN', 'OP-DEMO-CATALOG-CLOSED'])
+            ->whereIn('batch_number', ['OP-GO-CATALOG-OPEN', 'OP-GO-CATALOG-CLOSED'])
             ->with(['currentStatus', 'products', 'statusHistories'])
             ->get();
 
         $this->assertCount(2, $batches);
-        $this->assertSame(2, Product::query()->where('name', 'like', '[DEMO] Ocean%')->count());
+        $this->assertSame(2, Product::query()->whereIn('name', ['Official Lightstick', 'Photocard Set'])->count());
         $this->assertSame(2, StatusHistory::query()->where('trackable_type', Batch::class)->count());
         $this->assertSame(0, MemberOrder::query()->count());
 
@@ -39,8 +39,8 @@ class CustomerCatalogDemoSeederTest extends TestCase
             $this->assertSame(2, $batch->products->where('pivot.is_available', true)->count());
         }
 
-        $openBatch = $batches->firstWhere('batch_number', 'OP-DEMO-CATALOG-OPEN');
-        $closedBatch = $batches->firstWhere('batch_number', 'OP-DEMO-CATALOG-CLOSED');
+        $openBatch = $batches->firstWhere('batch_number', 'OP-GO-CATALOG-OPEN');
+        $closedBatch = $batches->firstWhere('batch_number', 'OP-GO-CATALOG-CLOSED');
 
         $this->assertTrue($openBatch->ordering_deadline->isFuture());
         $this->assertTrue($closedBatch->ordering_deadline->isPast());

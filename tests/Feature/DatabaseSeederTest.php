@@ -24,7 +24,7 @@ class DatabaseSeederTest extends TestCase
     public function test_demo_seeder_builds_a_repeatable_business_scenario_with_email_accounts(): void
     {
         Config::set('seeders.admin', [
-            'name' => 'OceanPaws Admin Demo',
+            'name' => 'OceanPaws Admin',
             'username' => null,
             'email' => 'admin.demo@oceanpaws.test',
             'password' => 'password',
@@ -37,10 +37,10 @@ class DatabaseSeederTest extends TestCase
         $admin = User::query()->where('email', 'admin.demo@oceanpaws.test')->sole();
         $customer = User::query()->where('email', 'customer.demo@oceanpaws.test')->sole();
         $member = Member::query()->whereKey($customer->member_id)->sole();
-        $paidOrder = MemberOrder::query()->where('order_code', 'OP-DEMO-ORDER-PAID')->with('paymentStatus')->sole();
-        $unpaidOrder = MemberOrder::query()->where('order_code', 'OP-DEMO-ORDER-UNPAID')->with('paymentStatus')->sole();
-        $dpOrder = MemberOrder::query()->where('order_code', 'OP-DEMO-ORDER-DP')->with('paymentStatus')->sole();
-        $historicalOrder = MemberOrder::query()->where('order_code', 'OP-DEMO-ORDER-HISTORY')->with(['overrideStatus', 'payments'])->sole();
+        $paidOrder = MemberOrder::query()->where('order_code', 'OP-2026-1001')->with('paymentStatus')->sole();
+        $unpaidOrder = MemberOrder::query()->where('order_code', 'OP-2026-1002')->with('paymentStatus')->sole();
+        $dpOrder = MemberOrder::query()->where('order_code', 'OP-2026-1003')->with('paymentStatus')->sole();
+        $historicalOrder = MemberOrder::query()->where('order_code', 'OP-2025-0981')->with(['overrideStatus', 'payments'])->sole();
         $counts = [
             'users' => User::count(),
             'members' => Member::count(),
@@ -59,7 +59,9 @@ class DatabaseSeederTest extends TestCase
         $this->assertSame(User::ROLE_CUSTOMER, $customer->role);
         $this->assertNull($customer->username);
         $this->assertTrue(password_verify('password', $customer->password));
-        $this->assertSame('OP-CUSTOMER-DEMO', $member->member_code);
+        $this->assertSame('OP-CUST-0001', $member->member_code);
+        $this->assertSame('Nadia Putri', $member->display_name);
+        $this->assertSame('Official Lightstick GO 2026', Batch::query()->where('batch_number', 'OP-GO-2026-OPEN')->value('batch_name'));
         $this->assertSame(3, Product::count());
         $this->assertSame(6, Batch::count());
         $this->assertSame(5, MemberOrder::count());
@@ -77,7 +79,10 @@ class DatabaseSeederTest extends TestCase
         $this->assertSame(2, $historicalOrder->items()->sole()->quantity);
         $this->assertSame(1, OrderPayment::query()->where('status', 'pending')->count());
         $this->assertSame(1, OrderPayment::query()->where('status', 'rejected')->count());
-        $this->assertSame(1, Batch::query()->where('batch_number', 'OP-DEMO-CATALOG-OPEN')->where('is_catalog_visible', true)->count());
+        $this->assertSame(1, Batch::query()->where('batch_number', 'OP-GO-2026-OPEN')->where('is_catalog_visible', true)->count());
+        $this->assertSame(0, Product::query()->where('name', 'like', '[DEMO]%')->count());
+        $this->assertSame(0, Batch::query()->where('batch_name', 'like', '%demo%')->count());
+        $this->assertSame(0, MemberOrder::query()->where('order_code', 'like', '%demo%')->count());
 
         $status = OrderStatus::query()->where('code', 'menunggu-dp')->sole();
         $status->update(['name' => 'Nama status yang diatur admin', 'color' => '#123456']);

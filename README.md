@@ -25,11 +25,11 @@ php artisan serve
 ```
 
 Konfigurasi bawaan menggunakan SQLite. Pastikan ekstensi `pdo_sqlite` dan `sqlite3` aktif, lalu buat file `database/database.sqlite` sebelum migrasi jika belum tersedia.
-Seeder lokal membuat akun admin `admin@oceanpaws.test` dan customer `customer.demo@oceanpaws.test`, keduanya dengan password `password`. Ganti kredensial sebelum membagikan environment. Seeder rutin `migrate --seed` hanya menyiapkan status dan admin awal; data skenario bisnis dijalankan secara eksplisit dengan `php artisan db:seed --class=DemoBusinessSeeder`. Seeder skenario juga menyiapkan akun customer demo. Seeder production memerlukan `INITIAL_ADMIN_NAME`, `INITIAL_ADMIN_EMAIL`, `INITIAL_ADMIN_PASSWORD`, dan `OCEANPAWS_DEMO_CUSTOMER_PASSWORD`.
+Seeder lokal membuat akun admin `admin@oceanpaws.test` dan satu akun customer untuk verifikasi alur pada `customer.demo@oceanpaws.test`, keduanya dengan password `password`. Nama customer dan data katalog tampil seperti data operasional biasa. Ganti kredensial sebelum membagikan environment. Seeder rutin `migrate --seed` hanya menyiapkan status dan admin awal; data skenario bisnis dijalankan secara eksplisit dengan `php artisan db:seed --class=DemoBusinessSeeder`. Seeder production memerlukan `INITIAL_ADMIN_NAME`, `INITIAL_ADMIN_EMAIL`, `INITIAL_ADMIN_PASSWORD`, dan `OCEANPAWS_DEMO_CUSTOMER_PASSWORD`.
 
 ## Data aplikasi
 
-Seeder `DemoBusinessSeeder` menyiapkan akun customer demo, group customer, produk, batch katalog, pesanan lunas/belum lunas/DP, transaksi terverifikasi/menunggu/ditolak, tagihan EMS, shipment, dan histori status yang saling terhubung. Jalankan hanya pada database kosong atau database demo yang memang ditujukan untuk data contoh. Record contoh diberi label `[DEMO]` dan tidak mewakili transaksi, QRIS, atau pengiriman nyata. QRIS demo tidak memiliki gambar; unggah QRIS sungguhan sebelum menerima pembayaran.
+Seeder `DemoBusinessSeeder` menyiapkan akun customer, group, produk, batch katalog, pesanan lunas/belum lunas/DP, transaksi terverifikasi/menunggu/ditolak, tagihan EMS, shipment, dan histori status yang saling terhubung. Jalankan pada database pengembangan atau pengujian yang memang ditujukan untuk skenario seeder. Seeder memakai konfigurasi metode pembayaran aktif yang sudah tersedia; ia tidak membuat QRIS atau nomor resi palsu. Unggah QRIS asli dari admin sebelum menerima pembayaran customer.
 
 ## Login dan registrasi customer
 
@@ -142,7 +142,7 @@ php artisan migrate --force
 php artisan db:seed --force
 ```
 
-Sebelum menjalankan seeder production, isi `INITIAL_ADMIN_NAME`, `INITIAL_ADMIN_EMAIL`, dan `INITIAL_ADMIN_PASSWORD` pada environment deployment. Seeder admin hanya membuat akun pertama dan tidak menambah admin kedua jika sudah ada. `DemoBusinessSeeder` memerlukan `OCEANPAWS_DEMO_CUSTOMER_PASSWORD`; jalankan hanya bila database memang ditujukan untuk demo. Seeder tersebut mengisi record contoh berlabel `[DEMO]`; jangan jalankan pada database production yang harus berisi data operasional nyata. Jangan gunakan dump SQL lama di `database/schema` untuk instalasi baru; dump itu berasal dari skema aplikasi versi terdahulu dan tidak mengikuti migrasi terkini.
+Sebelum menjalankan seeder pada deployment, isi `INITIAL_ADMIN_NAME`, `INITIAL_ADMIN_EMAIL`, dan `INITIAL_ADMIN_PASSWORD`. Seeder admin hanya membuat akun pertama dan tidak menambah admin kedua jika sudah ada. `DemoBusinessSeeder` memerlukan `OCEANPAWS_DEMO_CUSTOMER_PASSWORD`; jalankan hanya pada database yang memang disiapkan untuk skenario seeder, bukan database operasional pelanggan. Jangan gunakan dump SQL lama di `database/schema` untuk instalasi baru; dump itu berasal dari skema aplikasi versi terdahulu dan tidak mengikuti migrasi terkini.
 
 ### 4. Hubungkan repository ke Vercel
 

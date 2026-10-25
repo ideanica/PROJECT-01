@@ -25,16 +25,16 @@ class CustomerCatalogDemoSeeder extends Seeder
         DB::transaction(function () use ($waitingStatus): void {
             $products = collect([
                 [
-                    'name' => '[DEMO] Ocean Lightstick',
-                    'variant' => 'Demo version',
-                    'description' => 'Produk contoh yang dibuat oleh CustomerCatalogDemoSeeder untuk menguji alur katalog.',
+                    'name' => 'Official Lightstick',
+                    'variant' => 'Versi 2026',
+                    'description' => 'Lightstick resmi untuk koleksi penggemar.',
                     'full_price' => 250000,
                     'dp_price' => 125000,
                 ],
                 [
-                    'name' => '[DEMO] Ocean Photocard Set',
-                    'variant' => 'Demo edition',
-                    'description' => 'Produk contoh yang dibuat oleh CustomerCatalogDemoSeeder untuk menguji variasi dan harga.',
+                    'name' => 'Photocard Set',
+                    'variant' => 'Set isi 5',
+                    'description' => 'Set photocard isi lima lembar.',
                     'full_price' => 75000,
                     'dp_price' => 37500,
                 ],
@@ -42,13 +42,13 @@ class CustomerCatalogDemoSeeder extends Seeder
 
             $batches = [
                 [
-                    'batch_number' => 'OP-DEMO-CATALOG-OPEN',
-                    'batch_name' => 'Demo Katalog Terbuka',
+                    'batch_number' => 'OP-GO-CATALOG-OPEN',
+                    'batch_name' => 'Katalog Merchandise Juni 2026',
                     'ordering_deadline' => now()->addDays(30),
                 ],
                 [
-                    'batch_number' => 'OP-DEMO-CATALOG-CLOSED',
-                    'batch_name' => 'Demo Katalog Ditutup',
+                    'batch_number' => 'OP-GO-CATALOG-CLOSED',
+                    'batch_name' => 'Katalog Merchandise Mei 2026',
                     'ordering_deadline' => now()->subDay(),
                 ],
             ];
@@ -62,8 +62,8 @@ class CustomerCatalogDemoSeeder extends Seeder
                     }
 
                     $batch->products()->attach($product->id, [
-                        'dp_price' => $product->name === '[DEMO] Ocean Lightstick' ? 125000 : 37500,
-                        'full_price' => $product->name === '[DEMO] Ocean Lightstick' ? 250000 : 75000,
+                        'dp_price' => $product->name === 'Official Lightstick' ? 125000 : 37500,
+                        'full_price' => $product->name === 'Official Lightstick' ? 250000 : 75000,
                         'sort_order' => $index + 1,
                         'is_available' => true,
                     ]);
@@ -71,7 +71,7 @@ class CustomerCatalogDemoSeeder extends Seeder
             }
         });
 
-        $this->command?->info('Katalog demo dibuat dengan produk dan status batch terkait. Tidak ada pesanan atau transaksi demo yang ditambahkan.');
+        $this->command?->info('Katalog dibuat dengan produk dan status batch terkait.');
     }
 
     private function findOrCreateDemoProduct(array $attributes): Product
@@ -82,8 +82,8 @@ class CustomerCatalogDemoSeeder extends Seeder
             ->first();
 
         if ($product) {
-            if (! str_contains((string) $product->description, self::SOURCE_MARKER)) {
-                throw new RuntimeException("Produk {$attributes['name']} sudah ada dan bukan milik seeder katalog demo.");
+            if ($product->description !== $attributes['description']) {
+                throw new RuntimeException("Produk {$attributes['name']} sudah ada dengan sumber data lain.");
             }
 
             return $product;
@@ -94,17 +94,33 @@ class CustomerCatalogDemoSeeder extends Seeder
             'variant' => $attributes['variant'],
             'default_price' => $attributes['full_price'],
             'is_active' => true,
-            'description' => $attributes['description'].' '.self::SOURCE_MARKER,
+            'description' => $attributes['description'],
         ]);
     }
 
     private function findOrCreateDemoBatch(array $attributes, OrderStatus $status): Batch
     {
         $batch = Batch::query()->where('batch_number', $attributes['batch_number'])->first();
+        $legacyNumbers = [
+            'OP-GO-CATALOG-OPEN' => 'OP-DEMO-CATALOG-OPEN',
+            'OP-GO-CATALOG-CLOSED' => 'OP-DEMO-CATALOG-CLOSED',
+        ];
+        if (! $batch && isset($legacyNumbers[$attributes['batch_number']])) {
+            $legacy = Batch::query()->where('batch_number', $legacyNumbers[$attributes['batch_number']])->first();
+            if ($legacy && str_contains((string) $legacy->notes, self::SOURCE_MARKER)) {
+                $legacy->update([
+                    'batch_number' => $attributes['batch_number'],
+                    'batch_name' => $attributes['batch_name'],
+                    'description' => 'Katalog merchandise yang tersedia untuk pemesanan.',
+                    'notes' => null,
+                ]);
+                $batch = $legacy->fresh();
+            }
+        }
 
         if ($batch) {
-            if (! str_contains((string) $batch->notes, self::SOURCE_MARKER)) {
-                throw new RuntimeException("Batch {$attributes['batch_number']} sudah ada dan bukan milik seeder katalog demo.");
+            if ($batch->batch_name !== $attributes['batch_name']) {
+                throw new RuntimeException("Batch {$attributes['batch_number']} sudah ada dengan sumber data lain.");
             }
 
             return $batch;
@@ -113,8 +129,8 @@ class CustomerCatalogDemoSeeder extends Seeder
         $batch = Batch::query()->create([
             ...$attributes,
             'current_status_id' => $status->id,
-            'description' => 'Data katalog demonstrasi untuk menguji daftar batch, detail produk, dan filter status. Tidak mewakili transaksi atau pemasok sungguhan.',
-            'notes' => self::SOURCE_MARKER,
+            'description' => 'Katalog merchandise yang tersedia untuk pemesanan.',
+            'notes' => null,
             'is_catalog_visible' => true,
             'is_archived' => false,
         ]);
@@ -122,7 +138,7 @@ class CustomerCatalogDemoSeeder extends Seeder
         $batch->statusHistories()->create([
             'old_status_id' => null,
             'new_status_id' => $status->id,
-            'note' => 'Status awal batch demo dari CustomerCatalogDemoSeeder.',
+            'note' => 'Batch dibuka untuk pemesanan.',
         ]);
 
         return $batch;

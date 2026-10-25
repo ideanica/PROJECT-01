@@ -17,45 +17,64 @@ class CustomerDemoAccountSeeder extends Seeder
         $password = config('seeders.demo_customer_password');
 
         if (! filled($password)) {
-            throw new RuntimeException('Atur OCEANPAWS_DEMO_CUSTOMER_PASSWORD untuk membuat akun customer demo di production.');
+            throw new RuntimeException('Atur OCEANPAWS_DEMO_CUSTOMER_PASSWORD untuk membuat akun customer seeder di production.');
         }
 
-        if (User::query()->where('email', $email)->exists()) {
+        $existingUser = User::query()->where('email', $email)->first();
+        if ($existingUser) {
+            $member = Member::query()->find($existingUser->member_id);
+            if ($member) {
+                $attributes = [];
+                if ($member->member_code === 'OP-CUSTOMER-DEMO') {
+                    $attributes['member_code'] = 'OP-CUST-0001';
+                }
+                if ($member->display_name === 'OceanPaws Demo') {
+                    $attributes['display_name'] = 'Nadia Putri';
+                    $existingUser->update(['name' => 'Nadia Putri']);
+                }
+                if (str_contains((string) $member->notes, '[DEMO:CustomerDemoAccountSeeder]')) {
+                    $attributes['notes'] = null;
+                }
+                if ($attributes) {
+                    $member->update($attributes);
+                }
+            }
             $this->command?->info("Akun {$email} sudah ada; seeder tidak mengubah kredensial yang sudah diatur.");
 
             return;
         }
 
         DB::transaction(function () use ($email, $password): void {
-            $member = Member::query()->firstOrCreate(
-                ['member_code' => 'OP-CUSTOMER-DEMO'],
+            $member = Member::query()->firstOrNew(
+                ['member_code' => 'OP-CUST-0001'],
                 [
-                    'display_name' => 'OceanPaws Demo',
+                    'display_name' => 'Nadia Putri',
                     'email' => $email,
                     'username' => null,
-                    'notes' => '[DEMO:CustomerDemoAccountSeeder]',
+                    'notes' => null,
                     'is_active' => true,
                 ],
             );
 
-            if (! str_contains((string) $member->notes, '[DEMO:CustomerDemoAccountSeeder]')) {
-                throw new RuntimeException('Kode member demo sudah dipakai oleh sumber data lain.');
+            if ($member->exists && $member->email !== $email) {
+                throw new RuntimeException('Kode member sudah dipakai oleh pelanggan lain.');
             }
 
             if ($member->user()->exists()) {
-                throw new RuntimeException('Member demo sudah terhubung ke akun lain; seeder tidak mengubah relasinya.');
+                throw new RuntimeException('Member sudah terhubung ke akun lain; seeder tidak mengubah relasinya.');
             }
 
             $member->fill([
-                'display_name' => 'OceanPaws Demo',
+                'display_name' => 'Nadia Putri',
                 'email' => $email,
                 'username' => null,
+                'notes' => null,
                 'is_active' => true,
             ])->save();
 
             $user = new User;
             $user->forceFill([
-                'name' => 'OceanPaws Demo',
+                'name' => 'Nadia Putri',
                 'email' => $email,
                 'username' => null,
                 'member_id' => $member->id,
@@ -67,6 +86,6 @@ class CustomerDemoAccountSeeder extends Seeder
             ])->save();
         });
 
-        $this->command?->info("Akun customer demo siap: {$email}");
+        $this->command?->info("Akun customer siap: {$email}");
     }
 }
