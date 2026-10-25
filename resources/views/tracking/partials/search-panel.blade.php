@@ -219,36 +219,12 @@ html[data-customer-theme="dark"] .ocean-tracking .tracking-classic .tracking-neo
                             <div><small>Pelanggan</small><strong>{{ $orderResult->member->display_name }}</strong></div>
                             <div><small>Pembayaran</small><strong>{{ $orderResult->paymentStatus?->name ?: 'Belum ditentukan' }}</strong></div>
                             <div><small>Total barang</small><strong>Rp {{ number_format($orderResult->total_amount, 0, ',', '.') }}</strong></div>
+                            <x-order-ems-bill :order="$orderResult" />
                         </div>
-                        <x-order-ems-bill :order="$orderResult" />
                         <a class="tracking-result-action" href="{{ URL::temporarySignedRoute('tracking.progress', now()->addMinutes(15), ['orderCode' => $orderResult->order_code]) }}">Lihat perjalanan lengkap <x-public-icon name="arrow-right" :size="15" /></a>
                     </aside>
                 </div>
 
-                <section class="tracking-inline-timeline" aria-label="Timeline status pesanan">
-                    <header class="tracking-inline-timeline-heading">
-                        <span class="tracking-inline-timeline-icon"><x-public-icon variant="rounded-bold" name="history" :size="20" /></span>
-                        <div><span>PERJALANAN PESANAN</span><h3>Timeline status</h3></div>
-                    </header>
-                    @if($timeline->isEmpty() || $timeline->first()?->newStatus?->id !== $orderResult->tracking_status?->id)
-                        <div class="tracking-inline-current-status"><span>Status saat ini</span><x-status-badge :status="$orderResult->tracking_status" /></div>
-                    @endif
-                    <div class="tracking-inline-timeline-list">
-                        @forelse($timeline as $history)
-                            <article class="tracking-inline-timeline-entry">
-                                <span class="tracking-inline-timeline-dot"></span>
-                                <div class="tracking-inline-timeline-statuses">
-                                    @if($loop->first && $history->newStatus?->id === $orderResult->tracking_status?->id)<strong>Status saat ini</strong>@endif
-                                    <x-status-badge :status="$history->newStatus" />
-                                </div>
-                                <p>{{ $history->note ?: $history->newStatus?->description ?: 'Status pesanan diperbarui oleh admin.' }}</p>
-                                <time>{{ $history->created_at->translatedFormat('d M Y, H:i') }}</time>
-                            </article>
-                        @empty
-                            <p class="tracking-inline-timeline-empty">Belum ada pembaruan perjalanan. Status terbaru tetap dapat dilihat di atas.</p>
-                        @endforelse
-                    </div>
-                </section>
             </article>
         @endisset
 
