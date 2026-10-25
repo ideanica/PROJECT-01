@@ -392,6 +392,12 @@ document.querySelectorAll('[data-status-folder-map]').forEach((folderMap) => {
 });
 
 document.querySelectorAll('[data-status-modal]').forEach((modal) => {
+    // Keep the customer cancellation dialog anchored to the viewport instead
+    // of a potentially transformed order card or page container.
+    if (modal.classList.contains('customer-order-cancel-modal')) {
+        document.body.append(modal);
+    }
+
     const modalName = modal.dataset.statusModal;
     let modalTrigger = null;
 
