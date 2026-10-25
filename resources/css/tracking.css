@@ -322,6 +322,10 @@ html[data-customer-theme="dark"] body.ocean-tracking .tracking-neo-input-wrap in
     border-color:var(--tracking-mint) !important;
 }
 .ocean-tracking .tracking-order-summary > .order-ems-bill {
+    display:grid;
+    grid-template-columns:40px minmax(0,1fr) auto;
+    align-items:center;
+    gap:10px;
     margin:12px 0 0;
     border:0;
     border-top:1px solid var(--tracking-mint);
@@ -329,6 +333,49 @@ html[data-customer-theme="dark"] body.ocean-tracking .tracking-neo-input-wrap in
     background:transparent;
     box-shadow:none;
     padding:12px 0 0;
+}
+.ocean-tracking .tracking-order-summary > .order-ems-bill .order-ems-bill-icon {
+    display:grid;
+    width:40px;
+    height:40px;
+    place-items:center;
+    border:2px solid var(--tracking-outline);
+    border-radius:11px;
+    background:var(--tracking-pink);
+    box-shadow:var(--customer-shadow-control) #eba4bc;
+    color:var(--tracking-ink);
+}
+.ocean-tracking .tracking-order-summary > .order-ems-bill .order-ems-bill-icon svg {
+    width:20px;
+    height:20px;
+}
+.ocean-tracking .tracking-order-summary > .order-ems-bill .order-ems-bill-copy {
+    display:grid;
+    min-width:0;
+    grid-template-columns:minmax(0,1fr) auto;
+    align-items:baseline;
+    gap:2px 8px;
+}
+.ocean-tracking .tracking-order-summary > .order-ems-bill .order-ems-bill-copy > span {
+    color:var(--tracking-ink);
+    font-size:10px;
+    letter-spacing:0;
+    line-height:1.3;
+}
+.ocean-tracking .tracking-order-summary > .order-ems-bill .order-ems-bill-copy > strong {
+    margin:0;
+    color:var(--tracking-ink);
+    font-size:13px;
+    white-space:nowrap;
+}
+.ocean-tracking .tracking-order-summary > .order-ems-bill .order-ems-bill-copy > small,
+.ocean-tracking .tracking-order-summary > .order-ems-bill .order-ems-bill-copy > p {
+    grid-column:1/-1;
+    margin:0;
+    color:var(--tracking-muted);
+}
+.ocean-tracking .tracking-order-summary > .order-ems-bill .order-ems-bill-status {
+    white-space:nowrap;
 }
 .ocean-tracking .tracking-history-list {
     display:grid;
