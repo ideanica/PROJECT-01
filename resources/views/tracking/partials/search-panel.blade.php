@@ -11,7 +11,10 @@
     --classic-search-card: #ffe0e9;
     --classic-search-shadow: #87b999;
     --classic-matcha: #96c88a;
-    --classic-title-accent: #df5277;
+    --classic-title-pink: #fbd7e3;
+    --classic-title-green: #d7ebdb;
+    --classic-title-pink-shadow: #eba4bc;
+    --classic-title-green-shadow: #91bd9b;
     --classic-icon-chip: #dce9cf;
     --portal-icon-fill-cream: #bce3cf;
     padding: 36px 0 140px;
@@ -31,13 +34,21 @@
 .ocean-tracking .tracking-classic .tracking-neo-heading h1 {
     margin: 22px 0 0; font-family: "Nunito Sans", sans-serif;
     font-size: calc(clamp(48px, 12.2vw, 94px) + 1rem); font-weight: 900; line-height: .98;
-    letter-spacing: -.055em; color: var(--classic-ink) !important;
+    letter-spacing: -.055em; color: var(--classic-title-pink) !important;
 }
 .ocean-tracking .tracking-classic .tracking-neo-heading h1 span {
     display: block; width: fit-content;
-    color: var(--classic-ink);
+    -webkit-text-stroke: 2px var(--classic-outline);
+    paint-order: stroke fill;
 }
-.ocean-tracking .tracking-classic .tracking-neo-heading h1 span:first-child { color: var(--classic-title-accent); }
+.ocean-tracking .tracking-classic .tracking-neo-heading h1 span:first-child {
+    color: var(--classic-title-pink);
+    text-shadow: -3px 3px 0 var(--classic-title-pink-shadow);
+}
+.ocean-tracking .tracking-classic .tracking-neo-heading h1 span:last-child {
+    color: var(--classic-title-green);
+    text-shadow: -3px 3px 0 var(--classic-title-green-shadow);
+}
 .ocean-tracking .tracking-classic .tracking-neo-heading p {
     max-width: 760px; margin: 24px 0 0; color: var(--classic-ink) !important;
     font-size: clamp(16px, 4.25vw, 23px); font-weight: 600; line-height: 1.3;
@@ -115,7 +126,9 @@ html[data-customer-theme="dark"] .ocean-tracking .tracking-classic {
     --classic-ink: #e6f2e6; --classic-outline: #9dc5a4; --classic-paper: #284338; --classic-pink: #6a4050; --classic-matcha: #54784b;
     --classic-card-shadow: #081810; --classic-control-shadow: #081810; --classic-button-shadow: #081810;
     --classic-search-card: #6a4050; --classic-search-shadow: #081810;
-    --classic-title-accent: #f08aa5; --classic-icon-chip: #31483a;
+    --classic-title-pink: #6a4050; --classic-title-green: #426e51;
+    --classic-title-pink-shadow: #081810; --classic-title-green-shadow: #081810;
+    --classic-icon-chip: #31483a;
     --portal-icon-fill-cream: #b9ddbd;
 }
 html[data-customer-theme="dark"] .ocean-tracking .tracking-classic .tracking-neo-hint { color: #e7efe7; }
