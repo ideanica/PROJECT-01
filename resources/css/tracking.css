@@ -382,8 +382,8 @@ html[data-customer-theme="dark"] body.ocean-tracking .tracking-neo-input-wrap in
 }
 .ocean-tracking .tracking-order-summary > .order-ems-bill .order-ems-bill-status {
     grid-column:3;
-    grid-row:1;
-    align-self:center;
+    grid-row:1 / span 4;
+    align-self:start;
     white-space:nowrap;
 }
 .ocean-tracking .tracking-history-list {
