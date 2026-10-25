@@ -8,8 +8,8 @@
     --classic-button-shadow: #4d8156;
     --classic-paper: #fffaf1;
     --classic-pink: #f8b6cc;
-    --classic-search-card: #fff0f5;
-    --classic-search-shadow: #d58fa8;
+    --classic-search-card: #ffe0e9;
+    --classic-search-shadow: #87b999;
     --classic-matcha: #96c88a;
     padding: 36px 0 140px;
     min-height: calc(100svh - 260px);
@@ -43,11 +43,11 @@
 }
 .ocean-tracking .tracking-classic .tracking-neo-search-card {
     max-width: 760px; overflow: visible; padding: 24px 18px 20px;
-    border: 2px solid var(--classic-outline); border-radius: 16px;
-    background: var(--classic-search-card); box-shadow: var(--customer-shadow-control) var(--classic-search-shadow);
+    border: 2px solid var(--classic-outline); border-radius: 17px;
+    background: var(--classic-search-card); box-shadow: var(--customer-shadow-card) var(--classic-search-shadow);
 }
 .ocean-tracking .tracking-classic .tracking-neo-form {
-    display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; padding: 0; margin: 0;
+    display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: stretch; gap: 14px; padding: 0; margin: 0;
 }
 .ocean-tracking .tracking-classic .tracking-neo-input-wrap {
     min-height: 50px; gap: 14px; padding: 0 16px; border: 2px solid var(--classic-outline);
@@ -61,13 +61,14 @@
 .ocean-tracking .tracking-classic .tracking-neo-input-wrap input::placeholder { color: #858880; opacity: 1; }
 .ocean-tracking .tracking-classic .tracking-neo-input-wrap:focus-within { outline: 3px solid #487553; outline-offset: 4px; }
 .ocean-tracking .tracking-classic .tracking-neo-form button {
-    width: 100%; min-width: 0; min-height: 52px; gap: 16px; padding: 12px 18px;
+    width: auto; min-width: 0; min-height: 52px; gap: 12px; padding: 12px 18px;
     border: 2px solid var(--classic-outline); border-radius: 12px;
     background: var(--classic-matcha); color: var(--classic-ink);
     box-shadow: var(--customer-shadow-control) var(--classic-button-shadow); font-size: 18px; font-weight: 900;
 }
 .ocean-tracking .tracking-classic .tracking-neo-form button:hover { transform: translate(-2px, 2px); box-shadow: var(--customer-shadow-pressed) var(--classic-button-shadow); }
 .ocean-tracking .tracking-classic .tracking-neo-form button:focus-visible { outline: 3px solid #487553; outline-offset: 5px; }
+.ocean-tracking .tracking-classic .tracking-neo-form button .tracking-search-button-icon { display: none; }
 .ocean-tracking .tracking-classic .tracking-neo-hint {
     margin: 20px 0 0; padding: 13px 16px; min-height: 48px;
     border: 2px solid var(--classic-outline); border-radius: 9px;
@@ -92,6 +93,14 @@
     .ocean-tracking .tracking-classic .tracking-neo-input-wrap,
     .ocean-tracking .tracking-classic .tracking-neo-form button { min-height: 64px; }
     .ocean-tracking .tracking-classic .tracking-neo-hint { font-size: 14px; }
+}
+@media (max-width: 600px) {
+    .ocean-tracking .tracking-classic .tracking-neo-search-card { padding: 16px; }
+    .ocean-tracking .tracking-classic .tracking-neo-form { grid-template-columns: minmax(0, 1fr) 48px; gap: 10px; }
+    .ocean-tracking .tracking-classic .tracking-neo-form button { width: 48px; min-height: 50px; justify-content: center; gap: 0; padding: 0; }
+    .ocean-tracking .tracking-classic .tracking-neo-form button > span,
+    .ocean-tracking .tracking-classic .tracking-neo-form button > .public-icon:last-child { display: none; }
+    .ocean-tracking .tracking-classic .tracking-neo-form button .tracking-search-button-icon { display: inline-flex; }
 }
 @media (max-width: 380px) {
     .ocean-tracking .tracking-classic .tracking-neo-heading h1 { font-size: clamp(48px, 15vw, 56px); }
@@ -119,7 +128,8 @@ html[data-customer-theme="dark"] .ocean-tracking .tracking-classic .tracking-neo
                     <span class="tracking-neo-input-icon"><x-public-icon name="search" :size="19" /></span>
                     <input id="tracking-query" type="search" name="query" value="{{ old('query', $searchQuery ?? '') }}" autocomplete="off" autocapitalize="none" spellcheck="false" maxlength="255" placeholder="masukkan kode pesanan" aria-describedby="tracking-query-hint{{ $errors->has('query') ? ' tracking-query-error' : '' }}" @if($errors->has('query')) aria-invalid="true" autofocus @endif required>
                 </div>
-                <button type="submit">
+                <button type="submit" aria-label="Lacak pesanan">
+                    <span class="tracking-search-button-icon" aria-hidden="true"><x-public-icon name="search" :size="20" /></span>
                     <span>Lacak pesanan</span>
                     <x-public-icon name="chevron-right" :size="20" />
                 </button>
