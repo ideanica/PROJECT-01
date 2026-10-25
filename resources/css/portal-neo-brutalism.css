@@ -382,9 +382,16 @@
   font-size:10px;
   font-weight:900;
   box-shadow:var(--customer-shadow-control) var(--pv2-mint-shadow);
+  text-decoration:none;
 }
 .portal-v2-card-actions .portal-v2-card-action { flex:1; margin-top:0; }
 .portal-v2-card-action.is-secondary { background:var(--pv2-mint); color:var(--pv2-ink)!important; }
+.portal-v2-card-action.is-detail-action { transition:transform .34s cubic-bezier(.34,1.56,.64,1), box-shadow .18s ease, background-color .18s ease; }
+.portal-v2-card-action.is-detail-action:hover { transform:translate(2px,-2px); }
+.portal-v2-card-action.is-detail-action:active { transform:translate(-2px,2px) scale(.96); box-shadow:none; }
+@media (prefers-reduced-motion:reduce) {
+  .portal-v2-card-action.is-detail-action { transition:none; }
+}
 
 .portal-v2-empty {
   display:grid;

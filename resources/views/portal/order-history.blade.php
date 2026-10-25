@@ -48,7 +48,7 @@
                                         <div><span>Pembayaran</span><strong>{{ $paymentLabel }}</strong></div>
                                     </div>
 
-                                    <div class="portal-v2-card-actions"><a class="portal-v2-card-action is-secondary" href="{{ $order->history_tracking_url }}">Lihat Detail <x-public-icon variant="rounded-bold" name="eye" :size="16" /></a></div>
+                                    <div class="portal-v2-card-actions"><a class="portal-v2-card-action is-secondary is-detail-action" href="{{ $order->history_tracking_url }}">Lihat Detail <x-public-icon variant="rounded-bold" name="eye" :size="16" /></a></div>
                                 </article>
                             @empty
                                 <div class="portal-v2-empty portal-v2-empty-inline"><span class="portal-v2-empty-icon"><x-public-icon variant="rounded-bold" name="bag" :size="32" /></span><small>KOSONG</small><h2>Tidak ada pesanan di kategori ini.</h2><p>Coba kategori lain atau kembali ke profil.</p><a href="{{ route('profile.show') }}">Kembali ke Profil</a></div>

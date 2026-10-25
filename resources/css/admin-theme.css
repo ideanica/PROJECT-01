@@ -147,6 +147,9 @@
 /* Payment navigation and page share the pink/mint card palette. */
 .order-payment-method { padding: 0; overflow: hidden; border: 2px solid var(--pv2-outline, #496d54); box-shadow: var(--customer-shadow-control) var(--pv2-mint-shadow, #91bd9b); }
 .customer-theme .order-payment-trigger { display: flex; align-items: center; gap: 10px; min-height: 48px; padding: 10px 12px; background: var(--pv2-pink); color: var(--pv2-ink); font-size: 13px; font-weight: 900; text-decoration: none; }
+.customer-theme .order-payment-trigger { transition: transform .34s cubic-bezier(.34,1.56,.64,1), box-shadow .18s ease, background-color .18s ease; }
+.customer-theme .order-payment-trigger:hover { transform: translate(2px,-2px); }
+.customer-theme .order-payment-trigger:active { transform: translate(-2px,2px) scale(.96); box-shadow: none; }
 .order-payment-trigger > span:nth-child(2) { flex: 1; min-width: 0; }
 .order-payment-trigger > svg { flex-shrink: 0; }
 .order-payment-trigger:focus-visible { outline: 3px solid var(--pv2-pink-strong); outline-offset: 3px; }
@@ -182,8 +185,9 @@
 .payment-proof-form input[type=file] { font-size: 10px; padding: 10px 8px; }
 .payment-proof-form input[type=file]::file-selector-button { display: none; }
 .payment-proof-form small { font-size: 11px; font-weight: 500; }
-.payment-proof-form button { border: 1px solid #254c37; border-radius: 10px; background: #d5e9dd; padding: 12px; color: #254c37; font-size: 12px; font-weight: 800; cursor: pointer; }
-.payment-proof-form button:hover { background: #bddcc9; }
+.payment-proof-form button { display: inline-flex; min-height: 44px; align-items: center; justify-content: center; gap: 8px; border: 2px solid var(--pv2-outline); border-radius: 10px; padding: 0 14px; background: var(--pv2-mint); color: var(--pv2-ink); font-size: 12px; font-weight: 900; cursor: pointer; box-shadow: var(--customer-shadow-control) var(--pv2-mint-shadow); transition: transform .34s cubic-bezier(.34,1.56,.64,1), box-shadow .18s ease, background-color .18s ease; }
+.payment-proof-form button:hover { transform: translate(2px,-2px); background: var(--pv2-pink); }
+.payment-proof-form button:active { transform: translate(-2px,2px) scale(.96); box-shadow: none; }
 .payment-proof-form button:disabled { opacity: .65; cursor: wait; }
 .payment-amount-summary { display: grid; gap: 10px; margin-top: 18px; border: 1px solid #bdd5c4; border-radius: 10px; padding: 14px; background: #eff8f1; color: #294b36; font-size: 12px; }
 .payment-amount-summary > div { display: flex; justify-content: space-between; gap: 12px; }
@@ -191,6 +195,10 @@
 .payment-amount-summary dd { flex-shrink: 0; font-weight: 800; text-align: right; }
 .payment-amount-summary .payment-amount-due { border-top: 1px solid #bdd5c4; padding-top: 10px; font-weight: 800; }
 .payment-proof-form :is(input,textarea,button):focus-visible { outline: 3px solid #99b9a5; outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) {
+    .customer-theme .order-payment-trigger,
+    .payment-proof-form button { transition: none; }
+}
 .payment-feedback { margin-top: 12px; border: 1px solid #bdd5c4; border-radius: 10px; background: #eff8f1; padding: 12px; color: #294b36; font-size: 12px; line-height: 1.7; overflow-wrap: anywhere; }
 .payment-feedback.is-error { border-color: #efc2c2; background: #fff1f1; color: #8b3333; }
 .customer-theme .payment-feedback a { color: inherit; text-decoration: underline; font-weight: 700; }

@@ -2,6 +2,6 @@
 -- and a fixed demo administrator credential, so it is intentionally no longer executable.
 -- For a current database, run Laravel migrations and the source-backed system seeder:
 --   php artisan migrate --seed
--- Configure INITIAL_ADMIN_NAME, INITIAL_ADMIN_USERNAME, INITIAL_ADMIN_EMAIL, and
+-- Configure INITIAL_ADMIN_NAME, INITIAL_ADMIN_EMAIL, and
 -- INITIAL_ADMIN_PASSWORD before seeding if the first admin account must be created.
 -- No business records are seeded. Create/import them through verified application flows.

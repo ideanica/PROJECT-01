@@ -5,7 +5,7 @@
         <p class="auth-description">Masuk ke akun Ocean Paws.</p>
         <form method="POST" action="{{ route('login') }}" class="auth-form auth-form-login">
             @csrf
-            <x-text-input label="Username LINE atau email" name="username" autocomplete="username" autocapitalize="none" spellcheck="false" required autofocus />
+            <x-text-input label="Email" name="email" type="email" autocomplete="email" autocapitalize="none" spellcheck="false" required autofocus />
             <x-text-input label="Password" name="password" type="password" password-toggle autocomplete="current-password" required />
             <a class="auth-link text-right" href="{{ route('password.request') }}">Lupa password?</a>
             <label class="auth-remember">

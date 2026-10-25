@@ -17,13 +17,14 @@ class AuthenticatedSessionController extends Controller
 
     public function store(Request $request)
     {
-        $request->merge(['username' => mb_strtolower(trim((string) $request->input('username', $request->input('email'))))]);
+        $identifierField = $request->filled('email') ? 'email' : 'username';
+        $request->merge([$identifierField => mb_strtolower(trim((string) $request->input($identifierField)))]);
         $data = $request->validate([
-            'username' => ['required', 'string', 'max:255'],
+            $identifierField => ['required', 'string', 'max:255'],
             'password' => ['required', 'string'],
         ]);
-        $field = str_contains($data['username'], '@') ? 'email' : 'username';
-        $credentials = [$field => $data['username'], 'password' => $data['password']];
+        $field = str_contains($data[$identifierField], '@') ? 'email' : 'username';
+        $credentials = [$field => $data[$identifierField], 'password' => $data['password']];
 
         if (! Auth::attemptWhen(
             $credentials,
@@ -31,7 +32,7 @@ class AuthenticatedSessionController extends Controller
             $request->boolean('remember')
         )) {
             throw ValidationException::withMessages([
-                'username' => 'Username LINE/email atau password tidak sesuai, atau akun belum aktif. Jika belum memilih group saat registrasi, tunggu persetujuan admin.',
+                $identifierField => 'Email atau password tidak sesuai, atau akun belum aktif. Jika akun menunggu persetujuan, hubungi admin.',
             ]);
         }
 

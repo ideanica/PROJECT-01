@@ -13,58 +13,60 @@ class CustomerDemoAccountSeeder extends Seeder
 {
     public function run(): void
     {
-        $username = 'oceanpaws.demo';
-        $email = 'customer.demo@oceanpaws.test';
+        $email = config('seeders.demo_customer_email');
         $password = config('seeders.demo_customer_password');
 
         if (! filled($password)) {
-            throw new RuntimeException('Atur OCEANPAWS_DEMO_CUSTOMER_PASSWORD untuk membuat akun customer demo.');
+            throw new RuntimeException('Atur OCEANPAWS_DEMO_CUSTOMER_PASSWORD untuk membuat akun customer demo di production.');
         }
 
-        if (User::query()->where('username', $username)->exists()) {
-            $this->command?->info("Akun {$username} sudah ada; tidak ada data yang diubah.");
+        if (User::query()->where('email', $email)->exists()) {
+            $this->command?->info("Akun {$email} sudah ada; seeder tidak mengubah kredensial yang sudah diatur.");
 
             return;
         }
 
-        if (User::query()->where('email', $email)->exists()) {
-            throw new RuntimeException("Email {$email} sudah dipakai akun lain; seeder tidak mengubah akun itu.");
-        }
-
-        DB::transaction(function () use ($username, $email, $password): void {
-            $member = Member::query()
-                ->where(fn ($query) => $query->where('username', $username)->orWhere('email', $email))
-                ->lockForUpdate()
-                ->first();
-
-            if ($member && (! $member->is_active || $member->user()->exists())) {
-                throw new RuntimeException('Data buyer yang cocok sudah terhubung atau tidak aktif; seeder tidak mengubahnya.');
-            }
-
-            if (! $member) {
-                $member = Member::query()->create([
-                    'member_code' => 'OP-CUSTOMER-DEMO',
+        DB::transaction(function () use ($email, $password): void {
+            $member = Member::query()->firstOrCreate(
+                ['member_code' => 'OP-CUSTOMER-DEMO'],
+                [
                     'display_name' => 'OceanPaws Demo',
-                    'username' => $username,
                     'email' => $email,
+                    'username' => null,
+                    'notes' => '[DEMO:CustomerDemoAccountSeeder]',
                     'is_active' => true,
-                ]);
+                ],
+            );
+
+            if (! str_contains((string) $member->notes, '[DEMO:CustomerDemoAccountSeeder]')) {
+                throw new RuntimeException('Kode member demo sudah dipakai oleh sumber data lain.');
             }
 
-            $user = new User([
-                'name' => 'OceanPaws Demo',
-                'username' => $username,
+            if ($member->user()->exists()) {
+                throw new RuntimeException('Member demo sudah terhubung ke akun lain; seeder tidak mengubah relasinya.');
+            }
+
+            $member->fill([
+                'display_name' => 'OceanPaws Demo',
                 'email' => $email,
-                'password' => Hash::make($password),
+                'username' => null,
+                'is_active' => true,
+            ])->save();
+
+            $user = new User;
+            $user->forceFill([
+                'name' => 'OceanPaws Demo',
+                'email' => $email,
+                'username' => null,
                 'member_id' => $member->id,
-            ]);
-            $user->role = User::ROLE_CUSTOMER;
-            $user->email_verified_at = now();
-            $user->password_set_at = now();
-            $user->registration_pending = false;
-            $user->save();
+                'role' => User::ROLE_CUSTOMER,
+                'password' => Hash::make($password),
+                'password_set_at' => now(),
+                'email_verified_at' => now(),
+                'registration_pending' => false,
+            ])->save();
         });
 
-        $this->command?->info("Akun customer {$username} berhasil dibuat.");
+        $this->command?->info("Akun customer demo siap: {$email}");
     }
 }

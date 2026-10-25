@@ -216,7 +216,7 @@ class CustomerAuthTest extends TestCase
     {
         $admin = User::factory()->create(['username' => 'shared.admin']);
         $this->get('/admin/login')->assertRedirect('/login');
-        $this->get('/login')->assertOk()->assertSee('Username LINE atau email')->assertDontSee('Login admin');
+        $this->get('/login')->assertOk()->assertSee('Email')->assertDontSee('Username LINE atau email')->assertDontSee('Login admin');
 
         foreach ([$admin->username, $admin->email] as $identifier) {
             $this->withSession(['url.intended' => route('profile.show')])

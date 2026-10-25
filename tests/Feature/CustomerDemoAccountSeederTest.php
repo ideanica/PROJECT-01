@@ -19,7 +19,7 @@ class CustomerDemoAccountSeederTest extends TestCase
 
         $this->seed(CustomerDemoAccountSeeder::class);
 
-        $user = User::query()->where('username', 'oceanpaws.demo')->sole();
+        $user = User::query()->where('email', 'customer.demo@oceanpaws.test')->sole();
         $member = Member::query()->whereKey($user->member_id)->sole();
 
         $this->assertSame(User::ROLE_CUSTOMER, $user->role);
@@ -31,8 +31,9 @@ class CustomerDemoAccountSeederTest extends TestCase
         $user->update(['password' => 'changed-password']);
         $this->seed(CustomerDemoAccountSeeder::class);
 
-        $this->assertSame(1, User::query()->where('username', 'oceanpaws.demo')->count());
-        $this->assertSame(1, Member::query()->where('username', 'oceanpaws.demo')->count());
+        $this->assertSame(1, User::query()->where('email', 'customer.demo@oceanpaws.test')->count());
+        $this->assertSame(1, Member::query()->where('email', 'customer.demo@oceanpaws.test')->count());
+        $this->assertNull($user->fresh()->username);
         $this->assertTrue(password_verify('changed-password', $user->fresh()->password));
     }
 }

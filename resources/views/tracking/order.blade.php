@@ -10,7 +10,17 @@
 
     <main class="page order-detail-page">
         <div class="order-detail-shell">
-            <div class="order-detail-topbar"><a href="{{ $backUrl }}" aria-label="Kembali ke halaman sebelumnya"><x-public-icon variant="rounded-bold" name="arrow-left" :size="17" /><span>Kembali</span></a><span class="order-detail-topbar-profile" aria-label="Foto profil {{ $member->display_name }}">@if($member->avatar_url)<img src="{{ $member->avatar_url }}" alt="Foto profil {{ $member->display_name }}">@else<span aria-hidden="true">{{ mb_strtoupper(mb_substr($member->display_name, 0, 1)) }}</span>@endif</span></div>
+            <div class="order-detail-topbar">
+                <a class="portal-v2-back" href="{{ $backUrl }}" aria-label="Kembali ke halaman sebelumnya"><x-public-icon variant="rounded-bold" name="arrow-left" :size="18" /><span>Kembali</span></a>
+                <a href="{{ route('profile.show') }}" class="public-account-chip portal-v2-account-chip order-detail-topbar-profile" aria-label="Profil {{ $member->display_name }}" style="display:inline-flex;width:auto;height:42px;min-height:42px;align-items:center;gap:9px;border:2px solid #355a45;border-radius:12px;padding:5px;background:#fffdf8;color:#355a45;box-shadow:var(--customer-shadow-control) #eba4bc;text-decoration:none;">
+                    @if($member->avatar_url)
+                        <img src="{{ $member->avatar_url }}" alt="Foto profil {{ $member->display_name }}" style="width:28px;height:28px;flex:0 0 28px;border:2px solid #355a45;border-radius:9px;background:#f8d5df;object-fit:cover;box-shadow:var(--customer-shadow-pressed) #eba4bc;">
+                    @else
+                        <span aria-hidden="true" style="display:grid;width:28px;height:28px;flex:0 0 28px;place-items:center;border:2px solid #355a45;border-radius:9px;background:#f8d5df;color:#355a45;font-size:10px;font-weight:900;box-shadow:var(--customer-shadow-pressed) #eba4bc;">{{ mb_strtoupper(mb_substr($member->display_name, 0, 1)) }}</span>
+                    @endif
+                    <strong style="color:#355a45;font-family:'Trebuchet MS',Arial,system-ui,sans-serif;font-size:10px;font-weight:900;line-height:1;">{{ $member->display_name }}</strong>
+                </a>
+            </div>
 
             <section class="order-detail-hero"><div class="order-detail-hero-copy"><span>PESANAN {{ mb_strtoupper($member->display_name) }}</span><div class="order-detail-title-row"><h1>{{ $order->order_code }}</h1></div><p>Batch {{ $order->batch->batch_number }} · {{ $order->batch->batch_name ?: 'K-pop merchandise' }}{{ $order->go_number ? ' · GO '.$order->go_number : '' }}</p></div><div class="order-detail-cover">@if($order->batch->catalog_image_path)<img src="{{ $order->batch->catalog_image_url }}" alt="{{ $order->batch->batch_name ?: $order->batch->batch_number }}">@else<x-public-icon variant="rounded-bold" name="box" :size="28" />@endif</div></section>
 

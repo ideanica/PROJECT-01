@@ -38,7 +38,7 @@
                                     @endif
                                 </div>
 
-                                <div class="portal-v2-card-actions"><a class="portal-v2-card-action {{ $scope === 'shipping' ? '' : 'is-secondary' }}" href="{{ $order->portal_tracking_url }}">{{ $scope === 'shipping' ? 'Lihat tracking' : 'Lihat Detail' }} <x-public-icon variant="rounded-bold" :name="$scope === 'shipping' ? 'arrow-right' : 'eye'" :size="16" /></a></div>
+                                <div class="portal-v2-card-actions"><a class="portal-v2-card-action {{ $scope === 'shipping' ? '' : 'is-secondary is-detail-action' }}" href="{{ $order->portal_tracking_url }}">{{ $scope === 'shipping' ? 'Lihat tracking' : 'Lihat Detail' }} <x-public-icon variant="rounded-bold" :name="$scope === 'shipping' ? 'arrow-right' : 'eye'" :size="16" /></a></div>
                             </article>
                         @empty
                             <div class="portal-v2-empty portal-v2-empty-inline"><span class="portal-v2-empty-icon"><x-public-icon variant="rounded-bold" :name="$icon" :size="32" /></span><small>KOSONG</small><h2>{{ $emptyTitle }}</h2><p>{{ $emptyDescription }}</p><a href="{{ route('orders.history') }}">Lihat semua pesanan</a></div>

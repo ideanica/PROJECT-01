@@ -25,17 +25,17 @@ php artisan serve
 ```
 
 Konfigurasi bawaan menggunakan SQLite. Pastikan ekstensi `pdo_sqlite` dan `sqlite3` aktif, lalu buat file `database/database.sqlite` sebelum migrasi jika belum tersedia.
-Sebelum menjalankan seeder, isi `INITIAL_ADMIN_NAME`, `INITIAL_ADMIN_USERNAME`, `INITIAL_ADMIN_EMAIL`, dan `INITIAL_ADMIN_PASSWORD` di `.env` untuk membuat admin pertama. Tanpa konfigurasi tersebut, tidak ada akun awal maupun data bisnis contoh.
+Seeder lokal membuat akun admin `admin@oceanpaws.test` dan customer `customer.demo@oceanpaws.test`, keduanya dengan password `password`. Ganti kredensial sebelum membagikan environment. Seeder rutin `migrate --seed` hanya menyiapkan status dan admin awal; data skenario bisnis dijalankan secara eksplisit dengan `php artisan db:seed --class=DemoBusinessSeeder`. Seeder skenario juga menyiapkan akun customer demo. Seeder production memerlukan `INITIAL_ADMIN_NAME`, `INITIAL_ADMIN_EMAIL`, `INITIAL_ADMIN_PASSWORD`, dan `OCEANPAWS_DEMO_CUSTOMER_PASSWORD`.
 
 ## Data aplikasi
 
-Seeder bawaan hanya menyiapkan status referensi. Produk, katalog batch, pelanggan, pesanan, pembayaran, dan histori operasional muncul setelah dicatat melalui alur aplikasi yang sesuai. Tidak ada akun atau transaksi demo bawaan.
+Seeder `DemoBusinessSeeder` menyiapkan akun customer demo, group customer, produk, batch katalog, pesanan lunas/belum lunas/DP, transaksi terverifikasi/menunggu/ditolak, tagihan EMS, shipment, dan histori status yang saling terhubung. Jalankan hanya pada database kosong atau database demo yang memang ditujukan untuk data contoh. Record contoh diberi label `[DEMO]` dan tidak mewakili transaksi, QRIS, atau pengiriman nyata. QRIS demo tidak memiliki gambar; unggah QRIS sungguhan sebelum menerima pembayaran.
 
 ## Login dan registrasi customer
 
-- `/login`: username dan password untuk customer; tautan **Daftar terlebih dahulu** membuka `/register`.
+- `/login`: email dan password; tautan **Daftar terlebih dahulu** membuka `/register`.
 - Registrasi memerlukan nama, username unik, email unik, pilihan group aktif atau “Belum memilih”, password minimal 8 karakter, dan konfirmasi password. Registrasi tidak menggabungkan data buyer lama otomatis.
-- `/admin/login`: email dan password admin tetap dapat digunakan. Akun admin juga dapat login menggunakan username di `/login`.
+- `/admin/login`: diarahkan ke form login yang sama. Login menggunakan email dan password.
 - Admin mengelola **Customer / Buyer** (identitas, akun login, detail dan riwayat pesanan) serta **Group** (label, daftar customer, aktif/nonaktif).
 - **Kelola Status** memiliki tiga tab: Status Tracking, Status Pembayaran, dan Label Group. Scope lama tetap tersimpan untuk menjaga relasi batch, pesanan, item, dan histori; status tracking baru dapat dipakai lintas perjalanan pesanan. Group disimpan terpisah dari status pesanan.
 
@@ -142,7 +142,7 @@ php artisan migrate --force
 php artisan db:seed --force
 ```
 
-Sebelum membuat admin pertama, isi `INITIAL_ADMIN_NAME`, `INITIAL_ADMIN_USERNAME`, `INITIAL_ADMIN_EMAIL`, dan `INITIAL_ADMIN_PASSWORD` pada environment deployment. Jalankan migrasi dan seeder melalui Laravel. Seeder admin tidak membuat kredensial default, tidak mengubah akun yang sudah ada, dan tidak membuat admin kedua jika admin sudah tersedia. Hapus variabel password awal setelah akun berhasil dibuat. Jangan gunakan dump SQL lama di `database/schema` untuk instalasi baru; dump itu berasal dari skema aplikasi versi terdahulu dan tidak mengikuti migrasi terkini.
+Sebelum menjalankan seeder production, isi `INITIAL_ADMIN_NAME`, `INITIAL_ADMIN_EMAIL`, dan `INITIAL_ADMIN_PASSWORD` pada environment deployment. Seeder admin hanya membuat akun pertama dan tidak menambah admin kedua jika sudah ada. `DemoBusinessSeeder` memerlukan `OCEANPAWS_DEMO_CUSTOMER_PASSWORD`; jalankan hanya bila database memang ditujukan untuk demo. Seeder tersebut mengisi record contoh berlabel `[DEMO]`; jangan jalankan pada database production yang harus berisi data operasional nyata. Jangan gunakan dump SQL lama di `database/schema` untuk instalasi baru; dump itu berasal dari skema aplikasi versi terdahulu dan tidak mengikuti migrasi terkini.
 
 ### 4. Hubungkan repository ke Vercel
 
