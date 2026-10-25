@@ -256,8 +256,8 @@
 .order-detail-cancel-button:hover { transform: translate(2px,-2px); }
 .order-detail-cancel-button:active { transform: translate(-2px,2px) scale(.96); box-shadow: none; }
 .order-detail-cancel-button:focus-visible { outline: 3px solid var(--pv2-pink-strong); outline-offset: 3px; }
-.customer-theme .customer-order-cancel-modal { z-index: 100; }
-.customer-theme .customer-order-cancel-modal .status-modal-backdrop { background: rgb(30 53 40 / 58%); }
+.customer-theme .customer-order-cancel-modal { z-index: 100; display: flex; align-items: center; justify-content: center; }
+.customer-theme .customer-order-cancel-modal .status-modal-backdrop { background: rgb(30 53 40 / 58%); backdrop-filter: none; }
 .customer-theme .customer-cancel-dialog { position: relative; z-index: 10; width: min(100%, 440px); border: 2px solid var(--pv2-outline); border-radius: 16px; padding: 22px; background: var(--pv2-paper); color: var(--pv2-ink); box-shadow: var(--customer-shadow-card) var(--pv2-shadow-color); }
 .customer-theme .customer-cancel-dialog-kicker { color: var(--pv2-pink-strong); font-size: 10px; font-weight: 900; letter-spacing: .1em; }
 .customer-theme .customer-cancel-dialog h2 { margin: 7px 0 0; color: var(--pv2-ink); font-family: var(--pv2-heading); font-size: 22px; font-weight: 900; line-height: 1.2; }
