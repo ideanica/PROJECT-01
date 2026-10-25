@@ -5,7 +5,9 @@
         $paidAmount = (float) $order->paid_amount;
         $remainingAmount = (float) $order->remaining_amount;
         $verifiedPayments = $order->payments->where('status', 'verified')->sortByDesc(fn ($payment) => $payment->paid_at ?? $payment->created_at);
-        $shipmentGroups = $order->items->pluck('shipmentGroup')->filter()->unique('id')->values();
+        $shipmentGroups = $order->items->pluck('shipmentGroup')->filter()->unique('id')
+            ->reject(fn ($shipment) => mb_strtolower(trim($shipment->name)) === 'serah terima pesanan')
+            ->values();
     @endphp
 
     <main class="page order-detail-page">
@@ -53,7 +55,7 @@
                                     <div class="order-detail-item-copy">
                                         <h3>{{ $item->item_name }}</h3>
                                         <p>{{ $item->variant ?: 'Tanpa variasi' }} · {{ $item->quantity }}×</p>
-                                        @if($item->shipmentGroup)
+                                        @if($item->shipmentGroup && mb_strtolower(trim($item->shipmentGroup->name)) !== 'serah terima pesanan')
                                             <small>{{ $item->shipmentGroup->name }} · {{ str($item->shipmentGroup->method)->replace('_', ' ')->title() }}{{ $item->shipmentGroup->tracking_number ? ' · Resi '.$item->shipmentGroup->tracking_number : '' }}</small>
                                         @elseif($item->notes)<small>{{ $item->notes }}</small>@endif
                                         @if(!$order->is_refunded && $item->override_status_id && $item->effective_status?->id !== $order->tracking_status?->id)
