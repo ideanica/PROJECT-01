@@ -7,7 +7,7 @@
     --classic-control-shadow: #90ba9b;
     --classic-button-shadow: #4d8156;
     --classic-paper: #fffaf1;
-    --classic-pink: #f8b6cc;
+    --classic-pink: var(--tracking-pink);
     --classic-search-card: var(--pv2-paper);
     --classic-search-shadow: var(--pv2-shadow-color);
     --classic-matcha: #96c88a;
@@ -113,7 +113,7 @@
     .ocean-tracking .tracking-classic .tracking-neo-form button .tracking-search-button-icon { display: inline-flex; }
 }
 html[data-customer-theme="dark"] .ocean-tracking .tracking-classic {
-    --classic-ink: #e6f2e6; --classic-outline: #9dc5a4; --classic-paper: #284338; --classic-pink: #6a4050; --classic-matcha: #54784b;
+    --classic-ink: #e6f2e6; --classic-outline: #9dc5a4; --classic-paper: #284338; --classic-pink: var(--tracking-pink); --classic-matcha: #54784b;
     --classic-card-shadow: #081810; --classic-control-shadow: #081810; --classic-button-shadow: #081810;
     --classic-search-card: var(--tracking-pink); --classic-search-shadow: #081810;
     --classic-title-pink: #6a4050; --classic-title-green: #426e51;
