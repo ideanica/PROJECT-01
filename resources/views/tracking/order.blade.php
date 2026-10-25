@@ -120,10 +120,22 @@
                         @if($canCancelOrder)
                             <div class="order-detail-cancel">
                                 <p>Pesanan yang belum memiliki pembayaran atau bukti pembayaran dapat dibatalkan.</p>
-                                <form method="POST" action="{{ route('orders.cancel', $order) }}" onsubmit="return confirm('Batalkan pesanan ini? Pesanan yang dibatalkan tidak dapat dibayar kembali.');">
-                                    @csrf
-                                    <button class="order-detail-cancel-button" type="submit">Batalkan pesanan</button>
-                                </form>
+                                <button class="order-detail-cancel-button" type="button" data-status-modal-open="customer-cancel-order" aria-haspopup="dialog">Batalkan pesanan</button>
+                                <div class="status-modal customer-order-cancel-modal" data-status-modal="customer-cancel-order" role="dialog" aria-modal="true" aria-labelledby="customer-cancel-order-title" aria-describedby="customer-cancel-order-message" aria-hidden="true" hidden>
+                                    <div class="status-modal-backdrop" data-status-modal-close aria-hidden="true"></div>
+                                    <section class="customer-cancel-dialog" tabindex="-1">
+                                        <span class="customer-cancel-dialog-kicker">KONFIRMASI PESANAN</span>
+                                        <h2 id="customer-cancel-order-title">Batalkan pesanan?</h2>
+                                        <p id="customer-cancel-order-message">Pesanan {{ $order->order_code }} akan dibatalkan dan tidak dapat dibayar kembali. Yakin ingin melanjutkan?</p>
+                                        <div class="customer-cancel-dialog-actions">
+                                            <button class="customer-cancel-dialog-back" type="button" data-status-modal-close>Kembali</button>
+                                            <form method="POST" action="{{ route('orders.cancel', $order) }}">
+                                                @csrf
+                                                <button class="customer-cancel-dialog-confirm" type="submit">Ya, batalkan pesanan</button>
+                                            </form>
+                                        </div>
+                                    </section>
+                                </div>
                             </div>
                         @endif
                     </section>
