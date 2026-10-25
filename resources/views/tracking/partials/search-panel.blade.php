@@ -12,7 +12,7 @@
     --classic-search-shadow: #87b999;
     --classic-matcha: #96c88a;
     --classic-title-pink: #f7bad0;
-    --classic-title-green: #b9ddbd;
+    --classic-title-green: #8fbd99;
     --classic-title-pink-shadow: #eba4bc;
     --classic-title-green-shadow: #91bd9b;
     --classic-icon-chip: #dce9cf;
@@ -38,8 +38,8 @@
 }
 .ocean-tracking .tracking-classic .tracking-neo-heading h1 span {
     display: block; width: fit-content;
-    -webkit-text-stroke: 2px var(--classic-outline);
-    paint-order: stroke fill;
+    -webkit-text-stroke: 4px var(--classic-outline);
+    paint-order: fill stroke;
 }
 .ocean-tracking .tracking-classic .tracking-neo-heading h1 span:first-child {
     color: var(--classic-title-pink);
