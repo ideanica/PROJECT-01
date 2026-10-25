@@ -11,8 +11,8 @@
     --classic-search-card: #ffe0e9;
     --classic-search-shadow: #87b999;
     --classic-matcha: #96c88a;
-    --classic-title-pink: #fbd7e3;
-    --classic-title-green: #d7ebdb;
+    --classic-title-pink: #f7bad0;
+    --classic-title-green: #b9ddbd;
     --classic-title-pink-shadow: #eba4bc;
     --classic-title-green-shadow: #91bd9b;
     --classic-icon-chip: #dce9cf;
