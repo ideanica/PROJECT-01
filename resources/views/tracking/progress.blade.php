@@ -2,56 +2,81 @@
     @php
         $shipmentGroups = $order->items->pluck('shipmentGroup')->filter()->unique('id')->values();
     @endphp
-    <main class="page customer-detail-page"><div class="page-mid">
-        <div class="detail-topbar"><a class="top-back" href="{{ route('tracking.index') }}" aria-label="Kembali"><x-public-icon name="arrow-left" :size="18" /></a><strong>Tracking Pesanan</strong></div>
-        <header class="customer-detail-heading"><span>DETAIL PERJALANAN</span><h1>{{ $order->order_code }}</h1><p>Informasi pesanan dan seluruh progresnya dirangkum dalam satu tampilan.</p></header>
 
-        <article class="detail-record-card customer-tracking-card">
-            <header class="detail-record-hero"><div class="min-w-0"><p class="detail-record-kicker">Kode Tracking</p><div class="mt-2 flex flex-wrap items-center gap-3"><h2 class="detail-record-title">{{ $order->order_code }}</h2><x-status-badge :status="$order->tracking_status" /></div><p class="detail-record-description">Batch {{ $order->batch->batch_number }} · {{ $order->batch->batch_name ?: 'K-pop merchandise' }}{{ $order->go_number ? ' · GO '.$order->go_number : '' }}</p></div><div class="detail-record-id">Diperbarui {{ $order->updated_at->format('d M Y') }}</div></header>
+    <main class="page order-detail-page customer-detail-page">
+        <div class="order-detail-shell">
+            <div class="order-detail-topbar">
+                <a class="portal-v2-back" href="{{ route('tracking.index') }}" aria-label="Kembali ke pencarian tracking"><x-public-icon variant="rounded-bold" name="arrow-left" :size="18" /><span>Kembali</span></a>
+                <span>TRACKING PESANAN</span>
+            </div>
 
-            <section class="detail-record-section">
-                <div class="detail-record-summary sm:grid-cols-3"><div class="detail-record-field detail-record-field-violet"><span>Status terkini</span><strong>{{ $order->tracking_status?->name ?: 'Belum ada status' }}</strong></div><div class="detail-record-field detail-record-field-blue"><span>Jumlah item</span><strong>{{ $order->items->sum('quantity') }} item</strong></div><div class="detail-record-field detail-record-field-cyan"><span>Update terakhir</span><strong>{{ $order->updated_at->format('d M Y, H:i') }}</strong></div></div>
-                @if($order->batch->notes)<div class="detail-record-note"><span>Informasi dari admin</span><p>{{ $order->batch->notes }}</p></div>@endif
+            <section class="order-detail-hero">
+                <div class="order-detail-hero-copy">
+                    <span>DETAIL PERJALANAN</span>
+                    <div class="order-detail-title-row"><h1>{{ $order->order_code }}</h1></div>
+                    <p>Batch {{ $order->batch->batch_number }} · {{ $order->batch->batch_name ?: 'K-pop merchandise' }}{{ $order->go_number ? ' · GO '.$order->go_number : '' }}</p>
+                </div>
+                <div class="order-detail-cover">
+                    @if($order->batch->catalog_image_path)<img src="{{ $order->batch->catalog_image_url }}" alt="{{ $order->batch->batch_name ?: $order->batch->batch_number }}">@else<x-public-icon variant="rounded-bold" name="box" :size="28" />@endif
+                </div>
+            </section>
+
+            <section class="order-detail-panel order-detail-items-panel">
+                <header class="order-detail-section-heading"><div><span>RINGKASAN</span><h2>Informasi pesanan</h2></div></header>
+                <div class="order-detail-current-status"><span>Status saat ini</span><x-status-badge :status="$order->tracking_status" /></div>
+                <dl class="tracking-progress-summary">
+                    <div><dt>Jumlah item</dt><dd>{{ $order->items->sum('quantity') }} item</dd></div>
+                    <div><dt>Pembaruan terakhir</dt><dd>{{ $order->updated_at->translatedFormat('d M Y, H:i') }}</dd></div>
+                </dl>
+                @if($order->batch->notes)<div class="order-detail-note-card tracking-progress-note"><span>INFORMASI DARI ADMIN</span><p>{{ $order->batch->notes }}</p></div>@endif
                 <x-order-ems-bill :order="$order" />
             </section>
 
-            <section class="detail-record-section">
-                <div class="detail-record-section-heading"><div><h3>Isi Pesanan</h3><p>Rincian produk beserta status dan jalur pengiriman masing-masing item.</p></div></div>
-                <div class="tracking-product-list divide-y divide-zinc-100">
+            <section class="order-detail-panel order-detail-items-panel">
+                <header class="order-detail-section-heading"><div><span>ISI PESANAN</span><h2>Item pesanan</h2></div><b>{{ $order->items->count() }} variasi</b></header>
+                <div class="order-detail-item-list">
                     @forelse($order->items as $item)
-                        <div class="tracking-product-row flex items-start justify-between gap-4 py-4 first:pt-0 last:pb-0">
-                            <div class="tracking-product-copy min-w-0"><div class="font-semibold">{{ $item->item_name }}</div><div class="mt-1 text-sm text-zinc-500">{{ $item->variant ?: 'Tanpa varian' }} · Qty {{ $item->quantity }}</div>@if($item->shipmentGroup)<div class="mt-1 text-xs text-zinc-500">{{ $item->shipmentGroup->name }} · {{ str($item->shipmentGroup->method)->replace('_', ' ')->title() }}{{ $item->shipmentGroup->tracking_number ? ' · Resi '.$item->shipmentGroup->tracking_number : '' }}</div>@endif</div>
-                            <x-status-badge :status="$order->is_refunded ? $order->tracking_status : $item->effective_status" />
-                        </div>
+                        <article class="order-detail-item">
+                            <span class="order-detail-item-icon"><x-public-icon variant="rounded-bold" name="bag" :size="18" /></span>
+                            <div class="order-detail-item-copy">
+                                <h3>{{ $item->item_name }}</h3>
+                                <p>{{ $item->variant ?: 'Tanpa varian' }} · Qty {{ $item->quantity }}</p>
+                                @if($item->shipmentGroup)<small>{{ $item->shipmentGroup->name }} · {{ str($item->shipmentGroup->method)->replace('_', ' ')->title() }}{{ $item->shipmentGroup->tracking_number ? ' · Resi '.$item->shipmentGroup->tracking_number : '' }}</small>@endif
+                            </div>
+                            <div class="order-detail-item-price"><x-status-badge :status="$order->is_refunded ? $order->tracking_status : $item->effective_status" /></div>
+                        </article>
                     @empty
-                        <p class="text-sm text-zinc-500">Belum ada item yang tercatat.</p>
+                        <div class="order-detail-empty"><x-public-icon variant="rounded-bold" name="bag" :size="22" /><p>Belum ada item yang tercatat.</p></div>
                     @endforelse
                 </div>
             </section>
 
             @if($shipmentGroups->isNotEmpty())
-                <section class="detail-record-section">
-                    <div class="detail-record-section-heading"><div><h3>Informasi Pengiriman</h3><p>Resi dan status pengiriman dapat berbeda untuk kelompok item yang berbeda.</p></div></div>
-                    <div class="grid gap-3 md:grid-cols-2">
+                <section class="order-detail-panel order-detail-items-panel">
+                    <header class="order-detail-section-heading"><div><span>INFORMASI PENGIRIMAN</span><h2>Pengiriman</h2></div><x-public-icon variant="rounded-bold" name="truck" :size="20" /></header>
+                    <div class="tracking-progress-shipments">
                         @foreach($shipmentGroups as $shipment)
-                            <article class="rounded-xl border border-zinc-200 bg-white p-4"><div class="font-semibold text-zinc-900">{{ $shipment->name }}</div><div class="mt-1 text-sm text-zinc-500">{{ str($shipment->method)->replace('_', ' ')->title() }}</div>@if($shipment->tracking_number)<div class="mt-2 text-sm"><span class="text-zinc-500">Resi:</span> <strong>{{ $shipment->tracking_number }}</strong></div>@endif @if($shipment->shipment_code)<div class="mt-1 text-sm"><span class="text-zinc-500">Code:</span> <strong>{{ $shipment->shipment_code }}</strong></div>@endif @if($shipment->currentStatus)<div class="mt-3"><x-status-badge :status="$shipment->currentStatus" /></div>@endif</article>
+                            <article><div><strong>{{ $shipment->name }}</strong><p>{{ str($shipment->method)->replace('_', ' ')->title() }}</p></div><div class="tracking-progress-shipment-meta">@if($shipment->tracking_number)<p><span>Resi</span><strong>{{ $shipment->tracking_number }}</strong></p>@endif @if($shipment->shipment_code)<p><span>Kode</span><strong>{{ $shipment->shipment_code }}</strong></p>@endif @if($shipment->currentStatus)<x-status-badge :status="$shipment->currentStatus" />@endif</div></article>
                         @endforeach
                     </div>
                 </section>
             @endif
 
-            <section class="detail-record-section">
-                <div class="detail-record-section-heading"><div><h3>Perjalanan Pesanan</h3><p>Pembaruan terbaru ditampilkan terlebih dahulu.</p></div></div>
-                <div class="detail-record-timeline">
+            <section class="order-detail-panel order-detail-timeline-panel">
+                <header class="order-detail-section-heading"><div><span>PERJALANAN PESANAN</span><h2>Timeline status</h2></div><x-public-icon variant="rounded-bold" name="history" :size="20" /></header>
+                @if($timeline->isEmpty() || $timeline->first()?->newStatus?->id !== $order->tracking_status?->id)
+                    <div class="order-detail-current-status"><span>Status saat ini</span><x-status-badge :status="$order->tracking_status" /></div>
+                @endif
+                <div class="order-detail-timeline">
                     @forelse($timeline as $history)
-                        <div class="detail-record-timeline-item"><span class="detail-record-timeline-dot"></span><div class="font-semibold">{{ $history->newStatus?->name ?: 'Status diperbarui' }}</div><p>{{ $history->created_at->format('d M Y, H:i') }}{{ $history->note ? ' · '.$history->note : '' }}</p></div>
+                        <article class="order-detail-timeline-entry"><span class="order-detail-timeline-dot"></span><div class="order-detail-timeline-statuses">@if($loop->first && $history->newStatus?->id === $order->tracking_status?->id)<strong class="order-detail-current-label">Status saat ini</strong>@endif<x-status-badge :status="$history->newStatus" /></div><p>{{ $history->note ?: $history->newStatus?->description ?: 'Status pesanan diperbarui oleh admin.' }}</p><time>{{ $history->created_at->translatedFormat('d M Y, H:i') }}</time></article>
                     @empty
-                        <p class="text-sm leading-6 text-zinc-500">Belum ada pembaruan perjalanan. Status terbaru tetap dapat dilihat di atas.</p>
+                        <div class="order-detail-empty"><x-public-icon variant="rounded-bold" name="history" :size="22" /><p>Belum ada pembaruan perjalanan. Status terbaru tetap dapat dilihat di atas.</p></div>
                     @endforelse
                 </div>
             </section>
 
-            <footer class="detail-record-section bg-zinc-950 text-center text-sm text-white">Punya pesanan lain? <a class="font-semibold underline decoration-white/40 underline-offset-4 hover:decoration-white" href="{{ route('tracking.index') }}">Cari seluruh riwayat dengan username</a></footer>
-        </article>
-    </div></main>
+            <div class="tracking-progress-footer">Punya pesanan lain? <a href="{{ route('tracking.index') }}">Cari pesanan lainnya</a></div>
+        </div>
+    </main>
 </x-layouts.app>

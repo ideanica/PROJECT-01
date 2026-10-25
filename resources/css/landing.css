@@ -4539,7 +4539,7 @@
     container-type:inline-size;
     height:auto;
     aspect-ratio:16/9;
-    background:#fbdce5 url('/assets/oceanpaws-hero-background-v4.webp') center/100% 100% no-repeat;
+    background:#fbdce5 url('/assets/oceanpaws-hero-background-v4.png') center/100% 100% no-repeat;
   }
   .op-hero:before,.op-hero:after,
   .op-sky-cloud,.op-hero-wave,.op-hero-cliff,.op-hero-sand{display:none}
@@ -4605,7 +4605,7 @@
 
 @media(max-width:1023px){
   .op-hero{
-    background:#fbdce5 url('/assets/oceanpaws-hero-background-v4.webp') center/auto 100% no-repeat;
+    background:#fbdce5 url('/assets/oceanpaws-hero-background-v4.png') center/auto 100% no-repeat;
   }
   .op-hero:before,.op-hero:after,.op-sky-cloud,.op-hero-cliff{display:none}
 }
@@ -5020,7 +5020,7 @@
   overflow:hidden;
   border:1.5px solid #77a28a;
   border-radius:3px;
-  background:#b5e6d3 url('/assets/oceanpaws-about-beach-background-v1.webp') center/cover no-repeat;
+  background:#b5e6d3 url('/assets/oceanpaws-about-beach-background-v1.png') center/cover no-repeat;
 }
 .op-photo-screen img{display:block;width:100%;height:100%;object-fit:contain}
 .op-photo-status{
@@ -5160,7 +5160,7 @@
 /* Layered beach postcard CTA, proportioned to the supplied banner reference. */
 .op-cta{
   height:clamp(120px,16.2vw,210px);
-  background:#fbdce6 url('/assets/oceanpaws-hero-background-v4.webp') center top/100% 124% no-repeat;
+  background:#fbdce6 url('/assets/oceanpaws-hero-background-v4.png') center top/100% 124% no-repeat;
 }
 .op-cta::before{
   content:"";
@@ -5473,7 +5473,7 @@
 @media(max-width:1023px){
   .op-page .op-hero{
     height:calc(clamp(830px,225vw,1125px) - 56px);
-    background:#fbdce5 url('/assets/oceanpaws-hero-background-v4.webp') center top/auto 100% no-repeat;
+    background:#fbdce5 url('/assets/oceanpaws-hero-background-v4.png') center top/auto 100% no-repeat;
   }
   .op-page .op-copy-window,.op-page .op-copy-window-back{
     top:clamp(112px,30vw,150px);
@@ -5535,7 +5535,7 @@
     height:calc(37% + 4px);
     object-fit:contain;
     filter:none;
-    animation:op-mascot-in .7s ease-out 1 both;
+    animation:op-mascot-in 5s ease-out infinite both;
   }
   @media(prefers-reduced-motion:reduce){
     .op-page .op-hero-mascot{animation:none}
@@ -5748,7 +5748,7 @@
 /* Desktop hero mascot uses the same entrance transition as mobile. */
 @media (min-width: 1024px) {
   .op-page .op-hero-mascot {
-    animation: op-mascot-in .7s ease-out 1 both;
+    animation: op-mascot-in 4.4s ease-out infinite both;
   }
 }
 

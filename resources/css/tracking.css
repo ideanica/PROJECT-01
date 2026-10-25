@@ -141,6 +141,22 @@ html[data-customer-theme="dark"] body.ocean-tracking .tracking-neo-input-wrap in
 
 /* Match the primary navbar container at desktop, compact desktop, and mobile widths. */
 .order-detail-shell { width:min(90.43%, 1180px); }
+.ocean-tracking .order-detail-page .order-detail-hero { margin:0 0 18px; }
+.ocean-tracking .order-detail-page .order-detail-panel { margin-top:16px; }
+.tracking-progress-summary { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; padding:0 18px 18px; margin:0; }
+.tracking-progress-summary > div { min-width:0; border:2px solid var(--pv2-outline); border-radius:12px; padding:14px; background:var(--pv2-mint); box-shadow:var(--customer-shadow-control) var(--pv2-mint-shadow); }
+.tracking-progress-summary dt { color:var(--pv2-text); font-size:11px; font-weight:700; }
+.tracking-progress-summary dd { margin:5px 0 0; color:var(--pv2-ink); font-size:14px; font-weight:900; overflow-wrap:anywhere; }
+.tracking-progress-note { margin:0 18px 18px; }
+.tracking-progress-shipments { display:grid; gap:12px; border-top:2px solid var(--pv2-mint); padding:16px; }
+.tracking-progress-shipments article { display:flex; min-width:0; align-items:flex-start; justify-content:space-between; gap:16px; border:2px solid var(--pv2-outline); border-radius:12px; padding:14px; background:var(--pv2-paper); box-shadow:var(--customer-shadow-control) var(--pv2-mint-shadow); }
+.tracking-progress-shipments article strong { color:var(--pv2-ink); font-size:14px; }
+.tracking-progress-shipments article p { margin:4px 0 0; color:var(--pv2-text); font-size:12px; }
+.tracking-progress-shipment-meta { display:grid; justify-items:end; gap:8px; text-align:right; }
+.tracking-progress-shipment-meta > p { display:grid; gap:2px; }
+.tracking-progress-shipment-meta > p strong { overflow-wrap:anywhere; }
+.tracking-progress-footer { margin-top:16px; border:2px solid var(--pv2-outline); border-radius:14px; padding:16px; background:var(--pv2-mint); box-shadow:var(--customer-shadow-card) var(--pv2-mint-shadow); color:var(--pv2-ink); text-align:center; font-size:13px; }
+.tracking-progress-footer a { color:var(--pv2-pink-strong); font-weight:900; text-decoration:underline; text-underline-offset:3px; }
 .order-detail-title-row { flex-wrap:wrap; }
 .order-detail-item-price { min-width:0; }
 @media (max-width:1050px) {
@@ -180,4 +196,7 @@ html[data-customer-theme="dark"] body.ocean-tracking .tracking-neo-input-wrap in
     .order-detail-item-copy small { overflow-wrap:anywhere; }
     .ocean-tracking .order-detail-page .order-detail-item-price { grid-column:1/-1; justify-self:stretch; }
     .ocean-tracking .order-detail-page .order-detail-topbar > span { color:var(--pv2-text); }
+    .tracking-progress-summary { grid-template-columns:minmax(0,1fr); padding-inline:14px; }
+    .tracking-progress-shipments article { flex-direction:column; }
+    .tracking-progress-shipment-meta { justify-items:start; text-align:left; }
 }
