@@ -75,6 +75,17 @@
 .ocean-tracking .tracking-classic .tracking-neo-error { margin: 18px 0 0; }
 @media (min-width: 768px) {
     .ocean-tracking .tracking-neo-page.tracking-classic { padding-top: 48px; padding-bottom: 130px; }
+    .ocean-tracking .tracking-classic .tracking-neo-shell { width: min(89.3%, 1180px); }
+    .ocean-tracking .tracking-classic .tracking-neo-heading h1 {
+        white-space: nowrap;
+        font-size: clamp(42px, 6vw, 80px);
+    }
+    .ocean-tracking .tracking-classic .tracking-neo-heading h1 span {
+        display: inline;
+        width: auto;
+    }
+    .ocean-tracking .tracking-classic .tracking-neo-heading h1 span:first-child { margin-right: .18em; }
+    .ocean-tracking .tracking-classic .tracking-neo-search-card { width: 100%; max-width: none; }
     .ocean-tracking .tracking-classic .tracking-neo-search-card { padding: 28px; }
     .ocean-tracking .tracking-classic .tracking-neo-input-wrap,
     .ocean-tracking .tracking-classic .tracking-neo-form button { min-height: 64px; }

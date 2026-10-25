@@ -6,6 +6,8 @@
     <meta name="theme-color" content="#f8d9e2">
     <meta name="description" content="Ocean Paws — bringing your NCT WISH favorites closer.">
     <title>Ocean Paws — Bringing Your Favorites Closer</title>
+    <link rel="preload" as="image" href="{{ asset('assets/oceanpaws-hero-mascot-reference.webp') }}" fetchpriority="high">
+    <link rel="preload" as="image" href="{{ asset('assets/oceanpaws-hero-background-v4.webp') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="op-body">
@@ -16,14 +18,14 @@
 
 <div class="op-page">
     <section class="op-hero" id="home">
-        <img class="op-sky-cloud op-sky-cloud-a" src="{{ asset('assets/glossy_pastel_pink_cloud.png') }}" alt="" aria-hidden="true">
-        <img class="op-sky-cloud op-sky-cloud-b" src="{{ asset('assets/pastel_pink_cloud_with_soft_highlights.png') }}" alt="" aria-hidden="true">
+        <img class="op-sky-cloud op-sky-cloud-a" src="{{ asset('assets/glossy_pastel_pink_cloud.webp') }}" alt="" aria-hidden="true" decoding="async">
+        <img class="op-sky-cloud op-sky-cloud-b" src="{{ asset('assets/pastel_pink_cloud_with_soft_highlights.webp') }}" alt="" aria-hidden="true" decoding="async">
 
         <x-ocean-primary-navbar active="home" home-href="#home" mode="landing" />
 
         <div class="op-hero-scene">
-            <img class="op-hero-wave" src="{{ asset('assets/ocean_paws_hero_ripples_wave.png') }}" alt="" aria-hidden="true">
-            <img class="op-hero-cliff" src="{{ asset('assets/pastel_coastal_cliffs_and_greenery.png') }}" alt="" aria-hidden="true">
+            <img class="op-hero-wave" src="{{ asset('assets/ocean_paws_hero_ripples_wave.webp') }}" alt="" aria-hidden="true" decoding="async">
+            <img class="op-hero-cliff" src="{{ asset('assets/pastel_coastal_cliffs_and_greenery.webp') }}" alt="" aria-hidden="true" decoding="async">
             <div class="op-copy-window-back" aria-hidden="true"></div>
             <div class="op-copy-window op-browser">
                 <div class="op-browserbar"><strong>OCEANPAWS.EXE</strong><span class="op-window-dots" aria-hidden="true"><i></i><i></i><i></i></span></div>
@@ -47,18 +49,18 @@
                 </div>
             </div>
 
-            <img class="op-hero-mascot" src="{{ asset('assets/oceanpaws-hero-mascot-reference.png') }}" alt="Maskot Ocean Paws berselancar di ombak">
-            <img class="op-hero-sand" src="{{ asset('assets/pastel_beach_sand_right.png') }}" alt="" aria-hidden="true">
-            <img class="op-palm" src="{{ asset('assets/oceanpaws-palm-rooted-v3.png') }}" alt="" aria-hidden="true">
+            <img class="op-hero-mascot" src="{{ asset('assets/oceanpaws-hero-mascot-reference.webp') }}" alt="Maskot Ocean Paws berselancar di ombak" width="1536" height="1024" decoding="async" fetchpriority="high">
+            <img class="op-hero-sand" src="{{ asset('assets/pastel_beach_sand_right.webp') }}" alt="" aria-hidden="true" decoding="async">
+            <img class="op-palm" src="{{ asset('assets/oceanpaws-palm-rooted-v3.webp') }}" alt="" aria-hidden="true" decoding="async">
             <div class="op-sign" aria-label="NCT WISH, Oceanpaws, happier together">
-                <img src="{{ asset('assets/oceanpaws-wooden-sign-v2.png') }}" alt="" aria-hidden="true">
+                <img src="{{ asset('assets/oceanpaws-wooden-sign-v2.webp') }}" alt="" aria-hidden="true" decoding="async">
                 <span>NCT WISH</span>
                 <span>OCEANPAWS</span>
                 <span>HAPPIER<br>TOGETHER ♡</span>
             </div>
-            <img class="op-sign-grass" src="{{ asset('assets/oceanpaws-hero-background-v3.png') }}" alt="" aria-hidden="true">
-            <img class="op-hero-grass" src="{{ asset('assets/oceanpaws-sign-grass-v1.png') }}" alt="" aria-hidden="true">
-            <img class="op-starfish" src="{{ asset('assets/glossy_pink_starfish_sticker.png') }}" alt="" aria-hidden="true">
+            <img class="op-sign-grass" src="{{ asset('assets/oceanpaws-hero-background-v3.webp') }}" alt="" aria-hidden="true" decoding="async">
+            <img class="op-hero-grass" src="{{ asset('assets/oceanpaws-sign-grass-v1.webp') }}" alt="" aria-hidden="true" decoding="async">
+            <img class="op-starfish" src="{{ asset('assets/glossy_pink_starfish_sticker.webp') }}" alt="" aria-hidden="true" decoding="async">
         </div>
     </section>
 
@@ -82,7 +84,7 @@
                     <div class="op-polaroid op-polaroid-back"></div><div class="op-polaroid op-polaroid-mid"></div>
                     <div class="op-polaroid op-polaroid-front">
                         <header class="op-photo-titlebar"><strong>OCEAN PAWS.JPG</strong><span class="op-window-dots"><i></i><i></i><i></i></span></header>
-                        <figure class="op-photo-screen"><img src="{{ asset('assets/oceanpaws-pastel-beach-parcel-v8.webp') }}" alt="Maskot Ocean Paws memegang paket di pantai" width="1448" height="1086" style="object-fit:cover;object-position:center 45%;transform:scale(1.22);transform-origin:center 45%;"></figure>
+                        <figure class="op-photo-screen"><img src="{{ asset('assets/oceanpaws-pastel-beach-parcel-v8.webp') }}" alt="Maskot Ocean Paws memegang paket di pantai" width="1448" height="1086" loading="lazy" decoding="async" style="object-fit:cover;object-position:center 45%;transform:scale(1.22);transform-origin:center 45%;"></figure>
                         <footer class="op-photo-status"><span>Good Music · Brighter Days<br>with OCEANPAWS ♡</span><b>01 / 03</b></footer>
                     </div>
                 </div>
@@ -90,7 +92,7 @@
                     <h2 id="about-title">Made for every <em>WISH</em>, since 2025. <svg class="op-inline-heart" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78Z" /></svg></h2>
                     <p>Founded in June 2025, GO Oceanpaws is a group order dedicated to NCT WISH. Since then, we've grown into a little community of 2,000+ members and successfully handled thousands of batches together. From albums and photocards to merch and all the little WISH things you love, we're here to make every GO experience easier, clearer, and more enjoyable. ♡</p>
                     <div class="op-about-merch">
-                        <img src="{{ asset('assets/oceanpaws-about-merch-collage-v1.png') }}" alt="" aria-hidden="true">
+                        <img src="{{ asset('assets/oceanpaws-about-merch-collage-v1.png') }}" alt="" aria-hidden="true" loading="lazy" decoding="async">
                     </div>
                 </div>
             </article>
@@ -112,13 +114,13 @@
         </section>
 
         <section class="op-cta" aria-labelledby="cta-title">
-            <img class="op-cta-wave" src="{{ asset('assets/pastel_mint_ocean_wave_banner.png') }}" alt="" aria-hidden="true">
-            <img class="op-cta-mascot" src="{{ asset('assets/oceanpaws-cta-resting-mascot.png') }}" alt="Maskot Ocean Paws di pelampung">
+            <img class="op-cta-wave" src="{{ asset('assets/pastel_mint_ocean_wave_banner.png') }}" alt="" aria-hidden="true" loading="lazy" decoding="async">
+            <img class="op-cta-mascot" src="{{ asset('assets/oceanpaws-cta-resting-mascot.png') }}" alt="Maskot Ocean Paws di pelampung" loading="lazy" decoding="async">
             <div class="op-cta-copy"><h2 id="cta-title">Let's get closer<br><span>to your <em>WISH!</em></span></h2><a class="op-line" href="{{ $loginDestination }}"><svg xmlns="http://www.w3.org/2000/svg" class="op-login-icon" viewBox="0 0 640 640" width="24" height="24" fill="#355a45" aria-hidden="true" focusable="false" style="display:block;width:24px;height:24px;flex:0 0 24px;"><!--!Font Awesome Free v7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc.--><path d="M409 337C418.4 327.6 418.4 312.4 409 303.1L265 159C258.1 152.1 247.8 150.1 238.8 153.8C229.8 157.5 224 166.3 224 176L224 256L112 256C85.5 256 64 277.5 64 304L64 336C64 362.5 85.5 384 112 384L224 384L224 464C224 473.7 229.8 482.5 238.8 486.2C247.8 489.9 258.1 487.9 265 481L409 337zM416 480C398.3 480 384 494.3 384 512C384 529.7 398.3 544 416 544L480 544C533 544 576 501 576 448L576 192C576 139 533 96 480 96L416 96C398.3 96 384 110.3 384 128C384 145.7 398.3 160 416 160L480 160C497.7 160 512 174.3 512 192L512 448C512 465.7 497.7 480 480 480L416 480z"/></svg><span>{{ auth()->user()?->member ? 'Buka Pesanan' : 'Login Akun' }}</span></a></div>
-            <img class="op-cta-palm" src="{{ asset('assets/kawaii_pastel_palm_tree_sticker.png') }}" alt="" aria-hidden="true">
-            <div class="op-cta-sign"><img src="{{ asset('assets/oceanpaws-cta-wood-sign-v1.png') }}" alt="" aria-hidden="true"><span>NCT WISH<br><b>A BRIGHTER<br>TOMORROW<br>TOGETHER ♡</b></span></div>
-            <img class="op-cta-sand" src="{{ asset('assets/oceanpaws-cta-sand-only-v2.png') }}" alt="" aria-hidden="true">
-            <img class="op-cta-starfish" src="{{ asset('assets/oceanpaws-cta-starfish-3d-v1.png') }}" alt="" aria-hidden="true">
+            <img class="op-cta-palm" src="{{ asset('assets/kawaii_pastel_palm_tree_sticker.png') }}" alt="" aria-hidden="true" loading="lazy" decoding="async">
+            <div class="op-cta-sign"><img src="{{ asset('assets/oceanpaws-cta-wood-sign-v1.png') }}" alt="" aria-hidden="true" loading="lazy" decoding="async"><span>NCT WISH<br><b>A BRIGHTER<br>TOMORROW<br>TOGETHER ♡</b></span></div>
+            <img class="op-cta-sand" src="{{ asset('assets/oceanpaws-cta-sand-only-v2.png') }}" alt="" aria-hidden="true" loading="lazy" decoding="async">
+            <img class="op-cta-starfish" src="{{ asset('assets/oceanpaws-cta-starfish-3d-v1.png') }}" alt="" aria-hidden="true" loading="lazy" decoding="async">
         </section>
 
 
@@ -395,7 +397,7 @@
             height:183px;
             min-height:183px;
             border:0;
-            background:#f7f3e9 url('{{ asset('assets/oceanpaws-footer-reference-bg-v1.png') }}') center 40%/100% 136% no-repeat;
+            background:#f7f3e9 url('{{ asset('assets/oceanpaws-footer-reference-bg-v1.webp') }}') center 40%/100% 136% no-repeat;
         }
         .op-footer-reference::before{content:none}
         .op-footer-reference .op-footer-reference-shell{
@@ -668,13 +670,13 @@
         <div class="op-footer-reference-shell">
             <div class="op-footer-brand-block">
                 <a href="#home" aria-label="Ocean Paws — kembali ke atas">
-                    <img src="{{ asset('assets/oceanpaws-logo-no-sticker.png') }}" alt="Ocean Paws">
+                    <img src="{{ asset('assets/oceanpaws-logo-no-sticker.png') }}" alt="Ocean Paws" loading="lazy" decoding="async">
                 </a>
             </div>
 
             <div class="op-footer-message">
                 <strong><span>Small Orders</span><span>Bigger Happiness ♡</span></strong>
-                <img class="op-footer-shell-icon" src="{{ asset('assets/oceanpaws-footer-shell-v1.png') }}" alt="" aria-hidden="true">
+                <img class="op-footer-shell-icon" src="{{ asset('assets/oceanpaws-footer-shell-v1.png') }}" alt="" aria-hidden="true" loading="lazy" decoding="async">
             </div>
         </div>
 

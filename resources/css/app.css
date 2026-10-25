@@ -8384,7 +8384,7 @@ body.ocean-tracking {
     min-height: 183px;
     overflow: hidden;
     border: 0;
-    background: #f7f3e9 url('/assets/oceanpaws-footer-reference-bg-v1.png') center 40%/100% 136% no-repeat;
+    background: #f7f3e9 url('/assets/oceanpaws-footer-reference-bg-v1.webp') center 40%/100% 136% no-repeat;
     color: #315d48;
     font-family: "Nunito Sans", sans-serif;
 }
@@ -9525,7 +9525,7 @@ html[data-customer-theme="dark"] .ocean-primary-navbar__mobile-link.is-active {
     min-height: 183px;
     overflow: hidden;
     border: 0;
-    background: #f7f3e9 url('/assets/oceanpaws-footer-reference-bg-v1.png') center 40% / 100% 136% no-repeat;
+    background: #f7f3e9 url('/assets/oceanpaws-footer-reference-bg-v1.webp') center 40% / 100% 136% no-repeat;
 }
 
 .ocean-tracking .tracking-landing-footer.op-footer-reference::before {
