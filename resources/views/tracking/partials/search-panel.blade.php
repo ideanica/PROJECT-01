@@ -54,7 +54,12 @@
     border-radius: 12px; background: var(--classic-paper); box-shadow: var(--customer-shadow-control) var(--classic-control-shadow);
 }
 .ocean-tracking .tracking-classic .tracking-neo-input-icon { color: var(--classic-ink); }
-.ocean-tracking .tracking-classic .tracking-neo-input-icon svg { width: 24px; height: 24px; }
+.ocean-tracking .tracking-classic .tracking-neo-input-icon {
+    display: grid; width: 36px; height: 36px; flex: 0 0 36px; place-items: center;
+    border: 2px solid var(--classic-outline); border-radius: 9px; background: #dce9cf;
+    box-shadow: var(--customer-shadow-control) var(--classic-control-shadow); color: var(--classic-ink);
+}
+.ocean-tracking .tracking-classic .tracking-neo-input-icon svg { width: 21px; height: 21px; }
 .ocean-tracking .tracking-classic .tracking-neo-input-wrap input {
     min-height: 46px; font-family: "Nunito Sans", sans-serif; font-size: 16px; font-weight: 600; color: var(--classic-ink);
 }
@@ -68,7 +73,12 @@
 }
 .ocean-tracking .tracking-classic .tracking-neo-form button:hover { transform: translate(-2px, 2px); box-shadow: var(--customer-shadow-pressed) var(--classic-button-shadow); }
 .ocean-tracking .tracking-classic .tracking-neo-form button:focus-visible { outline: 3px solid #487553; outline-offset: 5px; }
-.ocean-tracking .tracking-classic .tracking-neo-form button .tracking-search-button-icon { display: none; }
+.ocean-tracking .tracking-classic .tracking-neo-form button .tracking-search-button-icon {
+    display: none; width: 34px; height: 34px; flex: 0 0 34px; place-items: center;
+    border: 2px solid var(--classic-outline); border-radius: 9px; background: #fbd7e3;
+    box-shadow: var(--customer-shadow-control) #eba4bc; color: var(--classic-ink);
+}
+.ocean-tracking .tracking-classic .tracking-search-button-icon svg { width: 20px; height: 20px; }
 .ocean-tracking .tracking-classic .tracking-neo-hint {
     margin: 20px 0 0; padding: 13px 16px; min-height: 48px;
     border: 2px solid var(--classic-outline); border-radius: 9px;
@@ -109,6 +119,7 @@ html[data-customer-theme="dark"] .ocean-tracking .tracking-classic {
     --classic-ink: #e6f2e6; --classic-outline: #9dc5a4; --classic-paper: #284338; --classic-pink: #6a4050; --classic-matcha: #54784b;
     --classic-card-shadow: #081810; --classic-control-shadow: #081810; --classic-button-shadow: #081810;
     --classic-search-card: #6a4050; --classic-search-shadow: #081810;
+    --portal-icon-fill-mint: #b9ddbd; --portal-icon-fill-pink: #f7bad0;
 }
 html[data-customer-theme="dark"] .ocean-tracking .tracking-classic .tracking-neo-hint { color: #e7efe7; }
 </style>
@@ -125,11 +136,11 @@ html[data-customer-theme="dark"] .ocean-tracking .tracking-classic .tracking-neo
                 @csrf
                 <label for="tracking-query" class="sr-only">Kode pesanan atau username</label>
                 <div class="tracking-neo-input-wrap">
-                    <span class="tracking-neo-input-icon"><x-public-icon name="search" :size="19" /></span>
+                    <span class="tracking-neo-input-icon"><x-public-icon variant="rounded-bold" name="search" :size="21" /></span>
                     <input id="tracking-query" type="search" name="query" value="{{ old('query', $searchQuery ?? '') }}" autocomplete="off" autocapitalize="none" spellcheck="false" maxlength="255" placeholder="masukkan kode pesanan" aria-describedby="tracking-query-hint{{ $errors->has('query') ? ' tracking-query-error' : '' }}" @if($errors->has('query')) aria-invalid="true" autofocus @endif required>
                 </div>
                 <button type="submit" aria-label="Lacak pesanan">
-                    <span class="tracking-search-button-icon" aria-hidden="true"><x-public-icon name="search" :size="20" /></span>
+                    <span class="tracking-search-button-icon" aria-hidden="true"><x-public-icon variant="rounded-bold" name="search" :size="20" /></span>
                     <span>Lacak pesanan</span>
                     <x-public-icon name="chevron-right" :size="20" />
                 </button>
