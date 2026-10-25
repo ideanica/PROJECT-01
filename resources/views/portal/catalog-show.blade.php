@@ -3,6 +3,7 @@
     $checkoutMember = $checkoutUser?->role === 'customer' ? $checkoutUser->member : null;
     $selectedQuantities = collect(old('items', []))->keyBy(fn ($item) => $item['product_id'] ?? null);
     $hasOldSelection = $selectedQuantities->contains(fn ($item) => (int) ($item['quantity'] ?? 0) > 0);
+    $singleVersion = $batch->products->count() === 1;
     $canCheckout = $checkoutUser?->role === 'customer'
         && $checkoutMember?->isAvailableForOrder()
         && $batch->has_payment_method
@@ -54,7 +55,7 @@
                                 @if($canCheckout && $batch->catalog_is_open)
                                     @php $quantity = max(0, min(50, (int) data_get($selectedQuantities->get($product->id), 'quantity', 0))); @endphp
                                     <input type="hidden" form="catalog-checkout" name="items[{{ $loop->index }}][product_id]" value="{{ $product->id }}">
-                                    <button class="catalog-version-select" type="button" data-select-version aria-pressed="{{ $quantity > 0 ? 'true' : 'false' }}">{{ $quantity > 0 ? 'Versi dipilih' : 'Pilih versi' }}</button>
+                                    <button class="catalog-version-select" type="button" data-select-version data-single-version="{{ $singleVersion ? 'true' : 'false' }}" aria-pressed="{{ $quantity > 0 ? 'true' : 'false' }}">{{ $singleVersion ? 'Pesan' : ($quantity > 0 ? 'Versi dipilih' : 'Pilih versi') }}</button>
                                     <div class="catalog-checkout-quantity" data-quantity-control @if($quantity === 0) hidden @endif>
                                         <span>Jumlah</span>
                                         <div class="catalog-quantity-stepper">
@@ -135,7 +136,9 @@
                     const wasSelected = selectButton?.getAttribute('aria-pressed') === 'true';
                     if (selectButton) {
                         selectButton.setAttribute('aria-pressed', String(selected));
-                        selectButton.textContent = selected ? 'Versi dipilih' : 'Pilih versi';
+                        selectButton.textContent = selectButton.dataset.singleVersion === 'true'
+                            ? 'Pesan'
+                            : (selected ? 'Versi dipilih' : 'Pilih versi');
                     }
                     if (quantityControl) quantityControl.hidden = !selected;
                     if (!selected && wasSelected && document.activeElement === quantityControl?.querySelector('button')) selectButton?.focus();

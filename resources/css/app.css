@@ -9306,6 +9306,16 @@ body.ocean-tracking .tracking-search-page .tracking-result-section {
     background: transparent !important;
 }
 
+/* Keep the tracking summary and action directly below the monitored items. */
+body.ocean-tracking .tracking-result-card:not(.tracking-history-card) .tracking-result-layout {
+    grid-template-columns: minmax(0, 1fr) !important;
+}
+
+body.ocean-tracking .tracking-result-card:not(.tracking-history-card) .tracking-result-side {
+    border-top: 1.5px solid #8db29a !important;
+    border-left: 0 !important;
+}
+
 
 /* Keep portal detail account avatar square on mobile. */
 @media (max-width: 720px) {
