@@ -138,6 +138,7 @@ class MemberOrder extends Model
     public function getHasOutstandingOrderPaymentAttribute(): bool
     {
         return ! $this->is_refunded
+            && ! $this->is_cancelled
             && (float) $this->total_amount > 0
             && $this->remaining_amount > 0;
     }
@@ -145,6 +146,7 @@ class MemberOrder extends Model
     public function getHasOutstandingEmsTaxAttribute(): bool
     {
         return ! $this->is_refunded
+            && ! $this->is_cancelled
             && $this->ems_tax_is_published
             && $this->ems_tax_status === 'unpaid'
             && $this->ems_tax_remaining_amount > 0;
@@ -225,6 +227,27 @@ class MemberOrder extends Model
     {
         return $this->overrideStatus?->code === 'refunded'
             || $this->paymentStatus?->code === 'refund';
+    }
+
+    public function getIsCancelledAttribute(): bool
+    {
+        $status = $this->overrideStatus;
+
+        return $status?->code === 'dibatalkan' || $status?->status_type === 'cancelled';
+    }
+
+    public function getCanBeCancelledAttribute(): bool
+    {
+        $hasPaymentHistory = $this->relationLoaded('payments')
+            ? $this->payments->isNotEmpty()
+            : $this->payments()->exists();
+
+        return ! $this->is_refunded
+            && ! $this->is_cancelled
+            && ! $hasPaymentHistory
+            && (float) ($this->payment_amount ?? 0) <= 0
+            && blank($this->payment_proof_path)
+            && ! $this->payment_submitted_at;
     }
 
     public function getTrackingStatusAttribute(): ?OrderStatus

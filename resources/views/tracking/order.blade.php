@@ -5,6 +5,9 @@
         $paidAmount = (float) $order->paid_amount;
         $remainingAmount = (float) $order->remaining_amount;
         $verifiedPayments = $order->payments->where('status', 'verified')->sortByDesc(fn ($payment) => $payment->paid_at ?? $payment->created_at);
+        $isCustomerOwner = auth()->user()?->role === \App\Models\User::ROLE_CUSTOMER
+            && auth()->user()->member_id === $order->member_id;
+        $canCancelOrder = $isCustomerOwner && $order->can_be_cancelled;
         $shipmentGroups = $order->items->pluck('shipmentGroup')->filter()->unique('id')
             ->reject(fn ($shipment) => mb_strtolower(trim($shipment->name)) === 'serah terima pesanan')
             ->values();
@@ -23,6 +26,9 @@
                     <strong style="color:#355a45;font-family:'Trebuchet MS',Arial,system-ui,sans-serif;font-size:10px;font-weight:900;line-height:1;">{{ $member->display_name }}</strong>
                 </a>
             </div>
+
+            @if(session('status'))<p class="payment-feedback" role="status">{{ session('status') }}</p>@endif
+            @if($errors->has('order'))<p class="payment-feedback is-error" role="alert">{{ $errors->first('order') }}</p>@endif
 
             <section class="order-detail-hero order-detail-title-card">
                 <div class="order-detail-cover">
@@ -94,6 +100,7 @@
                             <div><dt>Sisa tagihan</dt><dd>Rp {{ number_format($remainingAmount, 0, ',', '.') }}</dd></div>
                             <div><dt>Status pembayaran</dt><dd>{{ $order->paymentStatus?->name ?: 'Belum ditentukan' }}</dd></div>
                             @if($order->is_refunded)<div><dt>Status pesanan</dt><dd>Direfund</dd></div>@endif
+                            @if($order->is_cancelled)<div><dt>Status pesanan</dt><dd>Dibatalkan</dd></div>@endif
                         </dl>
                         @if($order->has_outstanding_order_payment)<x-order-payment-method :order="$order" />@endif
                         @if($order->ems_tax_is_published)
@@ -109,6 +116,15 @@
                                     <div><span>{{ match($payment->type) { 'dp' => 'DP', 'installment' => 'Cicilan', 'settlement' => 'Pelunasan', 'full_payment' => 'Pembayaran penuh', default => 'Pembayaran lainnya' } }}<br><small>{{ ($payment->paid_at ?? $payment->created_at)->translatedFormat('d M Y') }}</small></span><b>Rp {{ number_format((float) $payment->amount, 0, ',', '.') }}</b></div>
                                 @endforeach
                             </details>
+                        @endif
+                        @if($canCancelOrder)
+                            <div class="order-detail-cancel">
+                                <p>Pesanan yang belum memiliki pembayaran atau bukti pembayaran dapat dibatalkan.</p>
+                                <form method="POST" action="{{ route('orders.cancel', $order) }}" onsubmit="return confirm('Batalkan pesanan ini? Pesanan yang dibatalkan tidak dapat dibayar kembali.');">
+                                    @csrf
+                                    <button class="order-detail-cancel-button" type="submit">Batalkan pesanan</button>
+                                </form>
+                            </div>
                         @endif
                     </section>
 

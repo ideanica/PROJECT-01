@@ -27,7 +27,9 @@ class BatchEmsTaxService
                 return;
             }
 
-            $orders = $batch->orders()->orderBy('member_id')->orderBy('id')->lockForUpdate()->get();
+            $orders = $batch->orders()
+                ->whereDoesntHave('overrideStatus', fn ($query) => $query->where('code', 'dibatalkan')->orWhere('status_type', 'cancelled'))
+                ->orderBy('member_id')->orderBy('id')->lockForUpdate()->get();
             $count = $orders->count();
             if ($count === 0) {
                 return;

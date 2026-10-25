@@ -6,16 +6,67 @@ use App\Http\Requests\StoreCustomerOrderRequest;
 use App\Models\Batch;
 use App\Models\Member;
 use App\Models\MemberOrder;
+use App\Models\OrderStatus;
+use App\Models\User;
 use App\Services\BatchEmsTaxService;
 use App\Services\OrderCodeGenerator;
 use App\Services\PaymentSchedule;
 use App\Services\PaymentVerificationService;
+use App\Services\StatusTransitionService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
 class CustomerOrderController extends Controller
 {
+    public function cancel(
+        Request $request,
+        MemberOrder $memberOrder,
+        StatusTransitionService $statuses,
+        BatchEmsTaxService $emsTaxes,
+    ) {
+        $this->authorizeCustomerOrder($request, $memberOrder);
+
+        DB::transaction(function () use ($request, $memberOrder, $statuses, $emsTaxes): void {
+            $batch = Batch::query()->lockForUpdate()->findOrFail($memberOrder->batch_id);
+            $order = MemberOrder::query()
+                ->with(['overrideStatus', 'paymentStatus'])
+                ->lockForUpdate()
+                ->findOrFail($memberOrder->id);
+            $this->authorizeCustomerOrder($request, $order);
+
+            if (! $order->can_be_cancelled) {
+                throw ValidationException::withMessages([
+                    'order' => 'Pesanan hanya dapat dibatalkan jika belum memiliki pembayaran atau bukti pembayaran.',
+                ]);
+            }
+
+            $batchHasProcessedEms = $batch->orders()->whereHas('payments', fn ($query) => $query
+                ->where('type', 'ems')->whereIn('status', ['pending', 'verified']))->exists();
+            if ($batchHasProcessedEms) {
+                throw ValidationException::withMessages([
+                    'order' => 'Pesanan belum dapat dibatalkan karena alokasi EMS batch sedang diproses.',
+                ]);
+            }
+
+            $cancelledStatus = OrderStatus::query()
+                ->where('code', 'dibatalkan')
+                ->where('is_active', true)
+                ->firstOrFail();
+
+            $statuses->transition(
+                $order,
+                $cancelledStatus,
+                $request->user(),
+                'Pesanan dibatalkan oleh customer sebelum pembayaran.',
+            );
+            $emsTaxes->sync($batch);
+        });
+
+        return back()->with('status', 'Pesanan berhasil dibatalkan.');
+    }
+
     public function store(
         StoreCustomerOrderRequest $request,
         Batch $batch,
@@ -45,10 +96,17 @@ class CustomerOrderController extends Controller
             }
 
             $existingOrder = MemberOrder::query()
+                ->with('overrideStatus')
                 ->where('member_id', $member->id)
                 ->where('batch_id', $batch->id)
                 ->first();
             if ($existingOrder) {
+                if ($existingOrder->is_cancelled) {
+                    throw ValidationException::withMessages([
+                        'batch' => 'Pesanan pada batch ini sudah dibatalkan dan tidak dapat dipesan ulang. Hubungi admin jika ingin mengaktifkannya kembali.',
+                    ]);
+                }
+
                 return $existingOrder;
             }
 
@@ -112,5 +170,11 @@ class CustomerOrderController extends Controller
 
         return redirect()->route('billing.payments.show', [$memberOrder, 'order'])
             ->with('status', 'Kamu sudah memiliki pesanan untuk batch ini. Lanjutkan dari tagihan yang tersedia.');
+    }
+
+    private function authorizeCustomerOrder(Request $request, MemberOrder $order): void
+    {
+        abort_unless($request->user()?->role === User::ROLE_CUSTOMER
+            && $request->user()->member_id === $order->member_id, 403);
     }
 }

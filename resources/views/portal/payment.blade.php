@@ -1,7 +1,7 @@
 <x-layouts.app title="Pembayaran — Ocean Paws">
     <div class="portal-v2 customer-payment-page">
         <div class="portal-v2-shell">
-            <a class="portal-v2-back" href="{{ route('billing.index') }}"><x-public-icon variant="rounded-bold" name="arrow-left" :size="18" /><span>Kembali ke tagihan</span></a>
+            <a class="portal-v2-back" href="{{ $order->order_source === 'catalog' && $order->batch ? route('catalog.show', $order->batch) : route('billing.index') }}"><x-public-icon variant="rounded-bold" name="arrow-left" :size="18" /><span>{{ $order->order_source === 'catalog' && $order->batch ? 'Kembali ke detail batch' : 'Kembali ke tagihan' }}</span></a>
             <header class="order-detail-hero customer-payment-heading">
                 <div class="order-detail-hero-copy"><span>DETAIL TAGIHAN</span><h1>{{ $billType === 'ems' ? 'EMS & Pajak' : 'Pembayaran Pesanan' }}</h1><p>{{ $order->order_code }} · {{ $order->batch?->batch_name ?: $order->batch?->batch_number }}</p></div>
                 <div class="order-detail-cover"><x-public-icon variant="rounded-bold" name="wallet" :size="28" /></div>

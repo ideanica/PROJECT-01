@@ -11,6 +11,12 @@ class PaymentVerificationService
 {
     public function assertScheduledOrderPayment(MemberOrder $order, float $amount, ?OrderPayment $exclude = null): array
     {
+        if ($order->is_cancelled) {
+            throw ValidationException::withMessages([
+                'amount' => 'Pesanan sudah dibatalkan dan tidak dapat menerima pembayaran.',
+            ]);
+        }
+
         if ($order->payments()->where('status', 'pending')->where('type', '!=', 'ems')
             ->when($exclude, fn ($query) => $query->where('id', '!=', $exclude->id))
             ->exists()) {
@@ -38,7 +44,7 @@ class PaymentVerificationService
 
     public function balance(MemberOrder $order, bool $ems): float
     {
-        if ($order->is_refunded) {
+        if ($order->is_refunded || $order->is_cancelled) {
             return 0;
         }
 
@@ -59,7 +65,7 @@ class PaymentVerificationService
 
     public function sync(MemberOrder $order, bool $ems = false): void
     {
-        if ($order->is_refunded) {
+        if ($order->is_refunded || $order->is_cancelled) {
             return;
         }
 
