@@ -6416,13 +6416,12 @@ body.customer-theme,
 
 .ocean-tracking .tracking-result-section { padding: 42px max(22px, 4.5vw) 75px; background: #fffaf1; }
 .ocean-tracking .tracking-result-card {
-    border: 2px solid var(--track-outline) !important;
-    border-radius: 17px;
-    background: #ffe0e9 !important;
-    box-shadow: var(--customer-shadow-card) #87b999 !important;
+    overflow: hidden;
+    border: 2px solid var(--tracking-outline) !important;
+    border-radius: 16px;
+    background: var(--tracking-paper) !important;
+    box-shadow: var(--customer-shadow-card) #eba4bc !important;
 }
-.tracking-result-titlebar { display: flex; height: 35px; align-items: center; justify-content: space-between; border-bottom: 1.5px solid var(--track-outline); padding: 0 18px; color: #8d3e5b; font: 700 10px/1 monospace; }
-.tracking-history-card .tracking-result-titlebar { background: #d6eadb; color: #38694a; }
 .ocean-tracking .tracking-result-banner { margin: 10px 10px 0; border: 1.5px solid var(--track-outline); border-radius: 10px 10px 0 0; background: #fffefa; color: var(--track-ink); }
 .ocean-tracking .tracking-result-banner h2 { color: var(--track-pink); }
 .ocean-tracking .tracking-result-kicker, .ocean-tracking .tracking-result-heading span, .ocean-tracking .tracking-order-summary > span { color: var(--track-green); }
@@ -8288,25 +8287,9 @@ body.ocean-tracking {
 .ocean-tracking .tracking-result-card {
     overflow: hidden;
     border: 2px solid var(--tracking-outline) !important;
-    border-radius: 18px;
+    border-radius: 16px;
     background: var(--tracking-paper) !important;
-    box-shadow: var(--customer-shadow-card) #91bd9b !important;
-}
-
-.ocean-tracking .tracking-result-titlebar {
-    min-height: 42px;
-    border-bottom: 2px solid var(--tracking-outline);
-    padding: 0 16px;
-    background: var(--tracking-pink);
-    color: #ad2f59;
-    font-size: 10px;
-    font-weight: 900;
-    letter-spacing: .08em;
-}
-
-.ocean-tracking .tracking-history-card .tracking-result-titlebar {
-    background: var(--tracking-mint);
-    color: #326c47;
+    box-shadow: var(--customer-shadow-card) #eba4bc !important;
 }
 
 .ocean-tracking .tracking-result-banner {
@@ -8315,7 +8298,11 @@ body.ocean-tracking {
     border-bottom: 2px solid var(--tracking-outline) !important;
     border-radius: 0 !important;
     padding: 24px !important;
-    background: #fffdfa !important;
+    background: var(--tracking-pink) !important;
+}
+
+.ocean-tracking .tracking-history-card .tracking-result-banner {
+    background: var(--tracking-mint) !important;
 }
 
 .ocean-tracking .tracking-result-banner h2 {
@@ -8740,9 +8727,16 @@ html[data-customer-theme="dark"] .ocean-tracking .tracking-result-card {
     box-shadow: var(--customer-shadow-card) #081810 !important;
 }
 
-html[data-customer-theme="dark"] .ocean-tracking .tracking-neo-card-head,
-html[data-customer-theme="dark"] .ocean-tracking .tracking-result-titlebar {
+html[data-customer-theme="dark"] .ocean-tracking .tracking-neo-card-head {
     background: #4d303a;
+}
+
+html[data-customer-theme="dark"] .ocean-tracking .tracking-result-banner {
+    background: var(--tracking-pink) !important;
+}
+
+html[data-customer-theme="dark"] .ocean-tracking .tracking-history-card .tracking-result-banner {
+    background: var(--tracking-mint) !important;
 }
 
 html[data-customer-theme="dark"] .ocean-tracking .tracking-neo-card-icon,

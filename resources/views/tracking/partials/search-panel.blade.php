@@ -176,7 +176,6 @@ html[data-customer-theme="dark"] .ocean-tracking .tracking-classic .tracking-neo
     <div class="tracking-result-shell">
         @isset($orderResult)
             <article class="tracking-result-card" data-smart-search-result="tracking">
-                <div class="tracking-result-titlebar"><strong>ORDER STATUS.EXE</strong><span class="op-window-dots" aria-hidden="true"><i></i><i></i><i></i></span></div>
                 <header class="tracking-result-banner">
                     <div>
                         <span class="tracking-result-kicker"><x-public-icon name="box" :size="14" /> {{ $orderResult->batch->batch_number }}</span>
@@ -230,7 +229,6 @@ html[data-customer-theme="dark"] .ocean-tracking .tracking-classic .tracking-neo
 
         @isset($memberResult)
             <article class="tracking-result-card tracking-history-card" data-smart-search-result="history">
-                <div class="tracking-result-titlebar"><strong>ORDER HISTORY.EXE</strong><span class="op-window-dots" aria-hidden="true"><i></i><i></i><i></i></span></div>
                 <header class="tracking-result-banner">
                     <div>
                         <span class="tracking-result-kicker"><x-public-icon name="history" :size="14" /> RIWAYAT PEMBELIAN</span>
