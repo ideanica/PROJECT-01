@@ -22,7 +22,16 @@
                 </a>
             </div>
 
-            <section class="order-detail-hero"><div class="order-detail-hero-copy"><span>PESANAN {{ mb_strtoupper($member->display_name) }}</span><div class="order-detail-title-row"><h1>{{ $order->order_code }}</h1></div><p>Batch {{ $order->batch->batch_number }} · {{ $order->batch->batch_name ?: 'K-pop merchandise' }}{{ $order->go_number ? ' · GO '.$order->go_number : '' }}</p></div><div class="order-detail-cover"><x-catalog-photo :batch="$order->batch" :alt="'Gambar ilustrasi katalog '.($order->batch->batch_name ?: $order->batch->batch_number)" loading="eager" /></div></section>
+            <section class="order-detail-hero order-detail-title-card">
+                <div class="order-detail-cover">
+                    <x-catalog-photo :batch="$order->batch" :alt="'Gambar ilustrasi katalog '.($order->batch->batch_name ?: $order->batch->batch_number)" loading="eager" />
+                </div>
+                <div class="order-detail-hero-copy">
+                    <span>PESANAN {{ mb_strtoupper($member->display_name) }}</span>
+                    <div class="order-detail-title-row"><h1>{{ $order->order_code }}</h1></div>
+                    <p>Batch {{ $order->batch->batch_number }} · {{ $order->batch->batch_name ?: 'K-pop merchandise' }}{{ $order->go_number ? ' · GO '.$order->go_number : '' }}</p>
+                </div>
+            </section>
 
             {{--
             <section class="order-detail-stats" aria-label="Ringkasan pesanan">

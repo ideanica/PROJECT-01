@@ -140,11 +140,58 @@ html[data-customer-theme="dark"] body.ocean-tracking .tracking-neo-input-wrap in
 .ocean-tracking .order-detail-page .order-detail-panel { overflow: hidden; }
 .ocean-tracking .order-detail-page .order-detail-item-photo { overflow: hidden; }
 .ocean-tracking .order-detail-page .order-detail-item-photo img { width: 100%; height: 100%; object-fit: cover; }
+.ocean-tracking .order-detail-page .order-detail-ems-card .order-ems-bill {
+    margin:0 16px 18px;
+    border:2px solid var(--pv2-outline);
+    border-radius:12px;
+    background:var(--pv2-paper);
+    box-shadow:var(--customer-shadow-control) var(--pv2-mint-shadow);
+}
+.ocean-tracking .order-detail-page .order-detail-ems-card .order-ems-bill.is-paid { background:var(--pv2-paper); }
+.ocean-tracking .order-detail-page .order-detail-ems-card .order-ems-bill-icon {
+    border:2px solid var(--pv2-outline);
+    border-radius:11px;
+    background:var(--pv2-pink);
+    color:var(--pv2-ink);
+    box-shadow:var(--customer-shadow-control) var(--pv2-shadow-color);
+}
+.ocean-tracking .order-detail-page .order-detail-ems-card .order-ems-bill.is-paid .order-ems-bill-icon { background:var(--pv2-mint); color:var(--pv2-ink); }
+.ocean-tracking .order-detail-page .order-detail-ems-card .order-ems-bill-copy > span,
+.ocean-tracking .order-detail-page .order-detail-ems-card .order-ems-bill-copy > small,
+.ocean-tracking .order-detail-page .order-detail-ems-card .order-ems-bill-copy > p,
+.ocean-tracking .order-detail-page .order-detail-ems-card .order-ems-bill-copy > strong { color:var(--pv2-ink); }
+.ocean-tracking .order-detail-page .order-detail-ems-card .order-ems-bill-status { border:1px solid var(--pv2-outline); }
 
 /* Match the primary navbar container at desktop, compact desktop, and mobile widths. */
 .order-detail-shell { width:min(90.43%, 1180px); }
 .ocean-tracking .order-detail-page .order-detail-hero { margin:0 0 18px; }
-.ocean-tracking .order-detail-page .order-detail-panel { margin-top:13px; }
+.ocean-tracking .order-detail-page .order-detail-title-card {
+    min-height:0;
+    grid-template-columns:minmax(240px,.8fr) minmax(0,1.2fr);
+    align-items:stretch;
+    gap:clamp(18px,3vw,34px);
+    margin:24px 0 18px;
+    border-radius:18px;
+    padding:clamp(16px,3vw,28px);
+}
+.ocean-tracking .order-detail-page .order-detail-title-card .order-detail-cover {
+    min-height:220px;
+    aspect-ratio:4 / 3;
+    border:2px solid var(--pv2-outline);
+    border-radius:13px;
+}
+.ocean-tracking .order-detail-page .order-detail-title-card .order-detail-hero-copy { align-self:center; padding:0; }
+.ocean-tracking .order-detail-page .order-detail-title-card .order-detail-hero-copy h1 {
+    margin:14px 0 0;
+    color:var(--pv2-ink) !important;
+    font-family:var(--pv2-heading);
+    font-size:clamp(28px,4vw,46px);
+    font-weight:900;
+    letter-spacing:normal;
+    line-height:1.08;
+}
+.ocean-tracking .order-detail-page .order-detail-title-card .order-detail-hero-copy > p { margin:10px 0 0; font-size:13px; }
+.ocean-tracking .order-detail-page .order-detail-panel { margin-top:8px; }
 .tracking-progress-summary { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; padding:0 18px 18px; margin:0; }
 .tracking-progress-summary > div { min-width:0; border:2px solid var(--pv2-outline); border-radius:12px; padding:14px; background:var(--pv2-mint); box-shadow:var(--customer-shadow-control) var(--pv2-mint-shadow); }
 .tracking-progress-summary dt { color:var(--pv2-text); font-size:11px; font-weight:700; }
@@ -185,6 +232,9 @@ html[data-customer-theme="dark"] body.ocean-tracking .tracking-neo-input-wrap in
 }
 
 @media (max-width:700px) {
+    .ocean-tracking .order-detail-page .order-detail-title-card { grid-template-columns:minmax(0,1fr); gap:16px; margin:17px 0 18px; padding:14px; }
+    .ocean-tracking .order-detail-page .order-detail-title-card .order-detail-cover { min-height:0; aspect-ratio:16 / 9; }
+    .ocean-tracking .order-detail-page .order-detail-title-card .order-detail-hero-copy h1 { margin-top:12px; font-size:clamp(27px,8vw,38px); }
     .order-detail-side-column { grid-template-columns:minmax(0,1fr); }
     .order-detail-topbar { flex-wrap:wrap; gap:12px; margin-bottom:24px; }
     .ocean-tracking .order-detail-page .order-detail-topbar > a { min-height:44px; font-size:12px; }

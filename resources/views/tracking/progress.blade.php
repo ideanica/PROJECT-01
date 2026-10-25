@@ -10,14 +10,14 @@
                 <span>TRACKING PESANAN</span>
             </div>
 
-            <section class="order-detail-hero">
+            <section class="order-detail-hero order-detail-title-card">
+                <div class="order-detail-cover">
+                    <x-catalog-photo :batch="$order->batch" :alt="'Gambar ilustrasi katalog '.($order->batch->batch_name ?: $order->batch->batch_number)" loading="eager" />
+                </div>
                 <div class="order-detail-hero-copy">
                     <span>DETAIL PERJALANAN</span>
                     <div class="order-detail-title-row"><h1>{{ $order->order_code }}</h1></div>
                     <p>Batch {{ $order->batch->batch_number }} · {{ $order->batch->batch_name ?: 'K-pop merchandise' }}{{ $order->go_number ? ' · GO '.$order->go_number : '' }}</p>
-                </div>
-                <div class="order-detail-cover">
-                    <x-catalog-photo :batch="$order->batch" :alt="'Gambar ilustrasi katalog '.($order->batch->batch_name ?: $order->batch->batch_number)" loading="eager" />
                 </div>
             </section>
 
