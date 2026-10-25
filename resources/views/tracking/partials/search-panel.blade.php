@@ -42,7 +42,7 @@
 .ocean-tracking .tracking-classic .tracking-neo-search-card {
     max-width: 760px; overflow: visible; padding: 24px 18px 20px;
     border: 2px solid var(--classic-outline); border-radius: 16px;
-    background: var(--classic-pink); box-shadow: var(--customer-shadow-card) var(--classic-card-shadow);
+    background: var(--classic-paper); box-shadow: var(--customer-shadow-card) var(--classic-card-shadow);
 }
 .ocean-tracking .tracking-classic .tracking-neo-form {
     display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; padding: 0; margin: 0;
