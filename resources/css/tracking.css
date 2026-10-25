@@ -246,7 +246,16 @@ html[data-customer-theme="dark"] body.ocean-tracking .tracking-neo-input-wrap in
 
 /* Tracking search results follow the same pink-and-mint cards as order detail. */
 .ocean-tracking .tracking-result-card[data-smart-search-result] {
+    border:2px solid var(--tracking-outline) !important;
+    border-radius:16px;
     box-shadow:var(--customer-shadow-card) #eba4bc !important;
+}
+.ocean-tracking .tracking-search-page.has-result .tracking-neo-page.tracking-classic {
+    min-height:0;
+    padding-bottom:18px;
+}
+.ocean-tracking .tracking-result-section {
+    padding-top:14px !important;
 }
 .ocean-tracking .tracking-result-banner {
     background:var(--tracking-pink) !important;
@@ -331,6 +340,112 @@ html[data-customer-theme="dark"] body.ocean-tracking .tracking-neo-input-wrap in
     box-shadow:var(--customer-shadow-control) #91bd9b !important;
     color:var(--tracking-ink) !important;
 }
+.ocean-tracking .tracking-inline-timeline {
+    border-top:2px solid var(--tracking-outline);
+    padding:18px 22px 22px;
+}
+.ocean-tracking .tracking-inline-timeline-heading {
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:16px;
+    border:2px solid var(--tracking-outline);
+    border-radius:12px;
+    background:var(--tracking-mint);
+    box-shadow:var(--customer-shadow-control) #91bd9b;
+    padding:12px 14px;
+    color:var(--tracking-ink);
+}
+.ocean-tracking .tracking-inline-timeline-icon {
+    display:grid;
+    width:40px;
+    height:40px;
+    flex:0 0 40px;
+    place-items:center;
+    border:2px solid var(--tracking-outline);
+    border-radius:10px;
+    background:var(--tracking-pink);
+    color:var(--tracking-ink);
+}
+.ocean-tracking .tracking-inline-timeline-heading > div > span {
+    font-size:9px;
+    font-weight:900;
+    letter-spacing:.1em;
+}
+.ocean-tracking .tracking-inline-timeline-heading h3 {
+    margin:3px 0 0;
+    color:var(--tracking-ink);
+    font-size:17px;
+    font-weight:900;
+}
+.ocean-tracking .tracking-inline-current-status {
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:10px;
+    margin-bottom:12px;
+    border:2px solid var(--tracking-outline);
+    border-radius:12px;
+    background:var(--tracking-paper);
+    box-shadow:var(--customer-shadow-control) #eba4bc;
+    padding:12px 14px;
+    color:var(--tracking-ink);
+    font-size:12px;
+    font-weight:800;
+}
+.ocean-tracking .tracking-inline-timeline-list {
+    display:grid;
+    padding-left:8px;
+}
+.ocean-tracking .tracking-inline-timeline-entry {
+    position:relative;
+    margin-left:7px;
+    border-left:2px solid var(--tracking-mint);
+    padding:12px 0 16px 20px;
+}
+.ocean-tracking .tracking-inline-timeline-entry:last-child {
+    padding-bottom:2px;
+}
+.ocean-tracking .tracking-inline-timeline-dot {
+    position:absolute;
+    top:17px;
+    left:-7px;
+    width:12px;
+    height:12px;
+    border:2px solid var(--tracking-outline);
+    border-radius:50%;
+    background:var(--tracking-pink);
+    box-shadow:0 0 0 3px var(--tracking-paper);
+}
+.ocean-tracking .tracking-inline-timeline-statuses {
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:8px;
+    color:var(--tracking-ink);
+    font-size:12px;
+}
+.ocean-tracking .tracking-inline-timeline-entry p {
+    margin:8px 0 0;
+    color:var(--tracking-muted);
+    font-size:12px;
+    line-height:1.6;
+}
+.ocean-tracking .tracking-inline-timeline-entry time {
+    display:block;
+    margin-top:5px;
+    color:var(--tracking-muted);
+    font-size:11px;
+}
+.ocean-tracking .tracking-inline-timeline-empty {
+    margin:0;
+    border:2px solid var(--tracking-outline);
+    border-radius:12px;
+    background:var(--tracking-paper);
+    padding:14px;
+    color:var(--tracking-muted);
+    font-size:12px;
+}
 
 @media (max-width:600px) {
     .ocean-tracking .tracking-result-layout,
@@ -338,6 +453,8 @@ html[data-customer-theme="dark"] body.ocean-tracking .tracking-neo-input-wrap in
         gap:14px;
         padding:14px;
     }
+    .ocean-tracking .tracking-inline-timeline { padding:14px; }
+    .ocean-tracking .tracking-inline-timeline-heading h3 { font-size:15px; }
 }
 
 @media (max-width:1024px) {
