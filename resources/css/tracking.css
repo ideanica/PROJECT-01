@@ -245,6 +245,9 @@ html[data-customer-theme="dark"] body.ocean-tracking .tracking-neo-input-wrap in
 }
 
 /* Tracking search results follow the same pink-and-mint cards as order detail. */
+.ocean-tracking .tracking-result-card[data-smart-search-result] {
+    box-shadow:var(--customer-shadow-card) #eba4bc !important;
+}
 .ocean-tracking .tracking-result-banner {
     background:var(--tracking-pink) !important;
 }
