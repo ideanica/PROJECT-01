@@ -121,8 +121,7 @@
                             <div class="order-detail-cancel">
                                 <p>Pesanan yang belum memiliki pembayaran atau bukti pembayaran dapat dibatalkan.</p>
                                 <button class="order-detail-cancel-button" type="button" data-status-modal-open="customer-cancel-order" aria-haspopup="dialog">Batalkan pesanan</button>
-                                <div class="status-modal customer-order-cancel-modal" data-status-modal="customer-cancel-order" role="dialog" aria-modal="true" aria-labelledby="customer-cancel-order-title" aria-describedby="customer-cancel-order-message" aria-hidden="true" hidden>
-                                    <div class="status-modal-backdrop" data-status-modal-close aria-hidden="true"></div>
+                                <dialog class="customer-order-cancel-modal" data-status-modal="customer-cancel-order" aria-labelledby="customer-cancel-order-title" aria-describedby="customer-cancel-order-message" aria-hidden="true">
                                     <section class="customer-cancel-dialog" tabindex="-1">
                                         <span class="customer-cancel-dialog-kicker">KONFIRMASI PESANAN</span>
                                         <h2 id="customer-cancel-order-title">Batalkan pesanan?</h2>
@@ -135,7 +134,7 @@
                                             </form>
                                         </div>
                                     </section>
-                                </div>
+                                </dialog>
                             </div>
                         @endif
                     </section>

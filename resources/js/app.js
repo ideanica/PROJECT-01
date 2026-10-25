@@ -392,19 +392,18 @@ document.querySelectorAll('[data-status-folder-map]').forEach((folderMap) => {
 });
 
 document.querySelectorAll('[data-status-modal]').forEach((modal) => {
-    // Keep the customer cancellation dialog anchored to the viewport instead
-    // of a potentially transformed order card or page container.
-    if (modal.classList.contains('customer-order-cancel-modal')) {
-        document.body.append(modal);
-    }
-
     const modalName = modal.dataset.statusModal;
+    const isNativeDialog = modal instanceof HTMLDialogElement;
     let modalTrigger = null;
 
     const closeModal = () => {
-        if (modal.hidden) return;
+        if (isNativeDialog ? !modal.open : modal.hidden) return;
 
-        modal.hidden = true;
+        if (isNativeDialog) {
+            modal.close();
+        } else {
+            modal.hidden = true;
+        }
         modal.setAttribute('aria-hidden', 'true');
         document.body.classList.remove('status-modal-open');
         modalTrigger?.focus();
@@ -414,10 +413,14 @@ document.querySelectorAll('[data-status-modal]').forEach((modal) => {
     document.querySelectorAll(`[data-status-modal-open="${modalName}"]`).forEach((button) => {
         button.addEventListener('click', (event) => {
             modalTrigger = event.currentTarget;
-            modal.hidden = false;
             modal.setAttribute('aria-hidden', 'false');
+            if (isNativeDialog) {
+                if (!modal.open) modal.showModal();
+            } else {
+                modal.hidden = false;
+            }
             document.body.classList.add('status-modal-open');
-            modal.querySelector('.status-modal-surface')?.focus();
+            modal.querySelector('.status-modal-surface, .customer-cancel-dialog')?.focus();
         });
     });
 
@@ -425,8 +428,14 @@ document.querySelectorAll('[data-status-modal]').forEach((modal) => {
         button.addEventListener('click', closeModal);
     });
 
+    if (isNativeDialog) {
+        modal.addEventListener('click', (event) => {
+            if (event.target === modal) closeModal();
+        });
+    }
+
     document.addEventListener('keydown', (event) => {
-        if (modal.hidden) return;
+        if (isNativeDialog ? !modal.open : modal.hidden) return;
 
         if (event.key === 'Escape') {
             event.preventDefault();
