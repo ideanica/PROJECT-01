@@ -250,7 +250,7 @@
 .payment-feedback { margin-top: 12px; border: 1px solid #bdd5c4; border-radius: 10px; background: #eff8f1; padding: 12px; color: #294b36; font-size: 12px; line-height: 1.7; overflow-wrap: anywhere; }
 .payment-feedback.is-error { border-color: #efc2c2; background: #fff1f1; color: #8b3333; }
 .customer-theme .payment-feedback a { color: inherit; text-decoration: underline; font-weight: 700; }
-.order-detail-cancel { margin-top: 16px; border-top: 1px solid #e4c8ce; padding: 14px 0; }
+.order-detail-cancel { margin: 16px 16px 0; border-top: 1px solid #e4c8ce; padding: 14px 0; }
 .order-detail-cancel > p { margin: 0 0 10px; color: var(--pv2-text); font-size: 11px; line-height: 1.55; }
 .customer-theme .order-detail-cancel-button { display: flex; box-sizing: border-box; width: 100%; min-height: 48px; align-items: center; justify-content: center; border: 2px solid var(--pv2-outline); border-radius: 12px; padding: 10px 12px; background: var(--pv2-pink); color: var(--pv2-ink); cursor: pointer; box-shadow: var(--customer-shadow-control) var(--pv2-mint-shadow); transition: transform .34s cubic-bezier(.34,1.56,.64,1), box-shadow .18s ease, background-color .18s ease; }
 .order-detail-cancel-button:hover { transform: translate(2px,-2px); }
