@@ -11,6 +11,7 @@
                 $method = $order->batch?->getEffectivePaymentMethod();
                 $imageUrl = $order->batch?->payment_method_image_url;
                 $isPaymentPreview = ! $method && ! $imageUrl;
+                $isPreviewQr = $method?->image_path === 'assets/qr-placeholder.png';
                 $owner = auth()->user()?->role === 'customer' && auth()->user()?->member_id === $order->member_id;
                 $formId = $order->id.'-'.$billType;
                 $isCurrent = old('payment_form', session('payment_form')) === $formId;
@@ -28,7 +29,7 @@
                     <div class="order-payment-method-content">
                         <header class="payment-section-title"><span class="payment-section-title-icon"><x-public-icon variant="rounded-bold" name="wallet" :size="22" /></span><div><span>{{ $isPaymentPreview ? 'METODE PEMBAYARAN · PREVIEW' : 'METODE PEMBAYARAN' }}</span><h2>{{ $method?->name ?: ($imageUrl ? 'QRIS' : 'QR Preview') }}</h2></div></header>
                         @if($method?->account_name)<p class="order-payment-account"><span>Atas nama</span><strong>{{ $method->account_name }}</strong></p>@endif
-                        @if($imageUrl)<div class="order-payment-qr"><img src="{{ $imageUrl }}" alt="Kode pembayaran {{ $method?->name ?: 'QRIS' }}" loading="lazy"></div>@endif
+                        @if($imageUrl)<div class="order-payment-qr {{ $isPreviewQr ? 'order-payment-qr-placeholder' : '' }}"><img src="{{ $imageUrl }}" alt="{{ $isPreviewQr ? 'QR contoh, bukan kode pembayaran' : 'Kode pembayaran '.($method?->name ?: 'QRIS') }}" loading="lazy">@if($isPreviewQr)<p>QR SIMULASI - BUKAN UNTUK PEMBAYARAN</p>@endif</div>@endif
                         <dl class="payment-amount-summary">
                             @if($schedule)
                                 <div><dt>Harga keseluruhan</dt><dd>{{ $formatMoney($schedule['total']) }}</dd></div>
@@ -59,7 +60,7 @@
                         @elseif($owner)
                             <div class="payment-submission">
                                 <header class="payment-section-title"><span class="payment-section-title-icon"><x-public-icon variant="rounded-bold" name="document" :size="22" /></span><div><span>KONFIRMASI PEMBAYARAN</span><h2>Kirim bukti pembayaran</h2></div></header>
-                                <p>Scan QRIS di atas, lalu kirim bukti pembayaranmu. DP atau lunas baru tercatat setelah admin memverifikasi bukti.</p>
+                                <p>{{ $isPreviewQr ? 'Gunakan QR contoh untuk melihat alur pratinjau, jangan lakukan transfer. Kirim bukti simulasi; DP atau lunas baru tercatat setelah admin memverifikasi bukti.' : 'Scan QRIS di atas, lalu kirim bukti pembayaranmu. DP atau lunas baru tercatat setelah admin memverifikasi bukti.' }}</p>
                                 @if($isCurrent && session('payment_status'))<p class="payment-feedback" role="status">{{ session('payment_status') }}</p>@endif
                                 @if($pending)
                                     <div class="payment-feedback"><strong>Menunggu verifikasi admin</strong><p>{{ $formatMoney($pending->amount) }} · {{ $pending->type_label }}</p><p>Waktu transaksi: {{ $pending->paid_at?->translatedFormat('d F Y, H:i:s') ?? 'Tidak tersedia' }}</p><p>Tagihan belum berkurang. Tidak perlu mengirim bukti yang sama lagi.</p>@if($pending->proof_path)<a href="{{ route('billing.payments.proof', [$order, $pending]) }}" target="_blank" rel="noopener">Lihat bukti terkirim</a>@endif</div>

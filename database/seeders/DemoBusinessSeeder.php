@@ -31,6 +31,7 @@ class DemoBusinessSeeder extends Seeder
             OrderStatusSeeder::class,
             AdminUserSeeder::class,
             CustomerDemoAccountSeeder::class,
+            PreviewPaymentMethodSeeder::class,
         ]);
 
         DB::transaction(fn () => $this->normalizeLegacyScenarioLabels());

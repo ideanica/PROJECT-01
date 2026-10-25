@@ -5,12 +5,17 @@ namespace Tests\Feature;
 use App\Models\Batch;
 use App\Models\Member;
 use App\Models\MemberOrder;
+use App\Models\OrderPayment;
 use App\Models\OrderStatus;
 use App\Models\PaymentMethod;
 use App\Models\PaymentSetting;
 use App\Models\Product;
 use App\Models\User;
+use Database\Seeders\PreviewPaymentMethodSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class CustomerCheckoutTest extends TestCase
@@ -70,6 +75,48 @@ class CustomerCheckoutTest extends TestCase
         PaymentSetting::findOrFail(1)->update(['dp_percentage' => 60]);
         $this->assertSame('40.00', $order->fresh()->dp_percentage);
         $this->assertEquals(100000, $order->fresh()->next_payment['amount']);
+    }
+
+    public function test_preview_payment_seed_enables_catalog_order_and_payment_page(): void
+    {
+        Storage::fake('local');
+        [$customer, , $batch, $product] = $this->setupCatalog();
+        PaymentMethod::query()->delete();
+
+        $this->seed(PreviewPaymentMethodSeeder::class);
+
+        $method = PaymentMethod::getActiveQris();
+        $this->assertNotNull($method);
+        $this->assertSame('assets/qr-placeholder.png', $method->image_path);
+        $this->assertSame(asset('assets/qr-placeholder.png'), $method->image_url);
+        $this->assertTrue($batch->fresh()->has_payment_method);
+
+        $this->actingAs($customer)->get(route('catalog.show', $batch))
+            ->assertOk()
+            ->assertSee('Konfirmasi pesanan');
+
+        $response = $this->post(route('catalog.orders.store', $batch), [
+            'payment_type' => 'dp',
+            'items' => [['product_id' => $product->id, 'quantity' => 1]],
+        ]);
+
+        $order = MemberOrder::query()->where('batch_id', $batch->id)->sole();
+        $response->assertRedirect(route('billing.payments.show', [$order, 'order']));
+
+        $this->get(route('billing.payments.show', [$order, 'order']))
+            ->assertOk()
+            ->assertSee('QR SIMULASI - BUKAN UNTUK PEMBAYARAN')
+            ->assertSee('name="proof"', false)
+            ->assertSee('Kirim bukti pembayaran');
+
+        $this->post(route('billing.payments.store', $order), [
+            'bill_type' => 'order',
+            'submission_key' => (string) Str::uuid(),
+            'amount' => $order->next_payment['amount'],
+            'proof' => UploadedFile::fake()->image('bukti-transfer.png'),
+        ])->assertRedirect(route('billing.payments.show', [$order, 'order']));
+
+        $this->assertSame('pending', OrderPayment::query()->where('member_order_id', $order->id)->sole()->status);
     }
 
     public function test_catalog_checkout_full_payment_uses_server_prices_and_stops_duplicate_orders(): void

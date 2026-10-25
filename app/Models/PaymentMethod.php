@@ -59,6 +59,10 @@ class PaymentMethod extends Model
             return $this->image_path;
         }
 
+        if (str_starts_with($this->image_path, 'assets/')) {
+            return asset($this->image_path);
+        }
+
         return '/storage/'.ltrim($this->image_path, '/');
     }
 }

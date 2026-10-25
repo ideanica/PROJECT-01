@@ -15,7 +15,7 @@ class CustomerCatalogDemoSeeder extends Seeder
 
     public function run(): void
     {
-        $this->call(OrderStatusSeeder::class);
+        $this->call([OrderStatusSeeder::class, PreviewPaymentMethodSeeder::class]);
 
         $waitingStatus = OrderStatus::query()
             ->where('code', 'menunggu-pemesanan')

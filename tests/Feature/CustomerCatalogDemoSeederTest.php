@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Batch;
 use App\Models\MemberOrder;
 use App\Models\OrderStatus;
+use App\Models\PaymentMethod;
 use App\Models\Product;
 use App\Models\StatusHistory;
 use Database\Seeders\CustomerCatalogDemoSeeder;
@@ -41,6 +42,9 @@ class CustomerCatalogDemoSeederTest extends TestCase
 
         $openBatch = $batches->firstWhere('batch_number', 'OP-GO-CATALOG-OPEN');
         $closedBatch = $batches->firstWhere('batch_number', 'OP-GO-CATALOG-CLOSED');
+
+        $this->assertSame(1, PaymentMethod::query()->where('type', 'qris')->where('is_active', true)->count());
+        $this->assertTrue($openBatch->has_payment_method);
 
         $this->assertTrue($openBatch->ordering_deadline->isFuture());
         $this->assertTrue($closedBatch->ordering_deadline->isPast());
