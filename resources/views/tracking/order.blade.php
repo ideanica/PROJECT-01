@@ -29,9 +29,9 @@
                     <x-catalog-photo :batch="$order->batch" :alt="'Gambar ilustrasi katalog '.($order->batch->batch_name ?: $order->batch->batch_number)" loading="eager" />
                 </div>
                 <div class="order-detail-hero-copy">
-                    <span>PESANAN {{ mb_strtoupper($member->display_name) }}</span>
+                    <span>KODE PESANAN</span>
                     <div class="order-detail-title-row"><h1>{{ $order->order_code }}</h1></div>
-                    <p>Batch {{ $order->batch->batch_number }} · {{ $order->batch->batch_name ?: 'K-pop merchandise' }}{{ $order->go_number ? ' · GO '.$order->go_number : '' }}</p>
+                    <p>Kode batch: {{ $order->batch->batch_number }}</p>
                 </div>
             </section>
 
@@ -96,6 +96,12 @@
                             @if($order->is_refunded)<div><dt>Status pesanan</dt><dd>Direfund</dd></div>@endif
                         </dl>
                         @if($order->has_outstanding_order_payment)<x-order-payment-method :order="$order" />@endif
+                        @if($order->ems_tax_is_published)
+                            <div id="ems-bill" class="order-detail-tax-summary">
+                                <x-order-ems-bill :order="$order" :show-status-badge="false" />
+                                @if($order->has_outstanding_ems_tax)<x-order-payment-method :order="$order" bill-type="ems" />@endif
+                            </div>
+                        @endif
                         @if($verifiedPayments->isNotEmpty())
                             <details class="order-detail-payment-history portal-order-disclosure">
                                 <summary>Riwayat pembayaran ({{ $verifiedPayments->count() }})</summary>
@@ -115,7 +121,6 @@
                         </section>
                     @endif
 
-                    @if($order->ems_tax_is_published)<section id="ems-bill" class="order-detail-panel order-detail-ems-card"><header class="order-detail-section-heading"><div><span>BIAYA TAMBAHAN</span><h2>EMS & Pajak</h2></div></header><x-order-ems-bill :order="$order" :show-status-badge="false" />@if($order->has_outstanding_ems_tax)<x-order-payment-method :order="$order" bill-type="ems" />@endif</section>@endif
                     @if($order->notes)<section class="order-detail-panel order-detail-note-card order-detail-order-note"><span>CATATAN PESANAN</span><p>{{ $order->notes }}</p></section>@endif
                 </aside>
             </div>
