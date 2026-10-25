@@ -138,11 +138,13 @@ html[data-customer-theme="dark"] body.ocean-tracking .tracking-neo-input-wrap in
 .ocean-tracking .order-detail-page .order-detail-cover > svg { width: 48px; height: 48px; }
 .ocean-tracking .order-detail-page :is(.order-detail-hero p, .order-detail-stats small, .order-detail-payment-card dt, .order-detail-item-copy p, .order-detail-item-copy small, .order-detail-note-card p, .order-detail-timeline-entry p, .order-detail-timeline-entry time, .order-detail-empty) { color: var(--pv2-text) !important; }
 .ocean-tracking .order-detail-page .order-detail-panel { overflow: hidden; }
+.ocean-tracking .order-detail-page .order-detail-item-photo { overflow: hidden; }
+.ocean-tracking .order-detail-page .order-detail-item-photo img { width: 100%; height: 100%; object-fit: cover; }
 
 /* Match the primary navbar container at desktop, compact desktop, and mobile widths. */
 .order-detail-shell { width:min(90.43%, 1180px); }
 .ocean-tracking .order-detail-page .order-detail-hero { margin:0 0 18px; }
-.ocean-tracking .order-detail-page .order-detail-panel { margin-top:16px; }
+.ocean-tracking .order-detail-page .order-detail-panel { margin-top:13px; }
 .tracking-progress-summary { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; padding:0 18px 18px; margin:0; }
 .tracking-progress-summary > div { min-width:0; border:2px solid var(--pv2-outline); border-radius:12px; padding:14px; background:var(--pv2-mint); box-shadow:var(--customer-shadow-control) var(--pv2-mint-shadow); }
 .tracking-progress-summary dt { color:var(--pv2-text); font-size:11px; font-weight:700; }

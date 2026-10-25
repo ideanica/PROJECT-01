@@ -25,7 +25,7 @@
 
             <header class="catalog-detail-hero">
                 <div class="catalog-detail-image">
-                    @if($batch->catalog_image_path)<img src="{{ $batch->catalog_image_url }}" alt="{{ $batch->batch_name ?: $batch->batch_number }}">@else<span><x-public-icon variant="rounded-bold" name="box" :size="46" /></span>@endif
+                    <x-catalog-photo :batch="$batch" loading="eager" />
                 </div>
                 <div class="catalog-detail-hero-copy">
                     <div class="catalog-batch-card-status"><span>{{ $batch->batch_number }}</span></div>

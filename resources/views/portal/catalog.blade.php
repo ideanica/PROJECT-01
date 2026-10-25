@@ -35,7 +35,7 @@
                 @forelse($batches as $batch)
                     <article class="catalog-batch-card">
                         <a class="catalog-batch-card-image" href="{{ route('catalog.show', $batch) }}" aria-label="Lihat detail {{ $batch->batch_name ?: $batch->batch_number }}">
-                            @if($batch->catalog_image_path)<img src="{{ $batch->catalog_image_url }}" alt="{{ $batch->batch_name ?: $batch->batch_number }}" loading="lazy">@else<span><x-public-icon variant="rounded-bold" name="box" :size="32" /></span>@endif
+                            <x-catalog-photo :batch="$batch" loading="lazy" />
                         </a>
                         <div class="catalog-batch-card-body">
                             <div class="catalog-batch-card-status"><span>{{ $batch->batch_number }}</span></div>

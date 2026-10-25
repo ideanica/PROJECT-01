@@ -22,7 +22,7 @@
                 </a>
             </div>
 
-            <section class="order-detail-hero"><div class="order-detail-hero-copy"><span>PESANAN {{ mb_strtoupper($member->display_name) }}</span><div class="order-detail-title-row"><h1>{{ $order->order_code }}</h1></div><p>Batch {{ $order->batch->batch_number }} · {{ $order->batch->batch_name ?: 'K-pop merchandise' }}{{ $order->go_number ? ' · GO '.$order->go_number : '' }}</p></div><div class="order-detail-cover">@if($order->batch->catalog_image_path)<img src="{{ $order->batch->catalog_image_url }}" alt="{{ $order->batch->batch_name ?: $order->batch->batch_number }}">@else<x-public-icon variant="rounded-bold" name="box" :size="28" />@endif</div></section>
+            <section class="order-detail-hero"><div class="order-detail-hero-copy"><span>PESANAN {{ mb_strtoupper($member->display_name) }}</span><div class="order-detail-title-row"><h1>{{ $order->order_code }}</h1></div><p>Batch {{ $order->batch->batch_number }} · {{ $order->batch->batch_name ?: 'K-pop merchandise' }}{{ $order->go_number ? ' · GO '.$order->go_number : '' }}</p></div><div class="order-detail-cover"><x-catalog-photo :batch="$order->batch" :alt="'Gambar ilustrasi katalog '.($order->batch->batch_name ?: $order->batch->batch_number)" loading="eager" /></div></section>
 
             {{--
             <section class="order-detail-stats" aria-label="Ringkasan pesanan">
@@ -40,7 +40,7 @@
                         <div class="order-detail-item-list">
                             @forelse($order->items as $item)
                                 <article class="order-detail-item">
-                                    <span class="order-detail-item-icon"><x-public-icon variant="rounded-bold" name="bag" :size="18" /></span>
+                                    <span class="order-detail-item-icon order-detail-item-photo"><x-catalog-photo :batch="$order->batch" :context="$item->item_name" :alt="'Gambar ilustrasi item '.$item->item_name" /></span>
                                     <div class="order-detail-item-copy">
                                         <h3>{{ $item->item_name }}</h3>
                                         <p>{{ $item->variant ?: 'Tanpa variasi' }} · {{ $item->quantity }}×</p>

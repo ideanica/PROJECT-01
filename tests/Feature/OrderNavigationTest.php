@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Member;
 use App\Models\MemberOrder;
+use App\Models\OrderItem;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\URL;
@@ -28,13 +29,19 @@ class OrderNavigationTest extends TestCase
     public function test_order_detail_returns_to_its_signed_source_including_filters(): void
     {
         $order = MemberOrder::factory()->create();
+        $order->batch->update(['batch_name' => 'Photocard Batch']);
+        OrderItem::factory()->create(['member_order_id' => $order->id, 'item_name' => 'Photocard Set']);
         $url = URL::temporarySignedRoute('tracking.order', now()->addMinutes(15), [
             'memberCode' => $order->member->member_code,
             'memberOrder' => $order,
             'return_to' => '/order-history?filter=active',
         ]);
 
-        $this->get($url)->assertOk()->assertViewHas('backUrl', '/order-history?filter=active');
+        $this->get($url)
+            ->assertOk()
+            ->assertViewHas('backUrl', '/order-history?filter=active')
+            ->assertSee(asset('assets/catalog-stock/photocard.jpg'))
+            ->assertSee('order-detail-item-photo');
         $this->get($url.'&return_to=//example.com')->assertForbidden();
     }
 
