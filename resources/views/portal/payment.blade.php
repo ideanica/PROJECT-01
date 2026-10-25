@@ -25,7 +25,7 @@
             @if($payable)
                 <section class="order-detail-panel order-payment-method customer-payment-card">
                     <div class="order-payment-method-content">
-                        <header class="payment-section-title"><span class="payment-section-title-icon"><x-public-icon variant="rounded-bold" name="wallet" :size="22" /></span><div><span>METODE PEMBAYARAN</span><h2>{{ $method?->name ?: 'QRIS' }}</h2></div></header>
+                        <header class="payment-section-title"><span class="payment-section-title-icon"><x-public-icon variant="rounded-bold" name="wallet" :size="22" /></span><div><span>METODE PEMBAYARAN</span><h2>{{ $method?->name ?: ($imageUrl ? 'QRIS' : 'QR Contoh') }}</h2></div></header>
                         @if($method?->account_name)<p class="order-payment-account"><span>Atas nama</span><strong>{{ $method->account_name }}</strong></p>@endif
                         @if($imageUrl)<div class="order-payment-qr"><img src="{{ $imageUrl }}" alt="Kode pembayaran {{ $method?->name ?: 'QRIS' }}" loading="lazy"></div>@endif
                         <dl class="payment-amount-summary">
@@ -38,7 +38,11 @@
                             <div class="payment-amount-due"><dt>{{ $pending ? 'Bukti menunggu verifikasi' : ($schedule && $schedule['type'] === 'dp' ? 'DP yang harus dibayar' : 'Yang harus dibayar sekarang') }}</dt><dd>{{ $formatMoney($pending?->amount ?? $amountDue) }}</dd></div>
                         </dl>
                         @if(!$method && !$imageUrl)
-                            <p class="payment-feedback">QRIS belum tersedia. Hubungi admin untuk informasi pembayaran.</p>
+                            <div class="order-payment-qr order-payment-qr-placeholder">
+                                <img src="{{ asset('assets/qr-placeholder.png') }}" alt="QR contoh, bukan kode pembayaran">
+                                <p>QR CONTOH · BUKAN UNTUK PEMBAYARAN</p>
+                            </div>
+                            <p class="payment-feedback"><strong>QRIS pembayaran belum diatur admin.</strong> Gambar di atas hanya placeholder dan tidak dapat digunakan untuk membayar. Hubungi admin untuk QRIS resmi OceanPaws.</p>
                         @elseif($owner)
                             <div class="payment-submission">
                                 <header class="payment-section-title"><span class="payment-section-title-icon"><x-public-icon variant="rounded-bold" name="document" :size="22" /></span><div><span>KONFIRMASI PEMBAYARAN</span><h2>Kirim bukti pembayaran</h2></div></header>

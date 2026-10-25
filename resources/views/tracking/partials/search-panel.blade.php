@@ -8,6 +8,8 @@
     --classic-button-shadow: #4d8156;
     --classic-paper: #fffaf1;
     --classic-pink: #f8b6cc;
+    --classic-search-card: #fff0f5;
+    --classic-search-shadow: #d58fa8;
     --classic-matcha: #96c88a;
     padding: 36px 0 140px;
     min-height: calc(100svh - 260px);
@@ -42,7 +44,7 @@
 .ocean-tracking .tracking-classic .tracking-neo-search-card {
     max-width: 760px; overflow: visible; padding: 24px 18px 20px;
     border: 2px solid var(--classic-outline); border-radius: 16px;
-    background: var(--classic-paper); box-shadow: var(--customer-shadow-card) var(--classic-card-shadow);
+    background: var(--classic-search-card); box-shadow: var(--customer-shadow-control) var(--classic-search-shadow);
 }
 .ocean-tracking .tracking-classic .tracking-neo-form {
     display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; padding: 0; margin: 0;
@@ -97,6 +99,7 @@
 html[data-customer-theme="dark"] .ocean-tracking .tracking-classic {
     --classic-ink: #e6f2e6; --classic-outline: #9dc5a4; --classic-paper: #284338; --classic-pink: #6a4050; --classic-matcha: #54784b;
     --classic-card-shadow: #081810; --classic-control-shadow: #081810; --classic-button-shadow: #081810;
+    --classic-search-card: #6a4050; --classic-search-shadow: #081810;
 }
 html[data-customer-theme="dark"] .ocean-tracking .tracking-classic .tracking-neo-hint { color: #e7efe7; }
 </style>

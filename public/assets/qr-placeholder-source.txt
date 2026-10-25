@@ -1,0 +1,1 @@
+Placeholder QR image generated from https://api.qrserver.com/ with text payload: QR CONTOH - BUKAN UNTUK PEMBAYARAN. Not a QRIS or payment destination.

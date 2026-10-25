@@ -175,6 +175,9 @@
 .order-payment-account > strong { color: var(--pv2-ink); }
 .order-payment-qr { margin-top: 14px; padding: 12px; border: 1px solid var(--pv2-outline, #496d54); border-radius: 10px; background: #fff; }
 .order-payment-method .order-payment-qr img { width: min(100%, 260px); margin: 0 auto; }
+.customer-payment-page .order-payment-qr-placeholder { border:2px dashed var(--pv2-outline); background:var(--pv2-cream); }
+.customer-payment-page .order-payment-qr-placeholder img { image-rendering:pixelated; }
+.customer-payment-page .order-payment-qr-placeholder > p { margin:10px 0 0; color:var(--pv2-pink-strong); font-size:10px; font-weight:900; letter-spacing:.06em; text-align:center; }
 .order-payment-instructions { margin-top: 14px; padding: 12px; border-radius: 10px; background: var(--pv2-mint); font-size: 12px; }
 .order-payment-method .order-payment-instructions p { margin-top: 5px; }
 .payment-submission { margin-top: 20px; border-top: 1px solid #dce4df; padding-top: 18px; }
