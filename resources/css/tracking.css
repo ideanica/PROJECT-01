@@ -200,15 +200,15 @@ html[data-customer-theme="dark"] body.ocean-tracking .tracking-neo-input-wrap in
 }
 .ocean-tracking .order-detail-page .order-detail-title-card .order-detail-hero-copy { align-self:center; padding:0; }
 .ocean-tracking .order-detail-page .order-detail-title-card .order-detail-hero-copy h1 {
-    margin:14px 0 0;
+    margin:10px 0 0;
     color:var(--pv2-ink) !important;
     font-family:var(--pv2-heading);
-    font-size:clamp(28px,4vw,46px);
+    font-size:clamp(27px,3.8vw,43px);
     font-weight:900;
     letter-spacing:normal;
     line-height:1.08;
 }
-.ocean-tracking .order-detail-page .order-detail-title-card .order-detail-hero-copy > p { margin:10px 0 0; font-size:13px; }
+.ocean-tracking .order-detail-page .order-detail-title-card .order-detail-hero-copy > p { margin:7px 0 0; font-size:12px; line-height:1.55; }
 .ocean-tracking .order-detail-page .order-detail-panel { margin-top:0; }
 .ocean-tracking .order-detail-page .order-detail-main-column,
 .ocean-tracking .order-detail-page .order-detail-side-column { gap:12px; }
@@ -429,7 +429,8 @@ html[data-customer-theme="dark"] body.ocean-tracking .tracking-neo-input-wrap in
 @media (max-width:700px) {
     .ocean-tracking .order-detail-page .order-detail-title-card { grid-template-columns:minmax(0,1fr); gap:16px; margin:17px 0 0; padding:14px; }
     .ocean-tracking .order-detail-page .order-detail-title-card .order-detail-cover { min-height:0; aspect-ratio:16 / 9; }
-    .ocean-tracking .order-detail-page .order-detail-title-card .order-detail-hero-copy h1 { margin-top:12px; font-size:clamp(27px,8vw,38px); }
+    .ocean-tracking .order-detail-page .order-detail-title-card .order-detail-hero-copy h1 { margin-top:8px; font-size:clamp(26px,7.5vw,36px); }
+    .ocean-tracking .order-detail-page .order-detail-title-card .order-detail-hero-copy > p { margin-top:6px; }
     .order-detail-side-column { grid-template-columns:minmax(0,1fr); }
     .order-detail-topbar { flex-wrap:wrap; gap:12px; margin-bottom:24px; }
     .ocean-tracking .order-detail-page .order-detail-topbar > a { min-height:44px; font-size:12px; }
