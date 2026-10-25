@@ -38,7 +38,7 @@
 }
 .ocean-tracking .tracking-classic .tracking-neo-heading h1 span {
     display: block; width: fit-content;
-    -webkit-text-stroke: 4px var(--classic-outline);
+    -webkit-text-stroke: 2px var(--classic-outline);
     paint-order: fill stroke;
 }
 .ocean-tracking .tracking-classic .tracking-neo-heading h1 span:first-child {
