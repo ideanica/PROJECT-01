@@ -2,6 +2,7 @@
     $checkoutUser = auth()->user();
     $checkoutMember = $checkoutUser?->role === 'customer' ? $checkoutUser->member : null;
     $selectedQuantities = collect(old('items', []))->keyBy(fn ($item) => $item['product_id'] ?? null);
+    $hasOldSelection = $selectedQuantities->contains(fn ($item) => (int) ($item['quantity'] ?? 0) > 0);
     $canCheckout = $checkoutUser?->role === 'customer'
         && $checkoutMember?->isAvailableForOrder()
         && $batch->has_payment_method
@@ -51,8 +52,17 @@
                                 <div class="catalog-detail-product-name"><span><x-public-icon variant="rounded-bold" name="box" :size="19" /></span><div><small>{{ $product->name }}</small><h3>{{ $product->variant ?: 'Varian standar' }}</h3></div></div>
                                 <dl class="catalog-detail-prices"><div><dt>DP · {{ number_format($dpPercentage, 2, ',', '.') }}%</dt><dd>Rp {{ number_format($dpPrice, fmod($dpPrice, 1) > 0 ? 2 : 0, ',', '.') }}</dd></div><div><dt>Lunas</dt><dd>Rp {{ number_format($fullPrice, fmod($fullPrice, 1) > 0 ? 2 : 0, ',', '.') }}</dd></div></dl>
                                 @if($canCheckout && $batch->catalog_is_open)
+                                    @php $quantity = max(0, min(50, (int) data_get($selectedQuantities->get($product->id), 'quantity', 0))); @endphp
                                     <input type="hidden" form="catalog-checkout" name="items[{{ $loop->index }}][product_id]" value="{{ $product->id }}">
-                                    <label class="catalog-checkout-quantity"><span>Jumlah</span><input form="catalog-checkout" type="number" name="items[{{ $loop->index }}][quantity]" value="{{ data_get($selectedQuantities->get($product->id), 'quantity', 0) }}" min="0" max="50" step="1" inputmode="numeric" data-checkout-quantity data-price-cents="{{ (int) round($fullPrice * 100) }}" aria-label="Jumlah {{ $product->name }} {{ $product->variant }}"></label>
+                                    <button class="catalog-version-select" type="button" data-select-version aria-pressed="{{ $quantity > 0 ? 'true' : 'false' }}">{{ $quantity > 0 ? 'Versi dipilih' : 'Pilih versi' }}</button>
+                                    <div class="catalog-checkout-quantity" data-quantity-control @if($quantity === 0) hidden @endif>
+                                        <span>Jumlah</span>
+                                        <div class="catalog-quantity-stepper">
+                                            <button type="button" data-quantity-minus aria-label="Kurangi jumlah {{ $product->name }} {{ $product->variant }}"><x-public-icon variant="rounded-bold" name="minus" :size="17" /></button>
+                                            <input form="catalog-checkout" type="number" name="items[{{ $loop->index }}][quantity]" value="{{ $quantity }}" min="0" max="50" step="1" inputmode="numeric" data-checkout-quantity data-price-cents="{{ (int) round($fullPrice * 100) }}" aria-label="Jumlah {{ $product->name }} {{ $product->variant }}">
+                                            <button type="button" data-quantity-plus aria-label="Tambah jumlah {{ $product->name }} {{ $product->variant }}"><x-public-icon variant="rounded-bold" name="plus" :size="17" /></button>
+                                        </div>
+                                    </div>
                                 @endif
                             </article>
                         @endforeach
@@ -64,7 +74,7 @@
 
             @if($batch->catalog_is_open && $batch->products->isNotEmpty())
                 @if($canCheckout)
-                    <form id="catalog-checkout" class="catalog-checkout-card" method="POST" action="{{ route('catalog.orders.store', $batch) }}" data-catalog-checkout data-dp-percentage="{{ $dpPercentage }}">
+                    <form id="catalog-checkout" class="catalog-detail-section catalog-checkout-card" method="POST" action="{{ route('catalog.orders.store', $batch) }}" data-catalog-checkout data-dp-percentage="{{ $dpPercentage }}" @if(!$hasOldSelection) hidden @endif>
                         @csrf
                         @if($errors->has('items') || $errors->has('batch') || $errors->has('payment_type') || $errors->has('ems_tax_amount') || $errors->has('account'))
                             <div class="catalog-checkout-error" role="alert">{{ $errors->first('items') ?: ($errors->first('batch') ?: ($errors->first('payment_type') ?: ($errors->first('ems_tax_amount') ?: $errors->first('account')))) }}</div>
@@ -99,7 +109,8 @@
     @if($canCheckout && $batch->catalog_is_open)
         <script>
             document.querySelectorAll('[data-catalog-checkout]').forEach((form) => {
-                const quantities = [...document.querySelectorAll('[data-checkout-quantity]')];
+                const detail = form.closest('.portal-catalog-detail-page');
+                const quantities = [...detail.querySelectorAll('[data-checkout-quantity]')];
                 const percentage = Number(form.dataset.dpPercentage || 0);
                 const totalOutput = form.querySelector('[data-checkout-total]');
                 const dpOutput = form.querySelector('[data-checkout-dp]');
@@ -114,7 +125,42 @@
                     dpOutput.textContent = formatMoney(dpCents);
                     dueOutput.textContent = formatMoney(isFull ? totalCents : dpCents);
                 };
-                quantities.forEach((input) => input.addEventListener('input', updateTotals));
+                const updateSelection = (input) => {
+                    const article = input.closest('.catalog-detail-product');
+                    const quantity = Math.max(0, Math.min(50, Number.parseInt(input.value || '0', 10) || 0));
+                    input.value = String(quantity);
+                    const selected = quantity > 0;
+                    const selectButton = article?.querySelector('[data-select-version]');
+                    const quantityControl = article?.querySelector('[data-quantity-control]');
+                    const wasSelected = selectButton?.getAttribute('aria-pressed') === 'true';
+                    if (selectButton) {
+                        selectButton.setAttribute('aria-pressed', String(selected));
+                        selectButton.textContent = selected ? 'Versi dipilih' : 'Pilih versi';
+                    }
+                    if (quantityControl) quantityControl.hidden = !selected;
+                    if (!selected && wasSelected && document.activeElement === quantityControl?.querySelector('button')) selectButton?.focus();
+                    const hasSelection = quantities.some((field) => Number.parseInt(field.value || '0', 10) > 0);
+                    form.hidden = !hasSelection;
+                    updateTotals();
+                };
+                quantities.forEach((input) => {
+                    input.addEventListener('input', () => updateSelection(input));
+                    updateSelection(input);
+                });
+                detail.querySelectorAll('[data-select-version]').forEach((button) => button.addEventListener('click', () => {
+                    const input = button.closest('.catalog-detail-product')?.querySelector('[data-checkout-quantity]');
+                    if (!input) return;
+                    if (Number(input.value) === 0) input.value = '1';
+                    updateSelection(input);
+                    button.closest('.catalog-detail-product')?.querySelector('[data-quantity-minus]')?.focus();
+                }));
+                detail.querySelectorAll('[data-quantity-minus], [data-quantity-plus]').forEach((button) => button.addEventListener('click', () => {
+                    const input = button.closest('.catalog-detail-product')?.querySelector('[data-checkout-quantity]');
+                    if (!input) return;
+                    const delta = button.hasAttribute('data-quantity-plus') ? 1 : -1;
+                    input.value = String(Math.max(0, Math.min(50, (Number.parseInt(input.value || '0', 10) || 0) + delta)));
+                    updateSelection(input);
+                }));
                 form.querySelectorAll('[data-checkout-payment-type]').forEach((input) => input.addEventListener('change', updateTotals));
                 form.addEventListener('submit', (event) => {
                     const hasItem = quantities.some((input) => Number.parseInt(input.value || '0', 10) > 0);
