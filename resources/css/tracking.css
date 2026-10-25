@@ -191,7 +191,7 @@ html[data-customer-theme="dark"] body.ocean-tracking .tracking-neo-input-wrap in
     line-height:1.08;
 }
 .ocean-tracking .order-detail-page .order-detail-title-card .order-detail-hero-copy > p { margin:10px 0 0; font-size:13px; }
-.ocean-tracking .order-detail-page .order-detail-panel { margin-top:0; }
+.ocean-tracking .order-detail-page .order-detail-panel { margin-top:13px; }
 .tracking-progress-summary { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; padding:0 18px 18px; margin:0; }
 .tracking-progress-summary > div { min-width:0; border:2px solid var(--pv2-outline); border-radius:12px; padding:14px; background:var(--pv2-mint); box-shadow:var(--customer-shadow-control) var(--pv2-mint-shadow); }
 .tracking-progress-summary dt { color:var(--pv2-text); font-size:11px; font-weight:700; }
