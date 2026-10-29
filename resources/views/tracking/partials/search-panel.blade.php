@@ -182,7 +182,7 @@ html[data-customer-theme="dark"] .ocean-tracking .tracking-classic .tracking-neo
                 <div class="tracking-result-layout">
                     <div class="tracking-result-main">
                         <div class="tracking-result-heading">
-                            <div><span>RINCIAN PESANAN</span><h3>Barang yang sedang dipantau</h3></div>
+                            <h3>Barang yang sedang dipantau</h3>
                             <strong>{{ $orderResult->items->sum('quantity') }} item</strong>
                         </div>
 

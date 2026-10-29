@@ -291,6 +291,8 @@ html[data-customer-theme="dark"] body.ocean-tracking .tracking-neo-input-wrap in
     background:var(--tracking-paper) !important;
     box-shadow:var(--customer-shadow-control) #eba4bc;
 }
+.ocean-tracking .tracking-result-card[data-smart-search-result="tracking"] .tracking-current-status small { color: var(--track-green); }
+.ocean-tracking .tracking-result-heading h3 { font-family: "Nunito Sans", sans-serif; font-size: 20px; font-weight: 900; letter-spacing: normal; }
 .ocean-tracking .tracking-result-items {
     gap:10px;
 }
