@@ -9314,6 +9314,8 @@ body.ocean-tracking .tracking-result-card:not(.tracking-history-card) .tracking-
 body.ocean-tracking .tracking-result-card:not(.tracking-history-card) .tracking-result-side {
     border-top: 1.5px dashed #8db29a !important;
     border-left: 0 !important;
+    /* The stacked layout needs room below the dashed rule before the summary card. */
+    padding-top: 16px !important;
 }
 
 @media (min-width: 901px) {
