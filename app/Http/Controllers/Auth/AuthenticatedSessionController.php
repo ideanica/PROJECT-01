@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -40,9 +41,34 @@ class AuthenticatedSessionController extends Controller
         $request->session()->put('login_at', now()->timestamp);
         $request->session()->put('auth_identity', Auth::user()->sessionIdentity());
 
-        $request->session()->forget('url.intended');
+        // The tracking result opens an order detail that requires the owner to
+        // sign in. Only that flow resumes its intended URL after login; every
+        // other login keeps landing on the profile or admin dashboard.
+        $intended = $request->session()->pull('url.intended');
 
-        return redirect()->route(Auth::user()->isAdmin() ? 'admin.dashboard' : 'profile.show');
+        return redirect()->to($this->postLoginDestination(Auth::user(), $intended));
+    }
+
+    private function postLoginDestination(User $user, mixed $intended): string
+    {
+        $default = route($user->isAdmin() ? 'admin.dashboard' : 'profile.show');
+
+        if ($user->isAdmin() || ! is_string($intended) || $intended === '') {
+            return $default;
+        }
+
+        $path = parse_url($intended, PHP_URL_PATH);
+
+        if (! is_string($path) || ! preg_match('#^/tracking/order/[^/]+$#', $path)) {
+            return $default;
+        }
+
+        // Keep the redirect inside this application instead of trusting the session value.
+        if (! str_starts_with($intended, rtrim(url('/'), '/').'/')) {
+            return $default;
+        }
+
+        return $intended;
     }
 
     public function destroy(Request $request)

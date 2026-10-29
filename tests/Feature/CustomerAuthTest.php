@@ -238,4 +238,24 @@ class CustomerAuthTest extends TestCase
         $this->get(route('admin.dashboard'))->assertForbidden();
         $this->post('/logout')->assertRedirect('/login');
     }
+
+    public function test_login_from_tracking_result_resumes_the_order_detail_instead_of_the_profile(): void
+    {
+        $member = Member::factory()->create();
+        $user = User::factory()->create(['role' => 'customer', 'member_id' => $member->id]);
+        $order = MemberOrder::factory()->create([
+            'member_id' => $member->id,
+            'order_code' => 'ORD-LOGIN-001',
+        ]);
+
+        // A guest opening the tracking detail is sent to login with that URL remembered.
+        $this->get(route('tracking.progress', $order->order_code))->assertRedirect(route('login'));
+
+        $this->post('/login', ['username' => $user->username, 'password' => 'password'])
+            ->assertRedirect(route('tracking.progress', $order->order_code));
+
+        $this->get(route('tracking.progress', $order->order_code))
+            ->assertOk()
+            ->assertSee('ORD-LOGIN-001');
+    }
 }

@@ -211,7 +211,7 @@ html[data-customer-theme="dark"] .ocean-tracking .tracking-classic .tracking-neo
                             <div><small>Total barang</small><strong>Rp {{ number_format($orderResult->total_amount, 0, ',', '.') }}</strong></div>
                             <x-order-ems-bill :order="$orderResult" />
                         </div>
-                        <a class="tracking-result-action" href="{{ URL::temporarySignedRoute('tracking.progress', now()->addMinutes(15), ['orderCode' => $orderResult->order_code]) }}">Lihat perjalanan lengkap <x-public-icon name="arrow-right" :size="15" /></a>
+                        <a class="tracking-result-action" href="{{ route('tracking.progress', $orderResult->order_code) }}">Lihat perjalanan lengkap <x-public-icon name="arrow-right" :size="15" /></a>
                     </aside>
                 </div>
 

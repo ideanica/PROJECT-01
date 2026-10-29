@@ -44,7 +44,7 @@ Route::get('/order-history', [CustomerPortalController::class, 'history'])->name
 Route::get('/tracking', [MemberTrackingController::class, 'index'])->name('tracking.index');
 Route::post('/search', [MemberTrackingController::class, 'smartLookup'])->middleware('throttle:10,1')->name('tracking.search');
 Route::post('/tracking', [MemberTrackingController::class, 'lookup'])->middleware('throttle:10,1')->name('tracking.lookup');
-Route::get('/tracking/order/{orderCode}', [MemberTrackingController::class, 'progress'])->middleware(['signed', 'throttle:30,1'])->name('tracking.progress');
+Route::get('/tracking/order/{orderCode}', [MemberTrackingController::class, 'progress'])->middleware(['auth', 'throttle:30,1'])->name('tracking.progress');
 Route::post('/history', [MemberTrackingController::class, 'historyLookup'])->middleware('throttle:10,1')->name('tracking.history.lookup');
 Route::get('/history/{memberCode}', [MemberTrackingController::class, 'member'])->middleware(['signed', 'throttle:30,1'])->name('tracking.member');
 Route::get('/history/{memberCode}/orders/{memberOrder}', [MemberTrackingController::class, 'order'])->middleware(['signed', 'throttle:30,1'])->name('tracking.order');

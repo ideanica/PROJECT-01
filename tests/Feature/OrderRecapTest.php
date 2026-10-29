@@ -557,21 +557,32 @@ class OrderRecapTest extends TestCase
         $this->get($url)->assertForbidden();
     }
 
-    public function test_public_can_track_one_order_with_order_code(): void
+    public function test_order_journey_detail_requires_the_owner_to_sign_in(): void
     {
         $order = MemberOrder::factory()->create(['order_code' => 'ORD-PUBLIC-001']);
         OrderItem::factory()->create(['member_order_id' => $order->id, 'item_name' => 'NCT Wish Album']);
 
         $response = $this->post(route('tracking.lookup'), ['lookup' => 'ORD-PUBLIC-001'])
             ->assertRedirect();
-        $signedUrl = $response->headers->get('Location');
-        $this->assertStringContainsString('signature=', $signedUrl);
+        $detailUrl = $response->headers->get('Location');
+        $this->assertStringContainsString('/tracking/order/ORD-PUBLIC-001', $detailUrl);
+        $this->assertStringNotContainsString('signature=', $detailUrl);
 
-        $this->get($signedUrl)
+        // The full journey lives in the customer's account, so guests must sign in first.
+        $this->get($detailUrl)->assertRedirect(route('login'));
+
+        $owner = User::factory()->create(['role' => User::ROLE_CUSTOMER, 'member_id' => $order->member_id]);
+        $this->actingAs($owner)->get($detailUrl)
             ->assertOk()
             ->assertSee('ORD-PUBLIC-001')
             ->assertSee('NCT Wish Album')
             ->assertDontSee($order->member->email);
+
+        $otherCustomer = User::factory()->create([
+            'role' => User::ROLE_CUSTOMER,
+            'member_id' => Member::factory()->create()->id,
+        ]);
+        $this->actingAs($otherCustomer)->get($detailUrl)->assertForbidden();
     }
 
     public function test_smart_search_shows_tracking_result_inline_for_order_code(): void
@@ -1201,12 +1212,10 @@ class OrderRecapTest extends TestCase
             ->assertDontSee('Selesai (Refund)')
             ->assertDontSee('Batch Tetap Berjalan Setelah Refund');
 
-        $trackingUrl = URL::temporarySignedRoute('tracking.progress', now()->addMinutes(15), [
-            'orderCode' => $order->order_code,
-        ]);
-        $this->get($trackingUrl)
+        $owner = User::factory()->create(['role' => User::ROLE_CUSTOMER, 'member_id' => $order->member_id]);
+        $this->actingAs($owner)->get(route('tracking.progress', $order->order_code))
             ->assertOk()
-            ->assertSee('Status terkini')
+            ->assertSee('Timeline status')
             ->assertSee('Selesai')
             ->assertDontSee('Selesai (Refund)')
             ->assertDontSee('Batch Tetap Berjalan Setelah Refund');
@@ -1255,11 +1264,11 @@ class OrderRecapTest extends TestCase
         $this->assertDatabaseMissing('products', ['name' => 'Tidak Boleh Dibuat']);
     }
 
-    public function test_public_detail_urls_require_signatures_and_sensitive_responses_are_not_cached(): void
+    public function test_order_journey_detail_requires_login_and_sensitive_responses_are_not_cached(): void
     {
         $order = MemberOrder::factory()->create(['order_code' => 'ORD-SECURE-001']);
 
-        $this->get(route('tracking.progress', $order->order_code))->assertForbidden();
+        $this->get(route('tracking.progress', $order->order_code))->assertRedirect(route('login'));
 
         $response = $this->post(route('tracking.search'), ['query' => $order->order_code])
             ->assertOk()
@@ -1267,7 +1276,8 @@ class OrderRecapTest extends TestCase
             ->assertHeader('X-Frame-Options', 'DENY')
             ->assertHeader('X-Content-Type-Options', 'nosniff');
 
-        $response->assertSee('signature=', false);
+        $response->assertSee(route('tracking.progress', $order->order_code, false), false);
+        $response->assertDontSee('signature=', false);
     }
 
     public function test_production_https_setting_redirects_plain_http_requests(): void

@@ -90,14 +90,10 @@ class MemberTrackingController extends Controller
             return back()->withErrors(['lookup' => 'Kode pesanan tidak ditemukan. Periksa kembali kode dari admin.'])->onlyInput('lookup');
         }
 
-        return new RedirectResponse(URL::temporarySignedRoute(
-            'tracking.progress',
-            now()->addMinutes(15),
-            ['orderCode' => $order->order_code]
-        ), 303);
+        return new RedirectResponse(route('tracking.progress', ['orderCode' => $order->order_code]), 303);
     }
 
-    public function progress(string $orderCode)
+    public function progress(Request $request, string $orderCode)
     {
         $order = MemberOrder::query()
             ->where('order_code', $orderCode)
@@ -105,10 +101,13 @@ class MemberTrackingController extends Controller
             ->with($this->trackingRelations(true))
             ->firstOrFail();
 
-        return view('tracking.progress', [
-            'order' => $order,
-            'timeline' => $this->timelineFor($order),
-        ]);
+        $member = $request->user()?->member;
+
+        // The full journey belongs to the order detail in the customer's own
+        // order list, so only the owner may open it.
+        abort_unless($member && $order->member_id === $member->id, 403);
+
+        return $this->orderDetailView($order, $member, route('tracking.index'));
     }
 
     public function historyLookup(MemberHistoryLookupRequest $request)
@@ -156,11 +155,16 @@ class MemberTrackingController extends Controller
 
         $memberOrder->load($this->trackingRelations(true));
 
+        return $this->orderDetailView($memberOrder, $member, $this->orderBackUrl($request));
+    }
+
+    private function orderDetailView(MemberOrder $order, Member $member, string $backUrl)
+    {
         return view('tracking.order', [
             'member' => $member,
-            'order' => $memberOrder,
-            'timeline' => $this->timelineFor($memberOrder),
-            'backUrl' => $this->orderBackUrl($request),
+            'order' => $order,
+            'timeline' => $this->timelineFor($order),
+            'backUrl' => $backUrl,
         ]);
     }
 

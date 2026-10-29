@@ -125,16 +125,16 @@ class OperationalRecordingTest extends TestCase
     public function test_tracking_progress_shows_shipment_group_and_resi(): void
     {
         $member = Member::factory()->create(['is_active' => true]);
+        $user = User::factory()->create(['role' => User::ROLE_CUSTOMER, 'member_id' => $member->id]);
         $batch = Batch::factory()->create();
         $order = MemberOrder::factory()->create(['member_id' => $member->id, 'batch_id' => $batch->id, 'go_number' => '7']);
         $shipment = ShipmentGroup::create(['batch_id' => $batch->id, 'name' => 'Handcarry Seoul', 'method' => 'handcarry', 'tracking_number' => 'HC-9981']);
         OrderItem::factory()->create(['member_order_id' => $order->id, 'shipment_group_id' => $shipment->id]);
 
-        $url = \Illuminate\Support\Facades\URL::temporarySignedRoute('tracking.progress', now()->addMinutes(10), ['orderCode' => $order->order_code]);
-        $response = $this->get($url);
+        $response = $this->actingAs($user)->get(route('tracking.progress', $order->order_code));
 
         $response->assertOk();
-        $response->assertSee('GO 7');
+        $response->assertSee($order->order_code);
         $response->assertSee('Handcarry Seoul');
         $response->assertSee('HC-9981');
     }
