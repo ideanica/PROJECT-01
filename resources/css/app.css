@@ -9049,8 +9049,8 @@ html[data-customer-theme="dark"] .ocean-tracking .tracking-result-side {
     background-size: 220% 100%;
     background-position: 130% 0;
     mix-blend-mode: screen;
-    -webkit-mask: url('/assets/oceanpaws-logo-no-sticker.png') center/contain no-repeat;
-    mask: url('/assets/oceanpaws-logo-no-sticker.png') center/contain no-repeat;
+    -webkit-mask: url('/assets/IMG_8321.PNG') center/contain no-repeat;
+    mask: url('/assets/IMG_8321.PNG') center/contain no-repeat;
     animation: ocean-primary-navbar-logo-glint 10s linear infinite;
 }
 
@@ -9136,7 +9136,7 @@ html[data-customer-theme="dark"] .ocean-tracking .tracking-result-side {
     }
 
     .ocean-primary-navbar__brand img {
-        width: clamp(165px, 19vw, 205px);
+        width: clamp(150px, 18vw, 190px);
     }
 
     .ocean-primary-navbar__links {
@@ -9177,7 +9177,7 @@ html[data-customer-theme="dark"] .ocean-tracking .tracking-result-side {
     }
 
     .ocean-primary-navbar__brand img {
-        width: clamp(92px, 22vw, 116px);
+        width: clamp(80px, 20vw, 110px);
     }
 
     .ocean-primary-navbar__links {
@@ -9212,7 +9212,7 @@ html[data-customer-theme="dark"] .ocean-tracking .tracking-result-side {
     }
 
     .ocean-primary-navbar__brand img {
-        width: clamp(82px, 21vw, 94px);
+        width: clamp(75px, 19vw, 90px);
     }
 
     .ocean-primary-navbar__links {
@@ -9377,7 +9377,7 @@ body.ocean-tracking .tracking-result-card:not(.tracking-history-card) .tracking-
     }
 
     .ocean-primary-navbar__brand img {
-        width: clamp(96px, 28vw, 124px);
+        width: clamp(90px, 25vw, 115px);
     }
 
     .ocean-primary-navbar > .ocean-primary-navbar__links {
