@@ -4784,7 +4784,7 @@
   padding:16px 17px 10px;
   border:1.5px solid #684f48;
   border-radius:8px;
-  background:#FEF7EA;
+  background:#ffffff;
 }
 .op-copy-main>small{font:700 10px/1.2 monospace;color:#684f48}
 .op-window-dots i{
@@ -5724,7 +5724,7 @@
     border-color: #684f48;
     border-width: .16cqw;
     border-radius: .95cqw;
-    background: #FEF7EA;
+    background: #ffffff;
   }
 
   .op-copy-window-back::before {
