@@ -6,7 +6,7 @@
         'login' => '<rect x="12" y="3" width="9" height="18" rx="3"/><path d="M3 12h12m-4-4 4 4-4 4"/>',
         'search' => '<circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/>',
         'home' => '<path d="m4.4 10.2 6.3-5.6a2 2 0 0 1 2.6 0l6.3 5.6a2 2 0 0 1 .7 1.5V18a3 3 0 0 1-3 3H6.7a3 3 0 0 1-3-3v-6.3a2 2 0 0 1 .7-1.5Z"/><path d="M9 21v-6a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v6"/>',
-        'user' => '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="9" r="3" fill="var(--portal-icon-fill-pink, #ffc4d9)"/><path d="M5.5 18a7 7 0 0 1 13 0"/>',
+        'user' => '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="9" r="3" fill="var(--portal-icon-fill-pink, #f9e7c7)"/><path d="M5.5 18a7 7 0 0 1 13 0"/>',
         'menu' => '<rect x="3" y="3" width="18" height="18" rx="5"/><path d="M7 8h10M7 12h10M7 16h6"/>',
         'arrow-forward' => '<path d="M4 10h9V6l7 6-7 6v-4H4a2 2 0 0 1 0-4Z"/>',
         'bag' => '<path d="M7 8h10a2 2 0 0 1 2 2l-.7 8a3 3 0 0 1-3 3H8.7a3 3 0 0 1-3-3L5 10a2 2 0 0 1 2-2Z"/><path d="M9 9V6a3 3 0 0 1 6 0v3"/>',
@@ -18,8 +18,8 @@
         'document' => '<path d="M13 3H7a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V10a3 3 0 0 0-.9-2.1l-4-4A3 3 0 0 0 13 3Z"/><path d="M13 3v5a2 2 0 0 0 2 2h5M8 14h8M8 17h5"/>',
         'calendar' => '<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18M8 14h2M14 14h2M8 17h2"/>',
         'sparkle' => '<path d="M12 3c1.2 5.2 2.8 6.8 8 8-5.2 1.2-6.8 2.8-8 8-1.2-5.2-2.8-6.8-8-8 5.2-1.2 6.8-2.8 8-8ZM20 18v4M18 20h4"/>',
-        'history' => '<circle cx="12" cy="12" r="9" stroke="none" fill="var(--portal-icon-fill-mint, #bce3cf)"/><path d="M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5M12 7v5l3 2"/>',
-        'check-circle' => '<circle cx="12" cy="12" r="9" fill="var(--portal-icon-fill-mint, #bce3cf)"/><path d="m8 12 2.5 2.5L16 9"/>',
+        'history' => '<circle cx="12" cy="12" r="9" stroke="none" fill="var(--portal-icon-fill-mint, #ccd6d6)"/><path d="M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5M12 7v5l3 2"/>',
+        'check-circle' => '<circle cx="12" cy="12" r="9" fill="var(--portal-icon-fill-mint, #ccd6d6)"/><path d="m8 12 2.5 2.5L16 9"/>',
     ];
     $iconFills = [
         'bag' => 'pink', 'card' => 'pink', 'wallet' => 'mint',
@@ -27,21 +27,21 @@
         'login' => 'pink', 'search' => 'mint', 'home' => 'pink',
         'user' => 'mint', 'menu' => 'pink', 'arrow-forward' => 'cream',
     ];
-    $fillFallbacks = ['pink' => '#ffc4d9', 'mint' => '#bce3cf', 'cream' => '#ffe5a8'];
+    $fillFallbacks = ['pink' => '#f9e7c7', 'mint' => '#ccd6d6', 'cream' => '#ccd6d6'];
     if ($roundedBold && isset($iconFills[$name])) {
         $fill = $iconFills[$name];
         $roundedPaths[$name] = preg_replace('/<(path|rect) /', '<$1 fill="var(--portal-icon-fill-'.$fill.', '.$fillFallbacks[$fill].')" ', $roundedPaths[$name], 1);
     }
     if ($roundedBold && $name === 'grid') {
-        $roundedPaths[$name] = str_replace('<rect ', '<rect fill="var(--portal-icon-fill-pink, #ffc4d9)" ', $roundedPaths[$name]);
+        $roundedPaths[$name] = str_replace('<rect ', '<rect fill="var(--portal-icon-fill-pink, #f9e7c7)" ', $roundedPaths[$name]);
     }
 @endphp
 
 <svg {{ $attributes->merge(['class' => 'public-icon'.($roundedBold ? ' public-icon-rounded-bold' : '')]) }} width="{{ $size }}" height="{{ $size }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="{{ $roundedBold ? '2.6' : '1.8' }}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
     @if($roundedBold && isset($roundedPaths[$name]))
         @if($name === 'truck')
-            <path d="M3 17V7a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v10Z" fill="var(--portal-icon-fill-mint, #bce3cf)" stroke="none"/>
-            <path d="M15 9h2.6a2 2 0 0 1 1.6.8l2.4 3.2a2 2 0 0 1 .4 1.2V17h-7Z" fill="var(--portal-icon-fill-cream, #ffe5a8)" stroke="none"/>
+            <path d="M3 17V7a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v10Z" fill="var(--portal-icon-fill-mint, #ccd6d6)" stroke="none"/>
+            <path d="M15 9h2.6a2 2 0 0 1 1.6.8l2.4 3.2a2 2 0 0 1 .4 1.2V17h-7Z" fill="var(--portal-icon-fill-cream, #ccd6d6)" stroke="none"/>
         @endif
         {!! $roundedPaths[$name] !!}
     @else

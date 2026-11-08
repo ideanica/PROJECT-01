@@ -1,17 +1,17 @@
 <style>
     html[data-customer-theme="dark"] body.ocean-profile {
-        --profile-ink: #edf6ef;
-        --profile-outline: #78977f;
-        --profile-pink: #563642;
-        --profile-pink-strong: #ef86a3;
-        --profile-mint: #31483a;
-        --profile-paper: #1b3027;
-        --profile-muted: #aec0b4;
+        --profile-ink: #d6e9ed;
+        --profile-outline: #684f48;
+        --profile-pink: #684f48;
+        --profile-pink-strong: #ccd6d6;
+        --profile-mint: #684f48;
+        --profile-paper: #684f48;
+        --profile-muted: #684f48;
         color-scheme: dark;
         background:
-            linear-gradient(rgba(151,181,159,.055) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(151,181,159,.055) 1px, transparent 1px),
-            #12251e;
+            linear-gradient(rgba(104, 79, 72, .055) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(104, 79, 72, .055) 1px, transparent 1px),
+            #684f48;
         background-size: 42px 42px;
         color: var(--profile-ink);
     }
@@ -24,49 +24,49 @@
     }
 
     html[data-customer-theme="dark"] .profile-site-header .op-browser {
-        border-color: #78977f;
-        background: #1b3027;
-        box-shadow: var(--customer-shadow-control) #081810;
+        border-color: #684f48;
+        background: #684f48;
+        box-shadow: var(--customer-shadow-control) #684f48;
     }
 
     html[data-customer-theme="dark"] .profile-site-header .op-browserbar {
-        border-bottom-color: #78977f;
-        background: #2b4336;
-        color: #dce9df;
+        border-bottom-color: #684f48;
+        background: #684f48;
+        color: #d6e9ed;
     }
 
     html[data-customer-theme="dark"] .profile-site-header .op-navrow {
-        background: #1b3027;
+        background: #684f48;
     }
 
     html[data-customer-theme="dark"] .profile-site-header .op-nav a,
     html[data-customer-theme="dark"] .profile-site-header .op-nav a i {
-        color: #c4d4c9;
+        color: #ccd6d6;
     }
 
     html[data-customer-theme="dark"] .profile-site-header .op-nav a:hover,
     html[data-customer-theme="dark"] .profile-site-header .op-nav a.is-active,
     html[data-customer-theme="dark"] .profile-site-header .op-nav a.is-active i {
-        color: #f08aa5;
+        color: #ccd6d6;
     }
 
     html[data-customer-theme="dark"] .profile-site-header .op-nav a.is-active::after {
-        background: #f08aa5;
+        background: #ccd6d6;
     }
 
     html[data-customer-theme="dark"] .ocean-profile .profile-main,
     html[data-customer-theme="dark"] .ocean-profile .section-card,
     html[data-customer-theme="dark"] .ocean-profile .calendar-card,
     html[data-customer-theme="dark"] .ocean-profile .profile-snack-card {
-        border-color: #78977f !important;
-        background: #1b3027 !important;
-        color: #edf6ef !important;
-        box-shadow: var(--customer-shadow-card) #081810 !important;
+        border-color: #684f48 !important;
+        background: #684f48 !important;
+        color: #d6e9ed !important;
+        box-shadow: var(--customer-shadow-card) #684f48 !important;
     }
 
     html[data-customer-theme="dark"] .ocean-profile .profile-top {
-        border-color: #78977f;
-        background: #4d303a;
+        border-color: #684f48;
+        background: #684f48;
     }
 
     html[data-customer-theme="dark"] .ocean-profile .profile-person strong,
@@ -75,45 +75,45 @@
     html[data-customer-theme="dark"] .ocean-profile .profile-snack-heading h2,
     html[data-customer-theme="dark"] .ocean-profile .profile-snack-name,
     html[data-customer-theme="dark"] .ocean-profile .calendar-title strong {
-        color: #edf6ef !important;
+        color: #d6e9ed !important;
     }
 
     html[data-customer-theme="dark"] .ocean-profile .profile-photo,
     html[data-customer-theme="dark"] .ocean-profile .settings-btn {
-        border-color: #78977f !important;
-        background: #20382e !important;
-        color: #edf6ef !important;
-        box-shadow: var(--customer-shadow-control) #081810 !important;
+        border-color: #684f48 !important;
+        background: #684f48 !important;
+        color: #d6e9ed !important;
+        box-shadow: var(--customer-shadow-control) #684f48 !important;
     }
 
     html[data-customer-theme="dark"] .ocean-profile .member-pill {
-        border-color: #ad6078;
-        background: #3f2b33;
-        color: #f2a0b6 !important;
-        box-shadow: var(--customer-shadow-control) #081810;
+        border-color: #684f48;
+        background: #684f48;
+        color: #ccd6d6 !important;
+        box-shadow: var(--customer-shadow-control) #684f48;
     }
 
     html[data-customer-theme="dark"] .ocean-profile .profile-settings-panel {
-        border-color: #78977f;
-        background: #182d24;
-        box-shadow: var(--customer-shadow-card) #081810;
+        border-color: #684f48;
+        background: #684f48;
+        box-shadow: var(--customer-shadow-card) #684f48;
     }
 
     html[data-customer-theme="dark"] .ocean-profile .profile-settings-panel > header strong,
     html[data-customer-theme="dark"] .ocean-profile .profile-preference-copy strong {
-        color: #edf6ef;
+        color: #d6e9ed;
     }
 
     html[data-customer-theme="dark"] .ocean-profile .profile-settings-panel > header button,
     html[data-customer-theme="dark"] .ocean-profile .profile-preference-icon {
-        border-color: #78977f;
-        background: #4d303a;
-        color: #f08aa5;
+        border-color: #684f48;
+        background: #684f48;
+        color: #ccd6d6;
     }
 
     html[data-customer-theme="dark"] .ocean-profile .profile-preference-card {
-        border-color: #557863;
-        background: #20382e;
+        border-color: #684f48;
+        background: #684f48;
     }
 
     html[data-customer-theme="dark"] .ocean-profile .profile-preference-copy small,
@@ -123,77 +123,76 @@
     html[data-customer-theme="dark"] .ocean-profile .profile-snack-date,
     html[data-customer-theme="dark"] .ocean-profile .chart-month-labels,
     html[data-customer-theme="dark"] .ocean-profile .profile-line-chart .chart-y {
-        color: #aec0b4 !important;
+        color: #684f48 !important;
     }
 
     html[data-customer-theme="dark"] .ocean-profile .profile-order-hub .order-link {
-        border-color: #78977f;
-        background: #3f2b33;
-        box-shadow: var(--customer-shadow-control) #081810;
+        border-color: #684f48;
+        background: #684f48;
+        box-shadow: var(--customer-shadow-control) #684f48;
     }
 
     html[data-customer-theme="dark"] .ocean-profile .profile-order-hub .order-link:nth-child(2) {
-        background: #263c30;
-        box-shadow: var(--customer-shadow-control) #081810;
+        background: #684f48;
+        box-shadow: var(--customer-shadow-control) #684f48;
     }
 
     html[data-customer-theme="dark"] .ocean-profile .order-link small {
-        color: #edf6ef;
+        color: #d6e9ed;
     }
 
-    html[data-customer-theme="dark"] .ocean-profile .profile-catalog-link { background: var(--profile-pink) !important; }
     html[data-customer-theme="dark"] .ocean-profile .activity-head {
-        border-color: #78977f !important;
-        background: #263c30;
+        border-color: #684f48 !important;
+        background: #684f48;
     }
 
     html[data-customer-theme="dark"] .ocean-profile .activity-summary,
     html[data-customer-theme="dark"] .ocean-profile .chart-area {
-        border-color: #78977f !important;
-        background: #1b3027 !important;
+        border-color: #684f48 !important;
+        background: #684f48 !important;
     }
 
     html[data-customer-theme="dark"] .ocean-profile .metric-card {
-        border-color: #668a70 !important;
-        background: #34282d !important;
-        box-shadow: var(--customer-shadow-control) #081810;
+        border-color: #684f48 !important;
+        background: #684f48 !important;
+        box-shadow: var(--customer-shadow-control) #684f48;
     }
 
     html[data-customer-theme="dark"] .ocean-profile .metric-card:nth-child(even) {
-        background: #24382c !important;
-        box-shadow: var(--customer-shadow-control) #081810;
+        background: #684f48 !important;
+        box-shadow: var(--customer-shadow-control) #684f48;
     }
 
     html[data-customer-theme="dark"] .ocean-profile .chart-profile-total,
     html[data-customer-theme="dark"] .ocean-profile .profile-snack-count {
-        border-color: #ad6078;
-        background: #462f38;
-        color: #f08aa5;
+        border-color: #684f48;
+        background: #684f48;
+        color: #ccd6d6;
     }
 
     html[data-customer-theme="dark"] .ocean-profile .chart-line-plot {
-        background: repeating-linear-gradient(to bottom, transparent 0, transparent 49px, rgba(174,192,180,.18) 50px, transparent 51px);
+        background: repeating-linear-gradient(to bottom, transparent 0, transparent 49px, rgba(104, 79, 72, .18) 50px, transparent 51px);
     }
 
     html[data-customer-theme="dark"] .ocean-profile .chart-line-point {
-        border-color: #1b3027;
-        background: #ed7697;
-        box-shadow: 0 0 0 1.5px #ad6078;
+        border-color: #684f48;
+        background: #684f48;
+        box-shadow: 0 0 0 1.5px #684f48;
     }
 
     html[data-customer-theme="dark"] .ocean-profile .profile-snack-heading {
-        border-color: #668a70;
+        border-color: #684f48;
     }
 
     html[data-customer-theme="dark"] .ocean-profile .profile-snack-list li {
-        border-color: #557863;
-        background: #20382e;
+        border-color: #684f48;
+        background: #684f48;
     }
 
     html[data-customer-theme="dark"] .ocean-profile .calendar-card,
     html[data-customer-theme="dark"] .ocean-profile .calendar-grid,
     html[data-customer-theme="dark"] .ocean-profile .weekdays {
-        color: #dce9df;
+        color: #d6e9ed;
     }
 </style>
 

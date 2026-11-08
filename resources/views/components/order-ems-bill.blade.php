@@ -22,7 +22,7 @@
         @if($showStatusBadge)
             <x-status-badge class="order-ems-bill-status"
                 :label="$order->has_ems_tax_bill ? match($order->ems_tax_status) { 'paid' => 'Lunas', 'unpaid' => 'Perlu dibayar', default => 'Draft' } : 'Belum ada'"
-                :color="match($order->ems_tax_status) { 'paid' => '#bbf7d0', 'unpaid' => '#fef08a', default => '#e4e4e7' }" />
+                :color="match($order->ems_tax_status) { 'paid' => '#ccd6d6', 'unpaid' => '#ccd6d6', default => '#ccd6d6' }" />
         @endif
     </aside>
 @endif

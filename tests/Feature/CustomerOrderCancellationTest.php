@@ -112,13 +112,13 @@ class CustomerOrderCancellationTest extends TestCase
         $this->assertFalse($order->fresh()->has_outstanding_ems_tax);
     }
 
-    public function test_catalog_order_payment_page_returns_to_its_batch_detail(): void
+    public function test_legacy_catalog_order_payment_page_returns_to_billing(): void
     {
-        [$customer, , $batch, $order] = $this->setupCustomerOrder();
+        [$customer, , , $order] = $this->setupCustomerOrder();
 
         $this->actingAs($customer)->get(route('billing.payments.show', [$order, 'order']))
             ->assertOk()
-            ->assertSee('Kembali ke detail batch')
-            ->assertSee('href="'.route('catalog.show', $batch).'"', false);
+            ->assertSee('Kembali ke tagihan')
+            ->assertSee('href="'.route('billing.index').'"', false);
     }
 }

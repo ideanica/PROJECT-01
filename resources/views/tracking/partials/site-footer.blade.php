@@ -8,8 +8,8 @@
         min-height:183px;
         overflow:hidden;
         border:0;
-        background:#f7f3e9 url('{{ asset('assets/oceanpaws-footer-reference-bg-v1.png') }}') center 40%/100% 136% no-repeat;
-        color:#315d48;
+        background:#f9e7c7 url('{{ asset('assets/oceanpaws-footer-reference-bg-v1.png') }}') center 40%/100% 136% no-repeat;
+        color:#684f48;
         font-family:"Nunito Sans",sans-serif;
     }
     .ocean-tracking .op-footer-reference::before{content:none}
@@ -67,7 +67,7 @@
         align-items:center;
         justify-content:center;
         flex-direction:row;
-        color:#f8fff8;
+        color:#ffffff;
         text-align:center;
         font:400 10px/1.2 ui-monospace,"Courier New",monospace;
         letter-spacing:0;
@@ -160,7 +160,7 @@
             width:100%;
             align-items:center;
             justify-content:center;
-            color:#f8fff8;
+            color:#ffffff;
             font-size:8px;
             text-align:center;
         }
@@ -174,8 +174,8 @@
             height:72%;
             pointer-events:none;
             background-image:
-                linear-gradient(rgba(211,190,151,.075) 1px,transparent 1px),
-                linear-gradient(90deg,rgba(211,190,151,.075) 1px,transparent 1px);
+                linear-gradient(rgba(104, 79, 72, .075) 1px,transparent 1px),
+                linear-gradient(90deg,rgba(104, 79, 72, .075) 1px,transparent 1px);
             background-size:38px 38px;
             background-position:0 0;
         }
@@ -210,9 +210,9 @@
         height:29%;
         pointer-events:none;
         background:
-            linear-gradient(rgba(189,221,194,.07) 1px,transparent 1px),
-            linear-gradient(90deg,rgba(189,221,194,.07) 1px,transparent 1px),
-            #20382e;
+            linear-gradient(rgba(104, 79, 72, .07) 1px,transparent 1px),
+            linear-gradient(90deg,rgba(104, 79, 72, .07) 1px,transparent 1px),
+            #684f48;
         background-size:42px 42px;
         background-position:0 0;
         clip-path:polygon(

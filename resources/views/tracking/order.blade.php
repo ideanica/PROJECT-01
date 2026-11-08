@@ -17,13 +17,13 @@
         <div class="order-detail-shell">
             <div class="order-detail-topbar">
                 <a class="portal-v2-back" href="{{ $backUrl }}" aria-label="Kembali ke halaman sebelumnya"><x-public-icon variant="rounded-bold" name="arrow-left" :size="18" /><span>Kembali</span></a>
-                <a href="{{ route('profile.show') }}" class="public-account-chip portal-v2-account-chip order-detail-topbar-profile" aria-label="Profil {{ $member->display_name }}" style="display:inline-flex;width:auto;height:42px;min-height:42px;align-items:center;gap:9px;border:2px solid #355a45;border-radius:12px;padding:5px;background:#fffdf8;color:#355a45;box-shadow:var(--customer-shadow-control) #eba4bc;text-decoration:none;">
+                <a href="{{ route('profile.show') }}" class="public-account-chip portal-v2-account-chip order-detail-topbar-profile" aria-label="Profil {{ $member->display_name }}" style="display:inline-flex;width:auto;height:42px;min-height:42px;align-items:center;gap:9px;border:2px solid #684f48;border-radius:12px;padding:5px;background:#f9e7c7;color:#684f48;box-shadow:var(--customer-shadow-control) #ccd6d6;text-decoration:none;">
                     @if($member->avatar_url)
-                        <img src="{{ $member->avatar_url }}" alt="Foto profil {{ $member->display_name }}" style="width:28px;height:28px;flex:0 0 28px;border:2px solid #355a45;border-radius:9px;background:#f8d5df;object-fit:cover;box-shadow:var(--customer-shadow-pressed) #eba4bc;">
+                        <img src="{{ $member->avatar_url }}" alt="Foto profil {{ $member->display_name }}" style="width:28px;height:28px;flex:0 0 28px;border:2px solid #684f48;border-radius:9px;background:#f9e7c7;object-fit:cover;box-shadow:var(--customer-shadow-pressed) #ccd6d6;">
                     @else
-                        <span aria-hidden="true" style="display:grid;width:28px;height:28px;flex:0 0 28px;place-items:center;border:2px solid #355a45;border-radius:9px;background:#f8d5df;color:#355a45;font-size:10px;font-weight:900;box-shadow:var(--customer-shadow-pressed) #eba4bc;">{{ mb_strtoupper(mb_substr($member->display_name, 0, 1)) }}</span>
+                        <span aria-hidden="true" style="display:grid;width:28px;height:28px;flex:0 0 28px;place-items:center;border:2px solid #684f48;border-radius:9px;background:#f9e7c7;color:#684f48;font-size:10px;font-weight:900;box-shadow:var(--customer-shadow-pressed) #ccd6d6;">{{ mb_strtoupper(mb_substr($member->display_name, 0, 1)) }}</span>
                     @endif
-                    <strong style="color:#355a45;font-family:'Trebuchet MS',Arial,system-ui,sans-serif;font-size:10px;font-weight:900;line-height:1;">{{ $member->display_name }}</strong>
+                    <strong style="color:#684f48;font-family:'Trebuchet MS',Arial,system-ui,sans-serif;font-size:10px;font-weight:900;line-height:1;">{{ $member->display_name }}</strong>
                 </a>
             </div>
 

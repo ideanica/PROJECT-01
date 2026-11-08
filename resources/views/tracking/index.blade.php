@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#f8d9e2">
+    <meta name="theme-color" content="#f9e7c7">
     <meta name="description" content="Ocean Paws — bringing your NCT WISH favorites closer.">
     <title>Ocean Paws — Bringing Your Favorites Closer</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -35,7 +35,7 @@
                         </h1>
                         <p>Shop your NCT WISH favorites with us and <br>make every WISH a little more special <svg class="op-inline-heart" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78Z" /></svg></p>
                         <div class="op-actions">
-                            <a class="op-line" href="{{ $loginDestination }}"><svg xmlns="http://www.w3.org/2000/svg" class="op-login-icon" viewBox="0 0 640 640" width="24" height="24" fill="#355a45" aria-hidden="true" focusable="false" style="display:block;width:24px;height:24px;flex:0 0 24px;"><!--!Font Awesome Free v7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc.--><path d="M409 337C418.4 327.6 418.4 312.4 409 303.1L265 159C258.1 152.1 247.8 150.1 238.8 153.8C229.8 157.5 224 166.3 224 176L224 256L112 256C85.5 256 64 277.5 64 304L64 336C64 362.5 85.5 384 112 384L224 384L224 464C224 473.7 229.8 482.5 238.8 486.2C247.8 489.9 258.1 487.9 265 481L409 337zM416 480C398.3 480 384 494.3 384 512C384 529.7 398.3 544 416 544L480 544C533 544 576 501 576 448L576 192C576 139 533 96 480 96L416 96C398.3 96 384 110.3 384 128C384 145.7 398.3 160 416 160L480 160C497.7 160 512 174.3 512 192L512 448C512 465.7 497.7 480 480 480L416 480z"/></svg><span>{{ auth()->user()?->member ? 'Buka Pesanan' : 'Login Akun' }}</span></a>
+                            <a class="op-line" href="{{ $loginDestination }}"><svg xmlns="http://www.w3.org/2000/svg" class="op-login-icon" viewBox="0 0 640 640" width="24" height="24" fill="#684f48" aria-hidden="true" focusable="false" style="display:block;width:24px;height:24px;flex:0 0 24px;"><!--!Font Awesome Free v7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc.--><path d="M409 337C418.4 327.6 418.4 312.4 409 303.1L265 159C258.1 152.1 247.8 150.1 238.8 153.8C229.8 157.5 224 166.3 224 176L224 256L112 256C85.5 256 64 277.5 64 304L64 336C64 362.5 85.5 384 112 384L224 384L224 464C224 473.7 229.8 482.5 238.8 486.2C247.8 489.9 258.1 487.9 265 481L409 337zM416 480C398.3 480 384 494.3 384 512C384 529.7 398.3 544 416 544L480 544C533 544 576 501 576 448L576 192C576 139 533 96 480 96L416 96C398.3 96 384 110.3 384 128C384 145.7 398.3 160 416 160L480 160C497.7 160 512 174.3 512 192L512 448C512 465.7 497.7 480 480 480L416 480z"/></svg><span>{{ auth()->user()?->member ? 'Buka Pesanan' : 'Login Akun' }}</span></a>
                             <a class="op-search" href="{{ route('tracking.index') }}"><x-public-icon name="search" variant="rounded-bold" :size="24" /><span>Lacak Pesanan</span></a>
                         </div>
                     </div>
@@ -114,7 +114,7 @@
         <section class="op-cta" aria-labelledby="cta-title">
             <img class="op-cta-wave" src="{{ asset('assets/pastel_mint_ocean_wave_banner.png') }}" alt="" aria-hidden="true">
             <img class="op-cta-mascot" src="{{ asset('assets/oceanpaws-cta-resting-mascot.png') }}" alt="Maskot Ocean Paws di pelampung">
-            <div class="op-cta-copy"><h2 id="cta-title">Let's get closer<br><span>to your <em>WISH!</em></span></h2><a class="op-line" href="{{ $loginDestination }}"><svg xmlns="http://www.w3.org/2000/svg" class="op-login-icon" viewBox="0 0 640 640" width="24" height="24" fill="#355a45" aria-hidden="true" focusable="false" style="display:block;width:24px;height:24px;flex:0 0 24px;"><!--!Font Awesome Free v7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc.--><path d="M409 337C418.4 327.6 418.4 312.4 409 303.1L265 159C258.1 152.1 247.8 150.1 238.8 153.8C229.8 157.5 224 166.3 224 176L224 256L112 256C85.5 256 64 277.5 64 304L64 336C64 362.5 85.5 384 112 384L224 384L224 464C224 473.7 229.8 482.5 238.8 486.2C247.8 489.9 258.1 487.9 265 481L409 337zM416 480C398.3 480 384 494.3 384 512C384 529.7 398.3 544 416 544L480 544C533 544 576 501 576 448L576 192C576 139 533 96 480 96L416 96C398.3 96 384 110.3 384 128C384 145.7 398.3 160 416 160L480 160C497.7 160 512 174.3 512 192L512 448C512 465.7 497.7 480 480 480L416 480z"/></svg><span>{{ auth()->user()?->member ? 'Buka Pesanan' : 'Login Akun' }}</span></a></div>
+            <div class="op-cta-copy"><h2 id="cta-title">Let's get closer<br><span>to your <em>WISH!</em></span></h2><a class="op-line" href="{{ $loginDestination }}"><svg xmlns="http://www.w3.org/2000/svg" class="op-login-icon" viewBox="0 0 640 640" width="24" height="24" fill="#684f48" aria-hidden="true" focusable="false" style="display:block;width:24px;height:24px;flex:0 0 24px;"><!--!Font Awesome Free v7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc.--><path d="M409 337C418.4 327.6 418.4 312.4 409 303.1L265 159C258.1 152.1 247.8 150.1 238.8 153.8C229.8 157.5 224 166.3 224 176L224 256L112 256C85.5 256 64 277.5 64 304L64 336C64 362.5 85.5 384 112 384L224 384L224 464C224 473.7 229.8 482.5 238.8 486.2C247.8 489.9 258.1 487.9 265 481L409 337zM416 480C398.3 480 384 494.3 384 512C384 529.7 398.3 544 416 544L480 544C533 544 576 501 576 448L576 192C576 139 533 96 480 96L416 96C398.3 96 384 110.3 384 128C384 145.7 398.3 160 416 160L480 160C497.7 160 512 174.3 512 192L512 448C512 465.7 497.7 480 480 480L416 480z"/></svg><span>{{ auth()->user()?->member ? 'Buka Pesanan' : 'Login Akun' }}</span></a></div>
             <img class="op-cta-palm" src="{{ asset('assets/kawaii_pastel_palm_tree_sticker.png') }}" alt="" aria-hidden="true">
             <div class="op-cta-sign"><img src="{{ asset('assets/oceanpaws-cta-wood-sign-v1.png') }}" alt="" aria-hidden="true"><span>NCT WISH<br><b>A BRIGHTER<br>TOMORROW<br>TOGETHER ♡</b></span></div>
             <img class="op-cta-sand" src="{{ asset('assets/oceanpaws-cta-sand-only-v2.png') }}" alt="" aria-hidden="true">
@@ -124,7 +124,7 @@
 
         <div class="op-mobile-tracking-wrap">
             <a class="op-mobile-tracking" href="{{ route('tracking.index') }}">
-                <svg xmlns="http://www.w3.org/2000/svg" class="op-tracking-search-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#9f345c" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" style="display:block;width:28px;height:28px;flex:0 0 28px;color:#9f345c;stroke:#9f345c;"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" class="op-tracking-search-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#684f48" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" style="display:block;width:28px;height:28px;flex:0 0 28px;color:#684f48;stroke:#684f48;"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg>
                 <span><strong>Still looking for your order?</strong><small>Track it here!</small></span>
             </a>
         </div>
@@ -151,8 +151,8 @@
             isolation:isolate;
             min-height:330px;
             overflow:hidden;
-            background:#f7f3e9;
-            color:#315d48;
+            background:#f9e7c7;
+            color:#684f48;
             font-family:"Nunito Sans",sans-serif;
         }
         .op-footer-reference::before{
@@ -163,7 +163,7 @@
             left:-2%;
             width:104%;
             height:38px;
-            border-top:3px solid #74a884;
+            border-top:3px solid #684f48;
             border-radius:50% 50% 0 0/100% 100% 0 0;
             transform:translateY(8px) rotate(-.35deg);
             pointer-events:none;
@@ -191,7 +191,7 @@
         }
         .op-footer-reference .op-footer-brand-block p{
             margin:3px 0 0;
-            color:#3f7058;
+            color:#684f48;
             font-size:13px;
             font-weight:600;
             letter-spacing:.01em;
@@ -210,12 +210,12 @@
         }
         .op-footer-reference .op-footer-links{
             padding:0 29px;
-            border-right:1px solid rgba(49,93,72,.48);
-            border-left:1px solid rgba(49,93,72,.48);
+            border-right:1px solid rgba(104, 79, 72, .48);
+            border-left:1px solid rgba(104, 79, 72, .48);
         }
         .op-footer-reference .op-footer-links a,
         .op-footer-reference .op-footer-socials a{
-            color:#315d48;
+            color:#684f48;
             text-decoration:none;
             transition:transform .18s ease,opacity .18s ease;
         }
@@ -247,7 +247,7 @@
         }
         .op-footer-reference .op-footer-message strong{
             display:block;
-            color:#315d48;
+            color:#684f48;
             font-family:"Nunito Sans",sans-serif;
             font-size:18px;
             font-weight:800;
@@ -263,7 +263,7 @@
             height:56px;
             flex:none;
             transform:rotate(7deg);
-            filter:drop-shadow(0 3px 0 rgba(137,73,94,.08));
+            filter:drop-shadow(0 3px 0 rgba(104, 79, 72, .08));
         }
         .op-footer-reference .op-footer-waves{
             position:absolute;
@@ -302,11 +302,11 @@
             align-items:center;
             justify-content:space-between;
             gap:20px;
-            color:#f4fbf4;
+            color:#ffffff;
             font-size:11px;
             font-weight:700;
             letter-spacing:.01em;
-            text-shadow:0 1px 1px rgba(44,83,56,.18);
+            text-shadow:0 1px 1px rgba(104, 79, 72, .18);
         }
         @media(max-width:980px){
             .op-footer-reference{min-height:405px}
@@ -379,7 +379,7 @@
                 gap:10px;
                 padding:0 0 15px;
                 border:0;
-                border-bottom:1px solid rgba(49,93,72,.35);
+                border-bottom:1px solid rgba(104, 79, 72, .35);
             }
             .op-footer-reference .op-footer-links a{font-size:12px}
             .op-footer-reference .op-footer-socials{
@@ -395,7 +395,7 @@
             height:183px;
             min-height:183px;
             border:0;
-            background:#f7f3e9 url('{{ asset('assets/oceanpaws-footer-reference-bg-v1.png') }}') center 40%/100% 136% no-repeat;
+            background:#f9e7c7 url('{{ asset('assets/oceanpaws-footer-reference-bg-v1.png') }}') center 40%/100% 136% no-repeat;
         }
         .op-footer-reference::before{content:none}
         .op-footer-reference .op-footer-reference-shell{
@@ -431,12 +431,12 @@
         }
         .op-footer-reference .op-footer-links{
             padding:0 29px;
-            border-right:1px solid #52765f;
-            border-left:1px solid #52765f;
+            border-right:1px solid #684f48;
+            border-left:1px solid #684f48;
         }
         .op-footer-reference .op-footer-socials{
             padding:0 30px;
-            border-right:1px solid #52765f;
+            border-right:1px solid #684f48;
         }
         .op-footer-reference .op-footer-links a{
             font:500 11px/24px "Nunito Sans",sans-serif;
@@ -529,7 +529,7 @@
                 grid-template-columns:repeat(4,minmax(0,1fr));
                 padding:0 12px;
                 border-right:0;
-                border-bottom:1px solid #52765f;
+                border-bottom:1px solid #684f48;
                 border-left:0;
             }
             .op-footer-reference .op-footer-links a{font-size:10px;text-align:center}
@@ -620,7 +620,7 @@
                 width:100%;
                 align-items:center;
                 justify-content:center;
-                color:#f8fff8;
+                color:#d6e9ed;
                 font-size:8px;
                 text-align:center;
             }
@@ -638,8 +638,8 @@
                 height:72%;
                 pointer-events:none;
                 background-image:
-                    linear-gradient(rgba(211,190,151,.075) 1px,transparent 1px),
-                    linear-gradient(90deg,rgba(211,190,151,.075) 1px,transparent 1px);
+                    linear-gradient(rgba(104, 79, 72, .075) 1px,transparent 1px),
+                    linear-gradient(90deg,rgba(104, 79, 72, .075) 1px,transparent 1px);
                 background-size:38px 38px;
                 background-position:0 0;
             }

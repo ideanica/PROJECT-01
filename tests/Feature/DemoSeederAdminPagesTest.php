@@ -60,6 +60,5 @@ class DemoSeederAdminPagesTest extends TestCase
             ->assertRedirect(route('profile.show'));
         $this->get(route('orders.history'))->assertOk()->assertSee('OP-2025-0981');
         $this->get(route('billing.index'))->assertOk()->assertSee('OP-2026-1002');
-        $this->get(route('catalog.index'))->assertOk()->assertSee('Official Lightstick GO 2026');
     }
 }

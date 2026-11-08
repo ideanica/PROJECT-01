@@ -101,7 +101,6 @@
                 height: 16px;
             }
 
-            .ocean-profile .profile-catalog-link .icon-chip,
             .ocean-profile .activity-head .icon-chip {
                 width: 38px;
                 height: 38px;
@@ -109,15 +108,9 @@
                 border-radius: 10px;
             }
 
-            .ocean-profile .profile-catalog-link .icon-chip svg,
             .ocean-profile .activity-head .icon-chip svg {
                 width: 17px;
                 height: 17px;
-            }
-
-            .ocean-profile .profile-catalog-link > svg {
-                width: 15px;
-                height: 15px;
             }
 
             .ocean-profile .activity-summary {
@@ -273,14 +266,9 @@
             @if(!$user)
                 <p class="profile-line-config">Belum punya akun? <a href="{{ route('register') }}" class="font-semibold underline">Daftar terlebih dahulu</a></p>
             @endif
-            <a class="section-card profile-catalog-link" href="{{ route('catalog.index') }}">
-                <span class="icon-chip"><x-public-icon name="bag" :size="20" /></span>
-                <strong data-i18n-id="Lihat katalog batch" data-i18n-en="View batch catalog">Lihat katalog batch</strong>
-                <x-public-icon name="chevron-right" :size="18" />
-            </a>
 
             <section class="section-card activity-card">
-                <div class="activity-head"><span class="icon-chip"><x-public-icon name="sparkle" :size="20" /></span><div><strong class="block text-[12px]" data-i18n-id="Rekap aktivitas kamu" data-i18n-en="Your activity recap">Rekap aktivitas kamu</strong><span class="block text-[10px] text-[#5a7fa4]" data-i18n-id="{{ $isMember ? 'Semua aktivitas akun customer kamu.' : 'Login untuk melihat aktivitasmu.' }}" data-i18n-en="{{ $isMember ? 'All activity from your customer account.' : 'Login to view your activity.' }}">{{ $isMember ? 'Semua aktivitas akun customer kamu.' : 'Login untuk melihat aktivitasmu.' }}</span></div></div>
+                <div class="activity-head"><span class="icon-chip"><x-public-icon name="sparkle" :size="20" /></span><div><strong class="block text-[12px]" data-i18n-id="Rekap aktivitas kamu" data-i18n-en="Your activity recap">Rekap aktivitas kamu</strong><span class="block text-[10px] text-[#684f48]" data-i18n-id="{{ $isMember ? 'Semua aktivitas akun customer kamu.' : 'Login untuk melihat aktivitasmu.' }}" data-i18n-en="{{ $isMember ? 'All activity from your customer account.' : 'Login to view your activity.' }}">{{ $isMember ? 'Semua aktivitas akun customer kamu.' : 'Login untuk melihat aktivitasmu.' }}</span></div></div>
                 <div class="activity-summary">
                     <div class="metric-card"><span class="tiny-icon"><x-public-icon name="history" :size="16" /></span><div class="metric-copy"><strong>{{ $summary['orders'] }}</strong><span data-i18n-id="Total pesanan" data-i18n-en="Total orders">Total pesanan</span></div></div>
                     <div class="metric-card"><span class="tiny-icon"><x-public-icon name="box" :size="16" /></span><div class="metric-copy"><strong>{{ $summary['items'] }}</strong><span data-i18n-id="Jajanan tercatat" data-i18n-en="Recorded items">Jajanan tercatat</span></div></div>
@@ -294,9 +282,9 @@
                         <div class="chart-line-body">
                             <div class="chart-line-plot">
                                 <svg viewBox="0 0 600 160" preserveAspectRatio="none" aria-hidden="true">
-                                    <defs><linearGradient id="profile-chart-fill" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#f3adc3" stop-opacity=".42" /><stop offset="100%" stop-color="#f3adc3" stop-opacity="0" /></linearGradient></defs>
+                                    <defs><linearGradient id="profile-chart-fill" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#ccd6d6" stop-opacity=".42" /><stop offset="100%" stop-color="#ccd6d6" stop-opacity="0" /></linearGradient></defs>
                                     <polygon points="0,160 {{ $chartLinePoints }} 600,160" fill="url(#profile-chart-fill)" />
-                                    <polyline points="{{ $chartLinePoints }}" fill="none" stroke="#d44974" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" />
+                                    <polyline points="{{ $chartLinePoints }}" fill="none" stroke="#684f48" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" />
                                 </svg>
                                 @foreach($chartPoints as $index => $point)
                                     <span class="chart-line-point" style="left:{{ $index * 20 }}%;top:{{ $point['y'] / 160 * 100 }}%" title="{{ $months[$index]->translatedFormat('F Y') }}: {{ $monthlyOrders[$index] }} pesanan" aria-hidden="true"></span>

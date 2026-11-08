@@ -21,7 +21,7 @@ class CoreDataFlowTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_real_catalog_order_payment_and_admin_review_share_the_same_records(): void
+    public function test_real_order_payment_and_admin_review_share_the_same_records(): void
     {
         Config::set('seeders.admin', ['name' => null, 'username' => null, 'email' => null, 'password' => null]);
         Storage::fake('local');
@@ -42,13 +42,27 @@ class CoreDataFlowTest extends TestCase
         $product = Product::factory()->create(['default_price' => 100000]);
         $batch->products()->attach($product, ['full_price' => 100000, 'dp_price' => 40000, 'is_available' => true]);
 
-        $this->actingAs($customer)->post(route('catalog.orders.store', $batch), [
+        $order = MemberOrder::query()->create([
+            'order_code' => 'TEST-DATA-FLOW',
+            'member_id' => $member->id,
+            'batch_id' => $batch->id,
+            'order_source' => 'admin',
             'payment_type' => 'dp',
-            'items' => [['product_id' => $product->id, 'quantity' => 1]],
-        ])->assertRedirect();
-        $order = MemberOrder::whereBelongsTo($member)->whereBelongsTo($batch)->sole();
-        $this->assertSame('100000.00', $order->total_amount);
-        $this->assertSame('40.00', $order->dp_percentage);
+            'dp_percentage' => 40,
+            'total_amount' => 100000,
+        ]);
+        $order->items()->create([
+            'product_id' => $product->id,
+            'item_name' => $product->name,
+            'quantity' => 1,
+            'unit_price' => 100000,
+            'subtotal' => 100000,
+        ]);
+        app(\App\Services\PaymentVerificationService::class)->sync($order);
+
+        $this->actingAs($customer)->get(route('billing.payments.show', [$order, 'order']))->assertOk();
+        $this->assertSame('100000.00', $order->fresh()->total_amount);
+        $this->assertSame('40.00', $order->fresh()->dp_percentage);
 
         $this->actingAs($customer)->post(route('billing.payments.store', $order), [
             'bill_type' => 'order',

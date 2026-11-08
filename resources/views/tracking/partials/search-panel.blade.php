@@ -1,22 +1,22 @@
 <style>
 /* Scoped to the search content; shared navigation and footer retain their styles. */
 .ocean-tracking .tracking-neo-page.tracking-classic {
-    --classic-ink: #355a45;
-    --classic-outline: #496d54;
-    --classic-card-shadow: #eba4bc;
-    --classic-control-shadow: #90ba9b;
-    --classic-button-shadow: #4d8156;
-    --classic-paper: #fffaf1;
+    --classic-ink: #684f48;
+    --classic-outline: #684f48;
+    --classic-card-shadow: #ccd6d6;
+    --classic-control-shadow: #684f48;
+    --classic-button-shadow: #684f48;
+    --classic-paper: #f9e7c7;
     --classic-pink: var(--tracking-pink);
     --classic-search-card: var(--pv2-paper);
     --classic-search-shadow: var(--pv2-shadow-color);
-    --classic-matcha: #96c88a;
-    --classic-title-pink: #f7bad0;
-    --classic-title-green: #8fbd99;
-    --classic-title-pink-shadow: #eba4bc;
-    --classic-title-green-shadow: #91bd9b;
-    --classic-icon-chip: #dce9cf;
-    --portal-icon-fill-cream: #bce3cf;
+    --classic-matcha: #684f48;
+    --classic-title-pink: #ccd6d6;
+    --classic-title-green: #684f48;
+    --classic-title-pink-shadow: #ccd6d6;
+    --classic-title-green-shadow: #684f48;
+    --classic-icon-chip: #ccd6d6;
+    --portal-icon-fill-cream: #ccd6d6;
     padding: 36px 0 140px;
     min-height: calc(100svh - 260px);
     font-family: "Nunito Sans", sans-serif;
@@ -73,7 +73,7 @@
 .ocean-tracking .tracking-classic .tracking-neo-input-wrap input {
     min-height: 40px; font-family: "Nunito Sans", sans-serif; font-size: 12px; font-weight: 600; color: var(--classic-ink);
 }
-.ocean-tracking .tracking-classic .tracking-neo-input-wrap input::placeholder { color: #858880; opacity: 1; }
+.ocean-tracking .tracking-classic .tracking-neo-input-wrap input::placeholder { color: #684f48; opacity: 1; }
 .ocean-tracking .tracking-classic .tracking-neo-input-wrap:focus-within { outline: 3px solid var(--classic-control-shadow); outline-offset: 2px; }
 .ocean-tracking .tracking-classic .tracking-neo-form button {
     width: auto; min-width: 0; min-height: 44px; gap: 8px; padding: 8px 14px;
@@ -86,7 +86,7 @@
 .ocean-tracking .tracking-classic .tracking-neo-form button .tracking-search-button-icon { display: none; }
 .ocean-tracking .tracking-classic .tracking-neo-hint {
     display: flex; align-items: center; gap: 9px; min-height: 0; margin: 12px 0 0; padding: 0;
-    border: 0; background: transparent; color: #36534c; font-size: 11px; font-weight: 600; line-height: 1.4;
+    border: 0; background: transparent; color: #684f48; font-size: 11px; font-weight: 600; line-height: 1.4;
 }
 .ocean-tracking .tracking-classic .tracking-hint-stars {
     display: grid; width: 28px; height: 28px; flex: 0 0 28px; place-items: center;
@@ -113,15 +113,15 @@
     .ocean-tracking .tracking-classic .tracking-neo-form button .tracking-search-button-icon { display: inline-flex; }
 }
 html[data-customer-theme="dark"] .ocean-tracking .tracking-classic {
-    --classic-ink: #e6f2e6; --classic-outline: #9dc5a4; --classic-paper: #284338; --classic-pink: var(--tracking-pink); --classic-matcha: #54784b;
-    --classic-card-shadow: #081810; --classic-control-shadow: #081810; --classic-button-shadow: #081810;
-    --classic-search-card: var(--tracking-pink); --classic-search-shadow: #081810;
-    --classic-title-pink: #6a4050; --classic-title-green: #426e51;
-    --classic-title-pink-shadow: #081810; --classic-title-green-shadow: #081810;
-    --classic-icon-chip: #31483a;
-    --portal-icon-fill-cream: #b9ddbd;
+    --classic-ink: #d6e9ed; --classic-outline: #684f48; --classic-paper: #684f48; --classic-pink: var(--tracking-pink); --classic-matcha: #684f48;
+    --classic-card-shadow: #684f48; --classic-control-shadow: #684f48; --classic-button-shadow: #684f48;
+    --classic-search-card: var(--tracking-pink); --classic-search-shadow: #684f48;
+    --classic-title-pink: #684f48; --classic-title-green: #684f48;
+    --classic-title-pink-shadow: #684f48; --classic-title-green-shadow: #684f48;
+    --classic-icon-chip: #684f48;
+    --portal-icon-fill-cream: #ccd6d6;
 }
-html[data-customer-theme="dark"] .ocean-tracking .tracking-classic .tracking-neo-hint { color: #e7efe7; }
+html[data-customer-theme="dark"] .ocean-tracking .tracking-classic .tracking-neo-hint { color: #d6e9ed; }
 </style>
 <section class="tracking-neo-page tracking-classic" aria-labelledby="order-search-title">
     <div class="tracking-neo-shell">

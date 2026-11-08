@@ -1,22 +1,22 @@
 /* Match Profile / Tracking browser cards and their shared navbar. */
 body.ocean-auth {
-    --pv2-ink: #496d54;
-    --pv2-ink-deep: #355a45;
-    --pv2-text: #617369;
-    --pv2-paper: #fffdfa;
-    --pv2-cream: #fffaf1;
-    --pv2-pink: #fbd7e3;
-    --pv2-pink-strong: #e64675;
-    --pv2-mint: #d7ebdb;
+    --pv2-ink: #684f48;
+    --pv2-ink-deep: #684f48;
+    --pv2-text: #684f48;
+    --pv2-paper: #ffffff;
+    --pv2-cream: #d6e9ed;
+    --pv2-pink: #f9e7c7;
+    --pv2-pink-strong: #684f48;
+    --pv2-mint: #ccd6d6;
     --pv2-heading: "Nunito Sans", sans-serif;
     --pv2-body: "Nunito Sans", sans-serif;
-    --auth-shadow-pink: #eba4bc;
-    --auth-shadow-mint: #91bd9b;
+    --auth-shadow-pink: #ccd6d6;
+    --auth-shadow-mint: #684f48;
 }
 
 html:has(body.ocean-auth) { background: var(--pv2-cream); }
 body.ocean-auth {
-    background: linear-gradient(rgba(91,135,102,.055) 1px, transparent 1px), linear-gradient(90deg, rgba(91,135,102,.055) 1px, transparent 1px), var(--pv2-cream);
+    background: linear-gradient(rgba(104, 79, 72, .055) 1px, transparent 1px), linear-gradient(90deg, rgba(104, 79, 72, .055) 1px, transparent 1px), var(--pv2-cream);
     background-size: 42px 42px;
     color: var(--pv2-ink-deep);
     font-family: "Nunito Sans", var(--pv2-body);
@@ -27,7 +27,7 @@ html[data-customer-theme="dark"] body.ocean-auth { background: var(--pv2-cream);
 .ocean-auth main { padding-top: clamp(20px, 3vw, 36px); padding-bottom: 40px; }
 .ocean-auth main > div { max-width: 420px; border: var(--pv2-border); border-radius: 10px; box-shadow: var(--pv2-shadow-small); }
 .ocean-auth .auth-shell { width: min(100%, 420px); margin: auto; padding-left: 6px; }
-.auth-card { min-width: 0; overflow: hidden; border: var(--pv2-border); border-radius: 14px; background: var(--pv2-paper); padding: 24px; box-shadow: -6px 6px 0 #eba4bc; }
+.auth-card { min-width: 0; overflow: hidden; border: var(--pv2-border); border-radius: 14px; background: var(--pv2-paper); padding: 24px; box-shadow: -6px 6px 0 #ccd6d6; }
 .auth-kicker { display: inline-block; border: var(--pv2-border); border-radius: 6px; background: var(--pv2-pink); padding: 5px 8px; color: var(--pv2-ink); font-size: 9px; font-weight: 900; letter-spacing: .08em; }
 .auth-title { margin-top: 14px; color: var(--pv2-ink); font-size: 24px; font-weight: 900; line-height: 1.15; letter-spacing: -.03em; }
 .auth-description { margin-top: 8px; color: var(--pv2-text); font-size: 12px; line-height: 1.6; }
@@ -44,8 +44,8 @@ html[data-customer-theme="dark"] body.ocean-auth { background: var(--pv2-cream);
 .auth-password-toggle:focus-visible { outline: 2px solid var(--pv2-pink-strong); outline-offset: -4px; }
 .auth-password-monitor { min-width: 0; border: var(--pv2-border); border-radius: 8px; background: var(--pv2-cream); padding: 12px; font-size: 11px; line-height: 1.6; }
 .auth-password-summary { margin: 0; color: var(--pv2-ink-deep); font-weight: 800; }
-.auth-password-progress { display: block; width: 100%; height: 6px; margin: 8px 0 10px; overflow: hidden; border: 0; border-radius: 999px; background: #dedbd4; accent-color: #a51e3e; }
-.auth-password-progress::-webkit-progress-bar { background: #dedbd4; border-radius: 999px; }
+.auth-password-progress { display: block; width: 100%; height: 6px; margin: 8px 0 10px; overflow: hidden; border: 0; border-radius: 999px; background: #ccd6d6; accent-color: #a51e3e; }
+.auth-password-progress::-webkit-progress-bar { background: #ccd6d6; border-radius: 999px; }
 .auth-password-progress::-webkit-progress-value { background: #a51e3e; border-radius: 999px; }
 .auth-password-progress::-moz-progress-bar { background: #a51e3e; border-radius: 999px; }
 .auth-password-checklist { display: grid; gap: 4px; margin: 0; padding: 0; list-style: none; }
@@ -59,9 +59,9 @@ html[data-customer-theme="dark"] body.ocean-auth { background: var(--pv2-cream);
 .auth-password-heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
 .auth-password-heading strong { font-size: 11px; font-weight: 700; }
 .auth-password-count { font-size: 10px; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--auth-card-muted, var(--pv2-text)); }
-.auth-password-monitor-interactive .auth-password-progress { height: 4px; margin: 0 0 8px; accent-color: #8aaf91; }
-.auth-password-monitor-interactive .auth-password-progress::-webkit-progress-value { background: #8aaf91; transition: width .2s ease; }
-.auth-password-monitor-interactive .auth-password-progress::-moz-progress-bar { background: #8aaf91; }
+.auth-password-monitor-interactive .auth-password-progress { height: 4px; margin: 0 0 8px; accent-color: #684f48; }
+.auth-password-monitor-interactive .auth-password-progress::-webkit-progress-value { background: #684f48; transition: width .2s ease; }
+.auth-password-monitor-interactive .auth-password-progress::-moz-progress-bar { background: #684f48; }
 .auth-password-monitor-interactive .auth-password-checklist { display: flex; flex-wrap: wrap; gap: 4px 10px; }
 .auth-password-monitor-interactive .auth-password-checklist li { align-items: center; gap: 4px; font-size: 10px; line-height: 1.6; }
 .auth-password-monitor-interactive [data-password-icon] { flex: 0 0 12px; font-size: 11px; }
@@ -100,7 +100,7 @@ html[data-customer-theme="dark"] body.ocean-auth { background: var(--pv2-cream);
     .auth-title { margin-top: 12px; font-size: 20px; }
     .auth-form { margin-top: 18px; }
     .ocean-auth main { padding-bottom: 40px; }
-    .auth-card { border-radius: 12px; box-shadow: -4px 4px 0 #eba4bc; }
+    .auth-card { border-radius: 12px; box-shadow: -4px 4px 0 #ccd6d6; }
 }
 @media (prefers-reduced-motion: reduce) { .auth-submit { transition: none; } }
 
@@ -110,11 +110,11 @@ html[data-customer-theme="dark"] body.ocean-auth { background: var(--pv2-cream);
 .auth-window-dots i:nth-child(2) { background: var(--pv2-mint); }
 .auth-window-dots i:nth-child(3) { background: var(--pv2-pink-strong); }
 html[data-customer-theme="dark"] body.ocean-auth {
-    --pv2-ink: #78977f; --pv2-ink-deep: #edf6ef; --pv2-text: #aec0b4;
-    --pv2-paper: #1b3027; --pv2-cream: #12251e; --pv2-pink: #563642;
-    --pv2-pink-strong: #ef86a3; --pv2-mint: #31483a;
-    --auth-shadow-pink: #402c35; --auth-shadow-mint: #081810;
+    --pv2-ink: #684f48; --pv2-ink-deep: #d6e9ed; --pv2-text: #684f48;
+    --pv2-paper: #684f48; --pv2-cream: #684f48; --pv2-pink: #684f48;
+    --pv2-pink-strong: #ccd6d6; --pv2-mint: #684f48;
+    --auth-shadow-pink: #684f48; --auth-shadow-mint: #684f48;
     color-scheme: dark;
-    background: linear-gradient(rgba(151,181,159,.055) 1px, transparent 1px), linear-gradient(90deg, rgba(151,181,159,.055) 1px, transparent 1px), var(--pv2-cream);
+    background: linear-gradient(rgba(104, 79, 72, .055) 1px, transparent 1px), linear-gradient(90deg, rgba(104, 79, 72, .055) 1px, transparent 1px), var(--pv2-cream);
     background-size: 42px 42px;
 }

@@ -33,9 +33,6 @@ Route::get('/billing/orders/{memberOrder}/payments/{payment}/proof', [CustomerPa
 Route::get('/billing/orders', [CustomerPortalController::class, 'legacyBilling'])->name('billing.orders');
 Route::get('/billing/ems', [CustomerPortalController::class, 'legacyBilling'])->name('billing.ems');
 Route::get('/services', [CustomerPortalController::class, 'services'])->name('services.index');
-Route::get('/catalog', [CustomerPortalController::class, 'catalog'])->name('catalog.index');
-Route::get('/catalog/{batch}', [CustomerPortalController::class, 'catalogShow'])->name('catalog.show');
-Route::post('/catalog/{batch}/orders', [CustomerOrderController::class, 'store'])->middleware(['auth', 'throttle:5,1'])->name('catalog.orders.store');
 Route::post('/orders/{memberOrder}/cancel', [CustomerOrderController::class, 'cancel'])->middleware(['auth', 'throttle:5,1'])->name('orders.cancel');
 Route::get('/orders/unpaid', [CustomerPortalController::class, 'unpaid'])->name('orders.unpaid');
 Route::get('/orders/shipping', [CustomerPortalController::class, 'shipping'])->name('orders.shipping');

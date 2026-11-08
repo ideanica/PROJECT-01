@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Batch;
 use App\Models\MemberOrder;
 use App\Models\OrderPayment;
 use Illuminate\Http\Request;
@@ -93,13 +92,6 @@ class CustomerPortalController extends Controller
             'description' => 'Pilih layanan yang kamu butuhkan untuk mulai jajan atau memantau pesanan.',
             'items' => [
                 [
-                    'icon' => 'bag',
-                    'title' => 'Katalog',
-                    'description' => 'Lihat batch yang dipublikasikan admin, variasi produk, harga DP dan pelunasan.',
-                    'note' => 'Informasi batch terbaru',
-                    'url' => route('catalog.index'),
-                ],
-                [
                     'icon' => 'search',
                     'title' => 'Lacak Pesanan',
                     'description' => 'Cari status terkini menggunakan kode pesanan atau username.',
@@ -120,52 +112,6 @@ class CustomerPortalController extends Controller
     public function unpaid(Request $request)
     {
         return redirect()->route('billing.index', $request->only(['q', 'sort']));
-    }
-
-    public function catalog(Request $request)
-    {
-        $filters = $request->validate([
-            'q' => ['nullable', 'string', 'max:100'],
-            'status' => ['nullable', 'in:all,open,closed'],
-        ]);
-        $status = $filters['status'] ?? 'all';
-        $batches = Batch::query()->where('is_catalog_visible', true)->where('is_archived', false)
-            ->with(['currentStatus', 'products' => fn ($query) => $query->where('products.is_active', true)->wherePivot('is_available', true)])
-            ->when($filters['q'] ?? null, fn ($query, $search) => $query->where(function ($query) use ($search) {
-                $query->where('batch_number', 'like', "%{$search}%")
-                    ->orWhere('batch_name', 'like', "%{$search}%")
-                    ->orWhereHas('products', fn ($products) => $products->where('products.is_active', true)->where('batch_product.is_available', true)->where(function ($products) use ($search) {
-                        $products->where('products.name', 'like', "%{$search}%")
-                            ->orWhere('products.variant', 'like', "%{$search}%");
-                    }));
-            }))
-            ->when($status === 'open', fn ($query) => $query->where(fn ($query) => $query->whereNull('ordering_deadline')->orWhere('ordering_deadline', '>', now())))
-            ->when($status === 'closed', fn ($query) => $query->whereNotNull('ordering_deadline')->where('ordering_deadline', '<=', now()))
-            ->latest()->paginate(9)->withQueryString();
-
-        return view('portal.catalog', [
-            'batches' => $batches,
-            'dpPercentage' => app(\App\Services\PaymentSchedule::class)->percentage(),
-            'status' => $status,
-        ]);
-    }
-
-    public function catalogShow(Batch $batch)
-    {
-        abort_unless($batch->is_catalog_visible && ! $batch->is_archived, 404);
-
-        $batch->load([
-            'currentStatus',
-            'products' => fn ($query) => $query->where('products.is_active', true)->wherePivot('is_available', true),
-        ]);
-
-        return view('portal.catalog-show', [
-            'batch' => $batch,
-            'dpPercentage' => app(\App\Services\PaymentSchedule::class)->percentage(),
-            'emsAllocationFrozen' => $batch->ems_tax_amount !== null && $batch->orders()
-                ->whereHas('payments', fn ($payments) => $payments->where('type', 'ems')->whereIn('status', ['pending', 'verified']))
-                ->exists(),
-        ]);
     }
 
     public function shipping(Request $request)
