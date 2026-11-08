@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#f9e7c7">
+    <meta name="theme-color" content="#F2F9FA">
     <meta name="description" content="Ocean Paws — bringing your NCT WISH favorites closer.">
     <title>Ocean Paws — Bringing Your Favorites Closer</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
