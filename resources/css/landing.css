@@ -4657,7 +4657,7 @@
   height:100%;
   border:2.5px solid #684f48;
   border-radius:11px;
-  background:#f9e7c7;
+  background:#ccd6d6;
   box-shadow:-3px 3px 0 #684f48;
 }
 .op-copy-window-back::after{
@@ -4670,7 +4670,7 @@
   height:calc(100% - 36px);
   border:1.5px solid #684f48;
   border-radius:8px;
-  background:#fff;
+  background:#ccd6d6;
 }
 
 @media(min-width:1024px){
@@ -4772,11 +4772,11 @@
   .op-heading-star-green{top:2.6cqw;right:-.4cqw;width:1.9cqw;height:1.9cqw}
 }
 
-/* The reference window is a cream outer card containing an inset gray card. */
-.op-copy-window{background:#f9e7c7}
+/* The reference window is a gray outer card containing an inset warm-white card. */
+.op-copy-window{background:#ccd6d6}
 .op-copy-window .op-browserbar{
   border-bottom:0;
-  background:linear-gradient(120deg,#f9e7c7,#f9e7c7);
+  background:linear-gradient(120deg,#ccd6d6,#ccd6d6);
 }
 .op-copy-inner{
   margin:0 7px 7px;
@@ -4784,7 +4784,7 @@
   padding:16px 17px 10px;
   border:1.5px solid #684f48;
   border-radius:8px;
-  background:#ccd6d6;
+  background:#FEF7EA;
 }
 .op-copy-main>small{font:700 10px/1.2 monospace;color:#684f48}
 .op-window-dots i{
@@ -5694,7 +5694,7 @@
     border-color: #684f48;
     border-width: .18cqw;
     border-radius: 1.45cqw;
-    background: #f9e7c7;
+    background: #ccd6d6;
     box-shadow: -.65cqw .72cqw 0 var(--op-tab-matcha);
   }
 
@@ -5702,7 +5702,7 @@
     height: 3.25cqw;
     padding-left: 1.65cqw;
     border-bottom: 0;
-    background: #f9e7c7;
+    background: #ccd6d6;
     color: #684f48;
     font-size: 1.08cqw;
     font-weight: 800;
@@ -5724,20 +5724,20 @@
     border-color: #684f48;
     border-width: .16cqw;
     border-radius: .95cqw;
-    background: #ccd6d6;
+    background: #FEF7EA;
   }
 
   .op-copy-window-back::before {
     border-color: #684f48;
     border-radius: 1.45cqw;
-    background: #f9e7c7;
+    background: #ccd6d6;
     box-shadow: -.42cqw .46cqw 0 #684f48;
   }
 
   .op-copy-window-back::after {
     border-color: #684f48;
     border-radius: .95cqw;
-    background: #f9e7c7;
+    background: #ccd6d6;
   }
 }
 
