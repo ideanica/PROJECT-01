@@ -9116,9 +9116,9 @@ html[data-customer-theme="dark"] .ocean-tracking .tracking-result-side {
 
 .ocean-primary-navbar__icon {
     display: block;
-    width: 30px;
-    height: 30px;
-    flex: 0 0 30px;
+    width: 24px;
+    height: 24px;
+    flex: 0 0 24px;
     color: var(--nav-icon-fill);
     overflow: visible;
 }
@@ -9151,9 +9151,9 @@ html[data-customer-theme="dark"] .ocean-tracking .tracking-result-side {
     }
 
     .ocean-primary-navbar__icon {
-        width: 22px;
-        height: 22px;
-        flex-basis: 22px;
+        width: 18px;
+        height: 18px;
+        flex-basis: 18px;
     }
 }
 
@@ -9198,9 +9198,9 @@ html[data-customer-theme="dark"] .ocean-tracking .tracking-result-side {
     }
 
     .ocean-primary-navbar__icon {
-        width: clamp(16px, 3.8vw, 19px);
-        height: clamp(16px, 3.8vw, 19px);
-        flex-basis: clamp(16px, 3.8vw, 19px);
+        width: clamp(14px, 3vw, 16px);
+        height: clamp(14px, 3vw, 16px);
+        flex-basis: clamp(14px, 3vw, 16px);
     }
 }
 
@@ -9227,9 +9227,9 @@ html[data-customer-theme="dark"] .ocean-tracking .tracking-result-side {
     }
 
     .ocean-primary-navbar__icon {
-        width: 16px;
-        height: 16px;
-        flex-basis: 16px;
+        width: 14px;
+        height: 14px;
+        flex-basis: 14px;
     }
 }
 
