@@ -119,18 +119,9 @@ img[src*="ocean_paws_cta_ripples_wave"]{filter:saturate(.82)}
 .op-ticker>div{color:var(--op-brown)!important}
 .op-ticker span{border-left-color:rgba(104,79,72,.58)!important}
 .op-ticker b,.op-ticker b:nth-of-type(2){color:#527f8d!important}
-/* Keep mascot artwork's original character colors. Only recolor the water layer. */
-.op-hero{background:#F2F9FA!important}
+/* Correct hero background: use the actual full-scene asset from public/assets. Keep mascot artwork untouched. */
+.op-hero{background-color:#d6e9ed!important;background-image:url('/assets/oceanpaws-hero-background-v4.png')!important;background-repeat:no-repeat!important;background-position:center center!important;background-size:100% 100%!important}
+.op-hero:before,.op-hero:after{display:none!important}
 .op-hero-scene{background-image:none!important;background-color:transparent!important}
-.op-hero-wave{filter:hue-rotate(175deg) saturate(.82) brightness(1.02)!important;opacity:1!important}
-.op-hero-cliff{filter:hue-rotate(18deg) saturate(.55) brightness(1.06)!important}
-.op-hero-mascot{filter:none!important;mix-blend-mode:normal!important}
-.op-cta-wave{filter:hue-rotate(175deg) saturate(.8) brightness(1.02)!important}
-.op-cta-mascot{filter:none!important;mix-blend-mode:normal!important}
-/* Do not hue-shift complete mascot PNGs: that also turns fur/skin/accessories blue. */
-
-/* Explicit coastal scenery layer using the existing project asset. */
-.op-hero{background:#d6e9ed!important}
-.op-hero-scene{background-image:url('/assets/pastel_coastal_cliff_island_asset.png')!important;background-repeat:no-repeat!important;background-size:100% 100%!important;background-position:center bottom!important}
-.op-hero-wave{z-index:1!important}
-.op-hero-cliff{z-index:2!important}
+.op-hero-wave,.op-hero-cliff,.op-hero-mascot,.op-cta-wave,.op-cta-mascot{filter:none!important}
+.op-hero-mascot,.op-cta-mascot{mix-blend-mode:normal!important}
