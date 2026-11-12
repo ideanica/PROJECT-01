@@ -6040,3 +6040,13 @@
  background:url('/assets/oceanpaws-sign-grass-v1.png') center bottom/contain no-repeat;
  pointer-events:none;
 }
+
+
+/* Enlarge foreground grass to cover the palm trunk and sign support at the bottom. */
+.op-page .op-sign::after{
+ left:-58px;
+ bottom:-34px;
+ width:290px;
+ height:126px;
+ background-size:100% 100%;
+}
