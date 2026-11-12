@@ -6042,11 +6042,11 @@
 }
 
 
-/* Enlarge foreground grass to cover the palm trunk and sign support at the bottom. */
+/* Scale sign grass decoration 3x from the previous size. */
 .op-page .op-sign::after{
- left:-58px;
- bottom:-34px;
- width:290px;
- height:126px;
+ left:-174px;
+ bottom:-102px;
+ width:870px;
+ height:378px;
  background-size:100% 100%;
 }
