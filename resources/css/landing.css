@@ -6057,6 +6057,15 @@
   .op-sign {
     right: calc(1.4% + 20px);
     bottom: calc(2cqw - 13px);
+  }
+
+  /* Keep the foreground grass at its previous screen position while lowering the wooden sign. */
+  .op-page .op-sign::after {
+    bottom: -30px;
+  }
+
+  @media (min-width: 1024px) {
+    .op-sign {
     width: calc(14cqw - 18px);
     height: calc(24cqw - 18px);
   }
