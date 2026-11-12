@@ -6004,3 +6004,15 @@
  background:#9a7769!important;color:#fff!important;border:2px solid #9a7769!important;
  box-shadow:0 4px 0 #9a7769!important;
 }
+
+
+/* Shadows must sit OUTSIDE the statistic panels, not as an inset. */
+.op-page .op-stats article,
+.op-page .op-stats article.is-green{
+ box-shadow:3px 4px 0 rgba(104,79,72,.28)!important;
+}
+
+/* Give the lower Login Akun button a visible offset shadow as well. */
+.op-page .op-cta-copy .op-line{
+ box-shadow:0 5px 0 #9a7769,0 7px 0 rgba(104,79,72,.18)!important;
+}
