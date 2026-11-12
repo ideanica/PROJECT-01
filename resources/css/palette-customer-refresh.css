@@ -128,3 +128,9 @@ img[src*="ocean_paws_cta_ripples_wave"]{filter:saturate(.82)}
 .op-cta-wave{filter:hue-rotate(175deg) saturate(.8) brightness(1.02)!important}
 .op-cta-mascot{filter:none!important;mix-blend-mode:normal!important}
 /* Do not hue-shift complete mascot PNGs: that also turns fur/skin/accessories blue. */
+
+/* Explicit coastal scenery layer using the existing project asset. */
+.op-hero{background:#d6e9ed!important}
+.op-hero-scene{background-image:url('/assets/pastel_coastal_cliff_island_asset.png')!important;background-repeat:no-repeat!important;background-size:100% 100%!important;background-position:center bottom!important}
+.op-hero-wave{z-index:1!important}
+.op-hero-cliff{z-index:2!important}
