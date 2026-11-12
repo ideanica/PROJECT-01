@@ -6042,11 +6042,11 @@
 }
 
 
-/* Increase sign grass dimensions by 5px. */
+/* Increase sign grass dimensions by 8px. */
 .op-page .op-sign::after{
  left:-58px;
  bottom:-34px;
- width:295px;
- height:131px;
+ width:303px;
+ height:139px;
  background-size:100% 100%;
 }
