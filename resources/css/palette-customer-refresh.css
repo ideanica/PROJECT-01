@@ -113,3 +113,19 @@ img[src*="ocean_paws_cta_ripples_wave"]{filter:saturate(.82)}
 .customer-theme :is(.empty-state,.empty-cart,.empty-orders){border:1px dashed #9fc9d4;border-radius:22px;background:rgba(237,246,247,.78);padding:clamp(24px,4vw,44px);text-align:center}
 @media(max-width:640px){.customer-theme :is(.container,.customer-container,.page-container){width:min(100% - 22px,1180px)}.customer-theme :is(.card,.panel,.checkout-card,.order-card,.summary-card,.payment-card,.profile-card){padding:15px;border-radius:15px}.customer-theme th,.customer-theme td{padding:10px 9px;font-size:13px}}
 @media(prefers-reduced-motion:reduce){.customer-theme :is(.product-card,.catalog-card,.btn,.button){transition:none}}
+
+/* Targeted visual fixes requested: ticker contrast, blue surf/water, restore coastal hero scenery. */
+.op-ticker{background:var(--op-water)!important;border-top-color:var(--op-brown)!important;border-bottom-color:var(--op-brown)!important}
+.op-ticker>div{color:var(--op-brown)!important}
+.op-ticker span{border-left-color:rgba(104,79,72,.58)!important}
+.op-ticker b,.op-ticker b:nth-of-type(2){color:#527f8d!important}
+/* Hero scene: ensure the coastal cliffs/island artwork is actually painted behind the wave layers. */
+.op-hero{background:linear-gradient(180deg,#edf6f7 0%,#d6e9ed 64%,#c4e0e8 100%)!important}
+.op-hero-scene{background-image:linear-gradient(180deg,rgba(237,246,247,.06),rgba(214,233,237,.12)),url('/assets/pastel_coastal_cliff_island_asset.png');background-repeat:no-repeat;background-size:cover;background-position:center 58%;}
+.op-hero-wave{filter:hue-rotate(175deg) saturate(.82) brightness(1.02)!important;opacity:1!important}
+.op-hero-cliff{filter:hue-rotate(165deg) saturate(.68) brightness(1.02)!important}
+.op-hero-mascot{filter:hue-rotate(165deg) saturate(.78) brightness(1.02)!important}
+.op-cta-wave{filter:hue-rotate(175deg) saturate(.8) brightness(1.02)!important}
+.op-cta-mascot{filter:hue-rotate(165deg) saturate(.78) brightness(1.02)!important}
+/* Bring decorative water splashes in the lower mascot art from pink/mint into ocean blue. */
+img[src*="kawaii_cat_in_a_splashy_swim_ring"],img[src*="sunflower_cat_in_a_splashy_float"],img[src*="sunflower_goggled_chibi_surfer_splash"],img[src*="winking_sunflower_goggles_water_mascot"],img[src*="kawaii_cat_surfing_a_wave"],img[src*="kawaii_cat_surfs_a_sunny_wave"],img[src*="ocean_paws_surfing_a_wave"],img[src*="kawaii_sunflower_surfboard_mascot"],img[src*="kawaii_sunflower_goggle_surf_mascot"]{filter:hue-rotate(165deg) saturate(.78) brightness(1.03)}
