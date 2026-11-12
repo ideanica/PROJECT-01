@@ -6042,11 +6042,11 @@
 }
 
 
-/* Scale sign grass decoration 3x from the previous size. */
+/* Restore sign grass to the earlier size. */
 .op-page .op-sign::after{
- left:-174px;
- bottom:-102px;
- width:870px;
- height:378px;
+ left:-58px;
+ bottom:-34px;
+ width:290px;
+ height:126px;
  background-size:100% 100%;
 }
