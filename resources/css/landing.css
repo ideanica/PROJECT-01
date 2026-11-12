@@ -5983,3 +5983,24 @@
   background-size: 100% 100% !important;
   background-repeat: no-repeat !important;
 }
+
+
+/* Statistics window dots: classic traffic-light colors (these use .op-stat-dots). */
+.op-stats article .op-stat-dots i:nth-child(1){background:#ff5f57!important;border-color:#b83b35!important}
+.op-stats article .op-stat-dots i:nth-child(2){background:#febc2e!important;border-color:#b88616!important}
+.op-stats article .op-stat-dots i:nth-child(3){background:#28c840!important;border-color:#16852a!important}
+
+/* Restore the offset card shadow under each statistic tile after palette overrides. */
+.op-page .op-stats article,
+.op-page .op-stats article.is-green{
+ box-shadow:inset 0 0 0 7px var(--op-cream,#f9e7c7),3px 4px 0 rgba(104,79,72,.22)!important;
+}
+.op-page .op-stats article.is-green{
+ box-shadow:inset 0 0 0 7px var(--op-grey,#ccd6d6),3px 4px 0 rgba(104,79,72,.22)!important;
+}
+
+/* Login Akun CTA: warm brown with matching outline and offset shadow. */
+.op-page .op-cta-copy .op-line{
+ background:#9a7769!important;color:#fff!important;border:2px solid #9a7769!important;
+ box-shadow:0 4px 0 #9a7769!important;
+}
