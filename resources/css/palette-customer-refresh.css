@@ -125,3 +125,11 @@ img[src*="ocean_paws_cta_ripples_wave"]{filter:saturate(.82)}
 .op-hero-scene{background-image:none!important;background-color:transparent!important}
 .op-hero-wave,.op-hero-cliff,.op-hero-mascot,.op-cta-wave,.op-cta-mascot{filter:none!important}
 .op-hero-mascot,.op-cta-mascot{mix-blend-mode:normal!important}
+
+/* Browser-window traffic lights: keep the familiar red / yellow / green trio. */
+.op-window-dots i:nth-child(1),
+.op-photo-titlebar .op-window-dots i:nth-child(1){background:#ff5f57!important;border-color:#b83b35!important}
+.op-window-dots i:nth-child(2),
+.op-photo-titlebar .op-window-dots i:nth-child(2){background:#febc2e!important;border-color:#b88616!important}
+.op-window-dots i:nth-child(3),
+.op-photo-titlebar .op-window-dots i:nth-child(3){background:#28c840!important;border-color:#16852a!important}
