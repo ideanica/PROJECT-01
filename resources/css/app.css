@@ -8,6 +8,7 @@
 @import './customer-shadows.css';
 @import './admin-theme.css';
 @import './admin-dashboard.css';
+@import './palette-refresh.css';
 @import './status-badge.css';
 
 @source '../views/**/*.blade.php';
@@ -9756,7 +9757,6 @@ html[data-customer-theme="dark"] .ocean-primary-navbar__mobile-link.is-active {
     .admin-shell .admin-form-body > * { min-width: 0; }
     .admin-shell .admin-form-shell .select2-container { min-width: 0; max-width: 100%; }
 }
-@import './palette-refresh.css';
 
 /* Final brand/nav palette correction (Nov 2026). */
 .ocean-primary-navbar {
