@@ -6052,17 +6052,17 @@
 }
 
 
-/* Desktop-only sign board adjustment: shift left 6px and reduce board/text size. */
+/* Desktop-only sign board adjustment: preserve lettering proportions while resizing the whole sign. */
 @media (min-width: 1024px) {
   .op-sign {
-    right: calc(1.4% + 6px);
-    width: calc(14cqw - 8px);
-    height: calc(24cqw - 8px);
+    right: calc(1.4% + 10px);
+    width: calc(14cqw - 14px);
+    height: calc(24cqw - 14px);
   }
   .op-sign span,
   .op-sign span:nth-child(1),
   .op-sign span:nth-child(2),
   .op-sign span:nth-child(3) {
-    font-size: clamp(6px, calc(1.25cqw - 8px), 12px);
+    font-size: 1.25cqw;
   }
 }
