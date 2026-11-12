@@ -6056,8 +6056,8 @@
 @media (min-width: 1024px) {
   .op-sign {
     right: calc(1.4% + 15px);
-    width: calc(14cqw - 14px);
-    height: calc(24cqw - 14px);
+    width: calc(14cqw - 18px);
+    height: calc(24cqw - 18px);
   }
   .op-sign span,
   .op-sign span:nth-child(1),
