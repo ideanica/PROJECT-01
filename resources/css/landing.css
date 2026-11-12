@@ -6055,7 +6055,7 @@
 /* Desktop-only sign board adjustment: preserve lettering proportions while resizing the whole sign. */
 @media (min-width: 1024px) {
   .op-sign {
-    right: calc(1.4% + 10px);
+    right: calc(1.4% + 15px);
     width: calc(14cqw - 14px);
     height: calc(24cqw - 14px);
   }
@@ -6063,6 +6063,9 @@
   .op-sign span:nth-child(1),
   .op-sign span:nth-child(2),
   .op-sign span:nth-child(3) {
-    font-size: 1.25cqw;
+    font-size: calc(1.25cqw - 3px);
+  }
+  .op-sign span:nth-of-type(1) {
+    top: calc(20% - 2px);
   }
 }
