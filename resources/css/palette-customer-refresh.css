@@ -133,3 +133,8 @@ img[src*="ocean_paws_cta_ripples_wave"]{filter:saturate(.82)}
 .op-photo-titlebar .op-window-dots i:nth-child(2){background:#febc2e!important;border-color:#b88616!important}
 .op-window-dots i:nth-child(3),
 .op-photo-titlebar .op-window-dots i:nth-child(3){background:#28c840!important;border-color:#16852a!important}
+
+/* Statistics cards: explicitly keep browser dots in red / yellow / green too. */
+.op-stats .op-window-dots i:nth-child(1){background:#ff5f57!important;border-color:#b83b35!important}
+.op-stats .op-window-dots i:nth-child(2){background:#febc2e!important;border-color:#b88616!important}
+.op-stats .op-window-dots i:nth-child(3){background:#28c840!important;border-color:#16852a!important}
