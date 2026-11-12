@@ -6055,7 +6055,7 @@
 /* Desktop-only sign board adjustment: preserve lettering proportions while resizing the whole sign. */
 @media (min-width: 1024px) {
   .op-sign {
-    right: calc(1.4% + 15px);
+    right: calc(1.4% + 20px);
     width: calc(14cqw - 18px);
     height: calc(24cqw - 18px);
   }
