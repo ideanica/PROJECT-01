@@ -1,7 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 60" fill="none">
-  <path d="M32 53V29" stroke="#446C50" stroke-width="3.4" stroke-linecap="round"/>
-  <path d="M32 31C17 33 9 26 8 12c14-2 23 4 24 19Z" fill="#AED7AF" stroke="#446C50" stroke-width="2" stroke-linejoin="round"/>
-  <path d="M32 29C34 14 44 8 57 10c0 14-9 22-25 19Z" fill="#9FCEA3" stroke="#446C50" stroke-width="2" stroke-linejoin="round"/>
-  <path d="M30 29c-4-6-9-10-16-12m20 10c5-6 10-10 17-12" stroke="#6FA77A" stroke-width="1.8" stroke-linecap="round"/>
-  <path d="M32 41c-4-5-7-7-11-8" stroke="#446C50" stroke-width="2" stroke-linecap="round"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 60" fill="none"><path d="M32 53V29" stroke="#684F48" stroke-width="3.4" stroke-linecap="round"/><path d="M32 31C17 33 9 26 8 12c14-2 23 4 24 19Z" fill="#D6E9ED" stroke="#8B9E9E" stroke-width="2" stroke-linejoin="round"/><path d="M32 29C34 14 44 8 57 10c0 14-9 22-25 19Z" fill="#CCD6D6" stroke="#8B9E9E" stroke-width="2" stroke-linejoin="round"/><path d="M30 29c-4-6-9-10-16-12m20 10c5-6 10-10 17-12" stroke="#8B9E9E" stroke-width="1.8" stroke-linecap="round"/><path d="M32 41c-4-5-7-7-11-8" stroke="#684F48" stroke-width="2" stroke-linecap="round"/></svg>
