@@ -5552,18 +5552,18 @@
     object-position:bottom;
   }
   .op-page .op-sign{
-    right:calc(6% + 22px);
+    right:calc(6% + 28px);
     bottom:2%;
     display:block;
     z-index:14;
-    width:calc(29% - 18px);
-    height:calc(23% - 18px);
+    width:calc(29% - 26px);
+    height:calc(23% - 26px);
     transform:none;
   }
   .op-page .op-sign span,.op-page .op-sign span:nth-child(1),.op-page .op-sign span:nth-child(2),.op-page .op-sign span:nth-child(3){
     height:20%;
     color:#684f48;
-    font-size:clamp(6px,calc(2.3vw - 4px),8px);
+    font-size:clamp(4px,calc(2.3vw - 8px),6px);
   }
   /* Center each line on its wooden plank so the lettering reads as painted on. */
   .op-page .op-sign span:nth-of-type(1){top:16.5%}
