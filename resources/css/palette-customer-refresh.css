@@ -57,3 +57,16 @@ body.customer-theme{--bg:var(--op-water);--bg-deep:var(--op-grey);--white:var(--
 .op-footer-top nav,.op-socials{border-color:var(--op-water-deep)}
 .op-footer-top p,.op-footer-bottom{color:var(--op-brown)}
 @media(prefers-reduced-motion:reduce){.ocean-primary-navbar__brand-logo::after{animation:none}}
+
+/* Asset harmonization: legacy pink cloud/star and mint wave artwork shift to water blue. */
+img[src*="glossy_pastel_pink_cloud"],
+img[src*="pastel_pink_cloud_with_soft_highlights"]{filter:hue-rotate(145deg) saturate(.72) brightness(1.04)}
+img[src*="glossy_pink_kawaii_starfish"],
+img[src*="glossy_pink_starfish"]{filter:hue-rotate(145deg) saturate(.68) brightness(1.03)}
+img[src*="pastel_mint_ocean_wave_banner"]{filter:hue-rotate(165deg) saturate(.72) brightness(1.02)}
+img[src*="pastel_aqua_wave_banner"],
+img[src*="kawaii_pastel_ocean_wave_sticker"],
+img[src*="ocean_paws_hero_ripples_wave"],
+img[src*="ocean_paws_cta_ripples_wave"]{filter:saturate(.82)}
+/* Keep new navbar logo pristine: do not tint or blend the artwork itself. */
+.ocean-primary-navbar__brand img{filter:none!important;mix-blend-mode:normal!important}
