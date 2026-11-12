@@ -5542,8 +5542,8 @@
   }
   .op-page .op-palm{
     top:auto;
-    right:calc(-13% - 10px);
-    bottom:calc(-3% + 46px);
+    right:calc(-13% - 13px);
+    bottom:calc(-3% + 44px);
     display:block;
     z-index:11;
     width:calc(70% + 12px);
