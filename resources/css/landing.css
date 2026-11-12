@@ -6030,3 +6030,13 @@
  border:2px solid #684f48!important;
  box-shadow:-4px 5px 0 #684f48!important;
 }
+
+
+/* Decorative grass asset at the foot of the hero sign. */
+.op-page .op-sign{position:absolute;overflow:visible}
+.op-page .op-sign::after{
+ content:"";position:absolute;z-index:13;left:-30px;bottom:-20px;
+ width:190px;height:78px;
+ background:url('/assets/oceanpaws-sign-grass-v1.png') center bottom/contain no-repeat;
+ pointer-events:none;
+}
