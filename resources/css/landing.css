@@ -6050,3 +6050,19 @@
  height:147px;
  background-size:100% 100%;
 }
+
+
+/* Desktop-only sign board adjustment: shift left 6px and reduce board/text size. */
+@media (min-width: 1024px) {
+  .op-sign {
+    right: calc(1.4% + 6px);
+    width: calc(14cqw - 8px);
+    height: calc(24cqw - 8px);
+  }
+  .op-sign span,
+  .op-sign span:nth-child(1),
+  .op-sign span:nth-child(2),
+  .op-sign span:nth-child(3) {
+    font-size: clamp(6px, calc(1.25cqw - 8px), 12px);
+  }
+}
