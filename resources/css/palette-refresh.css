@@ -1,0 +1,109 @@
+/* Ocean Paws palette refresh: semantic tokens + balanced contrast. */
+:root {
+  --op-brown: #684f48;
+  --op-water: #d6e9ed;
+  --op-water-deep: #b9dce5;
+  --op-grey: #ccd6d6;
+  --op-cream: #f9e7c7;
+  --op-paper: #fffdf5;
+  --op-ink: #49352f;
+  --op-muted: #78665f;
+  --op-line: #d8d8d1;
+  --op-shadow: 0 12px 30px rgba(72, 52, 45, .12);
+}
+
+/* Restore color semantics: blue means water, never brown. */
+.op-body, .op-page { background-color: var(--op-paper); color: var(--op-brown); }
+.op-hero { background: linear-gradient(180deg, var(--op-paper), #f4fbfc 72%, var(--op-water)); }
+.op-browser { border-color: var(--op-brown); box-shadow: 0 3px 0 rgba(104,79,72,.10); }
+.op-browserbar { background: var(--op-water); color: var(--op-brown); border-color: var(--op-grey); }
+.op-window-dots i:nth-child(1) { background: var(--op-cream); }
+.op-window-dots i:nth-child(2) { background: var(--op-grey); }
+.op-window-dots i:nth-child(3) { background: var(--op-water-deep); }
+.op-nav a, .op-nav a:hover, .op-nav a:focus-visible { color: var(--op-brown); }
+.op-nav a:hover { background: rgba(214,233,237,.55); }
+.op-hero [class*="wave"], .op-hero [class*="water"], .op-hero [class*="ripple"] { color: var(--op-water-deep); }
+.op-hero svg [fill="#684f48"], .op-hero svg [fill="#684F48"] { fill: var(--op-water-deep); }
+
+/* Cohesive surfaces across customer pages and account flows. */
+:root {
+  --bg: var(--op-water);
+  --bg-deep: var(--op-grey);
+  --navy: var(--op-brown);
+  --muted: var(--op-muted);
+  --blue: var(--op-water-deep);
+  --cyan: var(--op-water);
+  --line: var(--op-grey);
+  --pale: var(--op-grey);
+  --soft: var(--op-cream);
+  --pv2-ink: var(--op-brown);
+  --pv2-ink-deep: var(--op-ink);
+  --pv2-text: var(--op-muted);
+  --pv2-muted: var(--op-muted);
+  --pv2-paper: var(--op-paper);
+  --pv2-cream: var(--op-water);
+  --pv2-pink: var(--op-cream);
+  --pv2-pink-strong: var(--op-brown);
+  --pv2-mint: var(--op-grey);
+  --pv2-mint-strong: var(--op-water-deep);
+  --pv2-yellow: var(--op-cream);
+  --pv2-blue: var(--op-water);
+  --pv2-outline: var(--op-brown);
+  --pv2-shadow-color: var(--op-grey);
+  --pv2-mint-shadow: var(--op-water-deep);
+}
+body.customer-theme, .portal-v2, .portal-overview-page, .order-detail-page {
+  color: var(--op-ink);
+  background-color: var(--op-water);
+}
+body.customer-theme {
+  background: radial-gradient(circle at 50% -7%, rgba(249,231,199,.7), transparent 26rem),
+    linear-gradient(180deg, var(--op-water) 0%, #eaf5f6 58%, var(--op-grey) 100%);
+}
+.portal-v2, body.ocean-auth, body.ocean-tracking, body.ocean-profile {
+  background-color: var(--op-water);
+}
+:is(.portal-v2, .portal-overview-page, .order-detail-page) {
+  --pv2-ink: var(--op-brown);
+  --pv2-ink-deep: var(--op-ink);
+  --pv2-text: var(--op-muted);
+  --pv2-muted: var(--op-muted);
+  --pv2-paper: var(--op-paper);
+  --pv2-cream: var(--op-water);
+  --pv2-pink: var(--op-cream);
+  --pv2-pink-strong: var(--op-brown);
+  --pv2-mint: var(--op-grey);
+  --pv2-mint-strong: var(--op-water-deep);
+  --pv2-outline: var(--op-brown);
+  --pv2-shadow-color: var(--op-grey);
+  --pv2-mint-shadow: var(--op-water-deep);
+}
+.ocean-profile {
+  --profile-ink: var(--op-ink);
+  --profile-outline: var(--op-brown);
+  --profile-pink: var(--op-cream);
+  --profile-pink-strong: var(--op-brown);
+  --profile-mint: var(--op-water);
+  --profile-paper: var(--op-paper);
+  --profile-muted: var(--op-muted);
+}
+body.ocean-profile, html body.ocean-tracking {
+  background-color: var(--op-water) !important;
+  background-image: linear-gradient(rgba(104,79,72,.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(104,79,72,.045) 1px, transparent 1px) !important;
+}
+body.ocean-auth {
+  --pv2-ink: var(--op-brown);
+  --pv2-ink-deep: var(--op-ink);
+  --pv2-text: var(--op-muted);
+  --pv2-paper: var(--op-paper);
+  --pv2-cream: var(--op-water);
+  --pv2-pink: var(--op-cream);
+  --pv2-pink-strong: var(--op-brown);
+  --pv2-mint: var(--op-grey);
+}
+.go-batch-card-image { background: var(--op-water); }
+.go-batch-card-state.is-open { background: rgba(214,233,237,.96); color: #245f4a; }
+.go-batch-card-state.is-closed { color: var(--op-brown); }
+.go-batch-card-placeholder { background: radial-gradient(circle at 70% 20%, rgb(255 255 255 / .72), transparent 8rem), linear-gradient(145deg, var(--op-water-deep), var(--op-brown)); }
+::selection { background: var(--op-water-deep); color: var(--op-ink); }
