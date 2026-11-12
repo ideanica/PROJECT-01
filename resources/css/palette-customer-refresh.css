@@ -1,0 +1,59 @@
+/* Ocean Paws customer/buyer palette system: palette #684f48 #d6e9ed #ccd6d6 #f9e7c7 */
+:root{
+ --op-brown:#684f48;--op-water:#d6e9ed;--op-water-soft:#edf6f7;--op-water-deep:#9fc9d4;
+ --op-grey:#ccd6d6;--op-cream:#f9e7c7;--op-paper:#fffdf7;--op-ink:#49352f;--op-muted:#78665f;
+ --op-line:#d9d9d2;--op-shadow:0 10px 28px rgba(72,53,46,.10);
+}
+/* Main storefront and buyer surfaces */
+body.customer-theme{--bg:var(--op-water);--bg-deep:var(--op-grey);--white:var(--op-paper);--navy:var(--op-brown);--muted:var(--op-muted);--blue:var(--op-water-deep);--cyan:var(--op-water);--line:var(--op-grey);--pale:var(--op-grey);--soft:var(--op-cream);background:radial-gradient(ellipse at 50% -10%,rgba(249,231,199,.62),transparent 34rem),linear-gradient(180deg,var(--op-water-soft),var(--op-water) 65%,#e5eff0);color:var(--op-ink)}
+.customer-theme :is(h1,h2,h3,h4,.heading,.title){color:var(--op-brown)}
+.customer-theme :is(.btn-primary,.button-primary,[type=submit].primary){background:var(--op-brown);border-color:var(--op-brown);color:var(--op-paper)}
+.customer-theme :is(.btn-primary,.button-primary,[type=submit].primary):hover{background:#523d37;border-color:#523d37}
+.customer-theme :is(.btn-secondary,.button-secondary){background:var(--op-water);border-color:var(--op-brown);color:var(--op-brown)}
+.customer-theme :is(input,select,textarea){border-color:#b8c9c9;background:var(--op-paper);color:var(--op-ink)}
+.customer-theme :is(input,select,textarea):focus{border-color:#7eabb8;box-shadow:0 0 0 3px rgba(159,201,212,.28);outline:0}
+.customer-theme :is(.card,.panel,.product-card,.checkout-card,.order-card){background:var(--op-paper);border-color:var(--op-line)}
+.customer-theme :is(.badge,.chip,.tag){background:var(--op-water);color:#456c78}
+.customer-theme :is(.success,.status-success){color:#426e59}
+/* Buyer portal: blue is the water accent; cream is warm highlight, not a large yellow slab. */
+:root{--pv2-ink:var(--op-brown);--pv2-ink-deep:var(--op-ink);--pv2-text:var(--op-muted);--pv2-muted:var(--op-muted);--pv2-paper:var(--op-paper);--pv2-cream:var(--op-water);--pv2-pink:var(--op-cream);--pv2-pink-strong:var(--op-brown);--pv2-mint:var(--op-grey);--pv2-mint-strong:var(--op-water-deep);--pv2-yellow:var(--op-cream);--pv2-blue:var(--op-water);--pv2-outline:var(--op-brown);--pv2-shadow-color:#b8c7c7;--pv2-mint-shadow:#a8cbd3}
+:is(.portal-v2,.portal-overview-page,.order-detail-page){--pv2-ink:var(--op-brown);--pv2-ink-deep:var(--op-ink);--pv2-text:var(--op-muted);--pv2-muted:var(--op-muted);--pv2-paper:var(--op-paper);--pv2-cream:var(--op-water);--pv2-pink:var(--op-cream);--pv2-pink-strong:var(--op-brown);--pv2-mint:var(--op-grey);--pv2-mint-strong:var(--op-water-deep);--pv2-yellow:var(--op-cream);--pv2-blue:var(--op-water);--pv2-outline:var(--op-brown);--pv2-shadow-color:#b8c7c7;--pv2-mint-shadow:#a8cbd3}
+.portal-v2,.portal-overview-page,.order-detail-page{background-color:var(--op-water-soft);color:var(--op-ink)}
+.portal-v2{background-image:linear-gradient(rgba(104,79,72,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(104,79,72,.035) 1px,transparent 1px),linear-gradient(180deg,#edf6f7,#d6e9ed);background-size:36px 36px,36px 36%,auto}
+/* Navbar: logo is the newly selected IMG_8321.PNG. No legacy pink/green active state. */
+.ocean-primary-navbar{border-color:var(--op-brown);background:var(--op-paper);color:var(--op-brown);box-shadow:0 5px 0 rgba(104,79,72,.12)}
+.ocean-primary-navbar__brand img{width:clamp(175px,19vw,245px);max-height:76px;object-fit:contain}
+.ocean-primary-navbar__brand-logo::after{mix-blend-mode:soft-light;opacity:.22}
+.ocean-primary-navbar__link{color:var(--op-brown);--nav-icon-fill:#8b9e9e;--nav-icon-stroke:var(--op-brown)}
+.ocean-primary-navbar__link:hover{background:rgba(214,233,237,.55)}
+.ocean-primary-navbar__link.is-active{border-color:var(--op-brown);background:var(--op-water);box-shadow:0 3px 0 rgba(104,79,72,.12);color:#456c78;--nav-icon-fill:#6e9eac}
+.ocean-primary-navbar__link.is-active:hover{box-shadow:0 3px 0 rgba(104,79,72,.12)}
+.ocean-primary-navbar__icon,.ocean-primary-navbar__icon.public-icon-rounded-bold{color:var(--nav-icon-fill)}
+.ocean-primary-navbar__mobile-toggle{color:var(--op-brown)}
+.ocean-primary-navbar__mobile-panel{border-color:var(--op-brown);background:var(--op-paper)}
+.ocean-primary-navbar__mobile-link{color:var(--op-brown)}
+.ocean-primary-navbar__mobile-link.is-active{background:var(--op-water);color:#456c78}
+@media(max-width:1050px){.ocean-primary-navbar__brand img{width:clamp(145px,19vw,195px);max-height:64px}}
+@media(max-width:1023px){.ocean-primary-navbar__brand img{width:clamp(110px,23vw,145px);max-height:58px}}
+@media(max-width:460px){.ocean-primary-navbar__brand img{width:clamp(94px,25vw,118px);max-height:52px}.ocean-primary-navbar__link{font-size:9px;padding-inline:4px}}
+/* Landing accents: remove legacy saturated pink/green from decorative controls. */
+.op-browserbar{background:var(--op-water);color:var(--op-brown);border-color:var(--op-grey)}
+.op-window-dots i:nth-child(1){background:var(--op-cream)}.op-window-dots i:nth-child(2){background:var(--op-grey)}.op-window-dots i:nth-child(3){background:var(--op-water-deep)}
+.op-navrow a,.op-navrow a i{color:var(--op-brown)}
+.op-navrow a:hover,.op-navrow a.is-active{background:var(--op-water);color:#456c78}
+.op-copy-inner h1,.op-about-content h2,.op-cta-copy h2{color:var(--op-brown)}
+.op-copy-inner h1 em,.op-copy-foot>span,.op-copy-foot>small{color:#6e9eac}
+.op-copy-inner p,.op-about-content p{color:var(--op-muted)}
+.op-search{background:var(--op-water);border-color:var(--op-water-deep);color:#456c78}
+.op-ticker{background:#edf6f7;border-color:var(--op-grey);color:var(--op-brown)}
+.op-ticker b{color:#6e9eac}
+.op-polaroid,.op-about-card{border-color:var(--op-brown);background:var(--op-paper)}
+.op-polaroid-back:before{background:var(--op-water)}.op-polaroid-mid:before{background:var(--op-cream)}
+.op-tape{background:rgba(214,233,237,.78)}
+.op-stats article{border-color:var(--op-brown);color:var(--op-brown);box-shadow:inset 0 0 0 7px var(--op-cream),0 3px 0 rgba(78,67,56,.1)}
+.op-stats article.is-green{border-color:#6e9eac;color:#456c78;box-shadow:inset 0 0 0 7px var(--op-water),0 3px 0 rgba(78,67,56,.1)}
+.op-cta{border-color:var(--op-brown);background:linear-gradient(180deg,var(--op-water) 0 58%,var(--op-grey) 58%)}
+.op-footer{background:#edf6f7}.op-footer:before{background:var(--op-water)}
+.op-footer-top nav,.op-socials{border-color:var(--op-water-deep)}
+.op-footer-top p,.op-footer-bottom{color:var(--op-brown)}
+@media(prefers-reduced-motion:reduce){.ocean-primary-navbar__brand-logo::after{animation:none}}
