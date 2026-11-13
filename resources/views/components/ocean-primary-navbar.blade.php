@@ -127,7 +127,7 @@
 
         .ocean-primary-navbar .ocean-primary-navbar__brand-logo {
             width: clamp(205px, 31vw, 280px) !important;
-            transform: translate(calc(-73% + 1.2rem), -50%) scale(1.08) !important;
+            transform: translate(-42%, -50%) scale(1.08) !important;
         }
     }
 
@@ -146,7 +146,7 @@
 
         .ocean-primary-navbar .ocean-primary-navbar__brand-logo {
             width: clamp(190px, 55vw, 220px) !important;
-            transform: translate(calc(-73% + 1rem), -50%) scale(1.05) !important;
+            transform: translate(-42%, -50%) scale(1.05) !important;
         }
     }
 </style>
