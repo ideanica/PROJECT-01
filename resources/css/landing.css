@@ -6961,3 +6961,12 @@
     width: calc(100% - 50px) !important;
   }
 }
+
+
+/* Mobile hero grass cleanup: remove oversized foreground lawn overlays. */
+@media (max-width: 680px) {
+  .op-page .op-hero-grass,
+  .op-page .op-sign-grass {
+    display: none !important;
+  }
+}
