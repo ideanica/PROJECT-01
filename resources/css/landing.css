@@ -6488,6 +6488,7 @@
     height: 48%;
     object-fit: contain;
     object-position: right bottom;
+    transform: rotate(-1deg);
   }
 
   .op-page .op-sign {
@@ -6506,10 +6507,10 @@
   }
 
   .op-page .op-sign::after {
-    left: -24px;
+    left: -26px;
     bottom: -18px;
-    width: 160px;
-    height: 83px;
+    width: 165px;
+    height: 88px;
   }
 
   .op-page .op-hero-grass {
@@ -6828,7 +6829,7 @@
   /* Keep the wooden sign visible on phones; it was hidden at <=460px. */
   .op-page .op-sign {
     display: block !important;
-    right: calc(5% - 10px) !important;
+    right: calc(5% - 4px) !important;
     bottom: calc(5% - 20px) !important;
     width: 112px !important;
     height: 128px !important;
@@ -6853,7 +6854,7 @@
   }
 
   .op-page .op-sign {
-    right: calc(4% - 10px) !important;
+    right: calc(4% - 4px) !important;
     bottom: calc(4% - 20px) !important;
     width: 104px !important;
     height: 120px !important;
