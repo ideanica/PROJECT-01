@@ -6472,8 +6472,8 @@
   .op-page .op-hero-mascot {
     top: auto;
     right: auto;
-    bottom: 0;
-    left: -3%;
+    bottom: 16px;
+    left: calc(-3% + 5px);
     width: 72%;
     height: 31%;
     object-fit: contain;
