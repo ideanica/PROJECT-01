@@ -7004,25 +7004,24 @@
 }
 
 
-/* Mobile hero tabs: copy the Thousands+ statistic card palette exactly.
-   Blue fill: #d6e9ed. Blue offset outline: #ccd6d6.
-   Keep the fine brown stroke, inner panels and traffic-light dots intact. */
+/* Mobile hero tabs: blue fill and blue border, with the original brown shadow.
+   Keep the inner panels and traffic-light dots unchanged. */
 @media (max-width: 680px) {
   .op-page .op-copy-window {
     background: #d6e9ed !important;
-    border-color: #684f48 !important;
-    box-shadow: -6px 6px 0 #ccd6d6 !important;
+    border-color: #ccd6d6 !important;
+    box-shadow: -4px 5px 0 #684f48 !important;
   }
 
   .op-page .op-copy-window .op-browserbar {
     background: #d6e9ed !important;
-    border-bottom-color: #684f48 !important;
+    border-bottom-color: #ccd6d6 !important;
   }
 
   .op-page .op-copy-window-back::before {
     background: #d6e9ed !important;
-    border-color: #684f48 !important;
-    box-shadow: -6px 6px 0 #ccd6d6 !important;
+    border-color: #ccd6d6 !important;
+    box-shadow: -4px 5px 0 #684f48 !important;
   }
 
   /* Keep the mobile foreground hero grass raised by 3px. */
