@@ -146,6 +146,15 @@ html[data-customer-theme="dark"] .ocean-tracking .tracking-classic .tracking-neo
     stroke: #684f48 !important;
 }
 
+
+/* Brown shadows for both tracking cards (heading and search card). */
+.ocean-tracking .tracking-classic .tracking-neo-heading {
+    box-shadow: var(--customer-shadow-card, -6px 6px 0) #684f48 !important;
+}
+.ocean-tracking .tracking-classic .tracking-neo-search-card {
+    box-shadow: var(--customer-shadow-card, -6px 6px 0) #684f48 !important;
+}
+
 </style>
 <section class="tracking-neo-page tracking-classic" aria-labelledby="order-search-title">
     <div class="tracking-neo-shell">
