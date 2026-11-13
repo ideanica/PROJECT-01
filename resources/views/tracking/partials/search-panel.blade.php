@@ -64,12 +64,12 @@
     background: var(--classic-matcha); color: var(--classic-ink);
     box-shadow: var(--customer-shadow-control) var(--classic-button-shadow); font-size: 18px; font-weight: 900;
 }
-/* Keep the tracking search CTA aligned with the account login button palette. */
+/* Match the current Ocean Paws palette, not the retired matcha/pink colors. */
 .ocean-tracking .tracking-classic .tracking-neo-form button {
-    background: #96c88a !important;
-    color: #355a45 !important;
-    border-color: #496d54;
-    box-shadow: var(--customer-shadow-control, -3px 3px 0) #4d8156;
+    background: var(--op-water, #d6e9ed) !important;
+    color: var(--op-brown, #684f48) !important;
+    border-color: var(--op-brown, #684f48) !important;
+    box-shadow: var(--customer-shadow-control, -3px 3px 0) var(--op-grey, #ccd6d6) !important;
 }
 .ocean-tracking .tracking-classic .tracking-neo-form button:hover { transform: translate(-2px, 2px); box-shadow: var(--customer-shadow-pressed) var(--classic-button-shadow); }
 .ocean-tracking .tracking-classic .tracking-neo-form button:focus-visible { outline: 3px solid #487553; outline-offset: 5px; }
@@ -78,14 +78,14 @@
     border: 2px solid var(--classic-outline); border-radius: 9px;
     background: var(--classic-paper); color: #36534c; font-size: 12px; font-weight: 600; line-height: 1.4;
 }
-/* Star-note wrapper uses the same matcha surface as the login button. */
+/* The hint wrapper follows the same current water-blue surface as the CTA. */
 .ocean-tracking .tracking-classic .tracking-neo-hint {
-    background: #96c88a !important;
-    border-color: #496d54;
-    color: #355a45 !important;
+    background: var(--op-water, #d6e9ed) !important;
+    border-color: var(--op-brown, #684f48) !important;
+    color: var(--op-brown, #684f48) !important;
 }
 .ocean-tracking .tracking-classic .tracking-hint-stars {
-    color: #355a45 !important;
+    color: var(--op-brown, #684f48) !important;
 }
 
 .ocean-tracking .tracking-classic .tracking-hint-stars { display: block; width: 20px; height: 20px; flex: 0 0 20px; color: var(--classic-outline); }
@@ -130,7 +130,7 @@ html[data-customer-theme="dark"] .ocean-tracking .tracking-classic .tracking-neo
 
             <div id="tracking-query-hint" class="tracking-neo-hint">
                 <!-- Star 8 shape from https://www.neobrutalism.dev/stars -->
-                <svg class="tracking-hint-stars" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="20" height="20" aria-hidden="true" focusable="false" fill="#fbd7e3" stroke="currentColor" stroke-width="10" stroke-linejoin="round">
+                <svg class="tracking-hint-stars" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="20" height="20" aria-hidden="true" focusable="false" fill="var(--op-cream, #f9e7c7)" stroke="currentColor" stroke-width="10" stroke-linejoin="round">
                     <svg x="14" y="9" width="25" height="25" viewBox="0 0 200 200"><path d="M100 5s5.088 49.035 25.527 69.473C145.965 94.912 195 100 195 100s-49.035 5.088-69.473 25.527C105.088 145.965 100 195 100 195s-5.088-49.035-25.527-69.473C54.035 105.088 5 100 5 100s49.035-5.088 69.473-25.527C94.912 54.035 100 5 100 5" /></svg>
                     <svg x="1" y="1" width="13" height="13" viewBox="0 0 200 200"><path d="M100 5s5.088 49.035 25.527 69.473C145.965 94.912 195 100 195 100s-49.035 5.088-69.473 25.527C105.088 145.965 100 195 100 195s-5.088-49.035-25.527-69.473C54.035 105.088 5 100 5 100s49.035-5.088 69.473-25.527C94.912 54.035 100 5 100 5" /></svg>
                     <svg x="2" y="26" width="11" height="11" viewBox="0 0 200 200"><path d="M100 5s5.088 49.035 25.527 69.473C145.965 94.912 195 100 195 100s-49.035 5.088-69.473 25.527C105.088 145.965 100 195 100 195s-5.088-49.035-25.527-69.473C54.035 105.088 5 100 5 100s49.035-5.088 69.473-25.527C94.912 54.035 100 5 100 5" /></svg>
