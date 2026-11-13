@@ -392,10 +392,10 @@
         /* Match the supplied 1352 × 183 footer; keep its text and links live. */
         .op-footer-reference{
             display:block;
-            height:183px;
-            min-height:183px;
+            height:230px;
+            min-height:230px;
             border:0;
-            background:#f9e7c7 url('{{ asset('assets/oceanpaws-footer-reference-bg-v1.png') }}') center 40%/100% 136% no-repeat;
+            background:#f9e7c7 url('{{ asset('assets/oceanpaws-footer-reference-bg-v1.png') }}') center top/100% 100% no-repeat;
         }
         .op-footer-reference::before{content:none}
         .op-footer-reference .op-footer-reference-shell{
@@ -481,7 +481,7 @@
             text-shadow:none;
         }
         @media(max-width:1160px){
-            .op-footer-reference{height:265px;min-height:265px;background-size:100% 115%}
+            .op-footer-reference{height:300px;min-height:300px;background-size:100% 100%}
             .op-footer-reference .op-footer-reference-shell{
                 top:39px;
                 width:calc(100% - 64px);
@@ -554,10 +554,10 @@
         .op-footer-mobile-links{display:none}
         @media(max-width:1023px){
             .op-footer-reference{
-                height:292px;
-                min-height:292px;
+                height:360px;
+                min-height:360px;
                 background-size:auto 100%;
-                background-position:center bottom;
+                background-position:center top;
             }
             .op-footer-reference .op-footer-reference-shell{
                 top:93px;
