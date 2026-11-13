@@ -6970,3 +6970,13 @@
     display: none !important;
   }
 }
+
+
+/* Mobile hero background: preserve its native aspect ratio, no horizontal stretch. */
+@media (max-width: 680px) {
+  .op-page .op-hero {
+    background-size: auto 100% !important;
+    background-position: center top !important;
+    background-repeat: no-repeat !important;
+  }
+}
