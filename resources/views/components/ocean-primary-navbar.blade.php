@@ -86,7 +86,7 @@
        the navbar's left inner padding so the logo starts beside the border. */
     @media (min-width: 1024px) {
         .ocean-primary-navbar {
-            padding-left: 0 !important;
+            padding-left: 34px !important;
         }
 
         .ocean-primary-navbar .ocean-primary-navbar__brand {
@@ -97,7 +97,7 @@
             width: clamp(190px, 17.5vw, 235px) !important;
             height: 72px !important;
             flex: 0 0 auto !important;
-            margin: 0 !important;
+            margin: 0 0 0 -32px !important;
             transform: none !important;
             z-index: 3;
         }
