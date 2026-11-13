@@ -146,6 +146,12 @@
                 left: calc(-6% - 20px) !important;
             }
         }
+        @media (max-width: 680px) {
+            .op-page .op-cta-copy .op-line {
+                width: calc(100% - 26px) !important;
+                max-width: calc(100% - 26px) !important;
+            }
+        }
         .op-footer-reference{
             position:relative;
             isolation:isolate;
