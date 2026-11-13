@@ -81,6 +81,32 @@
             transform: translate(-2rem, -50%) scale(1.12) !important;
         }
     }
+
+    /* Desktop: pin the logo slot to the navbar's left inner edge.
+       The navbar and navigation dimensions remain unchanged. */
+    @media (min-width: 1024px) {
+        .ocean-primary-navbar {
+            position: relative !important;
+        }
+
+        .ocean-primary-navbar .ocean-primary-navbar__brand {
+            position: absolute !important;
+            top: 50% !important;
+            left: 2px !important;
+            width: clamp(190px, 17.5vw, 235px) !important;
+            height: 72px !important;
+            margin: 0 !important;
+            transform: translateY(-50%) !important;
+            z-index: 3;
+        }
+
+        .ocean-primary-navbar .ocean-primary-navbar__brand-logo {
+            top: 50% !important;
+            left: 0 !important;
+            transform: translateY(-50%) scale(1.25) !important;
+            transform-origin: left center !important;
+        }
+    }
 </style>
 
 <div class="{{ $hostClass }}">
@@ -110,9 +136,9 @@
             </nav>
         </details>
 
-        <a class="ocean-primary-navbar__brand" href="{{ $homeUrl }}" aria-label="Ocean Paws home" style="position:relative;display:block;width:clamp(190px,17.5vw,235px);height:72px;flex:0 0 auto;overflow:visible;">
-            <span class="ocean-primary-navbar__brand-logo" style="position:absolute;top:50%;left:0;display:block;width:clamp(560px,40vw,760px);line-height:0;transform:translate(-2rem,-50%) scale(1.25);transform-origin:left center;z-index:2;">
-                <img src="{{ asset('assets/IMG_8321.PNG') }}" alt="Ocean Paws — Bringing your favorites closer" style="display:block;width:100%;max-width:none;height:auto;object-fit:contain;">
+        <a class="ocean-primary-navbar__brand" href="{{ $homeUrl }}" aria-label="Ocean Paws home">
+            <span class="ocean-primary-navbar__brand-logo">
+                <img src="{{ asset('assets/IMG_8321.PNG') }}" alt="Ocean Paws — Bringing your favorites closer">
             </span>
         </a>
 
