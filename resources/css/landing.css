@@ -6483,7 +6483,7 @@
   .op-page .op-palm {
     top: auto;
     right: -13%;
-    bottom: 0;
+    bottom: 10px;
     width: 54%;
     height: 48%;
     object-fit: contain;
@@ -6829,7 +6829,7 @@
   .op-page .op-sign {
     display: block !important;
     right: 5% !important;
-    bottom: 5% !important;
+    bottom: calc(5% - 8px) !important;
     width: 112px !important;
     height: 128px !important;
     transform: none !important;
@@ -6854,7 +6854,7 @@
 
   .op-page .op-sign {
     right: 4% !important;
-    bottom: 4% !important;
+    bottom: calc(4% - 8px) !important;
     width: 104px !important;
     height: 120px !important;
   }
@@ -6998,6 +6998,6 @@
 
   /* Keep the grass decoration at the same relative offset. */
   .op-page .op-sign::after {
-    bottom: -47.3px !important;
+    bottom: -32.3px !important;
   }
 }
