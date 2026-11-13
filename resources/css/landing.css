@@ -6473,7 +6473,7 @@
     top: auto;
     right: auto;
     bottom: 16px;
-    left: calc(-3% + 10px);
+    left: calc(-3% + 15px);
     width: 72%;
     height: 31%;
     object-fit: contain;
