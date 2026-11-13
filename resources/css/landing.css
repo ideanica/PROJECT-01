@@ -6839,12 +6839,12 @@
 @media (max-width: 460px) {
   .op-page .op-copy-window {
     left: 16px !important;
-    width: calc(100% - 32px) !important;
+    width: calc(100% - 37px) !important;
   }
 
   .op-page .op-copy-window-back {
     left: 10px !important;
-    width: calc(100% - 40px) !important;
+    width: calc(100% - 45px) !important;
   }
 
   .op-page .op-hero-grass {
