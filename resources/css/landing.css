@@ -6507,7 +6507,7 @@
   }
 
   .op-page .op-sign::after {
-    left: -10px;
+    left: -5px;
     bottom: -18px;
     width: 165px;
     height: 88px;
@@ -6829,8 +6829,8 @@
   /* Keep the wooden sign visible on phones; it was hidden at <=460px. */
   .op-page .op-sign {
     display: block !important;
-    right: calc(5% + 20px) !important;
-    bottom: calc(5% - 12px) !important;
+    right: calc(5% + 23px) !important;
+    bottom: calc(5% - 15px) !important;
     width: 112px !important;
     height: 128px !important;
     transform: none !important;
@@ -6854,8 +6854,8 @@
   }
 
   .op-page .op-sign {
-    right: calc(4% + 20px) !important;
-    bottom: calc(4% - 12px) !important;
+    right: calc(4% + 23px) !important;
+    bottom: calc(4% - 15px) !important;
     width: 104px !important;
     height: 120px !important;
   }
