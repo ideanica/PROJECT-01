@@ -6012,3 +6012,9 @@
 .op-hero-wave{opacity:.95}
 .op-cta-wave{opacity:.92}
 .op-footer-wave{opacity:.75}
+
+/* Mobile hero asset positioning adjustment */
+@media(max-width:767px){
+  .op-sign{bottom:48px}
+  .op-palm{top:427px}
+}
