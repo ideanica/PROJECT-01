@@ -6830,7 +6830,7 @@
   .op-page .op-sign {
     display: block !important;
     right: calc(5% + 23px) !important;
-    bottom: calc(5% - 15px) !important;
+    bottom: calc(5% - 17px) !important;
     width: 112px !important;
     height: 128px !important;
     transform: none !important;
@@ -6855,7 +6855,7 @@
 
   .op-page .op-sign {
     right: calc(4% + 23px) !important;
-    bottom: calc(4% - 15px) !important;
+    bottom: calc(4% - 17px) !important;
     width: 104px !important;
     height: 120px !important;
   }
@@ -7000,5 +7000,13 @@
   /* Keep the grass decoration at the same relative offset. */
   .op-page .op-sign::after {
     bottom: -31.3px !important;
+  }
+}
+
+
+/* Mobile hero: align the wooden sign 2px lower and match its browser tab to the Thousands+ statistic card. */
+@media (max-width: 680px) {
+  .op-page .op-copy-window .op-browserbar {
+    background: #d6e9ed !important;
   }
 }
