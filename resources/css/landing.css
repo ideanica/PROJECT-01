@@ -6482,7 +6482,7 @@
 
   .op-page .op-palm {
     top: auto;
-    right: -13%;
+    right: calc(-13% + 5px);
     bottom: 33px;
     width: 54%;
     height: 48%;
@@ -6999,6 +6999,6 @@
 
   /* Keep the grass decoration at the same relative offset. */
   .op-page .op-sign::after {
-    bottom: -32.3px !important;
+    bottom: -24.3px !important;
   }
 }
