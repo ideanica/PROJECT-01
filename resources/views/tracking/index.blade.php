@@ -672,7 +672,7 @@
         <div class="op-footer-reference-shell">
             <div class="op-footer-brand-block">
                 <a href="#home" aria-label="Ocean Paws — kembali ke atas">
-                    <img src="{{ asset('assets/oceanpaws-logo-no-sticker.png') }}" alt="Ocean Paws">
+                    <img src="{{ asset('assets/IMG_8321.PNG') }}" alt="Ocean Paws">
                 </a>
             </div>
 
