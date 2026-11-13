@@ -6947,3 +6947,17 @@
     height: 28px !important;
   }
 }
+
+ 
+/* Mobile hero tabs: 5px narrower again, then align both right edges with navbar. */
+@media (max-width: 680px) {
+  .op-page .op-copy-window {
+    left: 30px !important;
+    width: calc(100% - 42px) !important;
+  }
+
+  .op-page .op-copy-window-back {
+    left: 38px !important;
+    width: calc(100% - 50px) !important;
+  }
+}
