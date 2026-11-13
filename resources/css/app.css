@@ -9027,6 +9027,8 @@ html[data-customer-theme="dark"] .ocean-tracking .tracking-result-side {
     display: block;
     flex: none;
     line-height: 0;
+    transform: scale(1.07);
+    transform-origin: left center;
 }
 
 .ocean-primary-navbar__brand-logo img {
