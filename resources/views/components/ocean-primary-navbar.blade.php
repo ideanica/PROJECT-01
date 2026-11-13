@@ -145,9 +145,9 @@
         }
 
         .ocean-primary-navbar .ocean-primary-navbar__brand-logo {
-            width: clamp(205px, 58vw, 235px) !important;
-            /* Scale the artwork up, then keep its visible center inside the brand slot. */
-            transform: translate(calc(-30% - 3rem), -50%) scale(1.42) !important;
+            width: clamp(204px, 58vw, 234px) !important;
+            /* Mobile-only: slightly reduce the logo and shift it left. */
+            transform: translate(calc(-30% - 3rem - 5px), -50%) scale(1.42) !important;
             transform-origin: left center !important;
         }
     }
