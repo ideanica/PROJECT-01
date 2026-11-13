@@ -10,6 +10,74 @@
     $hostClass = 'ocean-primary-navbar-host'.($mode === 'landing' ? ' is-landing' : '');
 @endphp
 
+<style>
+    /* Keep the navbar's brand slot fixed; enlarge only the visible artwork. */
+    .ocean-primary-navbar .ocean-primary-navbar__brand {
+        position: relative !important;
+        display: block !important;
+        width: clamp(190px, 17.5vw, 235px) !important;
+        height: 72px !important;
+        flex: 0 0 auto !important;
+        overflow: visible !important;
+    }
+
+    .ocean-primary-navbar .ocean-primary-navbar__brand-logo {
+        position: absolute !important;
+        top: 50% !important;
+        left: 0 !important;
+        display: block !important;
+        width: clamp(390px, 33vw, 520px) !important;
+        line-height: 0 !important;
+        transform: translateY(-50%) scale(1.18) !important;
+        transform-origin: left center !important;
+        z-index: 2;
+    }
+
+    .ocean-primary-navbar .ocean-primary-navbar__brand-logo img {
+        display: block !important;
+        width: 100% !important;
+        max-width: none !important;
+        height: auto !important;
+        object-fit: contain;
+    }
+
+    @media (max-width: 1050px) {
+        .ocean-primary-navbar .ocean-primary-navbar__brand {
+            width: clamp(150px, 18vw, 190px) !important;
+            height: 66px !important;
+        }
+
+        .ocean-primary-navbar .ocean-primary-navbar__brand-logo {
+            width: clamp(280px, 32vw, 360px) !important;
+            transform: translateY(-50%) scale(1.12) !important;
+        }
+    }
+
+    @media (max-width: 1023px) {
+        .ocean-primary-navbar .ocean-primary-navbar__brand {
+            width: clamp(80px, 20vw, 110px) !important;
+            height: 54px !important;
+        }
+
+        .ocean-primary-navbar .ocean-primary-navbar__brand-logo {
+            width: clamp(180px, 25vw, 220px) !important;
+            transform: translateY(-50%) scale(1.1) !important;
+        }
+    }
+
+    @media (max-width: 460px) {
+        .ocean-primary-navbar .ocean-primary-navbar__brand {
+            width: clamp(72px, 23vw, 100px) !important;
+            height: 50px !important;
+        }
+
+        .ocean-primary-navbar .ocean-primary-navbar__brand-logo {
+            width: clamp(160px, 40vw, 180px) !important;
+            transform: translateY(-50%) scale(1.08) !important;
+        }
+    }
+</style>
+
 <div class="{{ $hostClass }}">
     <header class="ocean-primary-navbar" aria-label="Navigasi utama Ocean Paws">
 
