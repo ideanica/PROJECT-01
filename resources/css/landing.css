@@ -7053,3 +7053,12 @@
 .op-page .op-about-card .op-polaroids {
   translate: 0 10px !important;
 }
+
+
+@media (max-width: 680px) {
+  /* Mobile About Us copy: lower the heading and paragraph together by 4px. */
+  .op-page .op-about-content > h2,
+  .op-page .op-about-content > p {
+    translate: 0 4px !important;
+  }
+}
