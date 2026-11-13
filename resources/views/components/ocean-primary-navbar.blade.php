@@ -54,7 +54,7 @@
 
         .ocean-primary-navbar .ocean-primary-navbar__brand-logo {
             width: clamp(340px, 38vw, 420px) !important;
-            transform: translateY(-50%) scale(1.2) !important;
+            transform: translate(-2rem, -50%) scale(1.2) !important;
         }
     }
 
@@ -66,7 +66,7 @@
 
         .ocean-primary-navbar .ocean-primary-navbar__brand-logo {
             width: clamp(210px, 29vw, 260px) !important;
-            transform: translateY(-50%) scale(1.15) !important;
+            transform: translate(-2rem, -50%) scale(1.15) !important;
         }
     }
 
@@ -78,7 +78,7 @@
 
         .ocean-primary-navbar .ocean-primary-navbar__brand-logo {
             width: clamp(180px, 44vw, 220px) !important;
-            transform: translateY(-50%) scale(1.12) !important;
+            transform: translate(-2rem, -50%) scale(1.12) !important;
         }
     }
 </style>
