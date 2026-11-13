@@ -97,7 +97,7 @@
             width: clamp(190px, 17.5vw, 235px) !important;
             height: 72px !important;
             flex: 0 0 auto !important;
-            margin: 0 0 0 -32px !important;
+            margin: 0 !important;
             transform: none !important;
             z-index: 3;
         }
@@ -105,7 +105,9 @@
         .ocean-primary-navbar .ocean-primary-navbar__brand-logo {
             top: 50% !important;
             left: 0 !important;
-            transform: translateY(-50%) scale(1.25) !important;
+            /* The source PNG has wide transparent side margins.
+               Shift its canvas so the actual artwork aligns with the left slot. */
+            transform: translate(-73%, -50%) scale(1.6) !important;
             transform-origin: left center !important;
         }
     }
