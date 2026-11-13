@@ -12,6 +12,11 @@
 
 <style>
     /* Keep the navbar's brand slot fixed; enlarge only the visible artwork. */
+    .ocean-primary-navbar,
+    .ocean-primary-navbar-host {
+        overflow: visible !important;
+    }
+
     .ocean-primary-navbar .ocean-primary-navbar__brand {
         position: relative !important;
         display: block !important;
@@ -26,9 +31,9 @@
         top: 50% !important;
         left: 0 !important;
         display: block !important;
-        width: clamp(390px, 33vw, 520px) !important;
+        width: clamp(560px, 40vw, 760px) !important;
         line-height: 0 !important;
-        transform: translateY(-50%) scale(1.18) !important;
+        transform: translateY(-50%) scale(1.25) !important;
         transform-origin: left center !important;
         z-index: 2;
     }
@@ -48,8 +53,8 @@
         }
 
         .ocean-primary-navbar .ocean-primary-navbar__brand-logo {
-            width: clamp(280px, 32vw, 360px) !important;
-            transform: translateY(-50%) scale(1.12) !important;
+            width: clamp(340px, 38vw, 420px) !important;
+            transform: translateY(-50%) scale(1.2) !important;
         }
     }
 
@@ -60,8 +65,8 @@
         }
 
         .ocean-primary-navbar .ocean-primary-navbar__brand-logo {
-            width: clamp(180px, 25vw, 220px) !important;
-            transform: translateY(-50%) scale(1.1) !important;
+            width: clamp(210px, 29vw, 260px) !important;
+            transform: translateY(-50%) scale(1.15) !important;
         }
     }
 
@@ -72,8 +77,8 @@
         }
 
         .ocean-primary-navbar .ocean-primary-navbar__brand-logo {
-            width: clamp(160px, 40vw, 180px) !important;
-            transform: translateY(-50%) scale(1.08) !important;
+            width: clamp(180px, 44vw, 220px) !important;
+            transform: translateY(-50%) scale(1.12) !important;
         }
     }
 </style>
