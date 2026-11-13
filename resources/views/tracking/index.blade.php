@@ -397,6 +397,10 @@
             border:0;
             background:#F2F9FA url('{{ asset('assets/oceanpaws-footer-reference-bg-v1.png') }}') center top/100% 100% no-repeat;
         }
+        /* Keep the canvas behind the footer artwork on the same pale blue as the content section. */
+        .op-page > .op-footer-reference{
+            background-color:#F2F9FA !important;
+        }
         .op-footer-reference::before{content:none}
         .op-footer-reference .op-footer-reference-shell{
             position:absolute;
