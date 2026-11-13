@@ -7002,3 +7002,11 @@
     bottom: -31.3px !important;
   }
 }
+
+
+/* Mobile: narrow the Login Akun button in the Let's get closer card by 4px. */
+@media (max-width: 680px) {
+  .op-page .op-cta-copy .op-line {
+    width: calc(100% - 4px) !important;
+  }
+}
