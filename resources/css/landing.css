@@ -6507,10 +6507,10 @@
   }
 
   .op-page .op-sign::after {
-    left: -26px;
+    left: -22px;
     bottom: -18px;
-    width: 170px;
-    height: 93px;
+    width: 168px;
+    height: 91px;
   }
 
   .op-page .op-hero-grass {
@@ -6999,6 +6999,6 @@
 
   /* Keep the grass decoration at the same relative offset. */
   .op-page .op-sign::after {
-    bottom: -36.3px !important;
+    bottom: -32.3px !important;
   }
 }
