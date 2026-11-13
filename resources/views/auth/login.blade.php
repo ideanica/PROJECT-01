@@ -42,7 +42,7 @@
 .ocean-auth .auth-shell:has(:is(.auth-form-login, .auth-form-register)) .auth-kicker {
     border: 1.5px solid var(--auth-card-outline); border-radius: 8px;
     background: var(--auth-card-paper); color: var(--auth-card-ink);
-    box-shadow: var(--customer-shadow-control, -3px 3px 0) #ccd6d6;
+    box-shadow: var(--customer-shadow-control, -3px 3px 0) #684f48;
     font-size: 10px; font-weight: 900;
 }
 .ocean-auth .auth-shell:has(:is(.auth-form-login, .auth-form-register)) .auth-title {
