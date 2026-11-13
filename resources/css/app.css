@@ -9773,8 +9773,8 @@ html[data-customer-theme="dark"] .ocean-primary-navbar__mobile-link.is-active {
 }
 
 
-/* Oversized navbar logo: keep its layout slot fixed while allowing the artwork
-   to render larger than that slot without changing the navbar dimensions. */
+/* Oversized navbar logo: the brand keeps a fixed layout slot while the
+   artwork can grow beyond it without changing the navbar dimensions. */
 .ocean-primary-navbar,
 .ocean-primary-navbar-host,
 .ocean-primary-navbar__brand {
@@ -9794,9 +9794,9 @@ html[data-customer-theme="dark"] .ocean-primary-navbar__mobile-link.is-active {
     top: 50%;
     left: 0;
     display: block;
-    width: clamp(240px, 23vw, 330px);
+    width: clamp(300px, 25vw, 360px);
     line-height: 0;
-    transform: translateY(-50%);
+    transform: translateY(-50%) scale(1.1);
     transform-origin: left center;
 }
 
@@ -9815,7 +9815,7 @@ html[data-customer-theme="dark"] .ocean-primary-navbar__mobile-link.is-active {
     }
 
     .ocean-primary-navbar__brand-logo {
-        width: clamp(230px, 25vw, 260px);
+        width: clamp(250px, 28vw, 300px);
     }
 }
 
@@ -9826,7 +9826,8 @@ html[data-customer-theme="dark"] .ocean-primary-navbar__mobile-link.is-active {
     }
 
     .ocean-primary-navbar__brand-logo {
-        width: clamp(160px, 22vw, 205px);
+        width: clamp(180px, 25vw, 220px);
+        transform: translateY(-50%) scale(1.05);
     }
 }
 
@@ -9837,6 +9838,6 @@ html[data-customer-theme="dark"] .ocean-primary-navbar__mobile-link.is-active {
     }
 
     .ocean-primary-navbar__brand-logo {
-        width: clamp(140px, 36vw, 158px);
+        width: clamp(155px, 40vw, 180px);
     }
 }
