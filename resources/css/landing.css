@@ -6483,7 +6483,7 @@
   .op-page .op-palm {
     top: auto;
     right: -13%;
-    bottom: 24px;
+    bottom: 33px;
     width: 54%;
     height: 48%;
     object-fit: contain;
@@ -6828,8 +6828,8 @@
   /* Keep the wooden sign visible on phones; it was hidden at <=460px. */
   .op-page .op-sign {
     display: block !important;
-    right: calc(5% - 4px) !important;
-    bottom: calc(5% - 14px) !important;
+    right: calc(5% - 10px) !important;
+    bottom: calc(5% - 20px) !important;
     width: 112px !important;
     height: 128px !important;
     transform: none !important;
@@ -6853,8 +6853,8 @@
   }
 
   .op-page .op-sign {
-    right: calc(4% - 4px) !important;
-    bottom: calc(4% - 14px) !important;
+    right: calc(4% - 10px) !important;
+    bottom: calc(4% - 20px) !important;
     width: 104px !important;
     height: 120px !important;
   }
