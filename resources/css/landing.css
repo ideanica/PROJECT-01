@@ -7012,8 +7012,18 @@
 }
 
 
-/* Mobile hero: move wooden sign and palm down by 5px. */
+/* Mobile hero: lower only the wooden board and palm by 5px.
+   Keep the sign-foot grass at its original screen position. */
 @media (max-width: 680px) {
-  .op-page .op-sign { translate: 0 5px !important; }
-  .op-page .op-palm { translate: 0 5px !important; }
+  .op-page .op-sign {
+    translate: 0 5px !important;
+  }
+
+  .op-page .op-sign::after {
+    bottom: -26.3px !important;
+  }
+
+  .op-page .op-palm {
+    translate: 0 5px !important;
+  }
 }
