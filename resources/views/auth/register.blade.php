@@ -50,7 +50,7 @@
     --auth-card-matcha: #684f48;
     --auth-card-ink: #684f48;
     --auth-card-muted: #684f48;
-    --auth-card-shadow: #ccd6d6;
+    --auth-card-shadow: #684f48;
     --auth-control-shadow: #684f48;
     --auth-button-shadow: #684f48;
 }
