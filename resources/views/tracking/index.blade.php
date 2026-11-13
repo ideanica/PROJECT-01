@@ -151,7 +151,7 @@
             isolation:isolate;
             min-height:330px;
             overflow:hidden;
-            background:#d6e9ed;
+            background:#F2F9FA;
             color:#684f48;
             font-family:"Nunito Sans",sans-serif;
         }
@@ -395,7 +395,7 @@
             height:230px;
             min-height:230px;
             border:0;
-            background:#d6e9ed url('{{ asset('assets/oceanpaws-footer-reference-bg-v1.png') }}') center top/100% 100% no-repeat;
+            background:#F2F9FA url('{{ asset('assets/oceanpaws-footer-reference-bg-v1.png') }}') center top/100% 100% no-repeat;
         }
         .op-footer-reference::before{content:none}
         .op-footer-reference .op-footer-reference-shell{
