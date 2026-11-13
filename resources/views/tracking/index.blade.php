@@ -148,8 +148,8 @@
         }
         @media (max-width: 680px) {
             .op-page .op-cta-copy .op-line {
-                width: calc(100% - 26px) !important;
-                max-width: calc(100% - 26px) !important;
+                width: calc(100% - 30px) !important;
+                max-width: calc(100% - 30px) !important;
             }
         }
         .op-footer-reference{
