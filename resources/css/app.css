@@ -9771,3 +9771,72 @@ html[data-customer-theme="dark"] .ocean-primary-navbar__mobile-link.is-active {
     .admin-shell .admin-form-body > * { min-width: 0; }
     .admin-shell .admin-form-shell .select2-container { min-width: 0; max-width: 100%; }
 }
+
+
+/* Oversized navbar logo: keep its layout slot fixed while allowing the artwork
+   to render larger than that slot without changing the navbar dimensions. */
+.ocean-primary-navbar,
+.ocean-primary-navbar-host,
+.ocean-primary-navbar__brand {
+    overflow: visible;
+}
+
+.ocean-primary-navbar__brand {
+    position: relative;
+    display: block;
+    width: clamp(190px, 17.5vw, 235px);
+    height: 72px;
+    flex: 0 0 auto;
+}
+
+.ocean-primary-navbar__brand-logo {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    display: block;
+    width: clamp(240px, 23vw, 330px);
+    line-height: 0;
+    transform: translateY(-50%);
+    transform-origin: left center;
+}
+
+.ocean-primary-navbar__brand-logo img {
+    display: block;
+    width: 100%;
+    max-width: none;
+    height: auto;
+    object-fit: contain;
+}
+
+@media (max-width: 1050px) {
+    .ocean-primary-navbar__brand {
+        width: clamp(150px, 18vw, 190px);
+        height: 66px;
+    }
+
+    .ocean-primary-navbar__brand-logo {
+        width: clamp(230px, 25vw, 260px);
+    }
+}
+
+@media (max-width: 1023px) {
+    .ocean-primary-navbar__brand {
+        width: clamp(80px, 20vw, 110px);
+        height: 54px;
+    }
+
+    .ocean-primary-navbar__brand-logo {
+        width: clamp(160px, 22vw, 205px);
+    }
+}
+
+@media (max-width: 460px) {
+    .ocean-primary-navbar__brand {
+        width: clamp(72px, 23vw, 100px);
+        height: 50px;
+    }
+
+    .ocean-primary-navbar__brand-logo {
+        width: clamp(140px, 36vw, 158px);
+    }
+}
