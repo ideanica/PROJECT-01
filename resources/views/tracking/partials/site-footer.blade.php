@@ -8,7 +8,7 @@
         min-height:230px;
         overflow:hidden;
         border:0;
-        background:#f9e7c7 url('{{ asset('assets/oceanpaws-footer-reference-bg-v1.png') }}') center top/100% 100% no-repeat;
+        background:#d6e9ed url('{{ asset('assets/oceanpaws-footer-reference-bg-v1.png') }}') center top/100% 100% no-repeat;
         color:#684f48;
         font-family:"Nunito Sans",sans-serif;
     }
