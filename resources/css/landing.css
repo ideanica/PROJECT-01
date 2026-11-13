@@ -6092,15 +6092,15 @@
 
 /* Increase statistics tile gaps by another 0.5px at each layout size. */
 .op-page .op-stats {
-  gap: 10px !important;
+  gap: 10.5px !important;
 }
 @media (max-width: 1023px) {
   .op-page .op-stats {
-    gap: 11px !important;
+    gap: 11.5px !important;
   }
 }
 @media (max-width: 639px) {
   .op-page .op-stats {
-    gap: 13px !important;
+    gap: 13.5px !important;
   }
 }
