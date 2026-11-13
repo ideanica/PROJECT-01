@@ -6483,7 +6483,7 @@
   .op-page .op-palm {
     top: auto;
     right: -13%;
-    bottom: 10px;
+    bottom: 19px;
     width: 54%;
     height: 48%;
     object-fit: contain;
@@ -6508,8 +6508,8 @@
   .op-page .op-sign::after {
     left: -24px;
     bottom: -18px;
-    width: 155px;
-    height: 78px;
+    width: 160px;
+    height: 83px;
   }
 
   .op-page .op-hero-grass {
@@ -6985,15 +6985,15 @@
 /* Mobile hero sign: scale the board and lettering down proportionally. */
 @media (max-width: 680px) {
   .op-page .op-sign {
-    width: 104px !important;
-    height: 178.3px !important;
+    width: 97px !important;
+    height: 166.3px !important;
   }
 
   .op-page .op-sign span,
   .op-page .op-sign span:nth-child(1),
   .op-page .op-sign span:nth-child(2),
   .op-page .op-sign span:nth-child(3) {
-    font-size: 8.55px !important;
+    font-size: 7.97px !important;
   }
 
   /* Keep the grass decoration at the same relative offset. */
