@@ -145,7 +145,7 @@
         }
 
         .ocean-primary-navbar .ocean-primary-navbar__brand-logo {
-            width: clamp(197px, 58vw, 227px) !important;
+            width: clamp(187px, 58vw, 217px) !important;
             /* Mobile-only: slightly reduce the logo and shift it left. */
             transform: translate(calc(-30% - 3rem - 9px), -50%) scale(1.42) !important;
             transform-origin: left center !important;
