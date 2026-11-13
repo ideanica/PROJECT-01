@@ -6483,7 +6483,7 @@
   .op-page .op-palm {
     top: auto;
     right: calc(-13% + 14px);
-    bottom: 27px;
+    bottom: 24px;
     width: calc(54% + 3px);
     height: calc(48% + 3px);
     object-fit: contain;
@@ -6830,7 +6830,7 @@
   .op-page .op-sign {
     display: block !important;
     right: calc(5% + 20px) !important;
-    bottom: calc(5% - 9px) !important;
+    bottom: calc(5% - 12px) !important;
     width: 112px !important;
     height: 128px !important;
     transform: none !important;
@@ -6855,7 +6855,7 @@
 
   .op-page .op-sign {
     right: calc(4% + 20px) !important;
-    bottom: calc(4% - 9px) !important;
+    bottom: calc(4% - 12px) !important;
     width: 104px !important;
     height: 120px !important;
   }
