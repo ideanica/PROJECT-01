@@ -125,8 +125,8 @@ html[data-customer-theme="dark"] .ocean-tracking .tracking-classic .tracking-neo
 
 /* Match the Login CTA and keep the search/star controls visibly contrasted. */
 .ocean-tracking .tracking-classic .tracking-neo-form button {
-    background: #684f48 !important;
-    color: #fff !important;
+    background: #f9e7c7 !important;
+    color: #684f48 !important;
     border-color: #684f48 !important;
     box-shadow: var(--customer-shadow-control, -3px 3px 0) #684f48 !important;
 }
