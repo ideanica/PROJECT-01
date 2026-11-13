@@ -149,9 +149,9 @@
         @media (max-width: 680px) {
             #landing-cta-login-button {
                 display: inline-flex !important;
-                width: calc(100% - 34px) !important;
+                width: calc(100% - 30px) !important;
                 min-width: 0 !important;
-                max-width: calc(100% - 34px) !important;
+                max-width: calc(100% - 30px) !important;
                 box-sizing: border-box !important;
                 align-self: center !important;
             }
