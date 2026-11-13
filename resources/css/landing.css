@@ -6090,7 +6090,17 @@
   box-shadow: -6px 6px 0 #684f48 !important;
 }
 
-/* Set the spacing between statistic tiles to 0.5px. */
+/* Increase the existing statistics tile gaps by 0.5px at each layout size. */
 .op-page .op-stats {
-  gap: 0.5px !important;
+  gap: 9.5px !important;
+}
+@media (max-width: 1023px) {
+  .op-page .op-stats {
+    gap: 10.5px !important;
+  }
+}
+@media (max-width: 639px) {
+  .op-page .op-stats {
+    gap: 12.5px !important;
+  }
 }
