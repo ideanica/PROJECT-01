@@ -7004,23 +7004,23 @@
 }
 
 
-/* Mobile hero tabs: match the visible Thousands+ frame blue and retain brown shadow.
+/* Mobile hero tabs: match the Thousands+ blue outline and preserve the original fill/shadow.
    Leave the inner panels and traffic-light dots unchanged. */
 @media (max-width: 680px) {
   .op-page .op-copy-window {
     background: #d6e9ed !important;
-    border-color: #d6e9ed !important;
+    border-color: #6e9eac !important;
     box-shadow: -4px 5px 0 #684f48 !important;
   }
 
   .op-page .op-copy-window .op-browserbar {
     background: #d6e9ed !important;
-    border-bottom-color: #d6e9ed !important;
+    border-bottom-color: #6e9eac !important;
   }
 
   .op-page .op-copy-window-back::before {
     background: #d6e9ed !important;
-    border-color: #d6e9ed !important;
+    border-color: #6e9eac !important;
     box-shadow: -4px 5px 0 #684f48 !important;
   }
 
