@@ -15,7 +15,29 @@ class OrderStatusController extends Controller
      */
     public function index()
     {
-        $statuses = OrderStatus::query()
+        // Dua folder status dipaginasi terpisah agar tab tetap bisa berpindah tanpa memuat ulang halaman.
+        $trackingStatuses = $this->statusQuery()
+            ->where('scope', '!=', 'payment')
+            ->orderBy('sequence')
+            ->orderBy('name')
+            ->paginate(10, ['*'], 'tracking_page')
+            ->withQueryString()
+            ->appends(['scope' => 'tracking']);
+
+        $paymentStatuses = $this->statusQuery()
+            ->where('scope', 'payment')
+            ->orderBy('sequence')
+            ->orderBy('name')
+            ->paginate(10, ['*'], 'payment_page')
+            ->withQueryString()
+            ->appends(['scope' => 'payment']);
+
+        return view('admin.statuses.index', compact('trackingStatuses', 'paymentStatuses'));
+    }
+
+    private function statusQuery()
+    {
+        return OrderStatus::query()
             ->withCount(['batches', 'memberOrders', 'orderItems', 'paymentMemberOrders', 'oldHistories', 'newHistories'])
             ->when(request('q'), function ($query, $term) {
                 $query->where(fn ($query) => $query
@@ -24,12 +46,7 @@ class OrderStatusController extends Controller
                     ->orWhere('description', 'like', "%{$term}%"));
             })
             ->when(request('active') === '1', fn ($query) => $query->where('is_active', true))
-            ->when(request('active') === '0', fn ($query) => $query->where('is_active', false))
-            ->orderBy('sequence')
-            ->orderBy('name')
-            ->get();
-
-        return view('admin.statuses.index', compact('statuses'));
+            ->when(request('active') === '0', fn ($query) => $query->where('is_active', false));
     }
 
     /**

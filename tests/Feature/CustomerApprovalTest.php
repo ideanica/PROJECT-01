@@ -43,8 +43,14 @@ class CustomerApprovalTest extends TestCase
         $memberId = $user->member_id;
         $group = CustomerGroup::create(['name' => 'Accepted Group', 'color' => '#355a45', 'is_active' => true]);
         $admin = User::factory()->create();
-        $this->actingAs($admin)->get(route('admin.members.index', ['registration' => 'pending']))->assertOk()->assertSee('Pending Buyer')->assertSee('Permintaan registrasi (1)');
-        $this->get(route('admin.members.show', $memberId))->assertOk()->assertSee('Tentukan group');
+        $this->actingAs($admin)->get(route('admin.members.index', ['registration' => 'pending']))
+            ->assertOk()
+            ->assertSee('Pending Buyer')
+            ->assertSee('Permintaan registrasi (1)')
+            ->assertSee('Setujui permintaan')
+            ->assertSee('data-status-modal="approve-member-'.$memberId.'"', false)
+            ->assertSee('action="'.route('admin.members.approve', $memberId, false).'"', false);
+        $this->get(route('admin.members.show', $memberId))->assertOk();
         $this->post(route('admin.members.approve', $memberId), ['customer_group_id' => $group->id])->assertSessionHasNoErrors()->assertRedirect();
         $this->assertFalse($user->fresh()->registration_pending);
         $this->assertSame($group->id, $user->fresh()->member->customer_group_id);

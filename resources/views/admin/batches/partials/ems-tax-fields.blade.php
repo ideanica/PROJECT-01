@@ -2,5 +2,6 @@
     <x-text-input label="Total pajak EMS batch (opsional)" name="ems_tax_amount" type="number" min="0" max="999999999999.99" step="0.01" :value="old('ems_tax_amount', $batch->ems_tax_amount)" placeholder="Contoh: 150000" />
     <x-text-input label="Jatuh tempo EMS" name="ems_tax_due_date" type="date" :value="old('ems_tax_due_date', $batch->ems_tax_due_date?->format('Y-m-d'))" />
 </div>
-<label class="mt-4 block"><span>Rincian pajak EMS</span><textarea name="ems_tax_notes" rows="3" maxlength="1000">{{ old('ems_tax_notes', $batch->ems_tax_notes) }}</textarea></label>
-<p class="admin-form-help mt-3">Total dibagi rata ke seluruh pelanggan dalam batch, terlepas dari jumlah item. Pembagian dapat disesuaikan selama belum ada bukti atau pembayaran EMS. Setelah transaksi EMS mulai diproses, alokasi terkunci agar tagihan dan histori pembayaran tetap sama.</p>
+<label class="mt-4 block"><span>Rincian pajak EMS</span></label>
+<p class="admin-form-help mt-3">Boleh dikosongkan dan diisi nanti dari detail batch. Total dibagi rata ke seluruh pelanggan dalam batch, terlepas dari jumlah item. Pembagian dihitung ulang saat pelanggan berubah. Selisih pembulatan maksimal Rp 0,01 per pelanggan. Jika nominal bagian berubah, status EMS kembali menunggu pembayaran.</p>
+<textarea name="ems_tax_notes" rows="5" maxlength="1000" class="mt-3 w-full min-h-[140px] resize-y rounded-lg border border-gray-300 px-3 py-2">{{ old('ems_tax_notes', $batch->ems_tax_notes) }}</textarea>

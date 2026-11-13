@@ -461,6 +461,66 @@ document.querySelectorAll('[data-status-modal]').forEach((modal) => {
     });
 });
 
+// Row action menus use fixed positioning so the table scroll container cannot
+// clip them; the position is recalculated every time a menu opens.
+const closeRowMenus = (restoreFocus = false) => {
+    document.querySelectorAll('[data-row-menu]').forEach((menu) => {
+        const button = menu.querySelector('[data-row-menu-button]');
+        const panel = menu.querySelector('[data-row-menu-panel]');
+        if (!panel || panel.hasAttribute('hidden')) return;
+
+        panel.setAttribute('hidden', '');
+        button?.setAttribute('aria-expanded', 'false');
+        if (restoreFocus) button?.focus();
+    });
+};
+
+const positionRowMenu = (button, panel) => {
+    const trigger = button.getBoundingClientRect();
+    const panelSize = panel.getBoundingClientRect();
+    const gap = 6;
+    const viewportPadding = 12;
+    const opensUpwards = trigger.bottom + gap + panelSize.height > window.innerHeight - viewportPadding;
+    const top = opensUpwards ? trigger.top - panelSize.height - gap : trigger.bottom + gap;
+    const left = Math.min(trigger.right - panelSize.width, window.innerWidth - panelSize.width - viewportPadding);
+
+    panel.style.top = `${Math.max(viewportPadding, top)}px`;
+    panel.style.left = `${Math.max(viewportPadding, left)}px`;
+};
+
+document.querySelectorAll('[data-row-menu]').forEach((menu) => {
+    const button = menu.querySelector('[data-row-menu-button]');
+    const panel = menu.querySelector('[data-row-menu-panel]');
+    if (!button || !panel) return;
+
+    button.addEventListener('click', () => {
+        const willOpen = panel.hasAttribute('hidden');
+        closeRowMenus();
+        if (!willOpen) return;
+
+        panel.removeAttribute('hidden');
+        button.setAttribute('aria-expanded', 'true');
+        positionRowMenu(button, panel);
+    });
+
+    // Choosing an item should not leave the menu floating over the next page.
+    panel.addEventListener('click', (event) => {
+        if (event.target.closest('a, button')) closeRowMenus();
+    });
+});
+
+document.addEventListener('click', (event) => {
+    if (event.target.closest('[data-row-menu]')) return;
+    closeRowMenus();
+});
+
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closeRowMenus(true);
+});
+
+window.addEventListener('scroll', () => closeRowMenus(), true);
+window.addEventListener('resize', () => closeRowMenus());
+
 document.querySelectorAll('[data-admin-variant-builder]').forEach((builder) => {
     const list = builder.querySelector('[data-admin-variant-list]');
     const template = builder.querySelector('[data-admin-variant-template]');

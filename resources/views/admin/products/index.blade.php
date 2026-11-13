@@ -1,7 +1,7 @@
 <x-layouts.app title="Produk">
     <div class="[&_h1]:text-black!">
         <x-page-heading title="Produk" description="Master K-pop merch untuk mempercepat input item pesanan.">
-            <x-slot:action><a class="admin-primary-action" href="{{ route('admin.products.create', [], false) }}">+ Tambah produk</a></x-slot:action>
+            <x-slot:action><a class="admin-form-primary" href="{{ route('admin.products.create', [], false) }}">+ Tambah produk</a></x-slot:action>
         </x-page-heading>
     </div>
 
@@ -19,7 +19,7 @@
                             <td data-label="Produk"><div class="order-table-primary">{{ $product->name }}</div><div class="order-table-secondary">ID #{{ str_pad($product->id, 4, '0', STR_PAD_LEFT) }}</div></td>
                             <td data-label="Varian" class="text-zinc-600">{{ $product->variant ?: '-' }}</td>
                             <td data-label="Harga default" class="font-semibold text-zinc-700">{{ $product->default_price ? 'Rp '.number_format($product->default_price, 0, ',', '.') : '-' }}</td>
-                            <td data-label="Status"><span class="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-semibold {{ $product->is_active ? 'bg-emerald-50 text-emerald-700' : 'bg-zinc-100 text-zinc-500' }}"><span class="h-1.5 w-1.5 rounded-full {{ $product->is_active ? 'bg-emerald-500' : 'bg-zinc-400' }}"></span>{{ $product->is_active ? 'Aktif' : 'Nonaktif' }}</span></td>
+                            <td data-label="Status"><span class="inline-flex items-center rounded-full px-2.5 py-1 text-[11px] font-semibold {{ $product->is_active ? 'bg-emerald-50 text-emerald-700' : 'bg-zinc-100 text-zinc-500' }}">{{ $product->is_active ? 'Aktif' : 'Nonaktif' }}</span></td>
                             <td data-card-action class="text-right"><a class="order-table-action" href="{{ route('admin.products.show', $product, false) }}">Detail</a></td>
                         </tr>
                     @empty
@@ -28,6 +28,6 @@
                 </tbody>
             </table>
         </div>
-        <div class="order-table-footer"><span>Menampilkan {{ $products->firstItem() ?? 0 }}–{{ $products->lastItem() ?? 0 }} dari {{ $products->total() }} produk</span><div>{{ $products->links() }}</div></div>
+        <div class="order-table-footer"><span>Menampilkan {{ $products->firstItem() ?? 0 }}–{{ $products->lastItem() ?? 0 }} dari {{ $products->total() }} produk</span><div>{{ $products->links('admin.partials.pagination') }}</div></div>
     </div>
 </x-layouts.app>

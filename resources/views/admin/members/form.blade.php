@@ -8,6 +8,7 @@
         eyebrow="Data Pelanggan"
         description="Kelola identitas, group, dan akun login customer. Riwayat buyer tetap terhubung saat username atau password diperbarui."
         max-width="max-w-4xl"
+        class="mx-auto [&_.admin-form-eyebrow]:text-[#2f6b46]! [&_.admin-form-intro]:border-[#c3d9ca]! [&_.admin-form-intro]:bg-[#eef4ef]! [&_.admin-form-intro]:bg-none! [&_.admin-form-intro-icon]:text-[#2f6b46]! [&_.admin-form-intro_h2]:text-[#275a3a]! [&_.admin-form-secondary:hover]:border-[#c3d9ca]! [&_.admin-form-secondary:hover]:text-[#275a3a]! [&_input:focus]:border-[#2f6b46]! [&_select:focus]:border-[#2f6b46]! [&_textarea:focus]:border-[#2f6b46]! [&_input:focus]:shadow-[0_0_0_3px_rgba(47,107,70,0.12)]! [&_select:focus]:shadow-[0_0_0_3px_rgba(47,107,70,0.12)]! [&_textarea:focus]:shadow-[0_0_0_3px_rgba(47,107,70,0.12)]!"
     >
         <form method="POST" action="{{ $member->exists ? route('admin.members.update', $member, false) : route('admin.members.store', [], false) }}">
             @csrf
@@ -43,10 +44,11 @@
                                     <option value="{{ $group->id }}" @selected((string) old('customer_group_id', $member->customer_group_id) === (string) $group->id)>{{ $group->name }}{{ $group->is_active ? '' : ' (nonaktif)' }}</option>
                                 @endforeach
                             </select>
+                            @error('customer_group_id')<small class="mt-1 block text-sm text-red-700">{{ $message }}</small>@enderror
                         </label>
                         <x-text-input label="Password baru (opsional)" name="password" type="password" autocomplete="new-password" minlength="8" />
                         <x-text-input label="Konfirmasi password baru" name="password_confirmation" type="password" autocomplete="new-password" minlength="8" />
-                        <p class="admin-form-help sm:col-span-2">Kosongkan password untuk mempertahankan password saat ini. Isi minimal 8 karakter untuk menyiapkan akun buyer lama atau mengganti password. Status akun: {{ $member->user?->password_set_at ? 'Siap login' : 'Belum siap login' }}.</p>
+                        <p class="admin-form-help sm:col-span-2">Kosongkan password untuk mempertahankan password saat ini. Isi minimal 8 karakter untuk menyiapkan akun buyer lama atau mengganti password.@if($member->exists) Status akun: {{ $member->user?->password_set_at ? 'Siap login' : 'Belum siap login' }}.@endif</p>
                     </div>
                 </x-admin-form-section>
 
@@ -56,11 +58,13 @@
                             <span>Alamat lengkap</span>
                             <textarea name="address" rows="4" placeholder="Nama penerima, jalan, kecamatan, kota, provinsi, dan kode pos">{{ old('address', $member->address) }}</textarea>
                             <small class="admin-form-help">Gunakan alamat lengkap yang siap dipakai untuk kebutuhan pengiriman.</small>
+                            @error('address')<small class="mt-1 block text-sm text-red-700">{{ $message }}</small>@enderror
                         </label>
                         <label class="block">
                             <span>Catatan admin</span>
                             <textarea name="notes" rows="3" placeholder="Opsional dan tidak ditampilkan kepada pelanggan">{{ old('notes', $member->notes) }}</textarea>
                             <small class="admin-form-help">Catatan ini hanya dapat dilihat oleh admin.</small>
+                            @error('notes')<small class="mt-1 block text-sm text-red-700">{{ $message }}</small>@enderror
                         </label>
                     </div>
                 </x-admin-form-section>
