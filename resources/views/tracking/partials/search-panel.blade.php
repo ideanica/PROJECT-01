@@ -122,6 +122,30 @@ html[data-customer-theme="dark"] .ocean-tracking .tracking-classic {
     --portal-icon-fill-cream: #ccd6d6;
 }
 html[data-customer-theme="dark"] .ocean-tracking .tracking-classic .tracking-neo-hint { color: #d6e9ed; }
+
+/* Match the Login CTA and keep the search/star controls visibly contrasted. */
+.ocean-tracking .tracking-classic .tracking-neo-form button {
+    background: #684f48 !important;
+    color: #fff !important;
+    border-color: #684f48 !important;
+    box-shadow: var(--customer-shadow-control, -3px 3px 0) #684f48 !important;
+}
+.ocean-tracking .tracking-classic .tracking-hint-stars {
+    background: #d6e9ed !important;
+    color: #684f48 !important;
+}
+.ocean-tracking .tracking-classic .tracking-hint-stars .public-icon,
+.ocean-tracking .tracking-classic .tracking-hint-stars .public-icon svg {
+    color: #684f48 !important;
+    fill: #684f48 !important;
+    stroke: #684f48 !important;
+}
+.ocean-tracking .tracking-classic .tracking-hint-stars .public-icon svg path,
+.ocean-tracking .tracking-classic .tracking-hint-stars .public-icon svg polygon {
+    fill: #f9e7c7 !important;
+    stroke: #684f48 !important;
+}
+
 </style>
 <section class="tracking-neo-page tracking-classic" aria-labelledby="order-search-title">
     <div class="tracking-neo-shell">
