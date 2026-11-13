@@ -107,7 +107,7 @@
             left: 0 !important;
             /* The source PNG has wide transparent side margins.
                Shift its canvas so the actual artwork aligns with the left slot. */
-            transform: translate(-73%, calc(-50% + 3px)) scale(1.5) !important;
+            transform: translate(calc(-73% + 1rem), calc(-50% + 3px)) scale(1.5) !important;
             transform-origin: left center !important;
         }
     }
