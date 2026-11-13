@@ -6482,10 +6482,10 @@
 
   .op-page .op-palm {
     top: auto;
-    right: calc(-13% + 15px);
-    bottom: 33px;
-    width: 54%;
-    height: 48%;
+    right: calc(-13% + 20px);
+    bottom: 30px;
+    width: calc(54% + 3px);
+    height: calc(48% + 3px);
     object-fit: contain;
     object-position: right bottom;
     transform: rotate(-2deg);
@@ -6713,8 +6713,8 @@
   }
 
   .op-page .op-palm {
-    width: 55%;
-    height: 45%;
+    width: calc(55% + 3px);
+    height: calc(45% + 3px);
   }
 
   .op-page .op-about-content {
@@ -6829,8 +6829,8 @@
   /* Keep the wooden sign visible on phones; it was hidden at <=460px. */
   .op-page .op-sign {
     display: block !important;
-    right: calc(5% + 7px) !important;
-    bottom: calc(5% - 20px) !important;
+    right: calc(5% + 12px) !important;
+    bottom: calc(5% - 12px) !important;
     width: 112px !important;
     height: 128px !important;
     transform: none !important;
@@ -6854,8 +6854,8 @@
   }
 
   .op-page .op-sign {
-    right: calc(4% + 7px) !important;
-    bottom: calc(4% - 20px) !important;
+    right: calc(4% + 12px) !important;
+    bottom: calc(4% - 12px) !important;
     width: 104px !important;
     height: 120px !important;
   }
@@ -6999,6 +6999,6 @@
 
   /* Keep the grass decoration at the same relative offset. */
   .op-page .op-sign::after {
-    bottom: -37.3px !important;
+    bottom: -41.3px !important;
   }
 }
