@@ -23,7 +23,7 @@
             'tracking' => ['label' => 'Status Tracking', 'title' => 'Tracking Perjalanan', 'description' => 'Tahapan perjalanan barang dan kondisi pesanan.', 'applies_to' => 'Batch dan pesanan customer', 'application' => 'Pesanan mengikuti status batch, kecuali memiliki status khusus.'],
             'payment' => ['label' => 'Status Pembayaran', 'title' => 'Status Pembayaran', 'description' => 'Status pembayaran terpisah dari perjalanan barang.', 'applies_to' => 'Pembayaran pesanan', 'application' => 'Catat DP, pelunasan, dan refund melalui status pembayaran.'],
         ];
-        $groupedStatuses = collect(['tracking' => $statuses->where('scope', '!=', 'payment'), 'payment' => $statuses->where('scope', 'payment')]);
+        $scopePaginators = ['tracking' => $trackingStatuses, 'payment' => $paymentStatuses];
         $requestedScope = request('scope');
         $activeScope = is_string($requestedScope) && array_key_exists($requestedScope, $scopeDefinitions) ? $requestedScope : 'tracking';
     @endphp
@@ -71,14 +71,14 @@
                         @endswitch
                     </svg>
                     <span>{{ $definition['label'] }}</span>
-                    <small>{{ $groupedStatuses->get($scope, collect())->count() }}</small>
+                    <small>{{ $scopePaginators[$scope]->total() }}</small>
                 </button>
             @endforeach
         </div>
 
         <div class="status-folder-content">
             @foreach($scopeDefinitions as $scope => $definition)
-                @php($scopeStatuses = $groupedStatuses->get($scope, collect()))
+                @php($scopeStatuses = $scopePaginators[$scope])
                 <section
                     id="status-folder-{{ $scope }}"
                     role="tabpanel"
@@ -91,7 +91,7 @@
                             <h2>{{ $definition['title'] }}</h2>
                             <p>{{ $definition['description'] }}</p>
                         </div>
-                        <span class="bg-[#eef4ef]! text-[#275a3a]!">{{ $scopeStatuses->count() }} status</span>
+                        <span class="bg-[#eef4ef]! text-[#275a3a]!">{{ $scopeStatuses->total() }} status</span>
                     </div>
 
                     <div class="status-folder-application border-[#e4e4e7]! bg-[#fafafa]!">
@@ -120,7 +120,7 @@
                                 @forelse($scopeStatuses as $status)
                                     @php($usage = $status->batches_count + $status->member_orders_count + $status->order_items_count + $status->payment_member_orders_count + $status->old_histories_count + $status->new_histories_count)
                                     <tr class="{{ $status->is_active ? '' : 'bg-zinc-50 opacity-60' }}">
-                                        <td data-label="No." class="min-[821px]:text-center!"><span class="min-[821px]:mx-auto grid h-7 w-7 place-items-center rounded-md bg-zinc-100">{{ $loop->iteration }}</span></td>
+                                        <td data-label="No." class="min-[821px]:text-center!"><span class="min-[821px]:mx-auto grid h-7 w-7 place-items-center rounded-md bg-zinc-100">{{ $scopeStatuses->firstItem() + $loop->index }}</span></td>
                                         <td data-label="Status"><x-status-badge :status="$status" /><div class="mt-1 text-zinc-400">{{ $status->code }}</div></td>
                                         <td data-label="Keterangan" class="max-w-md text-zinc-600">{{ $status->description ?: 'Belum ada keterangan untuk pelanggan.' }}</td>
                                         <td data-label="Sifat">
@@ -144,6 +144,10 @@
                                 @endforelse
                             </tbody>
                         </table>
+                        </div>
+                        <div class="order-table-footer">
+                            <span>Menampilkan {{ $scopeStatuses->firstItem() ?? 0 }}–{{ $scopeStatuses->lastItem() ?? 0 }} dari {{ $scopeStatuses->total() }} status</span>
+                            <div>{{ $scopeStatuses->links('admin.partials.pagination') }}</div>
                         </div>
                     </div>
                 </section>
