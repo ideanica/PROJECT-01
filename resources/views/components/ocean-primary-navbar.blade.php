@@ -111,6 +111,44 @@
             transform-origin: left center !important;
         }
     }
+
+    /* Tablet navbar: keep the logo and menu balanced without desktop overflow. */
+    @media (min-width: 681px) and (max-width: 1023px) {
+        .ocean-primary-navbar {
+            min-height: 70px !important;
+            gap: 8px !important;
+            padding: 0 12px !important;
+        }
+
+        .ocean-primary-navbar .ocean-primary-navbar__brand {
+            width: clamp(105px, 14vw, 140px) !important;
+            height: 56px !important;
+        }
+
+        .ocean-primary-navbar .ocean-primary-navbar__brand-logo {
+            width: clamp(205px, 31vw, 280px) !important;
+            transform: translate(calc(-73% + 1.2rem), -50%) scale(1.08) !important;
+        }
+    }
+
+    /* Narrow mobile navbar: retain a legible mark and a comfortable menu hit area. */
+    @media (max-width: 680px) {
+        .ocean-primary-navbar {
+            min-height: 66px !important;
+            gap: 5px !important;
+            padding: 0 10px !important;
+        }
+
+        .ocean-primary-navbar .ocean-primary-navbar__brand {
+            width: clamp(94px, 29vw, 118px) !important;
+            height: 50px !important;
+        }
+
+        .ocean-primary-navbar .ocean-primary-navbar__brand-logo {
+            width: clamp(190px, 55vw, 220px) !important;
+            transform: translate(calc(-73% + 1rem), -50%) scale(1.05) !important;
+        }
+    }
 </style>
 
 <div class="{{ $hostClass }}">
