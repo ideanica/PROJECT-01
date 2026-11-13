@@ -9794,9 +9794,9 @@ html[data-customer-theme="dark"] .ocean-primary-navbar__mobile-link.is-active {
     top: 50%;
     left: 0;
     display: block;
-    width: clamp(300px, 25vw, 360px);
+    width: clamp(330px, 27vw, 400px);
     line-height: 0;
-    transform: translateY(-50%) scale(1.1);
+    transform: translateY(-50%) scale(1.15);
     transform-origin: left center;
 }
 
@@ -9815,7 +9815,7 @@ html[data-customer-theme="dark"] .ocean-primary-navbar__mobile-link.is-active {
     }
 
     .ocean-primary-navbar__brand-logo {
-        width: clamp(250px, 28vw, 300px);
+        width: clamp(260px, 29vw, 330px);
     }
 }
 
@@ -9826,8 +9826,8 @@ html[data-customer-theme="dark"] .ocean-primary-navbar__mobile-link.is-active {
     }
 
     .ocean-primary-navbar__brand-logo {
-        width: clamp(180px, 25vw, 220px);
-        transform: translateY(-50%) scale(1.05);
+        width: clamp(205px, 28vw, 250px);
+        transform: translateY(-50%) scale(1.1);
     }
 }
 
@@ -9838,6 +9838,7 @@ html[data-customer-theme="dark"] .ocean-primary-navbar__mobile-link.is-active {
     }
 
     .ocean-primary-navbar__brand-logo {
-        width: clamp(155px, 40vw, 180px);
+        width: clamp(175px, 43vw, 205px);
+        transform: translateY(-50%) scale(1.08);
     }
 }
