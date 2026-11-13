@@ -8,7 +8,7 @@
         min-height:230px;
         overflow:hidden;
         border:0;
-        background:#f9e7c7 url('{{ asset('assets/oceanpaws-footer-reference-bg-v1.png') }}') center top/100% 136% no-repeat;
+        background:#f9e7c7 url('{{ asset('assets/oceanpaws-footer-reference-bg-v1.png') }}') center top/100% 100% no-repeat;
         color:#684f48;
         font-family:"Nunito Sans",sans-serif;
     }
@@ -78,7 +78,7 @@
         .ocean-tracking .op-footer-reference{
             height:300px;
             min-height:300px;
-            background-size:100% 115%;
+            background-size:100% 100%;
         }
         .ocean-tracking .op-footer-reference .op-footer-reference-shell{
             top:39px;
@@ -99,11 +99,11 @@
 
     @media(max-width:1023px){
         .ocean-tracking .op-footer-reference{
-            height:330px;
-            min-height:330px;
+            height:360px;
+            min-height:360px;
             margin-top:0;
             background-size:auto 100%;
-            background-position:center bottom;
+            background-position:center top;
         }
         .ocean-tracking .op-footer-reference .op-footer-reference-shell{
             top:93px;
