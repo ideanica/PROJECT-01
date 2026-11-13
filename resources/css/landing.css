@@ -6980,3 +6980,24 @@
     background-repeat: no-repeat !important;
   }
 }
+
+
+/* Mobile hero sign: keep board and lettering scaled as one composition. */
+@media (max-width: 680px) {
+  .op-page .op-sign {
+    width: 112px !important;
+    height: 129px !important;
+  }
+
+  .op-page .op-sign span,
+  .op-page .op-sign span:nth-child(1),
+  .op-page .op-sign span:nth-child(2),
+  .op-page .op-sign span:nth-child(3) {
+    font-size: 5.7px !important;
+  }
+
+  /* Move the sign's grass decoration down by exactly 1rem. */
+  .op-page .op-sign::after {
+    bottom: -59px !important;
+  }
+}
