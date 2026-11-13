@@ -10,7 +10,8 @@
         title="{{ $order->exists ? 'Edit Pesanan' : 'Tambah Pesanan' }}"
         eyebrow="Pesanan dalam Batch"
         description="Pilih pelanggan aktif yang sudah memiliki akun member yang disetujui dan siap login."
-        max-width="max-w-6xl"
+        max-width="max-w-4xl"
+        class="mx-auto [&_.admin-form-eyebrow]:text-[#2f6b46]! [&_.admin-form-intro]:border-[#c3d9ca]! [&_.admin-form-intro]:bg-[#eef4ef]! [&_.admin-form-intro]:bg-none! [&_.admin-form-intro-icon]:text-[#2f6b46]! [&_.admin-form-intro_h2]:text-[#275a3a]! [&_.admin-form-secondary:hover]:border-[#c3d9ca]! [&_.admin-form-secondary:hover]:text-[#275a3a]! [&_input:focus]:border-[#2f6b46]! [&_select:focus]:border-[#2f6b46]! [&_textarea:focus]:border-[#2f6b46]! [&_input:focus]:shadow-[0_0_0_3px_rgba(47,107,70,0.12)]! [&_select:focus]:shadow-[0_0_0_3px_rgba(47,107,70,0.12)]! [&_textarea:focus]:shadow-[0_0_0_3px_rgba(47,107,70,0.12)]!"
     >
         <form method="POST" action="{{ $order->exists ? route('admin.member-orders.update', $order, false) : route('admin.member-orders.store', [], false) }}">
             @csrf

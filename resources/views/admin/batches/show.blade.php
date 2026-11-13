@@ -115,7 +115,7 @@
                 <form method="POST" action="{{ route('admin.batches.ems-tax', $batch, false) }}">
                     @csrf @method('PUT')
                     @include('admin.batches.partials.ems-tax-fields')
-                    <button type="submit" class="admin-form-primary mt-4">Simpan Pajak EMS</button>
+                    <button type="submit" class="admin-form-primary mt-2">Simpan Pajak EMS</button>
                 </form>
             @else
                 <p>Total pajak EMS: {{ $batch->ems_tax_amount !== null ? 'Rp '.number_format($batch->ems_tax_amount, 2, ',', '.') : 'Belum ditentukan' }}</p>

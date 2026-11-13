@@ -36,6 +36,11 @@
             ['route' => 'admin.members.index', 'match' => ['admin.members.*', 'admin.customer-groups.*'], 'label' => 'Customer dan Group'.($registrationRequests ? ' ('.$registrationRequests.')' : ''), 'icon' => 'users'],
             ['route' => 'admin.order-statuses.index', 'match' => 'admin.order-statuses.*', 'label' => 'Status', 'icon' => 'route'],
         ];
+        $adminBackTargets = [
+            ['match' => 'admin.status-histories.*', 'route' => 'admin.dashboard', 'label' => 'Dashboard'],
+            ['match' => 'admin.member-orders.index', 'route' => 'admin.batches.index', 'label' => 'Batch'],
+            ['match' => 'admin.member-orders.show', 'route' => 'admin.member-orders.index', 'label' => 'Pesanan'],
+        ];
         $isAdminFormRoute = request()->routeIs([
             'admin.batches.create', 'admin.batches.edit',
             'admin.member-orders.create', 'admin.member-orders.edit',
@@ -43,9 +48,12 @@
             'admin.members.create', 'admin.members.edit',
             'admin.customer-groups.create', 'admin.customer-groups.edit',
         ]);
-        $adminBackItem = $isAdminFormRoute
+        // Label Group adalah folder sejajar dengan daftar customer, jadi tidak perlu tombol kembali.
+        $isAdminSiblingFolder = request()->routeIs(['admin.customer-groups.index']);
+        $adminBackItem = $isAdminFormRoute || $isAdminSiblingFolder
             ? null
-            : collect($adminNav)->first(fn ($item) => request()->routeIs($item['match']) && ! request()->routeIs($item['route']));
+            : (collect($adminNav)->first(fn ($item) => request()->routeIs($item['match']) && ! request()->routeIs($item['route']))
+                ?? collect($adminBackTargets)->first(fn ($item) => request()->routeIs($item['match']) && ! request()->routeIs($item['route'])));
         $loginAt = session('login_at');
         if ($isAdmin && ! $loginAt) {
             $loginAt = now()->timestamp;

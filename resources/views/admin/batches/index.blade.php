@@ -3,7 +3,7 @@
         <x-page-heading title="Batch" description="Kelola periode pembelian dan pantau progres setiap batch.">
             <x-slot:action>
                 <div class="flex flex-wrap gap-2">
-                    <a class="admin-primary-action hover:bg-[#275a3a]!" href="{{ route('admin.batches.create', [], false) }}">+ Tambah batch</a>
+                    <a class="admin-form-primary" href="{{ route('admin.batches.create', [], false) }}">+ Tambah batch</a>
                 </div>
             </x-slot:action>
         </x-page-heading>
@@ -29,7 +29,7 @@
                     <input class="h-full min-w-0 flex-1 border-0! bg-transparent! p-0! text-zinc-600! shadow-none! outline-none! focus:shadow-none! lg:w-[6.75rem] lg:flex-none" name="date_to" type="date" value="{{ request('date_to') }}" aria-label="Tanggal batch akhir">
                 </div>
 
-                <button class="inline-flex h-8 w-full items-center justify-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-4 font-semibold text-[#27272a] shadow-[0_1px_2px_rgba(24,24,27,0.05)] transition hover:bg-[#f4f4f5] focus:outline-none focus:ring-4 focus:ring-zinc-900/5 lg:w-auto" type="submit">
+                <button class="inline-flex h-8 w-full items-center justify-center gap-1.5 rounded-[14px] border border-zinc-200 bg-white px-4 font-semibold text-[#27272a] shadow-[0_1px_2px_rgba(24,24,27,0.05)] transition hover:bg-[#f4f4f5] focus:outline-none focus:ring-4 focus:ring-zinc-900/5 lg:w-auto" type="submit">
                     <svg viewBox="0 0 20 20" class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="9" r="5.5"/><path d="m13 13 4 4"/></svg>
                     Cari
                 </button>
@@ -110,7 +110,7 @@
                     </div>
                 </div>
 
-                <div class="order-table-footer [&_span[aria-current='page']_span]:border-[#d4d4d8]! [&_span[aria-current='page']_span]:bg-[#f4f4f5]! [&_span[aria-current='page']_span]:text-[#3f3f46]!"><span>Menampilkan {{ $batches->firstItem() ?? 0 }}–{{ $batches->lastItem() ?? 0 }} dari {{ $batches->total() }} batch</span><div>{{ $batches->links() }}</div></div>
+                <div class="order-table-footer"><span>Menampilkan {{ $batches->firstItem() ?? 0 }}–{{ $batches->lastItem() ?? 0 }} dari {{ $batches->total() }} batch</span><div>{{ $batches->links('admin.partials.pagination') }}</div></div>
             </section>
         </div>
     </div>

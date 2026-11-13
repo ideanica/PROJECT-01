@@ -1,32 +1,53 @@
 <x-layouts.app title="Detail {{ $member->display_name }}">
-    <x-page-heading title="Detail Pelanggan" description="Kontak dan seluruh riwayat pembelian pelanggan dalam satu tampilan.">
-        <x-slot:action><a class="admin-form-secondary" href="{{ route('admin.members.edit', $member, false) }}">Edit Pelanggan</a></x-slot:action>
-    </x-page-heading>
+    <div class="[&_h1]:text-black!">
+        <x-page-heading title="Detail Pelanggan" description="Kontak dan seluruh riwayat pembelian pelanggan dalam satu tampilan.">
+            <x-slot:action><a class="admin-form-secondary" href="{{ route('admin.members.edit', $member, false) }}">Edit Pelanggan</a></x-slot:action>
+        </x-page-heading>
+    </div>
 
-    @if($member->user?->registration_pending)
-        <section class="order-table-card mb-6 p-5">
-            <h2 class="font-bold">Permintaan registrasi menunggu persetujuan</h2>
-            <p class="mt-2 text-sm">Tentukan group sebelum menerima akun. Customer belum dapat login.</p>
-            <form method="POST" action="{{ route('admin.members.approve', $member) }}" class="mt-4 flex flex-wrap gap-3">
-                @csrf
-                <label>Group <select name="customer_group_id" required class="rounded-lg border border-zinc-300 px-3 py-2"><option value="">Pilih group</option>@foreach($groups as $group)<option value="{{ $group->id }}" @selected((string) old('customer_group_id') === (string) $group->id)>{{ $group->name }}</option>@endforeach</select></label>
-                <button class="admin-primary-action" type="submit" @disabled($groups->isEmpty())>Tentukan group & setujui akun</button>
-            </form>
-            @if($groups->isEmpty())<p class="mt-3 text-sm">Buat label group aktif terlebih dahulu di <a class="underline" href="{{ route('admin.customer-groups.create') }}">Label Group</a>.</p>@endif
-        </section>
-    @endif
-    <article class="detail-record-card">
+    <article class="detail-record-card before:bg-none! [&_.detail-record-hero]:bg-[linear-gradient(135deg,#ffffff,#f6faf6_58%,#eef6ef)]!">
         <header class="detail-record-hero">
             <div class="min-w-0">
-                <p class="detail-record-kicker">Data Pelanggan</p>
+                <p class="detail-record-kicker text-[#275a3a]!">Data Pelanggan</p>
                 <div class="mt-2 flex flex-wrap items-center gap-3">
                     <h2 class="detail-record-title">{{ $member->display_name }}</h2>
                     <span class="detail-record-state {{ $member->is_active ? 'detail-record-state-active' : 'detail-record-state-muted' }}">{{ $member->user?->registration_pending ? 'Menunggu persetujuan' : ($member->is_active ? 'Aktif' : 'Nonaktif') }}</span>
                 </div>
                 <p class="detail-record-description">#{{ $member->member_code }}</p>
             </div>
-            <div class="detail-record-id">{{ $member->orders->count() }} pesanan</div>
+            <div class="detail-record-id">ID #{{ str_pad($member->id, 4, '0', STR_PAD_LEFT) }}</div>
         </header>
+
+        <section class="detail-record-section">
+            <div class="detail-record-summary sm:grid-cols-2 xl:grid-cols-4">
+                <div class="detail-record-field detail-record-field-violet">
+                    <span>Group</span>
+                    <strong>
+                        @if($member->customerGroup)
+                            <a class="hover:underline" href="{{ route('admin.customer-groups.show', $member->customerGroup) }}">{{ $member->customerGroup->name }}</a>
+                        @else
+                            Belum ada group
+                        @endif
+                    </strong>
+                    <small>{{ $member->customerGroup ? 'Label customer saat registrasi' : 'Tentukan group melalui Edit Pelanggan' }}</small>
+                </div>
+                <div class="detail-record-field detail-record-field-blue">
+                    <span>Jumlah pesanan</span>
+                    <strong>{{ $member->orders->count() }} pesanan</strong>
+                    <small>Terhubung ke akun customer ini</small>
+                </div>
+                <div class="detail-record-field detail-record-field-cyan">
+                    <span>Total item</span>
+                    <strong>{{ $member->orders->sum(fn ($order) => $order->items->sum('quantity')) }} item</strong>
+                    <small>Dari seluruh pesanan yang tercatat</small>
+                </div>
+                <div class="detail-record-field detail-record-field-amber">
+                    <span>Akun login</span>
+                    <strong>{{ $member->user?->registration_pending ? 'Menunggu persetujuan' : ($member->user?->password_set_at ? 'Siap login' : 'Belum siap') }}</strong>
+                    <small>Status pelanggan: {{ $member->is_active ? 'Aktif' : 'Nonaktif' }}</small>
+                </div>
+            </div>
+        </section>
 
         <section class="detail-record-section">
             <div class="detail-record-section-heading">

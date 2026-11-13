@@ -1,7 +1,7 @@
 <x-layouts.app title="Kelola Status">
     <div class="[&_h1]:text-black!">
         <x-page-heading title="Kelola Status" description="Kelola status tracking perjalanan dan pembayaran. Label group dikelola di Kelola Customer dan Group.">
-            <x-slot:action><a class="admin-primary-action hover:bg-[#275a3a]!" href="{{ route('admin.order-statuses.create', [], false) }}">+ Tambah status</a></x-slot:action>
+            <x-slot:action><a class="admin-form-primary" href="{{ route('admin.order-statuses.create', [], false) }}">+ Tambah status</a></x-slot:action>
         </x-page-heading>
     </div>
 
@@ -43,7 +43,7 @@
                     <option value="0" @selected(request('active') === '0')>Nonaktif saja</option>
                 </select>
 
-                <button class="inline-flex h-8 shrink-0 items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-4 font-semibold text-[#27272a] shadow-[0_1px_2px_rgba(24,24,27,0.05)] transition hover:bg-[#f4f4f5] focus:outline-none focus:ring-4 focus:ring-zinc-900/5" type="submit">
+                <button class="inline-flex h-8 shrink-0 items-center gap-1.5 rounded-[14px] border border-zinc-200 bg-white px-4 font-semibold text-[#27272a] shadow-[0_1px_2px_rgba(24,24,27,0.05)] transition hover:bg-[#f4f4f5] focus:outline-none focus:ring-4 focus:ring-zinc-900/5" type="submit">
                     <svg viewBox="0 0 20 20" class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="9" r="5.5"/><path d="m13 13 4 4"/></svg>
                     Cari
                 </button>

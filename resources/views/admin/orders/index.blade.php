@@ -1,7 +1,7 @@
 <x-layouts.app title="Pesanan">
     <div class="[&_h1]:text-black!">
         <x-page-heading title="Pesanan" description="Kelola pembelian pelanggan dan status produk di setiap batch.">
-            <x-slot:action><a class="admin-primary-action hover:bg-[#275a3a]!" href="{{ route('admin.member-orders.create', [], false) }}">+ Tambah pesanan</a></x-slot:action>
+            <x-slot:action><a class="admin-form-primary" href="{{ route('admin.member-orders.create', [], false) }}">+ Tambah pesanan</a></x-slot:action>
         </x-page-heading>
     </div>
 
@@ -19,7 +19,7 @@
                     <input class="h-full min-w-0 flex-1 border-0! bg-transparent! p-0! text-zinc-600! shadow-none! outline-none! focus:shadow-none! lg:w-[6.75rem] lg:flex-none" name="date_to" type="date" value="{{ request('date_to') }}" aria-label="Tanggal pesanan akhir">
                 </div>
 
-                <button class="inline-flex h-8 w-full items-center justify-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-4 font-semibold text-[#27272a] shadow-[0_1px_2px_rgba(24,24,27,0.05)] transition hover:bg-[#f4f4f5] focus:outline-none focus:ring-4 focus:ring-zinc-900/5 lg:w-auto" type="submit">
+                <button class="inline-flex h-8 w-full items-center justify-center gap-1.5 rounded-[14px] border border-zinc-200 bg-white px-4 font-semibold text-[#27272a] shadow-[0_1px_2px_rgba(24,24,27,0.05)] transition hover:bg-[#f4f4f5] focus:outline-none focus:ring-4 focus:ring-zinc-900/5 lg:w-auto" type="submit">
                     <svg viewBox="0 0 20 20" class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="9" r="5.5"/><path d="m13 13 4 4"/></svg>Cari
                 </button>
             </div>
@@ -58,6 +58,6 @@
                 </tbody>
             </table>
         </div>
-        <div class="order-table-footer [&_span[aria-current='page']_span]:border-[#d4d4d8]! [&_span[aria-current='page']_span]:bg-[#f4f4f5]! [&_span[aria-current='page']_span]:text-[#3f3f46]!"><span>Menampilkan {{ $orders->firstItem() ?? 0 }}–{{ $orders->lastItem() ?? 0 }} dari {{ $orders->total() }} pesanan</span><div>{{ $orders->links() }}</div></div>
+        <div class="order-table-footer"><span>Menampilkan {{ $orders->firstItem() ?? 0 }}–{{ $orders->lastItem() ?? 0 }} dari {{ $orders->total() }} pesanan</span><div>{{ $orders->links('admin.partials.pagination') }}</div></div>
     </div>
 </x-layouts.app>

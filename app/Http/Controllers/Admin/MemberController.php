@@ -33,12 +33,25 @@ class MemberController extends Controller
             })
             ->when(request('customer_group_id'), fn ($query, $id) => $query->where('customer_group_id', $id))
             ->when(in_array(request('status'), ['active', 'inactive'], true), fn ($query) => $query->where('is_active', request('status') === 'active'))
-            ->when(request('registration') === 'pending', fn ($query) => $query->whereHas('user', fn ($user) => $user->where('registration_pending', true)))
+            // Registrasi tertunda punya foldernya sendiri, jadi daftar customer hanya memuat akun yang sudah diproses.
+            ->when(
+                request('registration') === 'pending',
+                fn ($query) => $query->whereHas('user', fn ($user) => $user->where('registration_pending', true)),
+                fn ($query) => $query->whereDoesntHave('user', fn ($user) => $user->where('registration_pending', true)),
+            )
             ->latest()
             ->paginate(15)
             ->withQueryString();
 
-        return view('admin.members.index', ['members' => $members, 'groups' => CustomerGroup::withCount('members')->orderBy('name')->get(), 'pendingCount' => User::where('registration_pending', true)->count()]);
+        $groups = CustomerGroup::withCount('members')->orderBy('name')->get();
+
+        return view('admin.members.index', [
+            'members' => $members,
+            'groups' => $groups,
+            // Dialog persetujuan hanya boleh menawarkan group aktif (lihat CustomerApprovalController).
+            'activeGroups' => $groups->filter(fn (CustomerGroup $group) => $group->is_active)->values(),
+            'pendingCount' => User::where('registration_pending', true)->count(),
+        ]);
     }
 
     /**
