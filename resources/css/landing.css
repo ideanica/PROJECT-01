@@ -7061,3 +7061,26 @@
     translate: 0 4px !important;
   }
 }
+
+/* Mobile login CTA labels and left-offset tracking shadow. */
+.op-page .op-login-label-mobile {
+  display: none !important;
+}
+
+@media (max-width: 680px) {
+  .op-page .op-login-label-desktop {
+    display: none !important;
+  }
+
+  .op-page .op-login-label-mobile {
+    display: inline !important;
+  }
+
+  .op-page .op-actions .op-search {
+    box-shadow: -4px 5px 0 #684f48 !important;
+  }
+
+  .op-page .op-actions .op-search:hover {
+    box-shadow: -4px 3px 0 #684f48 !important;
+  }
+}
