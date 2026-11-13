@@ -7047,3 +7047,9 @@
     translate: 0 5px !important;
   }
 }
+
+
+/* About Us photo-tab stack: lower the complete layered group by 10px. */
+.op-page .op-about-card .op-polaroids {
+  translate: 0 10px !important;
+}
