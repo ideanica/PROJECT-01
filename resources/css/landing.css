@@ -6957,7 +6957,7 @@
   }
 
   .op-page .op-copy-window-back {
-    left: 30px !important;
+    left: 20px !important;
     width: calc(100% - 50px) !important;
   }
 }
