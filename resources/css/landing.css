@@ -6799,3 +6799,151 @@
     padding-inline: 9px;
   }
 }
+
+/* Mobile visual repair: restore hero props and remove footer grid texture. */
+
+/* Mobile visual repair: restore hero props and remove footer grid texture. */
+@media (max-width: 680px) {
+  /* Keep the browser-window hero comfortably inset from both screen edges. */
+  .op-page .op-copy-window {
+    left: 16px !important;
+    width: calc(100% - 32px) !important;
+  }
+
+  .op-page .op-copy-window-back {
+    left: 10px !important;
+    width: calc(100% - 40px) !important;
+  }
+
+  /* The lawn must retain its natural silhouette instead of being flattened. */
+  .op-page .op-hero-grass {
+    right: -2% !important;
+    bottom: 0 !important;
+    width: 76% !important;
+    height: 108px !important;
+    object-fit: contain !important;
+    object-position: right bottom !important;
+  }
+
+  /* Keep the wooden sign visible on phones; it was hidden at <=460px. */
+  .op-page .op-sign {
+    display: block !important;
+    right: 5% !important;
+    bottom: 5% !important;
+    width: 112px !important;
+    height: 128px !important;
+    transform: none !important;
+  }
+}
+
+@media (max-width: 460px) {
+  .op-page .op-copy-window {
+    left: 16px !important;
+    width: calc(100% - 32px) !important;
+  }
+
+  .op-page .op-copy-window-back {
+    left: 10px !important;
+    width: calc(100% - 40px) !important;
+  }
+
+  .op-page .op-hero-grass {
+    width: 78% !important;
+    height: 100px !important;
+  }
+
+  .op-page .op-sign {
+    right: 4% !important;
+    bottom: 4% !important;
+    width: 104px !important;
+    height: 120px !important;
+  }
+}
+
+/* Remove the decorative square grid from the mobile footer entirely. */
+@media (max-width: 1023px) {
+  .op-page .op-footer-reference::after {
+    content: none !important;
+    display: none !important;
+    background: none !important;
+  }
+}
+
+/* Mobile footer: make the logo and caption a clean two-column composition. */
+@media (max-width: 680px) {
+  .op-page .op-footer-reference {
+    height: 310px !important;
+    min-height: 310px !important;
+    background-size: auto 100% !important;
+    background-position: center bottom !important;
+  }
+
+  .op-page .op-footer-reference .op-footer-reference-shell {
+    top: 76px !important;
+    left: 18px !important;
+    width: calc(100% - 36px) !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) minmax(0, .9fr) !important;
+    grid-template-rows: auto !important;
+    align-items: center !important;
+    gap: 12px !important;
+  }
+
+  .op-page .op-footer-reference .op-footer-brand-block {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    min-width: 0 !important;
+    justify-content: center !important;
+  }
+
+  .op-page .op-footer-reference .op-footer-brand-block img {
+    width: clamp(112px, 38vw, 145px) !important;
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  .op-page .op-footer-reference .op-footer-message {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    min-width: 0 !important;
+    white-space: normal !important;
+    justify-self: center !important;
+    gap: 7px !important;
+  }
+
+  .op-page .op-footer-reference .op-footer-message strong {
+    font-size: clamp(8px, 2.5vw, 10px) !important;
+    line-height: 1.35 !important;
+    white-space: normal !important;
+  }
+
+  .op-page .op-footer-reference .op-footer-shell-icon {
+    flex: 0 0 auto !important;
+    width: 32px !important;
+    height: 32px !important;
+  }
+
+  .op-page .op-footer-reference .op-footer-bottomline {
+    bottom: 12px !important;
+    padding-inline: 12px !important;
+    font-size: 8px !important;
+    text-align: center !important;
+  }
+}
+
+@media (max-width: 360px) {
+  .op-page .op-footer-reference .op-footer-reference-shell {
+    left: 12px !important;
+    width: calc(100% - 24px) !important;
+    gap: 8px !important;
+  }
+
+  .op-page .op-footer-reference .op-footer-brand-block img {
+    width: 108px !important;
+  }
+
+  .op-page .op-footer-reference .op-footer-shell-icon {
+    width: 28px !important;
+    height: 28px !important;
+  }
+}
