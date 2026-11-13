@@ -12,6 +12,9 @@
         color:#684f48;
         font-family:"Nunito Sans",sans-serif;
     }
+    .ocean-tracking .op-footer-reference{
+        background-color:#F2F9FA !important;
+    }
     .ocean-tracking .op-footer-reference::before{content:none}
     .ocean-tracking .op-footer-reference .op-footer-reference-shell{
         position:absolute;
