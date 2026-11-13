@@ -82,21 +82,23 @@
         }
     }
 
-    /* Desktop: pin the logo slot to the navbar's left inner edge.
-       The navbar and navigation dimensions remain unchanged. */
+    /* Desktop: place the brand as the first flex item and remove only
+       the navbar's left inner padding so the logo starts beside the border. */
     @media (min-width: 1024px) {
         .ocean-primary-navbar {
-            position: relative !important;
+            padding-left: 0 !important;
         }
 
         .ocean-primary-navbar .ocean-primary-navbar__brand {
-            position: absolute !important;
-            top: 50% !important;
-            left: 2px !important;
+            position: relative !important;
+            top: auto !important;
+            left: auto !important;
+            display: block !important;
             width: clamp(190px, 17.5vw, 235px) !important;
             height: 72px !important;
+            flex: 0 0 auto !important;
             margin: 0 !important;
-            transform: translateY(-50%) !important;
+            transform: none !important;
             z-index: 3;
         }
 
