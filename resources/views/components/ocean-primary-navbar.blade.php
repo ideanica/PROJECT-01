@@ -31,9 +31,7 @@
         top: 50% !important;
         left: 0 !important;
         display: block !important;
-        width: clamp(560px, 40vw, 760px) !important;
         line-height: 0 !important;
-        transform: translateY(-50%) scale(1.25) !important;
         transform-origin: left center !important;
         z-index: 2;
     }
@@ -110,9 +108,9 @@
             </nav>
         </details>
 
-        <a class="ocean-primary-navbar__brand" href="{{ $homeUrl }}" aria-label="Ocean Paws home">
-            <span class="ocean-primary-navbar__brand-logo">
-                <img src="{{ asset('assets/IMG_8321.PNG') }}" alt="Ocean Paws — Bringing your favorites closer">
+        <a class="ocean-primary-navbar__brand" href="{{ $homeUrl }}" aria-label="Ocean Paws home" style="position:relative;display:block;width:clamp(190px,17.5vw,235px);height:72px;flex:0 0 auto;overflow:visible;">
+            <span class="ocean-primary-navbar__brand-logo" style="position:absolute;top:50%;left:0;display:block;width:clamp(460px,38vw,520px);line-height:0;transform:translateY(-50%) scale(1.12);transform-origin:left center;z-index:2;">
+                <img src="{{ asset('assets/IMG_8321.PNG') }}" alt="Ocean Paws — Bringing your favorites closer" style="display:block;width:100%;max-width:none;height:auto;object-fit:contain;">
             </span>
         </a>
 
