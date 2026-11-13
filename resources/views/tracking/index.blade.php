@@ -666,6 +666,66 @@
                 height:30px;
             }
         }
+
+        /* Tablet footer: shorten the canvas and keep the brand/tagline on one row. */
+        @media (min-width:681px) and (max-width:1023px) {
+            .op-footer-reference{
+                height:300px !important;
+                min-height:300px !important;
+                background-size:auto 100% !important;
+                background-position:center top !important;
+            }
+            .op-footer-reference .op-footer-reference-shell{
+                top:78px !important;
+                left:22px !important;
+                width:calc(100% - 44px) !important;
+                grid-template-columns:minmax(0,1fr) auto !important;
+                gap:14px !important;
+            }
+            .op-footer-reference .op-footer-brand-block img{
+                width:clamp(135px,22vw,180px) !important;
+            }
+            .op-footer-reference .op-footer-message strong{
+                font-size:clamp(8px,1.15vw,11px) !important;
+            }
+            .op-footer-reference .op-footer-shell-icon{
+                width:clamp(36px,5vw,50px) !important;
+                height:clamp(36px,5vw,50px) !important;
+            }
+        }
+
+        /* Mobile footer: preserve readable spacing instead of inheriting tablet height. */
+        @media (max-width:680px) {
+            .op-footer-reference{
+                height:340px !important;
+                min-height:340px !important;
+                background-size:auto 100% !important;
+                background-position:center top !important;
+            }
+            .op-footer-reference .op-footer-reference-shell{
+                top:72px !important;
+                left:18px !important;
+                width:calc(100% - 36px) !important;
+                gap:10px !important;
+            }
+            .op-footer-reference .op-footer-brand-block img{
+                width:clamp(118px,36vw,148px) !important;
+            }
+            .op-footer-reference .op-footer-message{
+                gap:6px !important;
+            }
+            .op-footer-reference .op-footer-message strong{
+                font-size:clamp(7px,2.15vw,9px) !important;
+            }
+            .op-footer-reference .op-footer-shell-icon{
+                width:clamp(30px,9vw,38px) !important;
+                height:clamp(30px,9vw,38px) !important;
+            }
+            .op-footer-reference .op-footer-bottomline{
+                bottom:12px !important;
+                font-size:8px !important;
+            }
+        }
     </style>
 
     <footer class="op-footer op-footer-reference" id="footer">
