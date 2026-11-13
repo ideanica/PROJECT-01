@@ -6982,22 +6982,22 @@
 }
 
 
-/* Mobile hero sign: keep board and lettering scaled as one composition. */
+/* Mobile hero sign: match the desktop board/text proportions. */
 @media (max-width: 680px) {
   .op-page .op-sign {
     width: 112px !important;
-    height: 129px !important;
+    height: 192px !important;
   }
 
   .op-page .op-sign span,
   .op-page .op-sign span:nth-child(1),
   .op-page .op-sign span:nth-child(2),
   .op-page .op-sign span:nth-child(3) {
-    font-size: 5.7px !important;
+    font-size: 9.2px !important;
   }
 
-  /* Move the sign's grass decoration down by exactly 1rem. */
+  /* Raise the sign grass by 8px from its previous mobile position. */
   .op-page .op-sign::after {
-    bottom: -59px !important;
+    bottom: -51px !important;
   }
 }
