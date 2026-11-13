@@ -6484,8 +6484,8 @@
     top: auto;
     right: calc(-13% + 14px);
     bottom: 24px;
-    width: calc(54% + 3px);
-    height: calc(48% + 3px);
+    width: calc(54% + 9px);
+    height: calc(48% + 9px);
     object-fit: contain;
     object-position: right bottom;
     transform: rotate(-2deg);
@@ -6713,8 +6713,8 @@
   }
 
   .op-page .op-palm {
-    width: calc(55% + 3px);
-    height: calc(45% + 3px);
+    width: calc(55% + 9px);
+    height: calc(45% + 9px);
   }
 
   .op-page .op-about-content {
@@ -6830,7 +6830,7 @@
   .op-page .op-sign {
     display: block !important;
     right: calc(5% + 23px) !important;
-    bottom: calc(5% - 17px) !important;
+    bottom: calc(5% - 22px) !important;
     width: 112px !important;
     height: 128px !important;
     transform: none !important;
@@ -6855,7 +6855,7 @@
 
   .op-page .op-sign {
     right: calc(4% + 23px) !important;
-    bottom: calc(4% - 17px) !important;
+    bottom: calc(4% - 22px) !important;
     width: 104px !important;
     height: 120px !important;
   }
