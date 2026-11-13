@@ -6089,3 +6089,8 @@
 .op-page .op-stats article.is-green {
   box-shadow: -6px 6px 0 #684f48 !important;
 }
+
+/* Set the spacing between statistic tiles to 0.5px. */
+.op-page .op-stats {
+  gap: 0.5px !important;
+}
