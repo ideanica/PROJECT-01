@@ -6083,3 +6083,9 @@
 .op-page .op-cta {
   box-shadow: -6px 6px 0 #684f48 !important;
 }
+
+/* Match the statistics cards shadow thickness to the About card. */
+.op-page .op-stats article,
+.op-page .op-stats article.is-green {
+  box-shadow: -6px 6px 0 #684f48 !important;
+}
