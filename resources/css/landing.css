@@ -7024,10 +7024,9 @@
     box-shadow: -4px 5px 0 #684f48 !important;
   }
 
-  /* Keep the mobile foreground hero grass raised by 3px. */
+  /* Remove the oversized foreground grass that covers the palm and wooden sign. */
   .op-page .op-hero-grass {
-    display: block !important;
-    translate: 0 -3px !important;
+    display: none !important;
   }
 }
 
