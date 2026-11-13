@@ -46,7 +46,7 @@ class TransactionController extends Controller
         }
 
         return view('admin.transactions.index', [
-            'payments' => $query->orderByRaw("CASE WHEN status = 'pending' THEN 0 ELSE 1 END")->latest('created_at')->latest('id')->paginate(20)->withQueryString(),
+            'payments' => $query->orderByRaw("CASE WHEN status = 'pending' THEN 0 ELSE 1 END")->latest('created_at')->latest('id')->paginate(10)->withQueryString(),
             'summary' => OrderPayment::query()->selectRaw('status, COUNT(*) AS total, SUM(amount) AS amount')->groupBy('status')->get()->keyBy('status'),
             'dpPercentage' => app(PaymentSchedule::class)->percentage(),
         ]);

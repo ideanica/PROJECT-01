@@ -1,8 +1,8 @@
 <x-layouts.app title="Transaksi #{{ $payment->id }}">
     @php($formatMoney = fn ($amount) => 'Rp '.number_format((float) $amount, fmod((float) $amount, 1) > 0 ? 2 : 0, ',', '.'))
-    <x-page-heading title="Detail transaksi #{{ $payment->id }}" description="Cocokkan nominal, tanggal, dan penerima pada bukti sebelum memverifikasi.">
-        <x-slot:action><a class="admin-form-secondary" href="{{ route('admin.transactions.index') }}">Kembali ke transaksi</a></x-slot:action>
-    </x-page-heading>
+    <div class="[&_h1]:text-black!">
+        <x-page-heading title="Detail transaksi #{{ $payment->id }}" description="Cocokkan nominal, tanggal, dan penerima pada bukti sebelum memverifikasi."></x-page-heading>
+    </div>
     <div class="transaction-review-grid">
         <section class="transaction-panel">
             <header class="flex flex-wrap items-center justify-between gap-3 mb-5"><h2 class="font-bold">Bukti pembayaran</h2>@if($payment->proof_path)<a class="admin-form-secondary" target="_blank" rel="noopener" href="{{ route('admin.member-orders.payments.proof', [$payment->order, $payment]) }}">Buka file asli</a>@endif</header>
