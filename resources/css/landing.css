@@ -6076,3 +6076,10 @@
     top: calc(20% - 5px);
   }
 }
+
+
+/* Use the same brown offset shadow for the About and "Let's get closer" cards. */
+.op-page .op-about-card,
+.op-page .op-cta {
+  box-shadow: -6px 6px 0 #684f48 !important;
+}
