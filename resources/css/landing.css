@@ -6507,7 +6507,7 @@
   }
 
   .op-page .op-sign::after {
-    left: -18px;
+    left: -13px;
     bottom: -18px;
     width: 165px;
     height: 88px;
@@ -6999,6 +6999,6 @@
 
   /* Keep the grass decoration at the same relative offset. */
   .op-page .op-sign::after {
-    bottom: -29.3px !important;
+    bottom: -31.3px !important;
   }
 }
