@@ -7099,3 +7099,10 @@
     height: calc(30% + 4px) !important;
   }
 }
+
+/* Mobile About Us heading: move the Made for every WISH title down by 3px. */
+@media (max-width: 680px) {
+  .op-page .op-about-content > h2 {
+    translate: 0 7px !important;
+  }
+}
