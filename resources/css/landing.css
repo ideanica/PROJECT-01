@@ -7106,3 +7106,21 @@
     translate: 0 7px !important;
   }
 }
+
+/* Mobile CTA ocean refresh: use undistorted blue-water artwork and remove the mint overlay. */
+@media (max-width: 680px) {
+  .op-page .op-cta {
+    background-color: #62bdeb !important;
+    background-image: url('/assets/oceanpaws-cta-blue-ocean-bg-v1.jpg') !important;
+    background-position: center center !important;
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+  }
+
+  /* The new background already contains its sky, clouds, and blue waves. */
+  .op-page .op-cta::before,
+  .op-page .op-cta::after,
+  .op-page .op-cta-wave {
+    display: none !important;
+  }
+}
